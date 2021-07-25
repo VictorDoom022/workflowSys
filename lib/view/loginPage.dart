@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:workflow_sys/controller/authController.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({Key? key}) : super(key: key);
@@ -45,7 +47,8 @@ class _loginPageState extends State<loginPage> {
                 SizedBox(height: 10),
                 CupertinoButton(
                   onPressed: () async{
-
+                    HapticFeedback.lightImpact();
+                    login(emailController.text, passwordController.text);
                   },
                   color: Colors.blue,
                   child: Text('Login'),
