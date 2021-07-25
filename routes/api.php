@@ -21,3 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('users/{id}', [App\Http\Controllers\Auth\LoginController::class, 'getUserData']);
 Route::post('register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    //All secure URL's
+    Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+});

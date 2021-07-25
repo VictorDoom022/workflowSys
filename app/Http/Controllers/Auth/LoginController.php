@@ -66,7 +66,15 @@ class LoginController extends Controller
 
         return response($response, 200);
     }
-    
+
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+
+        return [
+            'message'=>'Logged out'
+        ];
+    }
+
     public function getUserData($id){
         $user = User::findOrFail($id);
 
