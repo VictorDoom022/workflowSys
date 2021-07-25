@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -85,6 +86,14 @@ class RegisterController extends Controller
             'email'=> $fields['email'],
             'password'=> Hash::make($fields['password']),
             'position' => 'user'
+        ]);
+
+        $userID=User::latest()->get('id');
+
+        $userDetail=UserDetail::create([
+            'userDetail_id' => $userID,
+            'userDetail_joinedGroupID' => '[]',
+            'userDetail_status' => 'active'
         ]);
 
         $token=$user->createToken('loginToken')->plainTextToken;

@@ -11,4 +11,17 @@ use Laravel\Sanctum\HasApiTokens;
 class UserDetail extends Model
 {
     protected $table = 'userDetail';
+
+    public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'userDetail_id',
+        'userDetail_joinedGroupID',
+        'userDetail_status'
+    ];
 }
