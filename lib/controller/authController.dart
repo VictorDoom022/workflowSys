@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/AuthReceiver.dart';
 
@@ -19,4 +20,8 @@ void login(String email, String password) async {
 
   AuthReceiver authReceiver = AuthReceiver.fromJson(response.data);
 
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences.setString("UserToken", authReceiver.token);
+  sharedPreferences.setString("UserEmail", authReceiver.user.email);
+  sharedPreferences.setString("UserName", authReceiver.user.name);
 }
