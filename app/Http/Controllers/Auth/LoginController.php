@@ -47,7 +47,7 @@ class LoginController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => ['These credentials do not match our records.']
-            ], 200);
+            ], 201);
         }
 
         $token= $user->createToken('loginToken')->plainTextToken;
