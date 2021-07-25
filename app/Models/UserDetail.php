@@ -12,6 +12,8 @@ class UserDetail extends Model
 {
     protected $table = 'userDetail';
 
+    protected $primaryKey = null;
+    
     public $timestamps = false;
 
     /**
