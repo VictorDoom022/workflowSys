@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User; 
+use App\Models\UserDetail; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -41,6 +42,8 @@ class LoginController extends Controller
 
         $user=User::where('email', $request-> email)->first();
 
+        $userDetail=UserDetail::where('userDetail_id', $user["id"])->first();
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => ['These credentials do not match our records.']
@@ -51,6 +54,7 @@ class LoginController extends Controller
 
         $response=[
             'user' => $user,
+            'userDetail' => $userDetail,
             'token' => $token
         ];
 

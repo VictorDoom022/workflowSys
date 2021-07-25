@@ -88,7 +88,10 @@ class RegisterController extends Controller
             'position' => 'user'
         ]);
 
-        $userID=User::latest()->get('id');
+        $currentUserID=User::latest()->get('id')->first();
+        $currentUserID["id"] == 0 ? $userID = 1 : $userID = $currentUserID["id"];
+
+        $userDetail=UserDetail::where('userDetail_id', $userID)->first();
 
         $userDetail=UserDetail::create([
             'userDetail_id' => $userID,
@@ -100,6 +103,7 @@ class RegisterController extends Controller
 
         $response=[
             'user'=>$user,
+            'userDetail' => $userDetail,
             'token'=>$token
         ];
 
