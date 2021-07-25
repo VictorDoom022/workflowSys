@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/authController.dart';
 
 class loginPage extends StatefulWidget {
-  const loginPage({Key? key}) : super(key: key);
+  const loginPage({Key key}) : super(key: key);
 
   @override
   _loginPageState createState() => _loginPageState();
