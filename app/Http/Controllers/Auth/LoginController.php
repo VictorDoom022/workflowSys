@@ -64,17 +64,4 @@ class LoginController extends Controller
             'message'=>'Logged out'
         ];
     }
-
-    public function getUserData($id){
-        $user = User::findOrFail($id);
-
-        return $user;
-    }
-
-    public function getAllUserData(){
-        $user = User::latest()->get();
-        return [
-            'message'=>$user
-        ];
-    }
 }

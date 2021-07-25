@@ -23,6 +23,6 @@ Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
     Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
-    Route::get('users/{id}', [App\Http\Controllers\Auth\LoginController::class, 'getUserData']);
-    Route::get('users', [App\Http\Controllers\Auth\LoginController::class, 'getAllUserData']);
+    Route::get('users/{id}', [App\Http\Controllers\UserController::class, 'getUserByID']);
+    Route::get('users', [App\Http\Controllers\UserController::class, 'getAllUserData']);
 });
