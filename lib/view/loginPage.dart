@@ -48,7 +48,7 @@ class _loginPageState extends State<loginPage> {
                 CupertinoButton(
                   onPressed: () async{
                     HapticFeedback.lightImpact();
-                    login(emailController.text, passwordController.text);
+                    login(context ,emailController.text, passwordController.text);
                   },
                   color: Colors.blue,
                   child: Text('Login'),
