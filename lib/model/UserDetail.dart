@@ -1,0 +1,22 @@
+class UserDetail {
+  int userDetailId;
+  String userDetailJoinedGroupID;
+  String userDetailStatus;
+
+  UserDetail(
+      {this.userDetailId, this.userDetailJoinedGroupID, this.userDetailStatus});
+
+  UserDetail.fromJson(Map<String, dynamic> json) {
+    userDetailId = json['userDetail_id'];
+    userDetailJoinedGroupID = json['userDetail_joinedGroupID'];
+    userDetailStatus = json['userDetail_status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['userDetail_id'] = this.userDetailId;
+    data['userDetail_joinedGroupID'] = this.userDetailJoinedGroupID;
+    data['userDetail_status'] = this.userDetailStatus;
+    return data;
+  }
+}
