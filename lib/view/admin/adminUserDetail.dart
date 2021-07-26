@@ -1,23 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/model/UserDetail.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 
 class adminUserDetail extends StatefulWidget {
 
   final User user;
+  final UserDetail userDetail;
 
-  const adminUserDetail({Key key, this.user}) : super(key: key);
+  const adminUserDetail({Key key, this.user, this.userDetail}) : super(key: key);
 
   @override
-  _adminUserDetailState createState() => _adminUserDetailState(user);
+  _adminUserDetailState createState() => _adminUserDetailState(user, userDetail);
 }
 
 class _adminUserDetailState extends State<adminUserDetail> {
 
   final User user;
+  final UserDetail userDetail;
 
-  _adminUserDetailState(this.user);
+  _adminUserDetailState(this.user, this.userDetail);
 
   TextStyle textTitleStyle = TextStyle(
     fontSize: 20,
@@ -131,6 +134,38 @@ class _adminUserDetailState extends State<adminUserDetail> {
                     ],
                   ),
                   Container(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Account Status: ',
+                        style: textTitleStyle,
+                      ),
+                      Text(
+                        userDetail.userDetailStatus,
+                        style: textInfoStyle,
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Enabled: ',
+                        style: textTitleStyle,
+                      ),
+                      Text(
+                        userDetail.userDetailAccEnable==1 ? 'yes' : 'false',
+                        style: textInfoStyle,
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

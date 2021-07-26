@@ -77,7 +77,7 @@ class userItem extends StatelessWidget {
                   context,
                   CupertinoPageRoute(
                     builder:(context){
-                      return adminUserDetail(user: users.user[index]);
+                      return adminUserDetail(user: users.user[index], userDetail: users.userDetail[index]);
                     }
                   )
               );
