@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/authController.dart';
 
+import 'misc/loadingScreen.dart';
+
 class loginPage extends StatefulWidget {
   const loginPage({Key key}) : super(key: key);
 
@@ -12,6 +14,7 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
 
+  final GlobalKey loginPageGlobalKey = new GlobalKey();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -48,6 +51,7 @@ class _loginPageState extends State<loginPage> {
                 CupertinoButton(
                   onPressed: () async{
                     HapticFeedback.lightImpact();
+                    LoadingScreen.showLoadingScreen(context, loginPageGlobalKey);
                     login(context ,emailController.text, passwordController.text);
                   },
                   color: Colors.blue,

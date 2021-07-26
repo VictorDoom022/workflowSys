@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/authController.dart';
+import 'package:workflow_sys/view/misc/loadingScreen.dart';
 
 class adminNavDrawer extends StatefulWidget {
   const adminNavDrawer({Key key}) : super(key: key);
@@ -11,6 +12,7 @@ class adminNavDrawer extends StatefulWidget {
 
 class _adminNavDrawerState extends State<adminNavDrawer> {
 
+  final GlobalKey adminNavDrawerGlobalKey = new GlobalKey();
   int selectedPage = 0;
 
   void selectPage(int index) {
@@ -86,6 +88,7 @@ class _adminNavDrawerState extends State<adminNavDrawer> {
                   TextButton(
                     child: Text('Yes'),
                     onPressed: (){
+                      LoadingScreen.showLoadingScreen(context, adminNavDrawerGlobalKey);
                       logout(context);
                     },
                   )
