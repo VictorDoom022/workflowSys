@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/AuthReceiver.dart';
 import 'package:http/http.dart' as http;
-import 'package:workflow_sys/view/loginPage.dart';
 
 void login(BuildContext context, String email, String password) async {
 
@@ -33,6 +32,12 @@ void login(BuildContext context, String email, String password) async {
       sharedPreferences.setString("UserEmail", authReceiver.user.email);
       sharedPreferences.setString("UserName", authReceiver.user.name);
       sharedPreferences.setString("UserPosition", authReceiver.user.position);
+
+      if(authReceiver.user.position == "admin"){
+        Navigator.pushReplacementNamed(context, '/adminHome');
+      }else{
+        // Navigate to user home page
+      }
 
     }else if(response.statusCode == 201){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
@@ -65,14 +70,7 @@ void logout(BuildContext context) async{
   if(response.statusCode == 200){
     sharedPreferences.clear();
     Navigator.of(context).pop();
-    Navigator.pop(
-        context,
-      CupertinoPageRoute(
-        builder:(context){
-          return loginPage();
-        }
-      )
-    );
+    Navigator.pushReplacementNamed(context, '/login');
   }else{
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code' + response.statusCode.toString())));
   }
