@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/authController.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 
@@ -13,7 +14,23 @@ class adminNavDrawer extends StatefulWidget {
 class _adminNavDrawerState extends State<adminNavDrawer> {
 
   final GlobalKey adminNavDrawerGlobalKey = new GlobalKey();
+  String currentUserName="";
   int selectedPage = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUserName();
+  }
+
+  void getCurrentUserName() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String userName = sharedPreferences.getString("UserName");
+    setState(() {
+      currentUserName = userName;
+    });
+  }
 
   void selectPage(int index) {
     setState(() {
@@ -29,19 +46,31 @@ class _adminNavDrawerState extends State<adminNavDrawer> {
         children: [
           DrawerHeader(
             child: Center(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Admin',
+                        style: TextStyle(
+                            fontSize: 30
+                        ),
+                      ),
+                      Icon(
+                        Icons.admin_panel_settings_sharp,
+                        size: 40,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
                   Text(
-                    'Admin',
+                    'Welcome, ' + currentUserName,
                     style: TextStyle(
-                        fontSize: 30
+                        fontSize: 15
                     ),
                   ),
-                  Icon(
-                    Icons.admin_panel_settings_sharp,
-                    size: 40,
-                  )
                 ],
               ),
             ),
