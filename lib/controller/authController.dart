@@ -27,8 +27,11 @@ void login(BuildContext context, String email, String password) async {
 
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sharedPreferences.setString("UserToken", authReceiver.token);
+      sharedPreferences.setInt("UserID", authReceiver.user.id);
       sharedPreferences.setString("UserEmail", authReceiver.user.email);
       sharedPreferences.setString("UserName", authReceiver.user.name);
+      sharedPreferences.setString("UserPosition", authReceiver.user.position);
+
     }else if(response.statusCode == 201){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
     }else{
