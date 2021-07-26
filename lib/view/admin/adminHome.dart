@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/admin/adminNavDrawer.dart';
 import 'package:workflow_sys/view/admin/adminUserDetail.dart';
 
@@ -36,7 +37,7 @@ class _adminHomeState extends State<adminHome> {
       body: StreamBuilder<Object>(
         initialData: getAllUser(),
         builder: (context, snapshot){
-          return FutureBuilder<List<User>>(
+          return FutureBuilder<UserReceiver>(
             future: getAllUser(),
             builder: (context, snapshot){
               if(snapshot.hasError) print(snapshot.error);
@@ -56,7 +57,7 @@ class _adminHomeState extends State<adminHome> {
 
 class userItem extends StatelessWidget {
 
-  final List<User> users;
+  final UserReceiver users;
 
   const userItem({Key key, this.users}) : super(key: key);
 
@@ -65,18 +66,18 @@ class userItem extends StatelessWidget {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: users.length,
+        itemCount: users.user.length,
         itemBuilder: (context, index){
           return ListTile(
-            title: Text(users[index].name),
-            subtitle: Text(users[index].email),
+            title: Text(users.user[index].name),
+            subtitle: Text(users.user[index].email),
             onTap: () {
               HapticFeedback.lightImpact();
               Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder:(context){
-                      return adminUserDetail(user: users[index]);
+                      return adminUserDetail(user: users.user[index]);
                     }
                   )
               );

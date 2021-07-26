@@ -4,8 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/model/UserReceiver.dart';
 
-Future<List<User>> getAllUser() async{
+Future<UserReceiver> getAllUser() async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -20,7 +21,7 @@ Future<List<User>> getAllUser() async{
   );
 
   var jsonRes = jsonDecode(response.body);
-  List<User> userList = (jsonRes as List).map((e) => User.fromJson(e)).toList();
-
-  return userList;
+  //List<User> userList = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+  UserReceiver userReceiver = UserReceiver.fromJson(jsonRes);
+  return userReceiver;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/model/UserReceiver.dart';
 
 class adminUserDetail extends StatefulWidget {
 
