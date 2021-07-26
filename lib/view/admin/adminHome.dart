@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/admin/adminNavDrawer.dart';
+import 'package:workflow_sys/view/admin/adminUserDetail.dart';
 
 class adminHome extends StatefulWidget {
   const adminHome({Key key}) : super(key: key);
@@ -69,6 +70,17 @@ class userItem extends StatelessWidget {
           return ListTile(
             title: Text(users[index].name),
             subtitle: Text(users[index].email),
+            onTap: () {
+              HapticFeedback.lightImpact();
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder:(context){
+                      return adminUserDetail(user: users[index]);
+                    }
+                  )
+              );
+            },
           );
         }
     );
