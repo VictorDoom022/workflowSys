@@ -63,25 +63,100 @@ class userItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController userDetailController = TextEditingController();
+
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: users.user.length,
         itemBuilder: (context, index){
-          return ListTile(
-            title: Text(users.user[index].name),
-            subtitle: Text(users.user[index].email),
-            onTap: () {
-              HapticFeedback.lightImpact();
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder:(context){
-                      return adminUserDetail(user: users.user[index], userDetail: users.userDetail[index]);
-                    }
-                  )
-              );
+          return GestureDetector(
+            onLongPress: (){
+              userActionOptionPopup(context, userDetailController, users.user[index].id);
             },
+            child: ListTile(
+              title: Text(users.user[index].name),
+              subtitle: Text(users.user[index].email),
+              onTap: () {
+                HapticFeedback.lightImpact();
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder:(context){
+                        return adminUserDetail(user: users.user[index], userDetail: users.userDetail[index]);
+                      }
+                    )
+                );
+              },
+            ),
+          );
+        }
+    );
+  }
+
+  Future<dynamic> userActionOptionPopup(BuildContext context, TextEditingController userDetailController, int userID){
+    return showCupertinoModalPopup(
+        context: context,
+        builder: (_){
+          return CupertinoActionSheet(
+            title: Text('Choose an action'),
+            actions: [
+              CupertinoActionSheetAction(
+                child: Text('Edit Status'),
+                onPressed: (){
+                  showDialog(
+                      context: context,
+                      builder: (_){
+                        return CupertinoAlertDialog(
+                          content: Column(
+                            children: [
+                              Text(
+                                'User Status',
+                                style: TextStyle(
+                                    fontSize: 20
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              CupertinoTextField(
+                                controller: userDetailController,
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: (){
+                                HapticFeedback.lightImpact();
+                                Navigator.of(
+                                    context,
+                                    rootNavigator: true
+                                ).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                'Set',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),
+                              ),
+                              onPressed: (){
+                                HapticFeedback.lightImpact();
+                                setUserStatus(userID, userDetailController.text);
+                                Navigator.of(
+                                    context,
+                                    rootNavigator: true
+                                ).pop();
+                              },
+                            )
+                          ],
+                        );
+                      }
+                  );
+                },
+              )
+            ],
           );
         }
     );

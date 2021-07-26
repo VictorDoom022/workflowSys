@@ -25,3 +25,21 @@ Future<UserReceiver> getAllUser() async{
   UserReceiver userReceiver = UserReceiver.fromJson(jsonRes);
   return userReceiver;
 }
+
+void setUserStatus(int id, String statusMsg) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/users/setUserStatus';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {'userDetail_id' : id.toString(), 'statusMsg' : statusMsg},
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  print(response.body);
+}
