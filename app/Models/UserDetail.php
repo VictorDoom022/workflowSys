@@ -24,6 +24,7 @@ class UserDetail extends Model
     protected $fillable = [
         'userDetail_id',
         'userDetail_joinedGroupID',
-        'userDetail_status'
+        'userDetail_status',
+        'userDetail_accEnable',
     ];
 }

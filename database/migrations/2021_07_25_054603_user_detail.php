@@ -17,6 +17,7 @@ class UserDetail extends Migration
             $table->integer('userDetail_id')->unique();
             $table->string('userDetail_joinedGroupID');
             $table->string('userDetail_status');
+            $table->integer('userDetail_accEnable');
         });
     }
 

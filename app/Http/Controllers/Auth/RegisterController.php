@@ -96,7 +96,8 @@ class RegisterController extends Controller
         $userDetail=UserDetail::create([
             'userDetail_id' => $userID,
             'userDetail_joinedGroupID' => '[]',
-            'userDetail_status' => 'active'
+            'userDetail_status' => 'active',
+            'userDetail_accEnable' => 1
         ]);
 
         $token=$user->createToken('loginToken')->plainTextToken;
