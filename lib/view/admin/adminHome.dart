@@ -73,7 +73,7 @@ class userItem extends StatelessWidget {
         itemBuilder: (context, index){
           return GestureDetector(
             onLongPress: (){
-              userActionOptionPopup(context, userDetailController, users.user[index].id);
+              userActionOptionPopup(context, userDetailController, users.user[index].id, users.userDetail[index].userDetailStatus);
             },
             child: ListTile(
               title: Text(users.user[index].name),
@@ -95,7 +95,10 @@ class userItem extends StatelessWidget {
     );
   }
 
-  Future<dynamic> userActionOptionPopup(BuildContext context, TextEditingController userDetailController, int userID){
+  Future<dynamic> userActionOptionPopup(BuildContext context, TextEditingController userDetailController, int userID, String userStatus){
+
+    userDetailController = TextEditingController(text: userStatus);
+
     return showCupertinoModalPopup(
         context: context,
         builder: (_){
