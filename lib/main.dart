@@ -7,6 +7,7 @@ void main() {
   runApp(
       MaterialApp(
         initialRoute: '/',
+        debugShowCheckedModeBanner: false,
         routes: {
           '/':(context) => initLoading(),
           '/login':(context) => loginPage(),
