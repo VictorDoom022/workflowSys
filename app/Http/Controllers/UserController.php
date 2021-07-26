@@ -34,4 +34,18 @@ class UserController extends Controller
             'message' => 'Deleted'
         ];
     }
+
+    public function setUserStatus(Request $request){
+        $fields = $request->validate([
+            'statusMsg' => 'string'
+        ]);
+
+        $userDetail = UserDetail::where('id', $request->userDetail_id)->first();
+        $userDetail->userDetail_status = $request->statusMsg;
+        $userDetail->save();
+        
+        return [
+            'message' => 'Edited'
+        ];
+    }
 }
