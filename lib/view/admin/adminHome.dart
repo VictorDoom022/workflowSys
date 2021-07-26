@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/view/admin/adminNavDrawer.dart';
 
 class adminHome extends StatefulWidget {
   const adminHome({Key key}) : super(key: key);
@@ -11,12 +13,25 @@ class adminHome extends StatefulWidget {
 }
 
 class _adminHomeState extends State<adminHome> {
+
+  GlobalKey<ScaffoldState> adminHomeScaffoldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: adminHomeScaffoldKey,
       appBar: CupertinoNavigationBar(
+        leading: CupertinoButton(
+          padding: EdgeInsets.all(0.0),
+          child: Icon(Icons.list),
+          onPressed: (){
+            HapticFeedback.lightImpact();
+            adminHomeScaffoldKey.currentState.openDrawer();
+          },
+        ),
         middle: Text('Home'),
       ),
+      drawer: adminNavDrawer(),
       body: StreamBuilder<Object>(
         initialData: getAllUser(),
         builder: (context, snapshot){
