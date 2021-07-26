@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function getAllUserData(){
         $user = User::orderBy('id')->get();
-        $userDetail = UserDetail::orderBy('userDetail_id')->get();
+        $userDetail = UserDetail::orderBy('id')->get();
 
         $response=[
             'user' => $user,

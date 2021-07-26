@@ -14,7 +14,7 @@ class UserDetail extends Migration
     public function up()
     {
         Schema::create('userDetail', function(Blueprint $table) {
-            $table->integer('userDetail_id')->unique();
+            $table->id();
             $table->string('userDetail_joinedGroupID');
             $table->string('userDetail_status');
             $table->integer('userDetail_accEnable');

@@ -42,7 +42,7 @@ class LoginController extends Controller
 
         $user=User::where('email', $request-> email)->first();
 
-        $userDetail=UserDetail::where('userDetail_id', $user["id"])->first();
+        $userDetail=UserDetail::where('id', $user["id"])->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([

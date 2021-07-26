@@ -88,13 +88,8 @@ class RegisterController extends Controller
             'position' => 'user'
         ]);
 
-        $currentUserID=User::latest()->get('id')->first();
-        $currentUserID["id"] == 0 ? $userID = 1 : $userID = $currentUserID["id"];
-
-        $userDetail=UserDetail::where('userDetail_id', $userID)->first();
 
         $userDetail=UserDetail::create([
-            'userDetail_id' => $userID,
             'userDetail_joinedGroupID' => '[]',
             'userDetail_status' => 'active',
             'userDetail_accEnable' => 1
