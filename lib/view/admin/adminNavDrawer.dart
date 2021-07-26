@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:workflow_sys/controller/authController.dart';
 
 class adminNavDrawer extends StatefulWidget {
   const adminNavDrawer({Key key}) : super(key: key);
@@ -43,17 +44,56 @@ class _adminNavDrawerState extends State<adminNavDrawer> {
               ),
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.list),
-            title: Text('User Lists'),
-            selected: selectedPage == 0,
-            onTap: (){
-              HapticFeedback.lightImpact();
-              selectPage(0);
-            },
-          ),
+          userListTile(0),
+          Divider(),
+          logoutTile(),
         ],
       ),
+    );
+  }
+
+  Widget userListTile(int pageNumber){
+    return ListTile(
+      leading: Icon(Icons.list),
+      title: Text('User Lists'),
+      selected: selectedPage == pageNumber,
+      onTap: (){
+        HapticFeedback.lightImpact();
+        selectPage(pageNumber);
+      },
+    );
+  }
+
+  Widget logoutTile(){
+    return ListTile(
+      leading: Icon(Icons.power_settings_new),
+      title: Text('Logout'),
+      onTap: (){
+        HapticFeedback.lightImpact();
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: Text('Logout'),
+                content: Text('Are you sure you want to logout?'),
+                actions: [
+                  TextButton(
+                    child: Text('No'),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Yes'),
+                    onPressed: (){
+                      logout(context);
+                    },
+                  )
+                ],
+              );
+            }
+        );
+      },
     );
   }
 }

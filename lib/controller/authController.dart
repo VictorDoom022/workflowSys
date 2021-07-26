@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/AuthReceiver.dart';
+import 'package:http/http.dart' as http;
+import 'package:workflow_sys/view/loginPage.dart';
 
 void login(BuildContext context, String email, String password) async {
 
@@ -44,4 +46,36 @@ void login(BuildContext context, String email, String password) async {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code' + e.response.statusCode.toString())));
     }
   }
+}
+
+void logout(BuildContext context) async{
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/logout';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization' : 'Bearer ' + token
+    }
+  );
+
+  if(response.statusCode == 200){
+    sharedPreferences.clear();
+    Navigator.of(context).pop();
+    Navigator.pop(
+        context,
+      CupertinoPageRoute(
+        builder:(context){
+          return loginPage();
+        }
+      )
+    );
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code' + response.statusCode.toString())));
+  }
+
+  print(response.body);
 }
