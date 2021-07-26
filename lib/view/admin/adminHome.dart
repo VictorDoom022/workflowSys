@@ -6,6 +6,7 @@ import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/admin/adminNavDrawer.dart';
 import 'package:workflow_sys/view/admin/adminUserDetail.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class adminHome extends StatefulWidget {
   const adminHome({Key key}) : super(key: key);
@@ -17,6 +18,23 @@ class adminHome extends StatefulWidget {
 class _adminHomeState extends State<adminHome> {
 
   GlobalKey<ScaffoldState> adminHomeScaffoldKey = GlobalKey();
+
+  Future<UserReceiver> futureUserReceiver;
+
+  void initState(){
+    super.initState();
+    getUserData();
+  }
+
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
+  Future<void> getUserData() async{
+    UserReceiver userReceiver = await getAllUser();
+    setState(() {
+      futureUserReceiver = Future.value(userReceiver);
+    });
+    refreshController.refreshCompleted();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,22 +52,23 @@ class _adminHomeState extends State<adminHome> {
         middle: Text('Home'),
       ),
       drawer: adminNavDrawer(),
-      body: StreamBuilder<Object>(
-        initialData: getAllUser(),
-        builder: (context, snapshot){
-          return FutureBuilder<UserReceiver>(
-            future: getAllUser(),
-            builder: (context, snapshot){
-              if(snapshot.hasError) print(snapshot.error);
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        header: BezierCircleHeader(),
+        onRefresh: getUserData,
+        child: FutureBuilder<UserReceiver>(
+          future: futureUserReceiver,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
 
-              if(snapshot.hasData){
-                return userItem(users: snapshot.data);
-              }else{
-                return Center(child: CupertinoActivityIndicator(radius: 12));
-              }
-            },
-          );
-        },
+            if(snapshot.hasData){
+              return userItem(users: snapshot.data);
+            }else{
+              return Center(child: CupertinoActivityIndicator(radius: 12));
+            }
+          },
+        ),
       ),
     );
   }
