@@ -48,4 +48,19 @@ class UserController extends Controller
             'message' => 'Edited'
         ];
     }
+
+    public function toggleUserBan($id){
+        $userDetail = UserDetail::where('id', $id)->first();
+
+        if($userDetail->userDetail_accEnable == 1){
+            $userDetail->userDetail_accEnable = 0;
+        }else{
+            $userDetail->userDetail_accEnable = 1;
+        }
+        $userDetail->save();
+        
+        return [
+            'message' => 'Toggled'
+        ];
+    }
 }

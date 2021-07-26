@@ -27,4 +27,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('users', [App\Http\Controllers\UserController::class, 'getAllUserData']);
     Route::post('users/delete/{id}', [App\Http\Controllers\UserController::class, 'deleteUser']);
     Route::post('users/setUserStatus', [App\Http\Controllers\UserController::class, 'setUserStatus']);
+    Route::post('users/toggleUserBan/{id}', [App\Http\Controllers\UserController::class, 'toggleUserBan']);
 });
