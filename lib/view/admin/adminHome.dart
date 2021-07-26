@@ -92,7 +92,7 @@ class userItem extends StatelessWidget {
         itemBuilder: (context, index){
           return GestureDetector(
             onLongPress: (){
-              userActionOptionPopup(context, userDetailController, users.user[index].id, users.userDetail[index].userDetailStatus);
+              userActionOptionPopup(context, userDetailController, users.user[index].id, users.userDetail[index].userDetailStatus, users.userDetail[index].userDetailAccEnable);
             },
             child: ListTile(
               title: Text(users.user[index].name),
@@ -114,7 +114,7 @@ class userItem extends StatelessWidget {
     );
   }
 
-  Future<dynamic> userActionOptionPopup(BuildContext context, TextEditingController userDetailController, int userID, String userStatus){
+  Future<dynamic> userActionOptionPopup(BuildContext context, TextEditingController userDetailController, int userID, String userStatus, int userAccEnable){
 
     userDetailController = TextEditingController(text: userStatus);
 
@@ -177,6 +177,14 @@ class userItem extends StatelessWidget {
                       }
                   );
                 },
+              ),
+              CupertinoActionSheetAction(
+                  child: Text(userAccEnable==1 ? 'Ban user' : 'Unban user'),
+                  onPressed: (){
+                    HapticFeedback.lightImpact();
+                    toggleUserBan(userID);
+                    Navigator.of(context).pop();
+                  }
               )
             ],
           );

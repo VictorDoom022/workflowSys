@@ -43,3 +43,20 @@ void setUserStatus(int id, String statusMsg) async {
 
   print(response.body);
 }
+
+void toggleUserBan(int id) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/users/toggleUserBan/' + id.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization' : 'Bearer ' + token
+    }
+  );
+
+  print(response.body);
+}
