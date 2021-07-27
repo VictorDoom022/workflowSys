@@ -29,4 +29,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('users/setUserStatus', [App\Http\Controllers\UserController::class, 'setUserStatus']);
     Route::post('users/toggleUserBan/{id}', [App\Http\Controllers\UserController::class, 'toggleUserBan']);
     Route::post('createGroup', [App\Http\Controllers\GroupController::class, 'createGroup']);
+    Route::post('group/{userID}', [App\Http\Controllers\GroupController::class, 'getUserJoinedGroup']);
 });

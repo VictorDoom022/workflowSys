@@ -38,4 +38,20 @@ class GroupController extends Controller
 
         return response($response, 200);
     }
+
+    public function getUserJoinedGroup($userID){
+        //find all the group the user joined.
+        $userDetail = UserDetail::where('id', $userID)->first();
+        //get userDetail_joinedGroupID from User
+        $userJoinedGroupListID = $userDetail->userDetail_joinedGroupID;
+        //get all group's data from group table
+        
+        $groupArray = [];        
+        for($i=0; $i < strlen($userJoinedGroupListID); $i++) {
+            $group = Group::where('id', $userJoinedGroupListID[$i])->first()->toArray();
+            $groupArray[$i] = $group;
+        }
+
+        return $groupArray;
+    }
 }
