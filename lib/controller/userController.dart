@@ -8,7 +8,7 @@ import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 
-Future<UserReceiver> getAllUser() async{
+Future<UserReceiver> getAllUser(BuildContext context) async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -22,10 +22,15 @@ Future<UserReceiver> getAllUser() async{
     }
   );
 
-  var jsonRes = jsonDecode(response.body);
-  //List<User> userList = (jsonRes as List).map((e) => User.fromJson(e)).toList();
-  UserReceiver userReceiver = UserReceiver.fromJson(jsonRes);
-  return userReceiver;
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    //List<User> userList = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+    UserReceiver userReceiver = UserReceiver.fromJson(jsonRes);
+    return userReceiver;
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ' + response.statusCode.toString())));
+    return null;
+  }
 }
 
 void setUserStatus(BuildContext context, int id, String statusMsg) async {

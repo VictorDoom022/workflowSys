@@ -29,7 +29,7 @@ class _adminHomeState extends State<adminHome> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   Future<void> getUserData() async{
-    UserReceiver userReceiver = await getAllUser();
+    UserReceiver userReceiver = await getAllUser(context);
     setState(() {
       futureUserReceiver = Future.value(userReceiver);
     });
