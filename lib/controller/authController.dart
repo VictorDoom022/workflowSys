@@ -23,17 +23,23 @@ void login(BuildContext context, String email, String password) async {
   if(response.statusCode == 200){
     AuthReceiver authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
 
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("UserToken", authReceiver.token);
-    sharedPreferences.setInt("UserID", authReceiver.user.id);
-    sharedPreferences.setString("UserEmail", authReceiver.user.email);
-    sharedPreferences.setString("UserName", authReceiver.user.name);
-    sharedPreferences.setString("UserPosition", authReceiver.user.position);
+    if(authReceiver.userDetail.userDetailAccEnable == 1){
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString("UserToken", authReceiver.token);
+      sharedPreferences.setInt("UserID", authReceiver.user.id);
+      sharedPreferences.setString("UserEmail", authReceiver.user.email);
+      sharedPreferences.setString("UserName", authReceiver.user.name);
+      sharedPreferences.setString("UserPosition", authReceiver.user.position);
 
-    if(authReceiver.user.position == "admin"){
-      Navigator.pushReplacementNamed(context, '/adminHome');
+      if(authReceiver.user.position == "admin"){
+        Navigator.pushReplacementNamed(context, '/adminHome');
+      }else{
+        Navigator.pushReplacementNamed(context, '/userHome');
+      }
+
     }else{
-      Navigator.pushReplacementNamed(context, '/userHome');
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Your account has been disabled.')));
     }
 
   }else if(response.statusCode == 201){
