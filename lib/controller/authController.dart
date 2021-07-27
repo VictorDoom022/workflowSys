@@ -38,10 +38,13 @@ void login(BuildContext context, String email, String password) async {
 
   }else if(response.statusCode == 201){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
+    Navigator.of(context).pop();
   }else if(response.statusCode == 422){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid input/credentials')));
+    Navigator.of(context).pop();
   }else{
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code:' + response.statusCode.toString())));
+    Navigator.of(context).pop();
   }
 }
 
