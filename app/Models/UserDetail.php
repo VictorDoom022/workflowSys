@@ -25,4 +25,8 @@ class UserDetail extends Model
         'userDetail_status',
         'userDetail_accEnable',
     ];
+    
+    public function groups(){
+        return $this->belongsTo(Groups::class);
+    }
 }
