@@ -31,7 +31,10 @@ class _initLoadingState extends State<initLoading> {
               '/adminHome'
             )
           }else{
-            // Navigate to user page
+            Navigator.pushReplacementNamed(
+                context,
+                '/userHome'
+            )
           }
         })
       }else{

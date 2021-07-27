@@ -33,7 +33,7 @@ void login(BuildContext context, String email, String password) async {
     if(authReceiver.user.position == "admin"){
       Navigator.pushReplacementNamed(context, '/adminHome');
     }else{
-      // Navigate to user home page
+      Navigator.pushReplacementNamed(context, '/userHome');
     }
 
   }else if(response.statusCode == 201){
