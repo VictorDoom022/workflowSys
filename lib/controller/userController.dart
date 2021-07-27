@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
@@ -26,7 +28,7 @@ Future<UserReceiver> getAllUser() async{
   return userReceiver;
 }
 
-void setUserStatus(int id, String statusMsg) async {
+void setUserStatus(BuildContext context, int id, String statusMsg) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -41,10 +43,11 @@ void setUserStatus(int id, String statusMsg) async {
       }
   );
 
-  print(response.body);
+  String messageText = convertResponseMessage(response.body);
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
 }
 
-void toggleUserBan(int id) async {
+void toggleUserBan(BuildContext context, int id) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -58,5 +61,6 @@ void toggleUserBan(int id) async {
     }
   );
 
-  print(response.body);
+  String messageText = convertResponseMessage(response.body);
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
 }

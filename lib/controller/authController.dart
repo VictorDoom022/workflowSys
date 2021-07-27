@@ -6,6 +6,8 @@ import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/AuthReceiver.dart';
 import 'package:http/http.dart' as http;
 
+import 'miscController.dart';
+
 void login(BuildContext context, String email, String password) async {
 
   String stringUrl = apiURL + '/login';
@@ -65,5 +67,6 @@ void logout(BuildContext context) async{
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code' + response.statusCode.toString())));
   }
 
-  print(response.body);
+  String messageText = convertResponseMessage(response.body);
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
 }

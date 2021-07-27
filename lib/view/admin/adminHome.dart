@@ -165,7 +165,7 @@ class userItem extends StatelessWidget {
                               ),
                               onPressed: (){
                                 HapticFeedback.lightImpact();
-                                setUserStatus(userID, userDetailController.text);
+                                setUserStatus(context, userID, userDetailController.text);
                                 Navigator.of(
                                     context,
                                     rootNavigator: true
@@ -182,7 +182,7 @@ class userItem extends StatelessWidget {
                   child: Text(userAccEnable==1 ? 'Ban user' : 'Unban user'),
                   onPressed: (){
                     HapticFeedback.lightImpact();
-                    toggleUserBan(userID);
+                    toggleUserBan(context, userID);
                     Navigator.of(context).pop();
                   }
               )
