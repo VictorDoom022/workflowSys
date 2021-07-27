@@ -187,6 +187,18 @@ class userItem extends StatelessWidget {
                   }
               )
             ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                  'Cancel',
+                style: TextStyle(
+                  color: Colors.red
+                ),
+              ),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              },
+            ),
           );
         }
     );
