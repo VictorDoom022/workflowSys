@@ -48,6 +48,42 @@ void login(BuildContext context, String email, String password) async {
   }
 }
 
+void register(BuildContext context, String name, String email, String password, String confirmPassword) async {
+
+  String stringUrl = apiURL + '/register';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {'name' : name, 'email' : email, 'password' : password, 'password_confirmation' : confirmPassword},
+      headers: {
+        'Accept': 'application/json',
+      }
+  );
+
+  if(response.statusCode == 200){
+    AuthReceiver authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("UserToken", authReceiver.token);
+    sharedPreferences.setInt("UserID", authReceiver.user.id);
+    sharedPreferences.setString("UserEmail", authReceiver.user.email);
+    sharedPreferences.setString("UserName", authReceiver.user.name);
+    sharedPreferences.setString("UserPosition", authReceiver.user.position);
+
+    Navigator.pushReplacementNamed(context, '/userHome');
+
+  }else if(response.statusCode == 201){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
+    Navigator.of(context).pop();
+  }else if(response.statusCode == 422){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid data / email has been used')));
+    Navigator.of(context).pop();
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code:' + response.statusCode.toString())));
+    Navigator.of(context).pop();
+  }
+}
+
 void logout(BuildContext context) async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");

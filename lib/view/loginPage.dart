@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/authController.dart';
+import 'package:workflow_sys/view/registerPage.dart';
 
 import 'misc/loadingScreen.dart';
 
@@ -66,7 +67,14 @@ class _loginPageState extends State<loginPage> {
                       ],
                     ),
                     onPressed: (){
-
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context){
+                                return registerPage();
+                              }
+                          )
+                      );
                     }
                 ),
               ],
