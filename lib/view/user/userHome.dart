@@ -59,6 +59,16 @@ class _userHomeState extends State<userHome> {
           },
         ),
         middle: Text('Home'),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.all(0.0),
+          child: Icon(Icons.refresh),
+          onPressed: (){
+            HapticFeedback.lightImpact();
+            getGroupListData().then((value){
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Refreshed')));
+            });
+          },
+        ),
       ),
       drawer: userNavDrawer(),
       body: Padding(
