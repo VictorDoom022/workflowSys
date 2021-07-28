@@ -32,11 +32,7 @@ class GroupController extends Controller
         $userDetail->userDetail_joinedGroupID = $userJoinedGroupIDNewAdded;
         $userDetail->save();
 
-        $response=[
-            'groups' => $group,
-        ];
-
-        return response($response, 200);
+        return response($group, 200);
     }
 
     public function getUserJoinedGroup($userID){
