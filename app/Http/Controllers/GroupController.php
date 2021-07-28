@@ -27,7 +27,11 @@ class GroupController extends Controller
         //set current userJoinedGroup into a string
         $userJoinedGroupID = $userDetail->userDetail_joinedGroupID;
         //combine the string with current Group table ID
-        $userJoinedGroupIDNewAdded = $userJoinedGroupID . $group->id;
+        if($userJoinedGroupID == ""){
+            $userJoinedGroupIDNewAdded = $userJoinedGroupID . $group->id;
+        }else{
+            $userJoinedGroupIDNewAdded = $userJoinedGroupID . ',' .$group->id;
+        }
         //save userJoinGroupID with the latest data
         $userDetail->userDetail_joinedGroupID = $userJoinedGroupIDNewAdded;
         $userDetail->save();
@@ -40,11 +44,12 @@ class GroupController extends Controller
         $userDetail = UserDetail::where('id', $userID)->first();
         //get userDetail_joinedGroupID from User
         $userJoinedGroupListID = $userDetail->userDetail_joinedGroupID;
-        //get all group's data from group table
-        
+        //convert userJoinedGroupListID into an array by removing ','
+        $groupStringArray = explode(',' , $userJoinedGroupListID);
+        //loop the groupList array and store each value into groupArray
         $groupArray = [];        
-        for($i=0; $i < strlen($userJoinedGroupListID); $i++) {
-            $group = Group::where('id', $userJoinedGroupListID[$i])->first()->toArray();
+        for($i=0; $i < count($groupStringArray); $i++) {
+            $group = Group::where('id', $groupStringArray[$i])->first()->toArray();
             $groupArray[$i] = $group;
         }
 
