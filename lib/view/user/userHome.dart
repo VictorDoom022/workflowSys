@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/groupController.dart';
+import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class userHome extends StatefulWidget {
@@ -28,6 +29,22 @@ class _userHomeState extends State<userHome> {
       )
   );
 
+  Future<List<Group>> futureGroupList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getGroupListData();
+  }
+
+  Future<void> getGroupListData() async {
+    List<Group> listGroup = await getUserJoinedGroup();
+    setState(() {
+      futureGroupList = Future.value(listGroup);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +64,27 @@ class _userHomeState extends State<userHome> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          verticalDirection: VerticalDirection.down,
           children: [
             createGroupButton(),
+            Expanded(
+              child: FutureBuilder<List<Group>>(
+                future: futureGroupList,
+                builder: (context, snapshot){
+                  if(snapshot.hasError) print(snapshot.error);
+
+                  if(snapshot.hasData){
+                    return groupItem(listGroup: snapshot.data);
+                  }else{
+                    return Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Center(child: CupertinoActivityIndicator(radius: 12)),
+                    );
+                  }
+                }
+              ),
+            ),
           ],
         ),
       ),
@@ -117,3 +153,25 @@ class _userHomeState extends State<userHome> {
     );
   }
 }
+
+class groupItem extends StatelessWidget {
+
+  final List<Group> listGroup;
+
+  const groupItem({Key key, this.listGroup}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: listGroup.length,
+      itemBuilder: (context, index){
+        return ListTile(
+          title: Text(listGroup[index].groupName),
+        );
+      }
+    );
+  }
+}
+

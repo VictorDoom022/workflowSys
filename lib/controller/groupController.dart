@@ -65,3 +65,23 @@ void createGroup(BuildContext context, String groupName) async {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('An error occurred. Code' + response.statusCode.toString())));
   }
 }
+
+Future<List<Group>> getUserJoinedGroup() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/group/' + userID.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  List<Group> listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
+
+  return listGroup;
+}
