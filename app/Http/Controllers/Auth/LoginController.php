@@ -40,11 +40,11 @@ class LoginController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
-        $user=User::where('email', $request-> email)->first();
+        $user=User::where('email', $fields['email'])->first();
 
         $userDetail=UserDetail::where('id', $user["id"])->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => ['These credentials do not match our records.']
             ], 201);

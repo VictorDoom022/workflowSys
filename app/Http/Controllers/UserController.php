@@ -36,12 +36,16 @@ class UserController extends Controller
     }
 
     public function setUserStatus(Request $request){
+
+        //variables that uses $request without validation
+        $userDetail_id = $request->userDetail_id;
+
         $fields = $request->validate([
             'statusMsg' => 'string'
         ]);
 
-        $userDetail = UserDetail::where('id', $request->userDetail_id)->first();
-        $userDetail->userDetail_status = $request->statusMsg;
+        $userDetail = UserDetail::where('id', $userDetail_id)->first();
+        $userDetail->userDetail_status = $fields['statusMsg'];
         $userDetail->save();
         
         return [

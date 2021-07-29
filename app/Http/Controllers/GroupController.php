@@ -10,6 +10,10 @@ use App\Models\UserDetail;
 class GroupController extends Controller
 {
     public function createGroup(Request $request){
+        
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
         $fields = $request->validate([
             'groupName' => ['required', 'string'],
         ]);
@@ -19,12 +23,12 @@ class GroupController extends Controller
         $group=Group::create([
             'group_name' => $fields['groupName'],
             'group_joinCode' => str_random(10),
-            'group_adminList' => $request->userID,
-            'group_memberList' => $request->userID,
+            'group_adminList' => $userID,
+            'group_memberList' => $userID,
         ]);
 
         //update userDetail_joinID when create a group
-        $userDetail = UserDetail::where('id', $request->userID)->first();
+        $userDetail = UserDetail::where('id', $userID)->first();
         //set current userJoinedGroup into a string
         $userJoinedGroupID = $userDetail->userDetail_joinedGroupID;
         //combine the string with current Group table ID
@@ -43,11 +47,15 @@ class GroupController extends Controller
     }
 
     public function createDefaultTeam($groupID, Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
         //create default team
         $team=Team::create([
             'team_name' => 'General',
             'team_groupID' => $groupID,
-            'team_memberID' => $request->userID,
+            'team_memberID' => $userID,
         ]);
 
         $group=Group::where('id', $groupID)->first();
@@ -82,13 +90,18 @@ class GroupController extends Controller
     }
 
     public function joinGroup(Request $request){
-        $group = Group::where('group_joinCode', $request->joinCode)->first();
-        // check if user is already join the group
+
+        //variables that uses $request without validation
+        $joinCode = $request->joinCode;
+        $userID = $request->userID;
+
+        $group = Group::where('group_joinCode', $joinCode)->first();
+        //check if user is already join the group
         $groupMemberArray = explode(',' , $group->group_memberList);
         $userJoinedGroupBefore = false;
 
         for($i = 0; $i < count($groupMemberArray); $i++){
-            if($groupMemberArray[$i] == $request->userID){
+            if($groupMemberArray[$i] == $userID){
                 //user already join the group
                 $userJoinedGroupBefore = true;
                 return [
@@ -99,7 +112,7 @@ class GroupController extends Controller
 
         if(!$userJoinedGroupBefore){
             //let the user join
-            $userDetail = UserDetail::where('id', $request->userID)->first();
+            $userDetail = UserDetail::where('id', $userID)->first();
             //set current userJoinedGroup into a string
             $userJoinedGroupID = $userDetail->userDetail_joinedGroupID;
             //combine the string with current Group table ID
@@ -113,12 +126,12 @@ class GroupController extends Controller
             $userDetail->save();
             
             //update group member list
-            $group->group_memberList = $group->group_memberList . ',' .$request->userID;
+            $group->group_memberList = $group->group_memberList . ',' .$userID;
             $group->save();
 
             //let user join the default team
             $team = Team::where('team_groupID', $group->id)->first();
-            $team->team_MemberID = $team->team_memberID . ',' .$request->userID;
+            $team->team_MemberID = $team->team_memberID . ',' .$userID;
             $team->save();
         }
 

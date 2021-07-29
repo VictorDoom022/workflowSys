@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 class TeamController extends Controller
 {
     public function createTeam(Request $request){
+
+        //variables that uses $request without validation
+        $teamGroupID = $request->teamGroupID;
+        $teamMemberID = $request->teamMemberID;
+
         $fields = $request->validate([
             'teamName' => ['required', 'string'],
         ]);
 
         $team=Team::create([
             'team_name' => $fields['teamName'],
-            'team_groupID' => $request->teamGroupID,
-            'team_memberID' => $request->teamMemberID,
+            'team_groupID' => $teamGroupID,
+            'team_memberID' => $teamMemberID,
         ]);
 
         return $team;
