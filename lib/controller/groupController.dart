@@ -66,7 +66,7 @@ void createGroup(BuildContext context, String groupName) async {
   }
 }
 
-Future<List<Group>> getUserJoinedGroup() async {
+Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
@@ -81,7 +81,11 @@ Future<List<Group>> getUserJoinedGroup() async {
       }
   );
 
-  List<Group> listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
+  try{
+    List<Group> listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
 
-  return listGroup;
+    return listGroup;
+  }catch(e){
+    Navigator.of(context).pushReplacementNamed('/login');
+  }
 }

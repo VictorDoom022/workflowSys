@@ -39,7 +39,7 @@ class _userHomeState extends State<userHome> {
   }
 
   Future<void> getGroupListData() async {
-    List<Group> listGroup = await getUserJoinedGroup();
+    List<Group> listGroup = await getUserJoinedGroup(context);
     setState(() {
       futureGroupList = Future.value(listGroup);
     });
