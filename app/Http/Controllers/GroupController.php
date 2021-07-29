@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\Team;
 use App\Models\UserDetail;
 
 class GroupController extends Controller
@@ -36,7 +37,31 @@ class GroupController extends Controller
         $userDetail->userDetail_joinedGroupID = $userJoinedGroupIDNewAdded;
         $userDetail->save();
 
+        $this->createDefaultTeam($group->id, $request);
+
         return response($group, 200);
+    }
+
+    public function createDefaultTeam($groupID, Request $request){
+        //create default team
+        $team=Team::create([
+            'team_name' => 'General',
+            'team_groupID' => $groupID,
+            'team_memberID' => $request->userID,
+        ]);
+
+        $group=Group::where('id', $groupID)->first();
+        //set current group_teamListID into a string
+        $groupTeamListString = $group->group_teamListID;
+        //combine string with current groupTeamListID
+        if($groupTeamListString == ""){
+            $groupTeamListNewString = $groupTeamListString . $team->id;
+        }else{
+            $groupTeamListNewString = $groupTeamListString . ',' . $team->id;
+        }
+        //save groupTeamListID with latest data
+        $group->group_teamListID = $groupTeamListNewString;
+        $group->save();
     }
 
     public function getUserJoinedGroup($userID){
