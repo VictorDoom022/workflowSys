@@ -9,7 +9,7 @@ Future<TeamDetailReceiver> getTeamDetail(int teamID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
-  String stringUrl = apiURL + '/group/getGroupID';
+  String stringUrl = apiURL + '/team/getTeamID';
   Uri url = Uri.parse(stringUrl);
   var response = await http.post(
       url,

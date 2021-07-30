@@ -71,7 +71,7 @@ class teamItem extends StatelessWidget {
       itemCount: teamDetailReceiver.taskList.length,
       itemBuilder: (context, index){
         return ListTile(
-          title: Text(teamDetailReceiver.taskList[index].taskListUserID),
+          title: Text('Task UserID: '+ teamDetailReceiver.taskList[index].taskListUserID),
         );
       },
     );
