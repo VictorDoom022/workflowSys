@@ -10,20 +10,37 @@ class TeamController extends Controller
     public function createTeam(Request $request){
 
         //variables that uses $request without validation
-        $teamGroupID = $request->teamGroupID;
-        $teamMemberID = $request->teamMemberID;
+        $groupID = $request->groupID;
+        $userID = $request->userID;
 
         $fields = $request->validate([
             'teamName' => ['required', 'string'],
         ]);
 
+        //create team
         $team=Team::create([
             'team_name' => $fields['teamName'],
-            'team_groupID' => $teamGroupID,
-            'team_memberID' => $teamMemberID,
+            'team_groupID' => $groupID,
+            'team_memberID' => $userID,
         ]);
 
-        return $team;
+        //generate taskList
+        $this->createTaskList($team->id, $userID);
+
+        return [
+            'message'=>'Team created.'
+        ];
+    }
+
+    public function createTaskList($teamID, $userID){
+        $taskList = TaskList::create([
+            'taskList_teamID' => $teamID,
+            'taskList_userID' => $userID,
+        ]);
+
+        $team = Team::where('id', $teamID)->first();
+        $team->team_taskListID = $taskList->id; 
+        $team->save();
     }
 
     public function getTeamDetail(Request $request){
