@@ -172,10 +172,13 @@ class GroupController extends Controller
 
         //variables that uses $request without validation
         $groupID = $request->groupID;
+        $userID = $request->userID;
 
         $group = Group::where('id', $groupID)->first();
-        $team = Team::where('team_groupID', $groupID)->get();
-        
+        $team = Team::where('team_groupID', $groupID)
+                        ->where('team_memberID', 'like', '%'.$userID.'%')
+                        ->get();
+
         $response=[
             'group' => $group,
             'team' => $team,
