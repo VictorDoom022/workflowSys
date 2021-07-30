@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:workflow_sys/controller/teamController.dart';
+import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/TeamDetailReceiver.dart';
+import 'package:workflow_sys/model/UserReceiver.dart';
 
 class teamDetail extends StatefulWidget {
 
@@ -20,11 +22,13 @@ class _teamDetailState extends State<teamDetail> {
   _teamDetailState(this.teamID);
 
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
+  UserReceiver userReceiver;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUserData();
     getTeamDetailData();
   }
 
@@ -32,6 +36,13 @@ class _teamDetailState extends State<teamDetail> {
     TeamDetailReceiver teamDetailReceiver = await getTeamDetail(teamID);
     setState(() {
       futureTeamDetailReceiver = Future.value(teamDetailReceiver);
+    });
+  }
+
+  Future<void> getUserData() async {
+    UserReceiver userReceiverData = await getAllUser(context);
+    setState(() {
+      userReceiver = userReceiverData;
     });
   }
 
@@ -47,7 +58,7 @@ class _teamDetailState extends State<teamDetail> {
           if(snapshot.hasError) print(snapshot.error);
 
           if(snapshot.hasData){
-            return teamItem(teamDetailReceiver: snapshot.data);
+            return teamItem(teamDetailReceiver: snapshot.data, userReceiver: userReceiver);
           }else{
             return Center(child: CupertinoActivityIndicator(radius: 12));
           }
@@ -60,8 +71,9 @@ class _teamDetailState extends State<teamDetail> {
 class teamItem extends StatelessWidget {
 
   final TeamDetailReceiver teamDetailReceiver;
+  final UserReceiver userReceiver;
 
-  const teamItem({Key key, this.teamDetailReceiver}) : super(key: key);
+  const teamItem({Key key, this.teamDetailReceiver, this.userReceiver}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +83,20 @@ class teamItem extends StatelessWidget {
       itemCount: teamDetailReceiver.taskList.length,
       itemBuilder: (context, index){
         return ListTile(
-          title: Text('Task UserID: '+ teamDetailReceiver.taskList[index].taskListUserID),
+          title: Text(convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List"),
         );
       },
     );
+  }
+
+  String convertUserIDtoName(String userID){
+    for(int i=0; i < userReceiver.user.length; i++){
+      if(userID == userReceiver.user[i].id.toString()){
+        return userReceiver.user[i].name;
+      }else{
+        return 'unknown user';
+      }
+    }
   }
 }
 
