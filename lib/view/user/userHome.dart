@@ -186,7 +186,7 @@ class groupItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder:(context){
-                      return groupDetail(groupID: listGroup[index].id);
+                      return groupDetail(groupID: listGroup[index].id, groupName: listGroup[index].groupName);
                     }
                 )
             );

@@ -8,18 +8,20 @@ import 'package:workflow_sys/view/user/teamDetail.dart';
 class groupDetail extends StatefulWidget {
 
   final int groupID;
+  final String groupName;
 
-  const groupDetail({Key key, this.groupID}) : super(key: key);
+  const groupDetail({Key key, this.groupID, this.groupName}) : super(key: key);
 
   @override
-  _groupDetailState createState() => _groupDetailState(groupID);
+  _groupDetailState createState() => _groupDetailState(groupID, groupName);
 }
 
 class _groupDetailState extends State<groupDetail> {
 
   final int groupID;
+  final String groupName;
 
-  _groupDetailState(this.groupID);
+  _groupDetailState(this.groupID, this.groupName);
 
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
 
@@ -41,7 +43,7 @@ class _groupDetailState extends State<groupDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        middle: Text('Group'),
+        middle: Text('group ($groupName)'),
       ),
       body: FutureBuilder<GroupDetailReceiver>(
         future: futureGroupDetailReceiver,
@@ -80,7 +82,7 @@ class groupItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder:(context){
-                      return teamDetail(teamID: groupDetailReceiver.team[index].id);
+                      return teamDetail(teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
                     }
                 )
             );

@@ -8,18 +8,20 @@ import 'package:workflow_sys/model/UserReceiver.dart';
 class teamDetail extends StatefulWidget {
 
   final int teamID;
+  final String teamName;
 
-  const teamDetail({Key key, this.teamID}) : super(key: key);
+  const teamDetail({Key key, this.teamID, this.teamName}) : super(key: key);
 
   @override
-  _teamDetailState createState() => _teamDetailState(teamID);
+  _teamDetailState createState() => _teamDetailState(teamID, teamName);
 }
 
 class _teamDetailState extends State<teamDetail> {
 
   final int teamID;
+  final String teamName;
 
-  _teamDetailState(this.teamID);
+  _teamDetailState(this.teamID, this.teamName);
 
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
   UserReceiver userReceiver;
@@ -50,7 +52,7 @@ class _teamDetailState extends State<teamDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        middle: Text('Team'),
+        middle: Text('Team ($teamName)'),
       ),
       body: FutureBuilder<TeamDetailReceiver>(
         future: futureTeamDetailReceiver,
