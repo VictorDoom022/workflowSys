@@ -139,4 +139,20 @@ class GroupController extends Controller
             'message'=>'Group Joined.'
         ];
     }
+
+    public function getGroupDetail(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+
+        $group = Group::where('id', $groupID)->first();
+        $team = Team::where('team_groupID', $groupID)->get();
+        
+        $response=[
+            'group' => $group,
+            'team' => $team,
+        ];
+
+        return response($response, 200);
+    }
 }

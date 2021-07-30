@@ -31,4 +31,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('createGroup', [App\Http\Controllers\GroupController::class, 'createGroup']);
     Route::post('group/{userID}', [App\Http\Controllers\GroupController::class, 'getUserJoinedGroup']);
     Route::post('group/joinGroup', [App\Http\Controllers\GroupController::class, 'joinGroup']);
+    Route::post('group/getGroupID', [App\Http\Controllers\GroupController::class, 'getGroupDetail']);
 });
