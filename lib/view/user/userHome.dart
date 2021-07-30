@@ -17,6 +17,7 @@ class _userHomeState extends State<userHome> {
 
   GlobalKey<ScaffoldState> userHomeScaffoldKey = GlobalKey();
   TextEditingController createGroupNameController = TextEditingController();
+  TextEditingController joinGroupCodeController = TextEditingController();
   ButtonStyle createGroupButtonStyle = ButtonStyle(
       shape: MaterialStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
@@ -107,60 +108,136 @@ class _userHomeState extends State<userHome> {
       width: double.infinity,
       height: 40,
       child: ElevatedButton(
-        child: Text('Create new group'),
+        child: Text('Create/Join group'),
         style: createGroupButtonStyle,
         onPressed: (){
-          showDialog(
+          HapticFeedback.lightImpact();
+          showModalBottomSheet(
               context: context,
               builder: (_){
-                return CupertinoAlertDialog(
-                  content: Column(
-                    children: [
-                      Text(
-                        'Group name',
-                        style: TextStyle(
-                            fontSize: 20
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      CupertinoTextField(
-                        controller: createGroupNameController,
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text('Cancel'),
-                      onPressed: (){
-                        HapticFeedback.lightImpact();
-                        Navigator.of(
-                            context,
-                            rootNavigator: true
-                        ).pop();
-                      },
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      title: Text('Join Group'),
+                      onTap: joinTeamDialog,
                     ),
-                    TextButton(
-                      child: Text(
-                        'Create',
-                        style: TextStyle(
-                            color: Colors.blue
-                        ),
-                      ),
-                      onPressed: (){
-                        HapticFeedback.lightImpact();
-                        createGroup(context, createGroupNameController.text);
-                        Navigator.of(
-                            context,
-                            rootNavigator: true
-                        ).pop();
-                      },
-                    )
+                    ListTile(
+                      title: Text('Create Group'),
+                      onTap: createTeamDialog,
+                    ),
                   ],
                 );
               }
           );
         },
       ),
+    );
+  }
+
+  Future<dynamic> joinTeamDialog(){
+    return showDialog(
+        context: context,
+        builder: (_){
+          return CupertinoAlertDialog(
+            content: Column(
+              children: [
+                Text(
+                  'Join code',
+                  style: TextStyle(
+                      fontSize: 20
+                  ),
+                ),
+                SizedBox(height: 5),
+                CupertinoTextField(
+                  controller: joinGroupCodeController,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Join',
+                  style: TextStyle(
+                      color: Colors.blue
+                  ),
+                ),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  joinGroup(context, joinGroupCodeController.text);
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                  getGroupListData();
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  Future<dynamic> createTeamDialog(){
+    return showDialog(
+        context: context,
+        builder: (_){
+          return CupertinoAlertDialog(
+            content: Column(
+              children: [
+                Text(
+                  'Group name',
+                  style: TextStyle(
+                      fontSize: 20
+                  ),
+                ),
+                SizedBox(height: 5),
+                CupertinoTextField(
+                  controller: createGroupNameController,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Create',
+                  style: TextStyle(
+                      color: Colors.blue
+                  ),
+                ),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  createGroup(context, createGroupNameController.text);
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                  getGroupListData();
+                },
+              )
+            ],
+          );
+        }
     );
   }
 }
