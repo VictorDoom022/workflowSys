@@ -100,6 +100,7 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
 Future<GroupDetailReceiver> getGroupDetail(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/group/getGroupID';
   Uri url = Uri.parse(stringUrl);
@@ -107,6 +108,7 @@ Future<GroupDetailReceiver> getGroupDetail(int groupID) async {
       url,
       body: {
         'groupID': groupID.toString(),
+        'userID' : userID.toString(),
       },
       headers: {
         'Accept': 'application/json',
