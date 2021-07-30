@@ -153,6 +153,9 @@ class GroupController extends Controller
                 $team = Team::where('team_groupID', $group->id)->first();
                 $team->team_MemberID = $team->team_memberID . ',' .$userID;
                 $team->save();
+
+                //generate task list in default team
+                $this->createTaskList($team->id, $userID);
             }
 
             return [
