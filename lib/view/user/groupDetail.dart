@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
+import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
 
@@ -26,6 +27,7 @@ class _groupDetailState extends State<groupDetail> {
   _groupDetailState(this.groupID, this.groupName);
 
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  TextEditingController teamNameController = TextEditingController();
 
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
   bool userAdmin = false;
@@ -71,6 +73,9 @@ class _groupDetailState extends State<groupDetail> {
       ),
       floatingActionButton: userAdmin==true ? FloatingActionButton(
         child: Icon(Icons.add),
+        onPressed: (){
+          createTeamDialog();
+        },
       ) : null,
       body: SmartRefresher(
         controller: refreshController,
@@ -90,6 +95,59 @@ class _groupDetailState extends State<groupDetail> {
           },
         ),
       ),
+    );
+  }
+
+  Future<dynamic> createTeamDialog(){
+    return showDialog(
+        context: context,
+        builder: (_){
+          return CupertinoAlertDialog(
+            content: Column(
+              children: [
+                Text(
+                  'Team Name',
+                  style: TextStyle(
+                      fontSize: 20
+                  ),
+                ),
+                SizedBox(height: 5),
+                CupertinoTextField(
+                  controller: teamNameController,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Join',
+                  style: TextStyle(
+                      color: Colors.blue
+                  ),
+                ),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  createTeam(context, groupID, teamNameController.text);
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                  getGroupDetailData();
+                },
+              )
+            ],
+          );
+        }
     );
   }
 }
