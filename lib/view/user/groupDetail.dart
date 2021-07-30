@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
+import 'package:workflow_sys/view/user/teamDetail.dart';
 
 class groupDetail extends StatefulWidget {
 
@@ -72,6 +74,17 @@ class groupItem extends StatelessWidget {
       itemBuilder: (context, index){
         return ListTile(
           title: Text(groupDetailReceiver.team[index].teamName),
+          onTap: (){
+            HapticFeedback.lightImpact();
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder:(context){
+                      return teamDetail(teamID: groupDetailReceiver.team[index].id);
+                    }
+                )
+            );
+          },
         );
       }
     );

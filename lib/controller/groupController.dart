@@ -72,7 +72,7 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
 
-  String stringUrl = apiURL + '/group/' + userID.toString();
+  String stringUrl = apiURL + '/group/userID/' + userID.toString();
   Uri url = Uri.parse(stringUrl);
   var response = await http.post(
       url,
@@ -83,9 +83,14 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
   );
 
   try{
-    List<Group> listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
+    List<Group> listGroup;
+    if(response.body!=""){
+      listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
 
-    return listGroup;
+      return listGroup;
+    }else{
+      return listGroup;
+    }
   }catch(e){
     Navigator.of(context).pushReplacementNamed('/login');
   }
