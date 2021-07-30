@@ -20,7 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
-Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
     Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
@@ -33,4 +32,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('group/{userID}', [App\Http\Controllers\GroupController::class, 'getUserJoinedGroup']);
     Route::post('group/joinGroup', [App\Http\Controllers\GroupController::class, 'joinGroup']);
     Route::post('group/getGroupID', [App\Http\Controllers\GroupController::class, 'getGroupDetail']);
+    Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);
 });
