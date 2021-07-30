@@ -120,7 +120,7 @@ class _userHomeState extends State<userHome> {
                   children: [
                     ListTile(
                       title: Text('Join Group'),
-                      onTap: joinTeamDialog,
+                      onTap: joinGroupDialog,
                     ),
                     ListTile(
                       title: Text('Create Group'),
@@ -135,7 +135,7 @@ class _userHomeState extends State<userHome> {
     );
   }
 
-  Future<dynamic> joinTeamDialog(){
+  Future<dynamic> joinGroupDialog(){
     return showDialog(
         context: context,
         builder: (_){
