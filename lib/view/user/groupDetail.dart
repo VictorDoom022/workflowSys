@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
@@ -27,6 +28,7 @@ class _groupDetailState extends State<groupDetail> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
+  bool userAdmin = false;
 
   @override
   void initState() {
@@ -37,10 +39,28 @@ class _groupDetailState extends State<groupDetail> {
 
   Future<void> getGroupDetailData() async {
     GroupDetailReceiver groupDetailReceiver = await getGroupDetail(groupID);
+    checkUserAdmin(groupDetailReceiver);
     setState(() {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);
     });
     refreshController.refreshCompleted();
+  }
+
+  void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
+    String adminList = groupDetailReceiver.group.groupAdminList;
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int userID = sharedPreferences.getInt("UserID");
+
+    List<String> adminArrList = adminList.split(',');
+
+    for(int i=0; i < adminArrList.length; i++){
+      if(adminArrList[i] == userID.toString()){
+        setState(() {
+          userAdmin = true;
+        });
+      }
+    }
   }
 
   @override
@@ -49,6 +69,9 @@ class _groupDetailState extends State<groupDetail> {
       appBar: CupertinoNavigationBar(
         middle: Text('group ($groupName)'),
       ),
+      floatingActionButton: userAdmin==true ? FloatingActionButton(
+        child: Icon(Icons.add),
+      ) : null,
       body: SmartRefresher(
         controller: refreshController,
         enablePullDown: true,
