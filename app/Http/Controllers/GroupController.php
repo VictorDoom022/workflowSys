@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Team;
 use App\Models\UserDetail;
+use App\Models\TaskList;
 
 class GroupController extends Controller
 {
@@ -70,6 +71,19 @@ class GroupController extends Controller
         //save groupTeamListID with latest data
         $group->group_teamListID = $groupTeamListNewString;
         $group->save();
+
+        $this->createTaskList($team->id, $userID);
+    }
+
+    public function createTaskList($teamID, $userID){
+        $taskList = TaskList::create([
+            'taskList_teamID' => $teamID,
+            'taskList_userID' => $userID,
+        ]);
+
+        $team = Team::where('id', $teamID)->first();
+        $team->team_taskListID = $taskList->id; 
+        $team->save();
     }
 
     public function getUserJoinedGroup($userID){
