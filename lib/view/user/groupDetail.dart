@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
@@ -23,6 +24,8 @@ class _groupDetailState extends State<groupDetail> {
 
   _groupDetailState(this.groupID, this.groupName);
 
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
 
   @override
@@ -37,6 +40,7 @@ class _groupDetailState extends State<groupDetail> {
     setState(() {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);
     });
+    refreshController.refreshCompleted();
   }
 
   @override
@@ -45,17 +49,23 @@ class _groupDetailState extends State<groupDetail> {
       appBar: CupertinoNavigationBar(
         middle: Text('group ($groupName)'),
       ),
-      body: FutureBuilder<GroupDetailReceiver>(
-        future: futureGroupDetailReceiver,
-        builder: (context, snapshot){
-          if(snapshot.hasError) print(snapshot.error);
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        header: BezierCircleHeader(),
+        onRefresh: getGroupDetailData,
+        child: FutureBuilder<GroupDetailReceiver>(
+          future: futureGroupDetailReceiver,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
 
-          if(snapshot.hasData){
-            return groupItem(groupDetailReceiver: snapshot.data);
-          }else{
-            return Center(child: CupertinoActivityIndicator(radius: 12));
-          }
-        },
+            if(snapshot.hasData){
+              return groupItem(groupDetailReceiver: snapshot.data);
+            }else{
+              return Center(child: CupertinoActivityIndicator(radius: 12));
+            }
+          },
+        ),
       ),
     );
   }

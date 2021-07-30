@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/TeamDetailReceiver.dart';
@@ -23,6 +24,8 @@ class _teamDetailState extends State<teamDetail> {
 
   _teamDetailState(this.teamID, this.teamName);
 
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
   UserReceiver userReceiver;
 
@@ -39,6 +42,7 @@ class _teamDetailState extends State<teamDetail> {
     setState(() {
       futureTeamDetailReceiver = Future.value(teamDetailReceiver);
     });
+    refreshController.refreshCompleted();
   }
 
   Future<void> getUserData() async {
@@ -54,17 +58,23 @@ class _teamDetailState extends State<teamDetail> {
       appBar: CupertinoNavigationBar(
         middle: Text('Team ($teamName)'),
       ),
-      body: FutureBuilder<TeamDetailReceiver>(
-        future: futureTeamDetailReceiver,
-        builder: (context, snapshot){
-          if(snapshot.hasError) print(snapshot.error);
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        header: BezierCircleHeader(),
+        onRefresh: getTeamDetailData,
+        child: FutureBuilder<TeamDetailReceiver>(
+          future: futureTeamDetailReceiver,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
 
-          if(snapshot.hasData){
-            return teamItem(teamDetailReceiver: snapshot.data, userReceiver: userReceiver);
-          }else{
-            return Center(child: CupertinoActivityIndicator(radius: 12));
-          }
-        },
+            if(snapshot.hasData){
+              return teamItem(teamDetailReceiver: snapshot.data, userReceiver: userReceiver);
+            }else{
+              return Center(child: CupertinoActivityIndicator(radius: 12));
+            }
+          },
+        ),
       ),
     );
   }
