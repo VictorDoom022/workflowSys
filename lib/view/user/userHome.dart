@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/Group.dart';
+import 'package:workflow_sys/view/user/groupDetail.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class userHome extends StatefulWidget {
@@ -179,6 +180,17 @@ class groupItem extends StatelessWidget {
       itemBuilder: (context, index){
         return ListTile(
           title: Text(listGroup[index].groupName),
+          onTap: (){
+            HapticFeedback.lightImpact();
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder:(context){
+                      return groupDetail(groupID: listGroup[index].id);
+                    }
+                )
+            );
+          },
         );
       }
     );

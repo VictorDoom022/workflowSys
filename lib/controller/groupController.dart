@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:http/http.dart' as http;
 import 'package:workflow_sys/model/Group.dart';
+import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 
 void createGroup(BuildContext context, String groupName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -87,5 +88,30 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
     return listGroup;
   }catch(e){
     Navigator.of(context).pushReplacementNamed('/login');
+  }
+}
+
+Future<GroupDetailReceiver> getGroupDetail(int groupID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/group/getGroupID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'groupID': groupID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    GroupDetailReceiver groupDetailReceiver = GroupDetailReceiver.fromJson(jsonRes);
+
+    return groupDetailReceiver;
   }
 }
