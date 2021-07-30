@@ -115,48 +115,54 @@ class GroupController extends Controller
         $userID = $request->userID;
 
         $group = Group::where('group_joinCode', $joinCode)->first();
-        //check if user is already join the group
-        $groupMemberArray = explode(',' , $group->group_memberList);
-        $userJoinedGroupBefore = false;
+        //check if user is already join the group & check if code is valid
+        if($group != null){
+            $groupMemberArray = explode(',' , $group->group_memberList);
+            $userJoinedGroupBefore = false;
 
-        for($i = 0; $i < count($groupMemberArray); $i++){
-            if($groupMemberArray[$i] == $userID){
-                //user already join the group
-                $userJoinedGroupBefore = true;
-                return [
-                    'message'=>'You joined before.'
-                ];
+            for($i = 0; $i < count($groupMemberArray); $i++){
+                if($groupMemberArray[$i] == $userID){
+                    //user already join the group
+                    $userJoinedGroupBefore = true;
+                    return [
+                        'message'=>'You joined before.'
+                    ];
+                }
             }
-        }
 
-        if(!$userJoinedGroupBefore){
-            //let the user join
-            $userDetail = UserDetail::where('id', $userID)->first();
-            //set current userJoinedGroup into a string
-            $userJoinedGroupID = $userDetail->userDetail_joinedGroupID;
-            //combine the string with current Group table ID
-            if($userJoinedGroupID == ""){
-                $userJoinedGroupIDNewAdded = $userJoinedGroupID . $group->id;
-            }else{
-                $userJoinedGroupIDNewAdded = $userJoinedGroupID . ',' .$group->id;
+            if(!$userJoinedGroupBefore){
+                //let the user join
+                $userDetail = UserDetail::where('id', $userID)->first();
+                //set current userJoinedGroup into a string
+                $userJoinedGroupID = $userDetail->userDetail_joinedGroupID;
+                //combine the string with current Group table ID
+                if($userJoinedGroupID == ""){
+                    $userJoinedGroupIDNewAdded = $userJoinedGroupID . $group->id;
+                }else{
+                    $userJoinedGroupIDNewAdded = $userJoinedGroupID . ',' .$group->id;
+                }
+                //save userJoinGroupID with the latest data into userDetail
+                $userDetail->userDetail_joinedGroupID = $userJoinedGroupIDNewAdded;
+                $userDetail->save();
+                
+                //update group member list
+                $group->group_memberList = $group->group_memberList . ',' .$userID;
+                $group->save();
+
+                //let user join the default team
+                $team = Team::where('team_groupID', $group->id)->first();
+                $team->team_MemberID = $team->team_memberID . ',' .$userID;
+                $team->save();
             }
-            //save userJoinGroupID with the latest data into userDetail
-            $userDetail->userDetail_joinedGroupID = $userJoinedGroupIDNewAdded;
-            $userDetail->save();
-            
-            //update group member list
-            $group->group_memberList = $group->group_memberList . ',' .$userID;
-            $group->save();
 
-            //let user join the default team
-            $team = Team::where('team_groupID', $group->id)->first();
-            $team->team_MemberID = $team->team_memberID . ',' .$userID;
-            $team->save();
-        }
-
-        return [
-            'message'=>'Group Joined.'
-        ];
+            return [
+                'message'=>'Group Joined.'
+            ];
+        }else{
+            return [
+                'message'=>'Code invalid/Group does not exist.'
+            ];
+        }        
     }
 
     public function getGroupDetail(Request $request){
