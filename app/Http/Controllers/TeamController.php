@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Team;
+use App\Models\Group;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,13 @@ class TeamController extends Controller
             'team_groupID' => $groupID,
             'team_memberID' => $userID,
         ]);
+
+        //update group_teamListID
+        $group=Group::where('id', $groupID)->first();
+        $groupTeamList = $group->group_teamListID;
+        $groupTeamListNewString = $groupTeamList . ',' . $team->id;
+        $group->group_teamListID = $groupTeamListNewString;
+        $group->save();
 
         //generate taskList
         $this->createTaskList($team->id, $userID);
