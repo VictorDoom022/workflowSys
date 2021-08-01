@@ -92,4 +92,25 @@ class TeamController extends Controller
 
         return $userArr;
     }
+
+    public function addMemberToTeam(Request $request){
+        
+        //variables that uses $request without validation
+        $userList = $request->userList;
+        $teamID = $request->teamID;
+
+        $team = Team::where('id', $teamID)->first();
+        $newTeamMemberList = $team->team_memberID . ',' .$userList;
+        $team->team_memberID = $newTeamMemberList;
+        $team->save();
+        
+        $newMemberArr = explode(',' , $userList);
+        for($i=0; $i < count($newMemberArr); $i++){
+            $this->createTaskList($teamID, $newMemberArr[$i]);
+        }
+        
+        return [
+            'message'=>'Member added.'
+        ];
+    }
 }

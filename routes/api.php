@@ -35,4 +35,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);
     Route::post('team/createTeam', [App\Http\Controllers\TeamController::class, 'createTeam']);
     Route::post('team/getTeamUserDiff', [App\Http\Controllers\TeamController::class, 'getUserNotJoinedTeam']);
+    Route::post('team/addMemberToTeam', [App\Http\Controllers\TeamController::class, 'addMemberToTeam']);
 });
