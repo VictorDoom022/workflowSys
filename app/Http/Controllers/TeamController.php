@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Models\Group;
 use App\Models\TaskList;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -65,5 +66,30 @@ class TeamController extends Controller
         ];
 
         return response($response, 200);
+    }
+
+    
+    public function getUserNotJoinedTeam(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        $teamID = $request->teamID;
+
+        $group = Group::where('id', $groupID)->first();
+        $team = Team::where('id', $teamID)->first();
+
+        $groupMemberArray = explode(',' , $group->group_memberList);
+        $teamMemberArray = explode(',', $team->team_memberID);
+        
+        //compare two arrays and merge them into a new array
+        $diffMemberID = array_merge(array_diff($groupMemberArray, $teamMemberArray));
+        $userArr = [];
+
+        for($i=0; $i < count($diffMemberID); $i++){
+            $user = User::where('id', $diffMemberID[$i])->first()->toArray();
+            $userArr[$i] = $user;
+        }
+
+        return $userArr;
     }
 }
