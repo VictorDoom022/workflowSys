@@ -120,7 +120,7 @@ class _teamDetailState extends State<teamDetail> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(builder: (context){
-                          return selectMember(userList: value);
+                          return selectMember(teamID: teamID, userList: value);
                         })
                     );
                   });

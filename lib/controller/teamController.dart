@@ -58,3 +58,26 @@ void createTeam(BuildContext context, int groupID, String teamName) async {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.statusCode.toString())));
   }
 }
+
+Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberIDList) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/team/addMemberToTeam';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userList' : memberIDList.join(','),
+        'teamID' : teamID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}

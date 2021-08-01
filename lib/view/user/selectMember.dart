@@ -1,22 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/User.dart';
 
 class selectMember extends StatefulWidget {
 
+  final int teamID;
   final List<User> userList;
 
-  const selectMember({Key key, this.userList}) : super(key: key);
+  const selectMember({Key key, this.teamID, this.userList}) : super(key: key);
 
   @override
-  _selectMemberState createState() => _selectMemberState(userList);
+  _selectMemberState createState() => _selectMemberState(teamID, userList);
 }
 
 class _selectMemberState extends State<selectMember> {
 
+  final int teamID;
   final List<User> userList;
 
-  _selectMemberState(this.userList);
+  _selectMemberState(this.teamID, this.userList);
 
   int userListLength;
   List<bool> isChecked = [];
@@ -41,7 +44,9 @@ class _selectMemberState extends State<selectMember> {
           padding: const EdgeInsets.all(0.0),
           child: Text('Done'),
           onPressed: (){
-            print(selectedUserListID.length);
+            addMemberToTeam(context, teamID, selectedUserListID).then((value) {
+              Navigator.of(context).pop();
+            });
           },
         ),
       ),

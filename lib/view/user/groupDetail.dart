@@ -130,7 +130,7 @@ class _groupDetailState extends State<groupDetail> {
               ),
               TextButton(
                 child: Text(
-                  'Join',
+                  'Create',
                   style: TextStyle(
                       color: Colors.blue
                   ),
