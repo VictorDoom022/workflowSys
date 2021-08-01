@@ -9,6 +9,8 @@ import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/TeamDetailReceiver.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
+import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/selectMember.dart';
 
 class teamDetail extends StatefulWidget {
 
@@ -28,6 +30,7 @@ class _teamDetailState extends State<teamDetail> {
 
   _teamDetailState(this.teamID, this.teamName);
 
+  GlobalKey<ScaffoldState> teamDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
@@ -110,50 +113,17 @@ class _teamDetailState extends State<teamDetail> {
             actions: [
               CupertinoActionSheetAction(
                 child: Text('Add member'),
-                onPressed: (){
-                  showDialog(
-                      context: context,
-                      builder: (_){
-                        return Dialog(
-                          child: FutureBuilder<List<User>>(
-                              future: getUserNotJoinedTeamList(),
-                              builder: (context, snapshot){
-                                if(snapshot.hasData){
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(
-                                          height: 300,
-                                          child: ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              shrinkWrap: true,
-                                              itemCount: snapshot.data.length,
-                                              itemBuilder: (context, index){
-                                                return ListTile(
-                                                  title: Text(snapshot.data[index].name),
-                                                );
-                                              }
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ElevatedButton(
-                                            child: Text('Add member'),
-                                            onPressed: (){},
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }else{
-                                  return Center(child: CupertinoActivityIndicator(radius: 12));
-                                }
-                              }
-                          ),
-                        );
-                      }
-                  );
+                onPressed: () async {
+                  LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
+                  getUserNotJoinedTeamList().then((value) {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context){
+                          return selectMember(userList: value);
+                        })
+                    );
+                  });
                 },
               )
             ],
