@@ -9,6 +9,7 @@ import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:http/http.dart' as http;
 import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
+import 'package:workflow_sys/model/User.dart';
 
 void createGroup(BuildContext context, String groupName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -146,5 +147,31 @@ Future<void> joinGroup(BuildContext context, String joinCode) async {
   if(response.statusCode == 200){
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
+
+Future<List<User>> getUserNotJoinedTeam(int groupID, int teamID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/team/getTeamUserDiff';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'groupID' : groupID.toString(),
+        'teamID' : teamID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+
+    return listUser;
   }
 }

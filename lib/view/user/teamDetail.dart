@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/controller/userController.dart';
+import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/TeamDetailReceiver.dart';
+import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 
 class teamDetail extends StatefulWidget {
@@ -52,11 +56,29 @@ class _teamDetailState extends State<teamDetail> {
     });
   }
 
+  Future<List<User>> getUserNotJoinedTeamList() async {
+    TeamDetailReceiver teamDetailReceiver = await futureTeamDetailReceiver;
+    List<User> userList = await getUserNotJoinedTeam(int.parse(teamDetailReceiver.team.teamGroupID), teamID);
+
+    return userList;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text('Team ($teamName)'),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.all(0.0),
+          child: Icon(Icons.more_vert),
+          onPressed: (){
+            HapticFeedback.lightImpact();
+            getUserNotJoinedTeamList().then((value) {
+              showAddMemberDialog();
+            });
+          },
+        ),
       ),
       body: SmartRefresher(
         controller: refreshController,
@@ -76,6 +98,79 @@ class _teamDetailState extends State<teamDetail> {
           },
         ),
       ),
+    );
+  }
+
+  Future<dynamic> showAddMemberDialog(){
+    return showCupertinoModalPopup(
+        context: context,
+        builder: (_){
+          return CupertinoActionSheet(
+            title: Text('Choose an action'),
+            actions: [
+              CupertinoActionSheetAction(
+                child: Text('Add member'),
+                onPressed: (){
+                  showDialog(
+                      context: context,
+                      builder: (_){
+                        return Dialog(
+                          child: FutureBuilder<List<User>>(
+                              future: getUserNotJoinedTeamList(),
+                              builder: (context, snapshot){
+                                if(snapshot.hasData){
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          height: 300,
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              itemCount: snapshot.data.length,
+                                              itemBuilder: (context, index){
+                                                return ListTile(
+                                                  title: Text(snapshot.data[index].name),
+                                                );
+                                              }
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton(
+                                            child: Text('Add member'),
+                                            onPressed: (){},
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }else{
+                                  return Center(child: CupertinoActivityIndicator(radius: 12));
+                                }
+                              }
+                          ),
+                        );
+                      }
+                  );
+                },
+              )
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.red
+                ),
+              ),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              },
+            ),
+          );
+        }
     );
   }
 }
@@ -105,8 +200,6 @@ class teamItem extends StatelessWidget {
     for(int i=0; i < userReceiver.user.length; i++){
       if(userID == userReceiver.user[i].id.toString()){
         return userReceiver.user[i].name;
-      }else{
-        return 'unknown user';
       }
     }
   }
