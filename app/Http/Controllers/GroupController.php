@@ -214,4 +214,25 @@ class GroupController extends Controller
 
         return response($userArr, 200);
     }
+
+    public function getGroupNonAdminUser(Request $request){
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        
+        $group = Group::where('id', $groupID)->first();
+        $groupAdminList = $group->group_adminList;
+        $groupMemberList = $group->group_memberList;
+
+        $groupAdminListArray = explode(',' , $groupAdminList);
+        $groupMemberListArray = explode(',', $groupMemberList);
+        $nonAdminUserListArray = array_merge(array_diff($groupMemberListArray, $groupAdminListArray));
+        
+        $userArr = [];
+        for($i = 0; $i < count($nonAdminUserListArray); $i++){
+            $user = User::where('id', $nonAdminUserListArray[$i])->first()->toArray();
+            $userArr[$i] = $user;
+        }
+
+        return response($userArr, 200);
+    }
 }

@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('group/getGroupDetailByGroupUserID', [App\Http\Controllers\GroupController::class, 'getGroupDetailByGroupUserID']);
     Route::post('group/getGroupTeamByGroupID', [App\Http\Controllers\GroupController::class, 'getGroupTeamByGroupID']);
     Route::post('group/getGroupUserByGroupID', [App\Http\Controllers\GroupController::class, 'getGroupUserByGroupID']);
+    Route::post('group/getGroupNonAdminUser', [App\Http\Controllers\GroupController::class, 'getGroupNonAdminUser']);
     //Team routes
     Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);
     Route::post('team/createTeam', [App\Http\Controllers\TeamController::class, 'createTeam']);
