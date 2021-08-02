@@ -235,4 +235,28 @@ class GroupController extends Controller
 
         return response($userArr, 200);
     }
+
+    public function setMemberAsAdmin(Request $request){
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        $userList = $request->userList;
+
+        $group = Group::where('id', $groupID)->first();
+        $currentGroupAdminList = $group->group_adminList;
+
+        //convert adminList and userList into array
+        $currentGroupAdminListArray = explode(',' , $currentGroupAdminList);
+        $userListArray = explode(',' , $userList);
+        //merge two arrays
+        $newAdminListArray = array_merge($currentGroupAdminListArray, $userListArray);
+        //convert back to string
+        $newAdminList = implode(', ', $newAdminListArray);
+        //save it
+        $group->group_adminList = $newAdminList;
+        $group->save();
+
+        return [
+            'message'=>'Member(s) added.'
+        ];
+    }
 }
