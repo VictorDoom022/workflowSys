@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/controller/userController.dart';
@@ -159,6 +160,58 @@ class _teamDetailState extends State<teamDetail> {
                         })
                     );
                   });
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text('Quit team'),
+                onPressed: () async {
+                  showDialog(
+                      context: context,
+                      builder: (_){
+                        return CupertinoAlertDialog(
+                          content: Text(
+                            'Are you sure you want to quit this team?',
+                            style: TextStyle(
+                                fontSize: 20
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: (){
+                                HapticFeedback.lightImpact();
+                                Navigator.of(
+                                    context,
+                                    rootNavigator: true
+                                ).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                'Yes',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),
+                              ),
+                              onPressed: () async {
+                                HapticFeedback.lightImpact();
+                                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                List<int> userList = [];
+
+                                int userID = sharedPreferences.getInt("UserID");
+                                userList.add(userID);
+
+                                removeMemberFromTeam(context, teamID, userList).then((value) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context, rootNavigator: true).pop();
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                            )
+                          ],
+                        );
+                      }
+                  );
                 },
               ),
             ],
