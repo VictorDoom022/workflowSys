@@ -40,7 +40,7 @@ class _groupDetailState extends State<groupDetail> {
   }
 
   Future<void> getGroupDetailData() async {
-    GroupDetailReceiver groupDetailReceiver = await getGroupDetail(groupID);
+    GroupDetailReceiver groupDetailReceiver = await getGroupDetailByGroupUserID(groupID);
     checkUserAdmin(groupDetailReceiver);
     setState(() {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);

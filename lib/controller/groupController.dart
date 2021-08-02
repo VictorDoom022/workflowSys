@@ -98,18 +98,43 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
   }
 }
 
-Future<GroupDetailReceiver> getGroupDetail(int groupID) async {
+Future<GroupDetailReceiver> getGroupDetailByGroupUserID(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
 
-  String stringUrl = apiURL + '/group/getGroupID';
+  String stringUrl = apiURL + '/group/getGroupDetailByGroupUserID';
   Uri url = Uri.parse(stringUrl);
   var response = await http.post(
       url,
       body: {
         'groupID': groupID.toString(),
         'userID' : userID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    GroupDetailReceiver groupDetailReceiver = GroupDetailReceiver.fromJson(jsonRes);
+
+    return groupDetailReceiver;
+  }
+}
+
+Future<GroupDetailReceiver> getGroupDetailByGroupID(int groupID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/group/getGroupDetailByGroupID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'groupID': groupID.toString(),
       },
       headers: {
         'Accept': 'application/json',
