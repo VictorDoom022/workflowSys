@@ -22,17 +22,20 @@ Route::post('register', [App\Http\Controllers\Auth\RegisterController::class, 'r
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
+    //User routes
     Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
     Route::get('users/{id}', [App\Http\Controllers\UserController::class, 'getUserByID']);
     Route::get('users', [App\Http\Controllers\UserController::class, 'getAllUserData']);
     Route::post('users/delete/{id}', [App\Http\Controllers\UserController::class, 'deleteUser']);
     Route::post('users/setUserStatus', [App\Http\Controllers\UserController::class, 'setUserStatus']);
     Route::post('users/toggleUserBan/{id}', [App\Http\Controllers\UserController::class, 'toggleUserBan']);
+    //Group routes
     Route::post('createGroup', [App\Http\Controllers\GroupController::class, 'createGroup']);
     Route::post('group/userID/{userID}', [App\Http\Controllers\GroupController::class, 'getUserJoinedGroup']);
     Route::post('group/joinGroup', [App\Http\Controllers\GroupController::class, 'joinGroup']);
     Route::post('group/getGroupDetailByGroupUserID', [App\Http\Controllers\GroupController::class, 'getGroupDetailByGroupUserID']);
     Route::post('group/getGroupDetailByGroupID', [App\Http\Controllers\GroupController::class, 'getGroupDetailByGroupID']);
+    //Team routes
     Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);
     Route::post('team/createTeam', [App\Http\Controllers\TeamController::class, 'createTeam']);
     Route::post('team/getTeamUserDiff', [App\Http\Controllers\TeamController::class, 'getUserNotJoinedTeam']);
