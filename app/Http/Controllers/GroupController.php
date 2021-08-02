@@ -250,7 +250,7 @@ class GroupController extends Controller
         //merge two arrays
         $newAdminListArray = array_merge($currentGroupAdminListArray, $userListArray);
         //convert back to string
-        $newAdminList = implode(', ', $newAdminListArray);
+        $newAdminList = implode(',', $newAdminListArray);
         //save it
         $group->group_adminList = $newAdminList;
         $group->save();
