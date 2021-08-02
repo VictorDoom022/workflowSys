@@ -127,7 +127,7 @@ class TeamController extends Controller
         $team->save();
         
         //create taskList for new member
-        $newMemberArr = explode(',' , $newTeamMemberList);
+        $newMemberArr = explode(',' , $userList);
         for($i=0; $i < count($newMemberArr); $i++){
             $this->createTaskList($teamID, $newMemberArr[$i]);
         }
