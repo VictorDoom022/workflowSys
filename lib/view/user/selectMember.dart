@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/User.dart';
 
@@ -8,6 +9,7 @@ class selectMember extends StatefulWidget {
   // type 1 = add member to team
   // type 2 = remove member from team
   // type 3 = view only
+  // type 4 = add member as admin (teamID = groupID since serve the same purpose)
 
   final int type;
   final int teamID;
@@ -55,6 +57,9 @@ class _selectMemberState extends State<selectMember> {
       case 3:
         appTitleSet = 'Member list';
         break;
+      case 4:
+        appTitleSet = 'Select member as admin';
+        break;
     }
 
     setState(() {
@@ -81,6 +86,10 @@ class _selectMemberState extends State<selectMember> {
               });
             }else if(type == 3){
               Navigator.of(context).pop();
+            }else if(type == 4){
+              setMemberAsAdmin(context, teamID, selectedUserListID).then((value){
+                Navigator.of(context).pop();
+              });
             }
           },
         ),

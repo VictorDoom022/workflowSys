@@ -66,6 +66,12 @@ class _groupDetailState extends State<groupDetail> {
     return userList;
   }
 
+  Future<List<User>> getGroupNonAdminUser() async {
+    List<User> userList = await getGroupNonAdminUserList(groupID);
+
+    return userList;
+  }
+
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
     String adminList = groupDetailReceiver.group.groupAdminList;
 
@@ -116,7 +122,16 @@ class _groupDetailState extends State<groupDetail> {
                       CupertinoActionSheetAction(
                         child: Text('Set member admin'),
                         onPressed: (){
-
+                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
+                          getGroupNonAdminUser().then((value) {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(builder: (context){
+                                  return selectMember(type: 4, userList: value, teamID: groupID);
+                                })
+                            );
+                          });
                         },
                       ),
                       CupertinoActionSheetAction(
