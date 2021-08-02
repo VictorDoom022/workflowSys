@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
+import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
 
 class groupDetail extends StatefulWidget {
@@ -161,6 +162,9 @@ class groupItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    GlobalKey<ScaffoldState> groupItemScaffoldKey = GlobalKey();
+
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -177,6 +181,77 @@ class groupItem extends StatelessWidget {
                       return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
                     }
                 )
+            );
+          },
+          onLongPress: (){
+            showCupertinoModalPopup(
+              context: context,
+              builder: (_){
+                return CupertinoActionSheet(
+                  title: Text('Choose an action'),
+                  actions: [
+                    CupertinoActionSheetAction(
+                      child: Text('Delete Team'),
+                      onPressed: (){
+                        showDialog(
+                            context: context,
+                            builder: (_){
+                              return CupertinoAlertDialog(
+                                content: Text(
+                                  'Are you sure you want to delete this?',
+                                  style: TextStyle(
+                                      fontSize: 20
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: Text('Cancel'),
+                                    onPressed: (){
+                                      HapticFeedback.lightImpact();
+                                      Navigator.of(
+                                          context,
+                                          rootNavigator: true
+                                      ).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text(
+                                      'Yes',
+                                      style: TextStyle(
+                                          color: Colors.blue
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      HapticFeedback.lightImpact();
+                                      LoadingScreen.showLoadingScreen(context, groupItemScaffoldKey);
+                                      deleteTeam(context, groupDetailReceiver.team[index].id).then((value) {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    )
+                  ],
+                  cancelButton: CupertinoActionSheetAction(
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Colors.red
+                      ),
+                    ),
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.pop(context);
+                    },
+                  ),
+                );
+              }
             );
           },
         );
