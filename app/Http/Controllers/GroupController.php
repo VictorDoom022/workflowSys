@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Team;
 use App\Models\UserDetail;
 use App\Models\TaskList;
+use App\Models\User;
 
 class GroupController extends Controller
 {
@@ -195,5 +196,22 @@ class GroupController extends Controller
         $team = Team::where('team_groupID', $groupID)->get();
 
         return response($team, 200);
+    }
+
+    public function getGroupUserByGroupID(Request $request){
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        
+        $group = Group::where('id', $groupID)->first();
+        $groupMemberList = $group->group_memberList;
+
+        $groupMemberListArray = explode(',', $groupMemberList);
+        $userArr = [];
+        for($i = 0; $i < count($groupMemberListArray); $i++){
+            $user = User::where('id', $groupMemberListArray[$i])->first()->toArray();
+            $userArr[$i] = $user;
+        }
+
+        return response($userArr, 200);
     }
 }
