@@ -64,22 +64,24 @@ Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberI
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
-  String stringUrl = apiURL + '/team/addMemberToTeam';
-  Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      body: {
-        'userList' : memberIDList.join(','),
-        'teamID' : teamID.toString(),
-      },
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
-      }
-  );
+  if(memberIDList.length != 0){
+    String stringUrl = apiURL + '/team/addMemberToTeam';
+    Uri url = Uri.parse(stringUrl);
+    var response = await http.post(
+        url,
+        body: {
+          'userList' : memberIDList.join(','),
+          'teamID' : teamID.toString(),
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + token
+        }
+    );
 
-  if(response.statusCode == 200){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    if(response.statusCode == 200){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    }
   }
 }
 
@@ -112,21 +114,23 @@ Future<void> removeMemberFromTeam(BuildContext context, int teamID, List<int> me
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
-  String stringUrl = apiURL + '/team/removeMemberFromTeam';
-  Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      body: {
-        'userList' : memberIDList.join(','),
-        'teamID' : teamID.toString(),
-      },
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
-      }
-  );
+  if(memberIDList.length != 0){
+    String stringUrl = apiURL + '/team/removeMemberFromTeam';
+    Uri url = Uri.parse(stringUrl);
+    var response = await http.post(
+        url,
+        body: {
+          'userList' : memberIDList.join(','),
+          'teamID' : teamID.toString(),
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + token
+        }
+    );
 
-  if(response.statusCode == 200){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    if(response.statusCode == 200){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    }
   }
 }
