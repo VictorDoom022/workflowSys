@@ -93,6 +93,24 @@ class TeamController extends Controller
         return $userArr;
     }
 
+    public function getUserJoinedTeam(Request $request){
+
+        //variables that uses $request without validation
+        $teamID = $request->teamID;
+
+        $team = Team::where('id', $teamID)->first();
+
+        $teamMemberArray = explode(',', $team->team_memberID);
+        $userArr = [];
+
+        for($i=0; $i < count($teamMemberArray); $i++){
+            $user = User::where('id', $teamMemberArray[$i])->first()->toArray();
+            $userArr[$i] = $user;
+        }
+
+        return $userArr;
+    }
+
     public function addMemberToTeam(Request $request){
         
         //variables that uses $request without validation
@@ -111,6 +129,38 @@ class TeamController extends Controller
         
         return [
             'message'=>'Member added.'
+        ];
+    }
+
+    public function removeMemberFromTeam(Request $request){
+        
+        //variables that uses $request without validation
+        $userList = $request->userList;
+        $teamID = $request->teamID;
+
+        $team = Team::where('id', $teamID)->first();
+        $teamMemberID = $team->team_memberID;
+
+        $teamMemberArr = explode(',' , $teamMemberID);
+        $removeUserListArr = explode(',' , $userList);
+
+        // compare and merge user that remains in the team
+        $remainingUser = array_merge(array_diff($teamMemberArr, $removeUserListArr));
+        //convert array back to string
+        $remainingUserString = implode(',', $remainingUser);
+        // save the remainingUserString back to team's memberID
+        $team->team_memberID = $remainingUserString;
+        $team->save();
+
+        for($i=0; $i<count($removeUserListArr); $i++){
+            // remove user's task list
+            $taskList = TaskList::where('taskList_userID', $removeUserListArr[$i])
+                                ->where('taskList_teamID', $teamID)
+                                ->delete();
+        }
+        
+        return [
+            'message'=>'Member removed.'
         ];
     }
 }
