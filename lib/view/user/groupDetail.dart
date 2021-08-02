@@ -72,6 +72,12 @@ class _groupDetailState extends State<groupDetail> {
     return userList;
   }
 
+  Future<List<User>> getGroupAdminUser() async {
+    List<User> userList = await getGroupAdminUserList(groupID);
+
+    return userList;
+  }
+
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
     String adminList = groupDetailReceiver.group.groupAdminList;
 
@@ -129,6 +135,21 @@ class _groupDetailState extends State<groupDetail> {
                                 context,
                                 CupertinoPageRoute(builder: (context){
                                   return selectMember(type: 4, userList: value, teamID: groupID);
+                                })
+                            );
+                          });
+                        },
+                      ),
+                      CupertinoActionSheetAction(
+                        child: Text(userAdmin==true ? 'Remove admin' : 'View group admin'),
+                        onPressed: (){
+                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
+                          getGroupAdminUser().then((value) {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(builder: (context){
+                                  return selectMember(type: userAdmin==true ? 5 : 3, userList: value, teamID: groupID);
                                 })
                             );
                           });

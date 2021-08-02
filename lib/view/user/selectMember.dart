@@ -10,6 +10,7 @@ class selectMember extends StatefulWidget {
   // type 2 = remove member from team
   // type 3 = view only
   // type 4 = add member as admin (teamID = groupID since serve the same purpose)
+  // type 5 = remove admin (teamID = groupID since serve the same purpose)
 
   final int type;
   final int teamID;
@@ -60,6 +61,9 @@ class _selectMemberState extends State<selectMember> {
       case 4:
         appTitleSet = 'Select member as admin';
         break;
+      case 5:
+        appTitleSet = 'Select member to remove from admin';
+        break;
     }
 
     setState(() {
@@ -88,6 +92,10 @@ class _selectMemberState extends State<selectMember> {
               Navigator.of(context).pop();
             }else if(type == 4){
               setMemberAsAdmin(context, teamID, selectedUserListID).then((value){
+                Navigator.of(context).pop();
+              });
+            }else if(type == 5){
+              removeMemberFromGroupAdmin(context, teamID, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
             }
