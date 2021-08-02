@@ -7,6 +7,7 @@ class selectMember extends StatefulWidget {
 
   // type 1 = add member to team
   // type 2 = remove member from team
+  // type 3 = view only
 
   final int type;
   final int teamID;
@@ -57,6 +58,8 @@ class _selectMemberState extends State<selectMember> {
               removeMemberFromTeam(context, teamID, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
+            }else if(type == 3){
+              Navigator.of(context).pop();
             }
           },
         ),
@@ -66,7 +69,7 @@ class _selectMemberState extends State<selectMember> {
           shrinkWrap: true,
           itemCount: userList.length,
           itemBuilder: (context, index){
-            return CheckboxListTile(
+            return type != 3 ? CheckboxListTile(
                 title: Text(userList[index].name),
                 value: isChecked[index],
                 onChanged: (bool){
@@ -79,6 +82,8 @@ class _selectMemberState extends State<selectMember> {
                     }
                   });
                 }
+            ) : ListTile(
+              title: Text(userList[index].name),
             );
           }
       ),

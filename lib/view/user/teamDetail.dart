@@ -146,6 +146,21 @@ class _teamDetailState extends State<teamDetail> {
                     });
                   },
               ) : Container(),
+              CupertinoActionSheetAction(
+                child: Text('View members in team'),
+                onPressed: () async {
+                  LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
+                  getUserJoinedTeamList().then((value) {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context){
+                          return selectMember(type: 3, teamID: teamID, userList: value);
+                        })
+                    );
+                  });
+                },
+              ),
             ],
             cancelButton: CupertinoActionSheetAction(
               child: Text(
