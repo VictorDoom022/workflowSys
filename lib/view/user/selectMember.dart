@@ -27,6 +27,7 @@ class _selectMemberState extends State<selectMember> {
 
   _selectMemberState(this.type, this.teamID, this.userList);
 
+  String appTitle = "Select member";
   int userListLength;
   List<bool> isChecked = [];
   List<int> selectedUserListID = [];
@@ -35,9 +36,29 @@ class _selectMemberState extends State<selectMember> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    setAppTitle();
     setState(() {
       userListLength = userList.length;
       isChecked = List<bool>.generate(userListLength, (index) => false);
+    });
+  }
+
+  void setAppTitle(){
+    String appTitleSet;
+    switch (type) {
+      case 1:
+        appTitleSet = 'Select a member to add';
+        break;
+      case 2:
+        appTitleSet = 'Select a member to remove';
+        break;
+      case 3:
+        appTitleSet = 'Member list';
+        break;
+    }
+
+    setState(() {
+      appTitle = appTitleSet;
     });
   }
 
@@ -45,7 +66,7 @@ class _selectMemberState extends State<selectMember> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        middle: Text('Select member'),
+        middle: Text(appTitle),
         trailing: CupertinoButton(
           padding: const EdgeInsets.all(0.0),
           child: Text('Done'),
