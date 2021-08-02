@@ -171,6 +171,18 @@ class _groupDetailState extends State<groupDetail> {
                         },
                       ),
                     ],
+                    cancelButton: CupertinoActionSheetAction(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            color: Colors.red
+                        ),
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
+                    ),
                   );
                 }
             );
