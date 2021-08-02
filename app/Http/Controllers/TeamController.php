@@ -168,4 +168,17 @@ class TeamController extends Controller
             'message'=>'Member removed.'
         ];
     }
+
+    public function deleteTeam(Request $request){
+
+        //variables that uses $request without validation
+        $teamID = $request->teamID;
+
+        $team = Team::where('id', $teamID)->delete();
+        $taskList = TaskList::where('taskList_teamID', $teamID)->delete();
+
+        return [
+            'message'=>'Team Deleted.',
+        ];
+    }
 }
