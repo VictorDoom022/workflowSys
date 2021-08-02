@@ -7,7 +7,9 @@ import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
+import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/selectMember.dart';
 import 'package:workflow_sys/view/user/selectTeam.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
 
@@ -56,6 +58,12 @@ class _groupDetailState extends State<groupDetail> {
     List<Team> teamList = await getGroupTeamByGroupID(groupID);
 
     return teamList;
+  }
+
+  Future<List<User>> getGroupUser() async {
+    List<User> userList = await getGroupUserByGroupID(groupID);
+
+    return userList;
   }
 
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
@@ -114,7 +122,16 @@ class _groupDetailState extends State<groupDetail> {
                       CupertinoActionSheetAction(
                         child: Text('View all members'),
                         onPressed: (){
-
+                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
+                          getGroupUser().then((value) {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(builder: (context){
+                                  return selectMember(type: 3, userList: value);
+                                })
+                            );
+                          });
                         },
                       ),
                     ],

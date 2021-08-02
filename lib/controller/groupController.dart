@@ -201,3 +201,28 @@ Future<List<User>> getUserNotJoinedTeam(int groupID, int teamID) async {
     return listUser;
   }
 }
+
+Future<List<User>> getGroupUserByGroupID(int groupID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/group/getGroupUserByGroupID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'groupID' : groupID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+
+    return listUser;
+  }
+}
