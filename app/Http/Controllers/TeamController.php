@@ -48,7 +48,11 @@ class TeamController extends Controller
         ]);
 
         $team = Team::where('id', $teamID)->first();
-        $team->team_taskListID = $taskList->id; 
+        if(strlen($team->team_taskListID) == 0){
+            $team->team_taskListID = $taskList->id; 
+        }else{
+            $team->team_taskListID = $team->team_taskListID. ',' .$taskList->id; 
+        }
         $team->save();
     }
 
