@@ -9,6 +9,7 @@ import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:http/http.dart' as http;
 import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
+import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
 
 void createGroup(BuildContext context, String groupName) async {
@@ -125,11 +126,11 @@ Future<GroupDetailReceiver> getGroupDetailByGroupUserID(int groupID) async {
   }
 }
 
-Future<GroupDetailReceiver> getGroupDetailByGroupID(int groupID) async {
+Future<List<Team>> getGroupTeamByGroupID(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
-  String stringUrl = apiURL + '/group/getGroupDetailByGroupID';
+  String stringUrl = apiURL + '/group/getGroupTeamByGroupID';
   Uri url = Uri.parse(stringUrl);
   var response = await http.post(
       url,
@@ -144,9 +145,9 @@ Future<GroupDetailReceiver> getGroupDetailByGroupID(int groupID) async {
 
   if(response.statusCode == 200){
     var jsonRes = jsonDecode(response.body);
-    GroupDetailReceiver groupDetailReceiver = GroupDetailReceiver.fromJson(jsonRes);
+    List<Team> teamList = (jsonRes as List).map((e) => Team.fromJson(e)).toList();
 
-    return groupDetailReceiver;
+    return teamList;
   }
 }
 

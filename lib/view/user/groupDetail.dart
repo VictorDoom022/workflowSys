@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
+import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/selectTeam.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
 
 class groupDetail extends StatefulWidget {
@@ -27,6 +29,7 @@ class _groupDetailState extends State<groupDetail> {
 
   _groupDetailState(this.groupID, this.groupName);
 
+  GlobalKey<ScaffoldState> groupDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
   TextEditingController teamNameController = TextEditingController();
 
@@ -47,6 +50,12 @@ class _groupDetailState extends State<groupDetail> {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);
     });
     refreshController.refreshCompleted();
+  }
+
+  Future<List<Team>> getAllGroupTeam() async {
+    List<Team> teamList = await getGroupTeamByGroupID(groupID);
+
+    return teamList;
   }
 
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
@@ -71,6 +80,49 @@ class _groupDetailState extends State<groupDetail> {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text('group ($groupName)'),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.all(0.0),
+          child: Icon(Icons.more_vert),
+          onPressed: (){
+            showCupertinoModalPopup(
+                context: context,
+                builder: (_){
+                  return CupertinoActionSheet(
+                    title: Text('Choose an action'),
+                    actions: [
+                      CupertinoActionSheetAction(
+                        child: Text('View all teams'),
+                        onPressed: (){
+                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
+                          getAllGroupTeam().then((value) {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (context){
+                                return selectTeam(type: 1, teamList: value);
+                              })
+                            );
+                          });
+                        },
+                      ),
+                      CupertinoActionSheetAction(
+                        child: Text('Set member admin'),
+                        onPressed: (){
+
+                        },
+                      ),
+                      CupertinoActionSheetAction(
+                        child: Text('View all members'),
+                        onPressed: (){
+
+                        },
+                      ),
+                    ],
+                  );
+                }
+            );
+          },
+        ),
       ),
       floatingActionButton: userAdmin==true ? FloatingActionButton(
         child: Icon(Icons.add),
