@@ -6,6 +6,7 @@ import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/TeamDetailReceiver.dart';
 import 'package:http/http.dart' as http;
+import 'package:workflow_sys/model/User.dart';
 
 Future<TeamDetailReceiver> getTeamDetail(int teamID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -64,6 +65,54 @@ Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberI
   String token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/team/addMemberToTeam';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userList' : memberIDList.join(','),
+        'teamID' : teamID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
+
+Future<List<User>> getUserJoinedTeam(int teamID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/team/getTeamUser';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'teamID' : teamID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+
+    return listUser;
+  }
+}
+
+Future<void> removeMemberFromTeam(BuildContext context, int teamID, List<int> memberIDList) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/team/removeMemberFromTeam';
   Uri url = Uri.parse(stringUrl);
   var response = await http.post(
       url,

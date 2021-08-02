@@ -66,6 +66,11 @@ class _teamDetailState extends State<teamDetail> {
     return userList;
   }
 
+  Future<List<User>> getUserJoinedTeamList() async {
+    List<User> userList = await getUserJoinedTeam(teamID);
+
+    return userList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,12 +125,27 @@ class _teamDetailState extends State<teamDetail> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(builder: (context){
-                          return selectMember(teamID: teamID, userList: value);
+                          return selectMember(type: 1, teamID: teamID, userList: value);
                         })
                     );
                   });
                 },
-              )
+              ),
+              CupertinoActionSheetAction(
+                child: Text('Remove member'),
+                  onPressed: () async {
+                    LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
+                    getUserJoinedTeamList().then((value) {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(builder: (context){
+                            return selectMember(type: 2, teamID: teamID, userList: value);
+                          })
+                      );
+                    });
+                  },
+              ),
             ],
             cancelButton: CupertinoActionSheetAction(
               child: Text(

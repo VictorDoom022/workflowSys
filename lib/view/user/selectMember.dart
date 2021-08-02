@@ -5,21 +5,26 @@ import 'package:workflow_sys/model/User.dart';
 
 class selectMember extends StatefulWidget {
 
+  // type 1 = add member to team
+  // type 2 = remove member from team
+
+  final int type;
   final int teamID;
   final List<User> userList;
 
-  const selectMember({Key key, this.teamID, this.userList}) : super(key: key);
+  const selectMember({Key key, this.type, this.teamID, this.userList}) : super(key: key);
 
   @override
-  _selectMemberState createState() => _selectMemberState(teamID, userList);
+  _selectMemberState createState() => _selectMemberState(type, teamID, userList);
 }
 
 class _selectMemberState extends State<selectMember> {
 
+  final int type;
   final int teamID;
   final List<User> userList;
 
-  _selectMemberState(this.teamID, this.userList);
+  _selectMemberState(this.type, this.teamID, this.userList);
 
   int userListLength;
   List<bool> isChecked = [];
@@ -44,9 +49,15 @@ class _selectMemberState extends State<selectMember> {
           padding: const EdgeInsets.all(0.0),
           child: Text('Done'),
           onPressed: (){
-            addMemberToTeam(context, teamID, selectedUserListID).then((value) {
-              Navigator.of(context).pop();
-            });
+            if(type == 1){
+              addMemberToTeam(context, teamID, selectedUserListID).then((value) {
+                Navigator.of(context).pop();
+              });
+            }else if(type == 2){
+              removeMemberFromTeam(context, teamID, selectedUserListID).then((value) {
+                Navigator.of(context).pop();
+              });
+            }
           },
         ),
       ),
