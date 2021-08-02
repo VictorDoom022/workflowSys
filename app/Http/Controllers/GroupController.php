@@ -187,19 +187,13 @@ class GroupController extends Controller
         return response($response, 200);
     }
 
-    public function getGroupDetailByGroupID(Request $request){
+    public function getGroupTeamByGroupID(Request $request){
 
         //variables that uses $request without validation
         $groupID = $request->groupID;
 
-        $group = Group::where('id', $groupID)->first();
         $team = Team::where('team_groupID', $groupID)->get();
 
-        $response=[
-            'group' => $group,
-            'team' => $team,
-        ];
-
-        return response($response, 200);
+        return response($team, 200);
     }
 }
