@@ -88,7 +88,7 @@ class _groupDetailState extends State<groupDetail> {
             if(snapshot.hasError) print(snapshot.error);
 
             if(snapshot.hasData){
-              return groupItem(groupDetailReceiver: snapshot.data);
+              return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data);
             }else{
               return Center(child: CupertinoActivityIndicator(radius: 12));
             }
@@ -155,8 +155,9 @@ class _groupDetailState extends State<groupDetail> {
 class groupItem extends StatelessWidget {
 
   final GroupDetailReceiver groupDetailReceiver;
+  final bool isAdmin;
 
-  const groupItem({Key key, this.groupDetailReceiver}) : super(key: key);
+  const groupItem({Key key, this.groupDetailReceiver, this.isAdmin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +174,7 @@ class groupItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder:(context){
-                      return teamDetail(teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
+                      return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
                     }
                 )
             );

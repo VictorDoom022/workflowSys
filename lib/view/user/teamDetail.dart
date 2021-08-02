@@ -16,19 +16,21 @@ class teamDetail extends StatefulWidget {
 
   final int teamID;
   final String teamName;
+  final bool isAdmin;
 
-  const teamDetail({Key key, this.teamID, this.teamName}) : super(key: key);
+  const teamDetail({Key key, this.teamID, this.teamName, this.isAdmin}) : super(key: key);
 
   @override
-  _teamDetailState createState() => _teamDetailState(teamID, teamName);
+  _teamDetailState createState() => _teamDetailState(teamID, teamName, isAdmin);
 }
 
 class _teamDetailState extends State<teamDetail> {
 
   final int teamID;
   final String teamName;
+  final bool isAdmin;
 
-  _teamDetailState(this.teamID, this.teamName);
+  _teamDetailState(this.teamID, this.teamName, this.isAdmin);
 
   GlobalKey<ScaffoldState> teamDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -82,9 +84,7 @@ class _teamDetailState extends State<teamDetail> {
           child: Icon(Icons.more_vert),
           onPressed: (){
             HapticFeedback.lightImpact();
-            getUserNotJoinedTeamList().then((value) {
-              showAddMemberDialog();
-            });
+            showAddMemberDialog();
           },
         ),
       ),
@@ -116,7 +116,7 @@ class _teamDetailState extends State<teamDetail> {
           return CupertinoActionSheet(
             title: Text('Choose an action'),
             actions: [
-              CupertinoActionSheetAction(
+              isAdmin == true ? CupertinoActionSheetAction(
                 child: Text('Add member'),
                 onPressed: () async {
                   LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
@@ -130,8 +130,8 @@ class _teamDetailState extends State<teamDetail> {
                     );
                   });
                 },
-              ),
-              CupertinoActionSheetAction(
+              ) : Container(),
+              isAdmin == true ? CupertinoActionSheetAction(
                 child: Text('Remove member'),
                   onPressed: () async {
                     LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
@@ -145,7 +145,7 @@ class _teamDetailState extends State<teamDetail> {
                       );
                     });
                   },
-              ),
+              ) : Container(),
             ],
             cancelButton: CupertinoActionSheetAction(
               child: Text(
