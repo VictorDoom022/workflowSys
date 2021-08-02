@@ -118,11 +118,16 @@ class TeamController extends Controller
         $teamID = $request->teamID;
 
         $team = Team::where('id', $teamID)->first();
-        $newTeamMemberList = $team->team_memberID . ',' .$userList;
+        if(strlen($team->team_memberID) != 0){
+            $newTeamMemberList = $team->team_memberID . ',' .$userList;
+        }else{
+            $newTeamMemberList = $userList;
+        }
         $team->team_memberID = $newTeamMemberList;
         $team->save();
         
-        $newMemberArr = explode(',' , $userList);
+        //create taskList for new member
+        $newMemberArr = explode(',' , $newTeamMemberList);
         for($i=0; $i < count($newMemberArr); $i++){
             $this->createTaskList($teamID, $newMemberArr[$i]);
         }
