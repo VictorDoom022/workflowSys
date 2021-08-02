@@ -168,7 +168,7 @@ class GroupController extends Controller
         }        
     }
 
-    public function getGroupDetail(Request $request){
+    public function getGroupDetailByGroupUserID(Request $request){
 
         //variables that uses $request without validation
         $groupID = $request->groupID;
@@ -178,6 +178,22 @@ class GroupController extends Controller
         $team = Team::where('team_groupID', $groupID)
                         ->where('team_memberID', 'like', '%'.$userID.'%')
                         ->get();
+
+        $response=[
+            'group' => $group,
+            'team' => $team,
+        ];
+
+        return response($response, 200);
+    }
+
+    public function getGroupDetailByGroupID(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+
+        $group = Group::where('id', $groupID)->first();
+        $team = Team::where('team_groupID', $groupID)->get();
 
         $response=[
             'group' => $group,
