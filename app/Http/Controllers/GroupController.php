@@ -236,6 +236,24 @@ class GroupController extends Controller
         return response($userArr, 200);
     }
 
+    public function getGroupAdminUser(Request $request){
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        
+        $group = Group::where('id', $groupID)->first();
+        $groupAdminList = $group->group_adminList;
+
+        $groupAdminListArray = explode(',' , $groupAdminList);
+        
+        $userArr = [];
+        for($i = 0; $i < count($groupAdminListArray); $i++){
+            $user = User::where('id', $groupAdminListArray[$i])->first()->toArray();
+            $userArr[$i] = $user;
+        }
+
+        return response($userArr, 200);
+    }
+
     public function setMemberAsAdmin(Request $request){
         //variables that uses $request without validation
         $groupID = $request->groupID;
@@ -257,6 +275,28 @@ class GroupController extends Controller
 
         return [
             'message'=>'Member(s) added.'
+        ];
+    }
+
+    public function removeMemberFromGroupAdmin(Request $request){
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        $userList = $request->userList;
+
+        $group = Group::where('id', $groupID)->first();
+        $currentGroupAdminList = $group->group_adminList;
+
+        $currentGroupAdminListArray = explode(',' , $currentGroupAdminList);
+        $toBeRemovedUserList = explode(',' , $userList);
+
+        $newAdminListArray = array_merge(array_diff($currentGroupAdminListArray, $toBeRemovedUserList));
+        $newAdminList = implode(', ', $newAdminListArray);
+
+        $group->group_adminList = $newAdminList;
+        $group->save();
+
+        return [
+            'message'=>'Member(s) removed.'
         ];
     }
 }
