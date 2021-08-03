@@ -299,4 +299,53 @@ class GroupController extends Controller
             'message'=>'Member(s) removed.'
         ];
     }
+
+    public function deleteGroup($groupID){
+        //get the teamList of the group first
+        $group = Group::where('id', $groupID)->first();
+        $groupTeamListArray = explode(',', $group->group_teamListID);
+
+        //loop for deleting team & taskList
+        for($i=0; $i < count($groupTeamListArray); $i++){
+            //get team task list
+            $team = Team::where('team_groupID', $groupTeamListArray[$i])->first();
+            $teamTaskList = $team->team_taskListID;
+            $teamTaskListArr = explode(',', $teamTaskList);
+            $team->delete();
+            
+            for($j=0; $j < count($teamTaskListArr); $j++){
+                //delete taskList belongs to the group's team
+                $taskList = TaskList::where('id', $teamTaskListArr[$j])->delete();
+            }
+        }
+
+        //get all userDetail who joined the group
+        $userDetail = UserDetail::where('userDetail_joinedGroupID', 'like', '%'.$groupID.'%')->get();
+        for($k=0; $k < count($userDetail); $k++){
+            $currentUserJoinedGroup = $userDetail[$k]->userDetail_joinedGroupID;
+            $currentUserJoinedGroupArr = explode(',',$currentUserJoinedGroup);
+
+            for($x=0; $x < count($currentUserJoinedGroupArr); $x++){
+                if($currentUserJoinedGroupArr[$x] == $groupID){
+                    //remove the group being deleted from the array
+                    unset($currentUserJoinedGroupArr[$x]);
+                }
+            }
+
+            $newUserJoinedGroup = implode(',', $currentUserJoinedGroupArr);
+            //$userDetail->userDetail_joinedGroupID = $newUserJoinedGroup;
+
+            //save userDetail with new userDetail by getting current looped id
+            $saveCurrentUserDetail = UserDetail::where('id', $userDetail[$k]->id)->first();
+            $saveCurrentUserDetail->userDetail_joinedGroupID = $newUserJoinedGroup;
+            $saveCurrentUserDetail->save();
+        }
+        
+        //finally delete the group
+        $group->delete();
+
+        return [
+            'message'=>'Group deleted.'
+        ];
+    }
 }

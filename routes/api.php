@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('group/getGroupAdminUser', [App\Http\Controllers\GroupController::class, 'getGroupAdminUser']);
     Route::post('group/setMemberAsAdmin', [App\Http\Controllers\GroupController::class, 'setMemberAsAdmin']);
     Route::post('group/removeMemberFromGroupAdmin', [App\Http\Controllers\GroupController::class, 'removeMemberFromGroupAdmin']);
+    Route::post('group/deleteGroup/{groupID}', [App\Http\Controllers\GroupController::class, 'deleteGroup']);
     //Team routes
     Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);
     Route::post('team/createTeam', [App\Http\Controllers\TeamController::class, 'createTeam']);
