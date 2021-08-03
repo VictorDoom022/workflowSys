@@ -28,13 +28,14 @@ class teamDetail extends StatefulWidget {
 class _teamDetailState extends State<teamDetail> {
 
   final int teamID;
-  final String teamName;
+  String teamName;
   final bool isAdmin;
 
   _teamDetailState(this.teamID, this.teamName, this.isAdmin);
 
   GlobalKey<ScaffoldState> teamDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  TextEditingController renameTeamController = TextEditingController();
 
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
   UserReceiver userReceiver;
@@ -117,6 +118,63 @@ class _teamDetailState extends State<teamDetail> {
           return CupertinoActionSheet(
             title: Text('Choose an action'),
             actions: [
+              isAdmin == true ? CupertinoActionSheetAction(
+                child: Text('Rename team'),
+                onPressed: () async {
+                  showDialog(
+                      context: context,
+                      builder: (_){
+                        return CupertinoAlertDialog(
+                          content: Column(
+                            children: [
+                              Text(
+                                'New team name',
+                                style: TextStyle(
+                                    fontSize: 20
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              CupertinoTextField(
+                                controller: renameTeamController,
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: (){
+                                HapticFeedback.lightImpact();
+                                Navigator.of(
+                                    context,
+                                    rootNavigator: true
+                                ).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                'Rename',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),
+                              ),
+                              onPressed: (){
+                                HapticFeedback.lightImpact();
+                                LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
+                                renameTeam(context, teamID, renameTeamController.text).then((value) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    teamName = renameTeamController.text;
+                                  });
+                                });
+                              },
+                            )
+                          ],
+                        );
+                      }
+                  );
+                },
+              ) : Container(),
               isAdmin == true ? CupertinoActionSheetAction(
                 child: Text('Add member'),
                 onPressed: () async {
