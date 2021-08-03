@@ -87,7 +87,7 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
   );
 
   try{
-    List<Group> listGroup;
+    List<Group> listGroup = [];
     if(response.body!=""){
       listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
 

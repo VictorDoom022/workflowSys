@@ -87,7 +87,11 @@ class _userHomeState extends State<userHome> {
                   if(snapshot.hasError) print(snapshot.error);
 
                   if(snapshot.hasData){
-                    return groupItem(listGroup: snapshot.data);
+                    if(snapshot.data.toString() != "[]"){
+                      return groupItem(listGroup: snapshot.data);
+                    }else{
+                      return Center(child: Text('No groups joined'));
+                    }
                   }else{
                     return Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
