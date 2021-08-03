@@ -38,6 +38,7 @@ class _groupDetailState extends State<groupDetail> {
 
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
   bool userAdmin = false;
+  String groupJoinCode = "";
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _groupDetailState extends State<groupDetail> {
     checkUserAdmin(groupDetailReceiver);
     setState(() {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);
+      groupJoinCode = groupDetailReceiver.group.groupJoinCode;
     });
     refreshController.refreshCompleted();
   }
@@ -111,6 +113,46 @@ class _groupDetailState extends State<groupDetail> {
                   return CupertinoActionSheet(
                     title: Text('Choose an action'),
                     actions: [
+                      userAdmin== true ? CupertinoActionSheetAction(
+                        child: Text('Show join code'),
+                        onPressed: (){
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context){
+                                return CupertinoAlertDialog(
+                                  title: Text('Join code'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("Here's your join code for " + groupName),
+                                      Text(
+                                        groupJoinCode,
+                                        style: TextStyle(
+                                            fontSize: 17
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: Text('Close'),
+                                      onPressed: (){
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text('Copy'),
+                                      onPressed: (){
+                                        Clipboard.setData(ClipboardData(text: groupJoinCode));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied!')));
+                                      },
+                                    ),
+                                  ],
+                                );
+                              }
+                          );
+                        },
+                      ) : Container(),
                       userAdmin== true ? CupertinoActionSheetAction(
                         child: Text('View all teams'),
                         onPressed: (){
