@@ -347,3 +347,26 @@ Future<void> deleteGroup(BuildContext context, int groupID) async {
     );
   }
 }
+
+Future<void> renameGroup(BuildContext context, int groupID, String groupName) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/group/renameGroup';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'groupID' : groupID.toString(),
+        'groupName' : groupName,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}

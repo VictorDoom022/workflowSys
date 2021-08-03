@@ -27,13 +27,14 @@ class groupDetail extends StatefulWidget {
 class _groupDetailState extends State<groupDetail> {
 
   final int groupID;
-  final String groupName;
+  String groupName;
 
   _groupDetailState(this.groupID, this.groupName);
 
   GlobalKey<ScaffoldState> groupDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
   TextEditingController teamNameController = TextEditingController();
+  TextEditingController renameGroupController = TextEditingController();
 
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
   bool userAdmin = false;
@@ -123,6 +124,63 @@ class _groupDetailState extends State<groupDetail> {
                               })
                             );
                           });
+                        },
+                      ),
+                      CupertinoActionSheetAction(
+                        child: Text('Rename group'),
+                        onPressed: (){
+                          showDialog(
+                              context: context,
+                              builder: (_){
+                                return CupertinoAlertDialog(
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        'New group name',
+                                        style: TextStyle(
+                                            fontSize: 20
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                      CupertinoTextField(
+                                        controller: renameGroupController,
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('Cancel'),
+                                      onPressed: (){
+                                        HapticFeedback.lightImpact();
+                                        Navigator.of(
+                                            context,
+                                            rootNavigator: true
+                                        ).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        'Rename',
+                                        style: TextStyle(
+                                            color: Colors.blue
+                                        ),
+                                      ),
+                                      onPressed: (){
+                                        HapticFeedback.lightImpact();
+                                        LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
+                                        renameGroup(context, groupID, renameGroupController.text).then((value) {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                          setState(() {
+                                            groupName = renameGroupController.text;
+                                          });
+                                        });
+                                      },
+                                    )
+                                  ],
+                                );
+                              }
+                          );
                         },
                       ),
                       CupertinoActionSheetAction(
