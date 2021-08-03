@@ -11,6 +11,7 @@ import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/view/user/userHome.dart';
 
 void createGroup(BuildContext context, String groupName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -320,5 +321,29 @@ Future<void> removeMemberFromGroupAdmin(BuildContext context, int groupID, List<
 
   if(response.statusCode == 200){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
+
+Future<void> deleteGroup(BuildContext context, int groupID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/group/deleteGroup/' + groupID.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    Navigator.of(context).push(
+      CupertinoPageRoute(builder: (_){
+        return userHome();
+      })
+    );
   }
 }

@@ -170,6 +170,43 @@ class _groupDetailState extends State<groupDetail> {
                           });
                         },
                       ),
+                      CupertinoActionSheetAction(
+                        child: Text('Delete group'),
+                        onPressed: (){
+                          showDialog(
+                              context: context,
+                              builder: (_){
+                                return CupertinoAlertDialog(
+                                  content: Text('Are you sure you want to delete this group?'),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('Cancel'),
+                                      onPressed: (){
+                                        HapticFeedback.lightImpact();
+                                        Navigator.of(
+                                            context,
+                                            rootNavigator: true
+                                        ).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                            color: Colors.blue
+                                        ),
+                                      ),
+                                      onPressed: (){
+                                        HapticFeedback.lightImpact();
+                                        deleteGroup(context, groupID);
+                                      },
+                                    )
+                                  ],
+                                );
+                              }
+                          );
+                        },
+                      ),
                     ],
                     cancelButton: CupertinoActionSheetAction(
                       child: Text(
