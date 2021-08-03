@@ -333,7 +333,6 @@ class GroupController extends Controller
             }
 
             $newUserJoinedGroup = implode(',', $currentUserJoinedGroupArr);
-            //$userDetail->userDetail_joinedGroupID = $newUserJoinedGroup;
 
             //save userDetail with new userDetail by getting current looped id
             $saveCurrentUserDetail = UserDetail::where('id', $userDetail[$k]->id)->first();
