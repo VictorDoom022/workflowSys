@@ -111,7 +111,7 @@ class _groupDetailState extends State<groupDetail> {
                   return CupertinoActionSheet(
                     title: Text('Choose an action'),
                     actions: [
-                      CupertinoActionSheetAction(
+                      userAdmin== true ? CupertinoActionSheetAction(
                         child: Text('View all teams'),
                         onPressed: (){
                           LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
@@ -125,8 +125,8 @@ class _groupDetailState extends State<groupDetail> {
                             );
                           });
                         },
-                      ),
-                      CupertinoActionSheetAction(
+                      ) : Container(),
+                      userAdmin== true ? CupertinoActionSheetAction(
                         child: Text('Rename group'),
                         onPressed: (){
                           showDialog(
@@ -182,8 +182,8 @@ class _groupDetailState extends State<groupDetail> {
                               }
                           );
                         },
-                      ),
-                      CupertinoActionSheetAction(
+                      ) : Container(),
+                      userAdmin==true ? CupertinoActionSheetAction(
                         child: Text('Set member admin'),
                         onPressed: (){
                           LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
@@ -197,8 +197,8 @@ class _groupDetailState extends State<groupDetail> {
                             );
                           });
                         },
-                      ),
-                      CupertinoActionSheetAction(
+                      ) : Container(),
+                      userAdmin == true ? CupertinoActionSheetAction(
                         child: Text(userAdmin==true ? 'Remove admin' : 'View group admin'),
                         onPressed: (){
                           LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
@@ -212,7 +212,7 @@ class _groupDetailState extends State<groupDetail> {
                             );
                           });
                         },
-                      ),
+                      ) : Container(),
                       CupertinoActionSheetAction(
                         child: Text('View all members'),
                         onPressed: (){
@@ -228,7 +228,7 @@ class _groupDetailState extends State<groupDetail> {
                           });
                         },
                       ),
-                      CupertinoActionSheetAction(
+                      userAdmin==true ? CupertinoActionSheetAction(
                         child: Text('Delete group'),
                         onPressed: (){
                           showDialog(
@@ -264,7 +264,7 @@ class _groupDetailState extends State<groupDetail> {
                               }
                           );
                         },
-                      ),
+                      ) : Container(),
                     ],
                     cancelButton: CupertinoActionSheetAction(
                       child: Text(
