@@ -186,7 +186,11 @@ class _teamDetailState extends State<teamDetail> {
                         CupertinoPageRoute(builder: (context){
                           return selectMember(type: 1, teamID: teamID, userList: value);
                         })
-                    );
+                    ).then((value) {
+                      setState(() {
+                        getTeamDetailData();
+                      });
+                    });
                   });
                 },
               ) : Container(),
@@ -201,7 +205,11 @@ class _teamDetailState extends State<teamDetail> {
                           CupertinoPageRoute(builder: (context){
                             return selectMember(type: 2, teamID: teamID, userList: value);
                           })
-                      );
+                      ).then((value) {
+                        setState(() {
+                          getTeamDetailData();
+                        });
+                      });
                     });
                   },
               ) : Container(),
