@@ -22,9 +22,7 @@ class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        middle: Text('Login'),
-      ),
+      appBar: CupertinoNavigationBar(),
       body: SingleChildScrollView(
         child: Container(
           child: Center(

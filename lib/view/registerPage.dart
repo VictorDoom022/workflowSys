@@ -24,9 +24,7 @@ class _registerPageState extends State<registerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        middle: Text('Register'),
-      ),
+      appBar: CupertinoNavigationBar(),
       body: SingleChildScrollView(
         child: Container(
           child: Center(
