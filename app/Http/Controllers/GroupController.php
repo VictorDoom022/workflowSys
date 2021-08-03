@@ -347,4 +347,22 @@ class GroupController extends Controller
             'message'=>'Group deleted.'
         ];
     }
+
+    public function renameGroup(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+
+        $fields = $request->validate([
+            'groupName' => ['required', 'string'],
+        ]);
+
+        $group = Group::where('id', $groupID)->first();
+        $group->group_name = $fields['groupName'];
+        $group->save();
+
+        return [
+            'message'=>'Group Renamed.',
+        ];
+    }
 }
