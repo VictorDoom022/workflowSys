@@ -102,7 +102,7 @@ class _selectMemberState extends State<selectMember> {
           },
         ),
       ),
-      body: ListView.builder(
+      body: userList.length != 0 ?ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: userList.length,
@@ -124,7 +124,7 @@ class _selectMemberState extends State<selectMember> {
               title: Text(userList[index].name),
             );
           }
-      ),
+      ) : Center(child: Text('No members')),
     );
   }
 
