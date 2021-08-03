@@ -49,4 +49,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('team/addMemberToTeam', [App\Http\Controllers\TeamController::class, 'addMemberToTeam']);
     Route::post('team/removeMemberFromTeam', [App\Http\Controllers\TeamController::class, 'removeMemberFromTeam']);
     Route::post('team/deleteTeam', [App\Http\Controllers\TeamController::class, 'deleteTeam']);
+    Route::post('team/renameTeam', [App\Http\Controllers\TeamController::class, 'renameTeam']);
 });

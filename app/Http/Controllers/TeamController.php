@@ -185,4 +185,22 @@ class TeamController extends Controller
             'message'=>'Team Deleted.',
         ];
     }
+
+    public function renameTeam(Request $request){
+
+        //variables that uses $request without validation
+        $teamID = $request->teamID;
+
+        $fields = $request->validate([
+            'teamName' => ['required', 'string'],
+        ]);
+
+        $team = Team::where('id', $teamID)->first();
+        $team->team_name = $fields['teamName'];
+        $team->save();
+
+        return [
+            'message'=>'Team Renamed.',
+        ];
+    }
 }
