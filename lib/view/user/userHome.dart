@@ -1,3 +1,4 @@
+import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,93 +52,89 @@ class _userHomeState extends State<userHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: userHomeScaffoldKey,
-      appBar: CupertinoNavigationBar(
-        leading: CupertinoButton(
-          padding: EdgeInsets.all(0.0),
-          child: Icon(Icons.list),
+      drawer: userNavDrawer(),
+      body: DraggableHome(
+        alwaysShowLeadingAndAction: true,
+        curvedBodyRadius: 5.0,
+        leading: IconButton(
+          icon: Icon(Icons.list),
           onPressed: (){
             HapticFeedback.lightImpact();
             userHomeScaffoldKey.currentState.openDrawer();
           },
         ),
-        middle: Text('Home'),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.all(0.0),
-          child: Icon(Icons.refresh),
-          onPressed: (){
-            HapticFeedback.lightImpact();
-            getGroupListData().then((value){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Refreshed')));
-            });
+        title: Text('Groups'),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (_){
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text('Join Group'),
+                        onTap: joinGroupDialog,
+                      ),
+                      ListTile(
+                        title: Text('Create Group'),
+                        onTap: createTeamDialog,
+                      ),
+                    ],
+                  );
+                }
+            );
           },
         ),
-      ),
-      drawer: userNavDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          verticalDirection: VerticalDirection.down,
-          children: [
-            createGroupButton(),
-            Expanded(
-              child: FutureBuilder<List<Group>>(
-                future: futureGroupList,
-                builder: (context, snapshot){
-                  if(snapshot.hasError) print(snapshot.error);
-
-                  if(snapshot.hasData){
-                    if(snapshot.data.toString() != "[]"){
-                      return groupItem(listGroup: snapshot.data);
-                    }else{
-                      return Center(child: Text('No groups joined'));
-                    }
-                  }else{
-                    return Padding(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Center(child: CupertinoActivityIndicator(radius: 12)),
-                    );
-                  }
-                }
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: (){
+              HapticFeedback.lightImpact();
+              getGroupListData().then((value){
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Refreshed')));
+              });
+            },
+          ),
+        ],
+        headerWidget: Container(
+          child: Center(
+            child: Text(
+                'Groups',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 50,
+                fontWeight: FontWeight.bold
               ),
             ),
-          ],
+          ),
         ),
+        body: [
+          FutureBuilder<List<Group>>(
+              future: futureGroupList,
+              builder: (context, snapshot){
+                if(snapshot.hasError) print(snapshot.error);
+
+                if(snapshot.hasData){
+                  if(snapshot.data.toString() != "[]"){
+                    return groupItem(listGroup: snapshot.data);
+                  }else{
+                    return Center(child: Text('No groups joined'));
+                  }
+                }else{
+                  return Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Center(child: CupertinoActivityIndicator(radius: 12)),
+                  );
+                }
+              }
+          ),
+        ],
       ),
     );
   }
 
-  Widget createGroupButton(){
-    return SizedBox(
-      width: double.infinity,
-      height: 40,
-      child: ElevatedButton(
-        child: Text('Create/Join group'),
-        style: createGroupButtonStyle,
-        onPressed: (){
-          HapticFeedback.lightImpact();
-          showModalBottomSheet(
-              context: context,
-              builder: (_){
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      title: Text('Join Group'),
-                      onTap: joinGroupDialog,
-                    ),
-                    ListTile(
-                      title: Text('Create Group'),
-                      onTap: createTeamDialog,
-                    ),
-                  ],
-                );
-              }
-          );
-        },
-      ),
-    );
-  }
 
   Future<dynamic> joinGroupDialog(){
     return showDialog(
@@ -255,23 +252,37 @@ class groupItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: listGroup.length,
       itemBuilder: (context, index){
-        return ListTile(
-          title: Text(listGroup[index].groupName),
-          onTap: (){
-            HapticFeedback.lightImpact();
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder:(context){
-                      return groupDetail(groupID: listGroup[index].id, groupName: listGroup[index].groupName);
-                    }
-                )
-            );
-          },
+        return Card(
+          elevation: 8.0,
+          child: Container(
+            child: ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              title: Text(
+                  listGroup[index].groupName,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w300
+                ),
+              ),
+              onTap: (){
+                HapticFeedback.lightImpact();
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder:(context){
+                          return groupDetail(groupID: listGroup[index].id, groupName: listGroup[index].groupName);
+                        }
+                    )
+                );
+              },
+            ),
+          ),
         );
       }
     );
