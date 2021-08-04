@@ -308,15 +308,12 @@ class GroupController extends Controller
         //loop for deleting team & taskList
         for($i=0; $i < count($groupTeamListArray); $i++){
             //get team task list
-            $team = Team::where('team_groupID', $groupTeamListArray[$i])->first();
+            $team = Team::where('id', $groupTeamListArray[$i])->first();
             $teamTaskList = $team->team_taskListID;
             $teamTaskListArr = explode(',', $teamTaskList);
             $team->delete();
-            
-            for($j=0; $j < count($teamTaskListArr); $j++){
-                //delete taskList belongs to the group's team
-                $taskList = TaskList::where('id', $teamTaskListArr[$j])->delete();
-            }
+            //directly delete taskList by taskList_teamID
+            $taskList = TaskList::where('taskList_teamID', $team->id)->delete();
         }
 
         //get all userDetail who joined the group
