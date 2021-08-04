@@ -12,6 +12,7 @@ import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/selectMember.dart';
+import 'package:workflow_sys/view/user/teamSettings.dart';
 
 class teamDetail extends StatefulWidget {
 
@@ -35,7 +36,6 @@ class _teamDetailState extends State<teamDetail> {
 
   GlobalKey<ScaffoldState> teamDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
-  TextEditingController renameTeamController = TextEditingController();
 
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
   UserReceiver userReceiver;
@@ -61,19 +61,6 @@ class _teamDetailState extends State<teamDetail> {
     setState(() {
       userReceiver = userReceiverData;
     });
-  }
-
-  Future<List<User>> getUserNotJoinedTeamList() async {
-    TeamDetailReceiver teamDetailReceiver = await futureTeamDetailReceiver;
-    List<User> userList = await getUserNotJoinedTeam(int.parse(teamDetailReceiver.team.teamGroupID), teamID);
-
-    return userList;
-  }
-
-  Future<List<User>> getUserJoinedTeamList() async {
-    List<User> userList = await getUserJoinedTeam(teamID);
-
-    return userList;
   }
 
   @override
@@ -118,166 +105,19 @@ class _teamDetailState extends State<teamDetail> {
           return CupertinoActionSheet(
             title: Text('Choose an action'),
             actions: [
-              isAdmin == true ? CupertinoActionSheetAction(
-                child: Text('Rename team'),
+              CupertinoActionSheetAction(
+                child: Text('Settings'),
                 onPressed: () async {
-                  showDialog(
-                      context: context,
-                      builder: (_){
-                        return CupertinoAlertDialog(
-                          content: Column(
-                            children: [
-                              Text(
-                                'New team name',
-                                style: TextStyle(
-                                    fontSize: 20
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              CupertinoTextField(
-                                controller: renameTeamController,
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              child: Text('Cancel'),
-                              onPressed: (){
-                                HapticFeedback.lightImpact();
-                                Navigator.of(
-                                    context,
-                                    rootNavigator: true
-                                ).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(
-                                'Rename',
-                                style: TextStyle(
-                                    color: Colors.blue
-                                ),
-                              ),
-                              onPressed: (){
-                                HapticFeedback.lightImpact();
-                                LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
-                                renameTeam(context, teamID, renameTeamController.text).then((value) {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  setState(() {
-                                    teamName = renameTeamController.text;
-                                  });
-                                });
-                              },
-                            )
-                          ],
-                        );
-                      }
-                  );
-                },
-              ) : Container(),
-              isAdmin == true ? CupertinoActionSheetAction(
-                child: Text('Add member'),
-                onPressed: () async {
-                  LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
-                  getUserNotJoinedTeamList().then((value) {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context){
-                          return selectMember(type: 1, teamID: teamID, userList: value);
-                        })
-                    ).then((value) {
-                      setState(() {
-                        getTeamDetailData();
-                      });
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context){
+                        return teamSettingsPage(teamID: teamID, isAdmin: isAdmin);
+                      })
+                  ).then((value) {
+                    setState(() {
+                      getTeamDetailData();
                     });
                   });
-                },
-              ) : Container(),
-              isAdmin == true ? CupertinoActionSheetAction(
-                child: Text('Remove member'),
-                  onPressed: () async {
-                    LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
-                    getUserJoinedTeamList().then((value) {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(builder: (context){
-                            return selectMember(type: 2, teamID: teamID, userList: value);
-                          })
-                      ).then((value) {
-                        setState(() {
-                          getTeamDetailData();
-                        });
-                      });
-                    });
-                  },
-              ) : Container(),
-              CupertinoActionSheetAction(
-                child: Text('View members in team'),
-                onPressed: () async {
-                  LoadingScreen.showLoadingScreen(context, teamDetailScaffoldKey);
-                  getUserJoinedTeamList().then((value) {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context){
-                          return selectMember(type: 3, teamID: teamID, userList: value);
-                        })
-                    );
-                  });
-                },
-              ),
-              CupertinoActionSheetAction(
-                child: Text('Quit team'),
-                onPressed: () async {
-                  showDialog(
-                      context: context,
-                      builder: (_){
-                        return CupertinoAlertDialog(
-                          content: Text(
-                            'Are you sure you want to quit this team?',
-                            style: TextStyle(
-                                fontSize: 20
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              child: Text('Cancel'),
-                              onPressed: (){
-                                HapticFeedback.lightImpact();
-                                Navigator.of(
-                                    context,
-                                    rootNavigator: true
-                                ).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(
-                                'Yes',
-                                style: TextStyle(
-                                    color: Colors.blue
-                                ),
-                              ),
-                              onPressed: () async {
-                                HapticFeedback.lightImpact();
-                                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                List<int> userList = [];
-
-                                int userID = sharedPreferences.getInt("UserID");
-                                userList.add(userID);
-
-                                removeMemberFromTeam(context, teamID, userList).then((value) {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context, rootNavigator: true).pop();
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            )
-                          ],
-                        );
-                      }
-                  );
                 },
               ),
             ],
