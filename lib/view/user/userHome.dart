@@ -57,13 +57,22 @@ class _userHomeState extends State<userHome> {
         alwaysShowLeadingAndAction: true,
         curvedBodyRadius: 5.0,
         leading: IconButton(
-          icon: Icon(Icons.list),
+          icon: Icon(
+              Icons.list,
+              color: Colors.white,
+          ),
           onPressed: (){
             HapticFeedback.lightImpact();
             userHomeScaffoldKey.currentState.openDrawer();
           },
         ),
-        title: Text('Groups'),
+        title: Text(
+            'Groups',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600
+          ),
+        ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
@@ -89,7 +98,10 @@ class _userHomeState extends State<userHome> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: Icon(
+                Icons.refresh,
+              color: Colors.white,
+            ),
             onPressed: (){
               HapticFeedback.lightImpact();
               getGroupListData().then((value){

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:workflow_sys/view/admin/adminHome.dart';
 import 'package:workflow_sys/view/initLoading.dart';
@@ -15,6 +16,9 @@ void main() {
           '/adminHome':(context) => adminHome(),
           '/userHome':(context) => userHome(),
         },
+        theme: ThemeData(
+          primaryColor: Color(0xfffbb448),
+        ),
       )
   );
 }
