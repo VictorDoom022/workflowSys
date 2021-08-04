@@ -9,6 +9,7 @@ import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/groupSettings.dart';
 import 'package:workflow_sys/view/user/selectMember.dart';
 import 'package:workflow_sys/view/user/selectTeam.dart';
 import 'package:workflow_sys/view/user/teamDetail.dart';
@@ -34,7 +35,6 @@ class _groupDetailState extends State<groupDetail> {
   GlobalKey<ScaffoldState> groupDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
   TextEditingController teamNameController = TextEditingController();
-  TextEditingController renameGroupController = TextEditingController();
 
   Future<GroupDetailReceiver> futureGroupDetailReceiver;
   bool userAdmin = false;
@@ -55,30 +55,6 @@ class _groupDetailState extends State<groupDetail> {
       groupJoinCode = groupDetailReceiver.group.groupJoinCode;
     });
     refreshController.refreshCompleted();
-  }
-
-  Future<List<Team>> getAllGroupTeam() async {
-    List<Team> teamList = await getGroupTeamByGroupID(groupID);
-
-    return teamList;
-  }
-
-  Future<List<User>> getGroupUser() async {
-    List<User> userList = await getGroupUserByGroupID(groupID);
-
-    return userList;
-  }
-
-  Future<List<User>> getGroupNonAdminUser() async {
-    List<User> userList = await getGroupNonAdminUserList(groupID);
-
-    return userList;
-  }
-
-  Future<List<User>> getGroupAdminUser() async {
-    List<User> userList = await getGroupAdminUserList(groupID);
-
-    return userList;
   }
 
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
@@ -113,6 +89,18 @@ class _groupDetailState extends State<groupDetail> {
                   return CupertinoActionSheet(
                     title: Text('Choose an action'),
                     actions: [
+                      CupertinoActionSheetAction(
+                        child: Text('Settings'),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (context){
+                                return groupSettingsPage(groupID: groupID, isAdmin: userAdmin);
+                              })
+                          );
+                        },
+                      ),
                       userAdmin== true ? CupertinoActionSheetAction(
                         child: Text('Show join code'),
                         onPressed: (){
@@ -147,160 +135,6 @@ class _groupDetailState extends State<groupDetail> {
                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied!')));
                                       },
                                     ),
-                                  ],
-                                );
-                              }
-                          );
-                        },
-                      ) : Container(),
-                      userAdmin== true ? CupertinoActionSheetAction(
-                        child: Text('View all teams'),
-                        onPressed: (){
-                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
-                          getAllGroupTeam().then((value) {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(builder: (context){
-                                return selectTeam(type: 1, teamList: value);
-                              })
-                            );
-                          });
-                        },
-                      ) : Container(),
-                      userAdmin== true ? CupertinoActionSheetAction(
-                        child: Text('Rename group'),
-                        onPressed: (){
-                          showDialog(
-                              context: context,
-                              builder: (_){
-                                return CupertinoAlertDialog(
-                                  content: Column(
-                                    children: [
-                                      Text(
-                                        'New group name',
-                                        style: TextStyle(
-                                            fontSize: 20
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      CupertinoTextField(
-                                        controller: renameGroupController,
-                                      ),
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      child: Text('Cancel'),
-                                      onPressed: (){
-                                        HapticFeedback.lightImpact();
-                                        Navigator.of(
-                                            context,
-                                            rootNavigator: true
-                                        ).pop();
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text(
-                                        'Rename',
-                                        style: TextStyle(
-                                            color: Colors.blue
-                                        ),
-                                      ),
-                                      onPressed: (){
-                                        HapticFeedback.lightImpact();
-                                        LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
-                                        renameGroup(context, groupID, renameGroupController.text).then((value) {
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            groupName = renameGroupController.text;
-                                          });
-                                        });
-                                      },
-                                    )
-                                  ],
-                                );
-                              }
-                          );
-                        },
-                      ) : Container(),
-                      userAdmin==true ? CupertinoActionSheetAction(
-                        child: Text('Set member admin'),
-                        onPressed: (){
-                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
-                          getGroupNonAdminUser().then((value) {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(builder: (context){
-                                  return selectMember(type: 4, userList: value, teamID: groupID);
-                                })
-                            );
-                          });
-                        },
-                      ) : Container(),
-                      userAdmin == true ? CupertinoActionSheetAction(
-                        child: Text(userAdmin==true ? 'Remove admin' : 'View group admin'),
-                        onPressed: (){
-                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
-                          getGroupAdminUser().then((value) {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(builder: (context){
-                                  return selectMember(type: userAdmin==true ? 5 : 3, userList: value, teamID: groupID);
-                                })
-                            );
-                          });
-                        },
-                      ) : Container(),
-                      CupertinoActionSheetAction(
-                        child: Text('View all members'),
-                        onPressed: (){
-                          LoadingScreen.showLoadingScreen(context, groupDetailScaffoldKey);
-                          getGroupUser().then((value) {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(builder: (context){
-                                  return selectMember(type: 3, userList: value);
-                                })
-                            );
-                          });
-                        },
-                      ),
-                      userAdmin==true ? CupertinoActionSheetAction(
-                        child: Text('Delete group'),
-                        onPressed: (){
-                          showDialog(
-                              context: context,
-                              builder: (_){
-                                return CupertinoAlertDialog(
-                                  content: Text('Are you sure you want to delete this group?'),
-                                  actions: [
-                                    TextButton(
-                                      child: Text('Cancel'),
-                                      onPressed: (){
-                                        HapticFeedback.lightImpact();
-                                        Navigator.of(
-                                            context,
-                                            rootNavigator: true
-                                        ).pop();
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text(
-                                        'Delete',
-                                        style: TextStyle(
-                                            color: Colors.blue
-                                        ),
-                                      ),
-                                      onPressed: (){
-                                        HapticFeedback.lightImpact();
-                                        deleteGroup(context, groupID);
-                                      },
-                                    )
                                   ],
                                 );
                               }
