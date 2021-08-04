@@ -52,6 +52,7 @@ class _teamDetailState extends State<teamDetail> {
     TeamDetailReceiver teamDetailReceiver = await getTeamDetail(teamID);
     setState(() {
       futureTeamDetailReceiver = Future.value(teamDetailReceiver);
+      teamName = teamDetailReceiver.team.teamName;
     });
     refreshController.refreshCompleted();
   }
@@ -108,6 +109,7 @@ class _teamDetailState extends State<teamDetail> {
               CupertinoActionSheetAction(
                 child: Text('Settings'),
                 onPressed: () async {
+                  Navigator.of(context).pop();
                   Navigator.push(
                       context,
                       CupertinoPageRoute(builder: (context){
