@@ -61,6 +61,7 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
         middle: Text('Group settings'),
       ),
       body: SettingsList(
+        contentPadding: EdgeInsets.fromLTRB(0, 15, 0, 0),
         sections: [
           SettingsSection(
             title: 'General',

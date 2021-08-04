@@ -53,6 +53,7 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
         middle: Text('Team settings'),
       ),
       body: SettingsList(
+        contentPadding: EdgeInsets.fromLTRB(0, 15, 0, 0),
         sections: [
           SettingsSection(
             title: 'General',
