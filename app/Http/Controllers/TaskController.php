@@ -48,4 +48,14 @@ class TaskController extends Controller
 
         return response($task, 200);
     }
+
+    public function getTaskByID(Request $request){
+
+        //variables that uses $request without validation
+        $taskID = $request->taskID;
+
+        $task = Task::where('id', $taskID)->first();
+
+        return response($task, 200);
+    }
 }
