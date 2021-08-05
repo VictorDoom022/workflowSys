@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:workflow_sys/controller/taskController.dart';
+import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/view/user/createTask.dart';
 
 class taskListDetail extends StatefulWidget {
@@ -20,6 +23,24 @@ class _taskListDetailState extends State<taskListDetail> {
 
   _taskListDetailState(this.taskListID, this.taskListUserName);
 
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
+  Future<List<Task>> futureTaskList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTaskData();
+  }
+
+  Future<void> getTaskData() async {
+    List<Task> taskList = await getTaskByTaskListID(taskListID);
+    setState(() {
+      futureTaskList = Future.value(taskList);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +59,50 @@ class _taskListDetailState extends State<taskListDetail> {
           );
         },
       ),
-      body: Container(),
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        header: BezierCircleHeader(),
+        onRefresh: getTaskData,
+        child: FutureBuilder<List<Task>>(
+          future: futureTaskList,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
+
+            if(snapshot.hasData){
+              if(snapshot.data.toString() != "[]"){
+                return taskItem(listTask: snapshot.data);
+              }else{
+                return Center(child: Text('No task created'));
+              }
+            }else{
+              return Center(child: CupertinoActivityIndicator(radius: 12));
+            }
+          },
+        ),
+      ),
     );
   }
 }
+
+class taskItem extends StatelessWidget {
+
+  final List<Task> listTask;
+
+  const taskItem({Key key, this.listTask}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: listTask.length,
+      itemBuilder: (context, index){
+        return ListTile(
+          title: Text(listTask[index].taskName),
+        );
+      },
+    );
+  }
+}
+
