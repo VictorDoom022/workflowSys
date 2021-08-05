@@ -16,7 +16,6 @@ String convertBackendDateTime(String dbDateString){
 }
 
 DateTime convertStringToDateTime(String dateTimeString){
-  print(dateTimeString);
   DateTime dateTime = DateFormat("yyyy-MM-dd HH:mm").parse(dateTimeString);
 
   return dateTime;

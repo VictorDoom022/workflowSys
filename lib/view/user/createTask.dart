@@ -105,7 +105,7 @@ class _createTaskState extends State<createTask> {
               CardSettingsButton(
                 label: 'Save',
                 onPressed: (){
-                  if(taskNameController.text == null || taskDescController.text == null || taskStatusController.text == null){
+                  if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
                     LoadingScreen.showLoadingScreen(context, createTaskScaffoldKey);
                     String startDate = taskStartDate.toString();
                     String dueDate = taskDueDate.toString();

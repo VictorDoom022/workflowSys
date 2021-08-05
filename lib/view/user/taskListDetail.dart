@@ -40,6 +40,7 @@ class _taskListDetailState extends State<taskListDetail> {
     setState(() {
       futureTaskList = Future.value(taskList);
     });
+    refreshController.refreshCompleted();
   }
 
   @override
