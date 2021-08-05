@@ -53,6 +53,7 @@ class _groupDetailState extends State<groupDetail> {
     setState(() {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);
       groupJoinCode = groupDetailReceiver.group.groupJoinCode;
+      groupName = groupDetailReceiver.group.groupName;
     });
     refreshController.refreshCompleted();
   }
@@ -98,7 +99,9 @@ class _groupDetailState extends State<groupDetail> {
                               CupertinoPageRoute(builder: (context){
                                 return groupSettingsPage(groupID: groupID, isAdmin: userAdmin);
                               })
-                          );
+                          ).then((value) {
+                            getGroupDetailData();
+                          });
                         },
                       ),
                       userAdmin== true ? CupertinoActionSheetAction(
