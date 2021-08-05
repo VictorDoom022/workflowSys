@@ -12,6 +12,7 @@ import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/selectMember.dart';
+import 'package:workflow_sys/view/user/taskListDetail.dart';
 import 'package:workflow_sys/view/user/teamSettings.dart';
 
 class teamDetail extends StatefulWidget {
@@ -157,6 +158,16 @@ class teamItem extends StatelessWidget {
       itemBuilder: (context, index){
         return ListTile(
           title: Text(convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List"),
+          onTap: (){
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (_){
+                      return taskListDetail(taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
+                    }
+                )
+            );
+          },
         );
       },
     );
