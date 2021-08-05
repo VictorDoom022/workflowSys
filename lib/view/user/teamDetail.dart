@@ -45,8 +45,9 @@ class _teamDetailState extends State<teamDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserData();
-    getTeamDetailData();
+    getUserData().then((value) {
+      getTeamDetailData();
+    });
   }
 
   Future<void> getTeamDetailData() async {
@@ -177,8 +178,6 @@ class teamItem extends StatelessWidget {
     for(int i=0; i < userReceiver.user.length; i++){
       if(userID == userReceiver.user[i].id.toString()){
         return userReceiver.user[i].name;
-      }else{
-        return 'error loading';
       }
     }
   }
