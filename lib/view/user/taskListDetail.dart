@@ -4,19 +4,21 @@ import 'package:workflow_sys/view/user/createTask.dart';
 
 class taskListDetail extends StatefulWidget {
 
+  final int taskListID;
   final String taskListUserName;
 
-  const taskListDetail({Key key, this.taskListUserName}) : super(key: key);
+  const taskListDetail({Key key, this.taskListID, this.taskListUserName}) : super(key: key);
 
   @override
-  _taskListDetailState createState() => _taskListDetailState(taskListUserName);
+  _taskListDetailState createState() => _taskListDetailState(taskListID, taskListUserName);
 }
 
 class _taskListDetailState extends State<taskListDetail> {
 
+  final int taskListID;
   final String taskListUserName;
 
-  _taskListDetailState(this.taskListUserName);
+  _taskListDetailState(this.taskListID, this.taskListUserName);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class _taskListDetailState extends State<taskListDetail> {
               context,
               CupertinoPageRoute(
                   builder: (_){
-                    return createTask();
+                    return createTask(taskListID: taskListID);
               })
           );
         },
