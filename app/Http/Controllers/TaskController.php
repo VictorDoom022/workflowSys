@@ -86,4 +86,22 @@ class TaskController extends Controller
             'message'=>'Task updated.'
         ];
     }
+
+    public function assignTask(Request $request){
+
+        //variables that uses $request without validation
+        $taskID = $request->taskID;
+        $assignedUserID = $request->assignedUserID; // only can assign to one member
+
+        $task = Task::where('id', $taskID)->first();
+        $taskAssignedMemberList = $task->task_assignedMemberID;
+
+        $taskAssignedMemberListNew = $taskAssignedMemberList. ',' .$assignedUserID;
+        $task->task_assignedMemberID = $taskAssignedMemberListNew;
+        $task->save();
+        
+        return [
+            'message'=>$taskID
+        ];
+    }
 }
