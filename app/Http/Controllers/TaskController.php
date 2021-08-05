@@ -101,7 +101,7 @@ class TaskController extends Controller
         $task->save();
         
         return [
-            'message'=>$taskID
+            'message'=>'Task assigned.'
         ];
     }
 }
