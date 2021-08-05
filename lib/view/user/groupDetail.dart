@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
+import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
@@ -263,6 +264,7 @@ class groupItem extends StatelessWidget {
       itemBuilder: (context, index){
         return ListTile(
           title: Text(groupDetailReceiver.team[index].teamName),
+          subtitle: Text("Last activity: " + convertBackendDateTime(groupDetailReceiver.team[index].updatedAt)),
           onTap: (){
             HapticFeedback.lightImpact();
             Navigator.push(
