@@ -8,21 +8,23 @@ import 'package:workflow_sys/view/user/taskDetail.dart';
 
 class taskListDetail extends StatefulWidget {
 
+  final int teamID;
   final int taskListID;
   final String taskListUserName;
 
-  const taskListDetail({Key key, this.taskListID, this.taskListUserName}) : super(key: key);
+  const taskListDetail({Key key, this.teamID, this.taskListID, this.taskListUserName}) : super(key: key);
 
   @override
-  _taskListDetailState createState() => _taskListDetailState(taskListID, taskListUserName);
+  _taskListDetailState createState() => _taskListDetailState(teamID, taskListID, taskListUserName);
 }
 
 class _taskListDetailState extends State<taskListDetail> {
 
+  final int teamID;
   final int taskListID;
   final String taskListUserName;
 
-  _taskListDetailState(this.taskListID, this.taskListUserName);
+  _taskListDetailState(this.teamID, this.taskListID, this.taskListUserName);
 
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
@@ -73,7 +75,7 @@ class _taskListDetailState extends State<taskListDetail> {
 
             if(snapshot.hasData){
               if(snapshot.data.toString() != "[]"){
-                return taskItem(listTask: snapshot.data);
+                return taskItem(teamID: teamID,listTask: snapshot.data);
               }else{
                 return Center(child: Text('No task created'));
               }
@@ -89,9 +91,10 @@ class _taskListDetailState extends State<taskListDetail> {
 
 class taskItem extends StatelessWidget {
 
+  final int teamID;
   final List<Task> listTask;
 
-  const taskItem({Key key, this.listTask}) : super(key: key);
+  const taskItem({Key key, this.teamID, this.listTask}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,7 @@ class taskItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder:(context){
-                      return taskDetail(taskID: listTask[index].id);
+                      return taskDetail(teamID: teamID, taskID: listTask[index].id);
                     }
                 )
             );

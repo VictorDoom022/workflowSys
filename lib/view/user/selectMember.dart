@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
+import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/User.dart';
 
@@ -11,6 +13,7 @@ class selectMember extends StatefulWidget {
   // type 3 = view only
   // type 4 = add member as admin (teamID = groupID since serve the same purpose)
   // type 5 = remove admin (teamID = groupID since serve the same purpose)
+  // type 6 = assign task to member (teamID = taskID) can select one only
 
   final int type;
   final int teamID;
@@ -64,6 +67,9 @@ class _selectMemberState extends State<selectMember> {
       case 5:
         appTitleSet = 'Select member to remove from admin';
         break;
+      case 6:
+        appTitleSet = 'Assign task to team member';
+        break;
     }
 
     setState(() {
@@ -79,7 +85,7 @@ class _selectMemberState extends State<selectMember> {
         trailing: CupertinoButton(
           padding: const EdgeInsets.all(0.0),
           child: Text('Done'),
-          onPressed: (){
+          onPressed: () async {
             if(type == 1){
               addMemberToTeam(context, teamID, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
@@ -98,6 +104,21 @@ class _selectMemberState extends State<selectMember> {
               removeMemberFromGroupAdmin(context, teamID, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
+            }else if(type == 6){
+              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+              int userID = sharedPreferences.getInt("UserID");
+
+              if(selectedUserListID.length == 1){
+                if(userID != selectedUserListID[0]){
+                  assignTask(context, teamID, selectedUserListID[0]).then((value) {
+                    Navigator.of(context).pop();
+                  });
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You cannot assign to yourself.')));
+                }
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You can only select one member')));
+              }
             }
           },
         ),

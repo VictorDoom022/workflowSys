@@ -5,24 +5,29 @@ import 'package:card_settings/widgets/card_settings_panel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
+import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/Task.dart';
+import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/selectMember.dart';
 
 class taskDetail extends StatefulWidget {
 
+  final int teamID;
   final int taskID;
 
-  const taskDetail({Key key, this.taskID}) : super(key: key);
+  const taskDetail({Key key, this.teamID, this.taskID}) : super(key: key);
 
   @override
-  _taskDetailState createState() => _taskDetailState(taskID);
+  _taskDetailState createState() => _taskDetailState(teamID, taskID);
 }
 
 class _taskDetailState extends State<taskDetail> {
 
+  final int teamID;
   final int taskID;
 
-  _taskDetailState(this.taskID);
+  _taskDetailState(this.teamID, this.taskID);
 
   GlobalKey<ScaffoldState> editTaskScaffoldKey = GlobalKey();
 
@@ -93,6 +98,12 @@ class _taskDetailState extends State<taskDetail> {
         allowUserEdit = false;
       });
     }
+  }
+
+  Future<List<User>> getUserJoinedTeamList() async {
+    List<User> userList = await getUserJoinedTeam(teamID);
+
+    return userList;
   }
 
   @override
@@ -173,6 +184,19 @@ class _taskDetailState extends State<taskDetail> {
                 color: Colors.amber,
               ),
               children: [
+                CardSettingsButton(
+                    label: 'Assign member',
+                    onPressed: (){
+                      getUserJoinedTeamList().then((value) {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(builder: (_){
+                              return selectMember(type: 6, teamID: taskID, userList: value);
+                            })
+                        );
+                      });
+                    }
+                ),
                 CardSettingsButton(
                     label: 'Save',
                     onPressed: (){
