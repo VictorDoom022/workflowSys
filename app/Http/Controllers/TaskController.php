@@ -58,4 +58,32 @@ class TaskController extends Controller
 
         return response($task, 200);
     }
+    
+    public function updateTask(Request $request){
+
+        //variables that uses $request without validation
+        $taskID = $request->taskID;
+        $taskStartDate = $request->taskStartDate;
+        $taskDueDate = $request->taskDueDate;
+        $taskStatus = $request->taskStatus;
+        $taskCollabUserId = $request->taskCollabUserId; //not planning to implement this function yet
+        $taskAssignedMemberId = $request->taskAssignedMemberId; //not planning to implement this function yet
+
+        $fields = $request->validate([
+            'taskName' => ['required', 'string'],
+            'taskDesc' => ['string'],
+        ]);
+
+        $task = Task::where('id', $taskID)->first();
+        $task->task_name = $fields['taskName'];
+        $task->task_desc = $fields['taskDesc'];
+        $task->task_startDate = $taskStartDate;
+        $task->task_dueDate = $taskDueDate;
+        $task->task_status = $taskStatus;
+        $task->save();
+
+        return [
+            'message'=>'Task updated.'
+        ];
+    }
 }
