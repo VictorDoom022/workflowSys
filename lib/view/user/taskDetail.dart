@@ -176,9 +176,16 @@ class _taskDetailState extends State<taskDetail> {
                 CardSettingsButton(
                     label: 'Save',
                     onPressed: (){
-                      if(taskNameController.text == null || taskDescController.text == null || taskStatusController.text == null){
+                      if(taskNameController.text != null || taskDescController.text != null || taskStatusController.text != null){
                         LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 
+                        String startDate = taskStartDate.toString();
+                        String dueDate = taskDueDate.toString();
+
+                        updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        });
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
                       }

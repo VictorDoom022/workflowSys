@@ -88,3 +88,30 @@ Future<Task> getTaskByID(int taskID) async {
     return Task.fromJson(jsonDecode(response.body));
   }
 }
+
+Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatus, String taskStartDate, String taskDueDate) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/task/updateTask';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'taskID' : taskID.toString(),
+        'taskName' : taskName,
+        'taskDesc' : taskDesc,
+        'taskStartDate': taskStartDate,
+        'taskDueDate' : taskDueDate,
+        'taskStatus' : taskStatus
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
