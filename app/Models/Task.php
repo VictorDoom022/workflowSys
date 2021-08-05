@@ -19,6 +19,7 @@ class Task extends Model
     protected $fillable = [
         'task_taskListID',
         'task_name',
+        'task_desc',
         'task_userCreateID',
         'task_collabUserID',
         'task_assignedMemberID',
