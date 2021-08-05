@@ -107,7 +107,10 @@ class _createTaskState extends State<createTask> {
                 onPressed: (){
                   if(taskNameController.text == null || taskDescController.text == null || taskStatusController.text == null){
                     LoadingScreen.showLoadingScreen(context, createTaskScaffoldKey);
-                    createNewTask(context, taskListID, taskNameController.text, taskDescController.text, taskStatusController.text, taskStartDate, taskDueDate).then((value) {
+                    String startDate = taskStartDate.toString();
+                    String dueDate = taskDueDate.toString();
+
+                    createNewTask(context, taskListID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     });

@@ -4,6 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/view/user/createTask.dart';
+import 'package:workflow_sys/view/user/taskDetail.dart';
 
 class taskListDetail extends StatefulWidget {
 
@@ -100,6 +101,16 @@ class taskItem extends StatelessWidget {
       itemBuilder: (context, index){
         return ListTile(
           title: Text(listTask[index].taskName),
+          onTap: (){
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder:(context){
+                      return taskDetail(taskID: listTask[index].id);
+                    }
+                )
+            );
+          },
         );
       },
     );

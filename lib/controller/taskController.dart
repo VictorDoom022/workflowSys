@@ -9,7 +9,7 @@ import 'package:workflow_sys/model/Task.dart';
 
 import 'miscController.dart';
 
-Future<void> createNewTask(BuildContext context, int taskListID, String taskName, String taskDesc, String taskStatus, DateTime taskStartDate, DateTime taskDueDate) async {
+Future<void> createNewTask(BuildContext context, int taskListID, String taskName, String taskDesc, String taskStatus, String taskStartDate, String taskDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
@@ -23,8 +23,8 @@ Future<void> createNewTask(BuildContext context, int taskListID, String taskName
         'taskListID' : taskListID.toString(),
         'taskName' : taskName,
         'taskDesc' : taskDesc,
-        'taskStartDate': taskStartDate.toString(),
-        'taskDueDate' : taskDueDate.toString(),
+        'taskStartDate': taskStartDate,
+        'taskDueDate' : taskDueDate,
         'taskStatus' : taskStatus
       },
       headers: {
@@ -63,5 +63,28 @@ Future<List<Task>> getTaskByTaskListID(int taskListID) async {
     return listTask;
   }else{
     return listTask;
+  }
+}
+
+Future<Task> getTaskByID(int taskID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/task/getTaskByID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'taskID' : taskID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+
+  if(response.statusCode == 200){
+    return Task.fromJson(jsonDecode(response.body));
   }
 }

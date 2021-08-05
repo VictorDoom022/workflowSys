@@ -14,3 +14,10 @@ String convertBackendDateTime(String dbDateString){
 
   return formattedDate;
 }
+
+DateTime convertStringToDateTime(String dateTimeString){
+  print(dateTimeString);
+  DateTime dateTime = DateFormat("yyyy-MM-dd HH:mm").parse(dateTimeString);
+
+  return dateTime;
+}
