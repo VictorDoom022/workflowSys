@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Task;
+use App\Models\TaskList;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -23,21 +24,29 @@ class TaskController extends Controller
             'taskDesc' => ['string'],
         ]);
 
-        //create task
-        $task = Task::create([
-            'task_taskListID' => $taskListID,
-            'task_teamID' => $taskTeamID,
-            'task_name' => $fields['taskName'],
-            'task_desc' => $fields['taskDesc'],
-            'task_userCreateID' => $userID,
-            'task_startDate' => $taskStartDate,
-            'task_dueDate' => $taskDueDate,
-            'task_status' => $taskStatus,
-        ]);
+        //check if user belongs to the taskList
+        $taskList = TaskList::where('id', $taskListID)->first();
+        if($taskList->taskList_userID == $userID){
+            //create task
+            $task = Task::create([
+                'task_taskListID' => $taskListID,
+                'task_teamID' => $taskTeamID,
+                'task_name' => $fields['taskName'],
+                'task_desc' => $fields['taskDesc'],
+                'task_userCreateID' => $userID,
+                'task_startDate' => $taskStartDate,
+                'task_dueDate' => $taskDueDate,
+                'task_status' => $taskStatus,
+            ]);
 
-        return [
-            'message'=>'Task created.'
-        ];
+            return [
+                'message'=>'Task created.'
+            ];
+        }else{
+            return [
+                'message'=>'Please create new task in your own task list.'
+            ];
+        }
     }
 
     public function getTaskByTaskListID(Request $request){
