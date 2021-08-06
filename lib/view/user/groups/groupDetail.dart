@@ -13,7 +13,7 @@ import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/groups/groupSettings.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
 import 'package:workflow_sys/view/user/selectors/selectTeam.dart';
-import 'package:workflow_sys/view/user/teams/teamDetail.dart';
+import 'package:workflow_sys/view/user/teams/taskCreateByUser.dart';
 
 class groupDetail extends StatefulWidget {
 
@@ -271,7 +271,7 @@ class groupItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder:(context){
-                      return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
+                      return taskCreateByUser(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
                     }
                 )
             );
