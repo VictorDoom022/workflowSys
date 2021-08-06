@@ -16,6 +16,7 @@ class CreateTaskTable extends Migration
         Schema::create('task', function (Blueprint $table) {
             $table->id();
             $table->string('task_taskListID');
+            $table->string('task_teamID');
             $table->string('task_name');
             $table->string('task_desc');
             $table->string('task_userCreateID');

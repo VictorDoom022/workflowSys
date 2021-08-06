@@ -11,6 +11,7 @@ class TaskController extends Controller
         //variables that uses $request without validation
         $userID = $request->userID; //forgein key
         $taskListID = $request->taskListID; //forgein key
+        $taskTeamID = $request->taskTeamID; //forgein key
         $taskStartDate = $request->taskStartDate;
         $taskDueDate = $request->taskDueDate;
         $taskStatus = $request->taskStatus;
@@ -25,6 +26,7 @@ class TaskController extends Controller
         //create task
         $task = Task::create([
             'task_taskListID' => $taskListID,
+            'task_teamID' => $taskTeamID,
             'task_name' => $fields['taskName'],
             'task_desc' => $fields['taskDesc'],
             'task_userCreateID' => $userID,
