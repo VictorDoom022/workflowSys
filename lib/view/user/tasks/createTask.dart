@@ -114,6 +114,9 @@ class _createTaskState extends State<createTask> {
 
                     createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
                       Navigator.of(context).pop();
+                      taskNameController.clear();
+                      taskDescController.clear();
+                      taskStatusController.clear();
                     });
                   }else{
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));

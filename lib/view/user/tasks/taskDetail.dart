@@ -70,7 +70,6 @@ class _taskDetailState extends State<taskDetail> {
     checkLastAssignedUser(assignedUserID);
 
     bool taskCreator = false;
-    bool taskCollabUser = false;
     bool taskAssignedUser = false;
 
     // check if the task creator is the current user
@@ -81,12 +80,12 @@ class _taskDetailState extends State<taskDetail> {
     // check if current user is being assigned to this task
     for(int j=0; j < assignedUserID.length; j++){
       if(assignedUserID[j] == userID.toString()){
-        taskCollabUser = true;
+        taskAssignedUser = true;
       }
     }
 
     // determine if user can edit or not
-    if(taskCreator || taskCollabUser || taskAssignedUser){
+    if(taskCreator || taskAssignedUser){
       setState(() {
         allowUserEdit = true;
       });
@@ -203,6 +202,7 @@ class _taskDetailState extends State<taskDetail> {
                     children: [
                       CardSettingsButton(
                           label: 'Assign member',
+                          enabled: allowUserEdit,
                           onPressed: (){
                             getUserJoinedTeamList().then((value) {
                               Navigator.push(
@@ -216,6 +216,7 @@ class _taskDetailState extends State<taskDetail> {
                       ),
                       CardSettingsButton(
                           label: 'Save',
+                          enabled: allowUserEdit,
                           onPressed: (){
                             if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
                               LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);

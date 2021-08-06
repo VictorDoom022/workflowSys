@@ -51,18 +51,6 @@ class _taskListDetailState extends State<taskListDetail> {
       appBar: CupertinoNavigationBar(
         middle: Text(taskListUserName + '\'s Task List'),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (){
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (_){
-                    return createTask(taskListID: taskListID);
-              })
-          );
-        },
-      ),
       body: SmartRefresher(
         controller: refreshController,
         enablePullDown: true,
