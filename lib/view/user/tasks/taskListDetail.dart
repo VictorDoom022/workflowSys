@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/model/Task.dart';
-import 'package:workflow_sys/view/user/createTask.dart';
-import 'package:workflow_sys/view/user/taskDetail.dart';
+import 'package:workflow_sys/view/user/tasks/createTask.dart';
+import 'package:workflow_sys/view/user/tasks/taskDetail.dart';
 
 class taskListDetail extends StatefulWidget {
 

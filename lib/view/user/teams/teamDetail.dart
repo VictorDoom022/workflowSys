@@ -11,9 +11,9 @@ import 'package:workflow_sys/model/TeamDetailReceiver.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
-import 'package:workflow_sys/view/user/selectMember.dart';
-import 'package:workflow_sys/view/user/taskListDetail.dart';
-import 'package:workflow_sys/view/user/teamSettings.dart';
+import 'package:workflow_sys/view/user/selectors/selectMember.dart';
+import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
+import 'package:workflow_sys/view/user/teams/teamSettings.dart';
 
 class teamDetail extends StatefulWidget {
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/Group.dart';
-import 'package:workflow_sys/view/user/groupDetail.dart';
+import 'package:workflow_sys/view/user/groups/groupDetail.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class userHome extends StatefulWidget {

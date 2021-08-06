@@ -6,8 +6,8 @@ import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
-import 'package:workflow_sys/view/user/selectMember.dart';
-import 'package:workflow_sys/view/user/selectTeam.dart';
+import 'package:workflow_sys/view/user/selectors/selectMember.dart';
+import 'package:workflow_sys/view/user/selectors/selectTeam.dart';
 
 class groupSettingsPage extends StatefulWidget {
 

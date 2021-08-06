@@ -10,10 +10,10 @@ import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
-import 'package:workflow_sys/view/user/groupSettings.dart';
-import 'package:workflow_sys/view/user/selectMember.dart';
-import 'package:workflow_sys/view/user/selectTeam.dart';
-import 'package:workflow_sys/view/user/teamDetail.dart';
+import 'package:workflow_sys/view/user/groups/groupSettings.dart';
+import 'package:workflow_sys/view/user/selectors/selectMember.dart';
+import 'package:workflow_sys/view/user/selectors/selectTeam.dart';
+import 'package:workflow_sys/view/user/teams/teamDetail.dart';
 
 class groupDetail extends StatefulWidget {
 

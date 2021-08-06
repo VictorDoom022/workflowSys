@@ -9,7 +9,7 @@ import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
-import 'package:workflow_sys/view/user/selectMember.dart';
+import 'package:workflow_sys/view/user/selectors/selectMember.dart';
 
 class taskDetail extends StatefulWidget {
 

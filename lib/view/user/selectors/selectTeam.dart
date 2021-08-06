@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
-import 'package:workflow_sys/view/user/teamDetail.dart';
+import 'package:workflow_sys/view/user/teams/teamDetail.dart';
 
 class selectTeam extends StatefulWidget {
 
