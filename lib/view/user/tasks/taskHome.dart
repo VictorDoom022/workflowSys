@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
+import 'package:workflow_sys/view/user/tasks/taskAssignedToUser.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 
 import 'createTask.dart';
@@ -59,6 +60,10 @@ class _taskHomeState extends State<taskHome> {
         title: Text('Task Created'),
       ),
       TitledNavigationBarItem(
+        icon: CupertinoIcons.person_crop_circle_fill_badge_exclam,
+        title: Text('Task Assigned To You'),
+      ),
+      TitledNavigationBarItem(
         icon: CupertinoIcons.text_badge_plus,
         title: Text('Create Task'),
       ),
@@ -67,6 +72,7 @@ class _taskHomeState extends State<taskHome> {
   List<Widget> screenList() {
     return [
       taskListDetail(teamID: teamID, taskListID: taskListID, taskListUserName: taskListUserName),
+      taskAssigendToUser(teamID: teamID, taskListID: taskListID),
       createTask(taskListID: taskListID),
     ];
   }

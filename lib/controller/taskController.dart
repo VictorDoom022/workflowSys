@@ -138,3 +138,33 @@ Future<void> assignTask(BuildContext context, int taskID, int assignedUserID) as
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
 }
+
+Future<List<Task>> getTaskAssignedToUser(int taskListID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/task/taskAssignedToUser';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'taskListID' : taskListID.toString(),
+        'userID' : userID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  List<Task> listTask = [];
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    listTask = (jsonRes as List).map((e) => Task.fromJson(e)).toList();
+
+    return listTask;
+  }else{
+    return listTask;
+  }
+}
