@@ -8,18 +8,20 @@ import 'package:workflow_sys/view/misc/loadingScreen.dart';
 class createTask extends StatefulWidget {
 
   final int taskListID;
+  final int teamID;
 
-  const createTask({Key key, this.taskListID}) : super(key: key);
+  const createTask({Key key, this.taskListID, this.teamID}) : super(key: key);
 
   @override
-  _createTaskState createState() => _createTaskState(taskListID);
+  _createTaskState createState() => _createTaskState(taskListID, teamID);
 }
 
 class _createTaskState extends State<createTask> {
 
   final int taskListID;
+  final int teamID;
 
-  _createTaskState(this.taskListID);
+  _createTaskState(this.taskListID, this.teamID);
 
   GlobalKey<ScaffoldState> createTaskScaffoldKey = GlobalKey();
 
@@ -110,7 +112,7 @@ class _createTaskState extends State<createTask> {
                     String startDate = taskStartDate.toString();
                     String dueDate = taskDueDate.toString();
 
-                    createNewTask(context, taskListID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
+                    createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
                       Navigator.of(context).pop();
                     });
                   }else{

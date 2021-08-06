@@ -65,7 +65,6 @@ class _taskDetailState extends State<taskDetail> {
   void checkToAllowEdit(Task task) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int userID = sharedPreferences.getInt("UserID");
-    List<String> collabUserID = task.taskCollabUserID.split(',');
     List<String> assignedUserID = task.taskAssignedMemberID.split(',');
 
     checkLastAssignedUser(assignedUserID);
@@ -78,12 +77,7 @@ class _taskDetailState extends State<taskDetail> {
     if(userID.toString() == task.taskUserCreateID){
      taskCreator = true;
     }
-    // check if current user is the collab user
-    for(int i=0; i < collabUserID.length; i++){
-      if(collabUserID[i] == userID.toString()){
-        taskCollabUser = true;
-      }
-    }
+
     // check if current user is being assigned to this task
     for(int j=0; j < assignedUserID.length; j++){
       if(assignedUserID[j] == userID.toString()){
