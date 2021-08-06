@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 
 import 'createTask.dart';
@@ -25,34 +25,44 @@ class _taskHomeState extends State<taskHome> {
 
   _taskHomeState(this.teamID, this.taskListID, this.taskListUserName);
 
+  Widget currentWidget;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      currentWidget = screenList()[0];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(),
-      body: PersistentTabView(
-          context,
-          items: itemList(),
-          screens: screenList()
+      bottomNavigationBar: TitledBottomNavigationBar(
+          items: itemList,
+          currentIndex: _currentIndex,
+          onTap: (selected){
+            setState(() {
+              _currentIndex = selected;
+            });
+          },
       ),
+      body: screenList()[_currentIndex],
     );
   }
 
-  List<PersistentBottomNavBarItem> itemList(){
-    return [
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.square_list),
-        title: 'Task Created',
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+  List<TitledNavigationBarItem> itemList = [
+      TitledNavigationBarItem(
+        icon: CupertinoIcons.square_list,
+        title: Text('Task Created'),
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.text_badge_plus),
-        title: 'Create Task',
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+      TitledNavigationBarItem(
+        icon: CupertinoIcons.text_badge_plus,
+        title: Text('Create Task'),
       ),
     ];
-  }
 
   List<Widget> screenList() {
     return [

@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  persistent_bottom_nav_bar: ^4.0.2
+  titled_navigation_bar: ^4.1.0
   card_settings: ^2.0.3
   intl: ^0.17.0
   settings_ui: ^1.0.0

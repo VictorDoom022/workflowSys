@@ -33,6 +33,9 @@ class _createTaskState extends State<createTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CupertinoNavigationBar(
+        middle: Text('New Task'),
+      ),
       body: CardSettings(
         children: [
           CardSettingsSection(
@@ -108,7 +111,6 @@ class _createTaskState extends State<createTask> {
                     String dueDate = taskDueDate.toString();
 
                     createNewTask(context, taskListID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
-                      Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     });
                   }else{

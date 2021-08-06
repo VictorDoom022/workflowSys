@@ -48,6 +48,9 @@ class _taskListDetailState extends State<taskListDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CupertinoNavigationBar(
+        middle: Text(taskListUserName + '\'s Task List'),
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
