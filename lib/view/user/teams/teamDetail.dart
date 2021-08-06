@@ -12,6 +12,7 @@ import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
+import 'package:workflow_sys/view/user/tasks/taskHome.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 import 'package:workflow_sys/view/user/teams/teamSettings.dart';
 
@@ -164,7 +165,7 @@ class teamItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder: (_){
-                      return taskListDetail(teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
+                      return taskHome(teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
                     }
                 )
             );
