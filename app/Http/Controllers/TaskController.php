@@ -104,4 +104,17 @@ class TaskController extends Controller
             'message'=>'Task assigned.'
         ];
     }
+
+    public function taskAssignedToUser(Request $request){
+
+        //variables that uses $request without validation
+        $taskListID = $request->taskListID;
+        $user = $request->userID;
+
+        $task = Task::where('task_taskListID', $taskListID)
+                    ->where('task_assignedMemberID', 'like', '%'.$user.'%')
+                    ->get();
+
+        return response($task, 200);
+    }
 }
