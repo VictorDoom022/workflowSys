@@ -30,7 +30,6 @@ class TaskController extends Controller
             'task_name' => $fields['taskName'],
             'task_desc' => $fields['taskDesc'],
             'task_userCreateID' => $userID,
-            'task_assignedMemberID' => $userID,
             'task_startDate' => $taskStartDate,
             'task_dueDate' => $taskDueDate,
             'task_status' => $taskStatus,
@@ -98,7 +97,11 @@ class TaskController extends Controller
         $task = Task::where('id', $taskID)->first();
         $taskAssignedMemberList = $task->task_assignedMemberID;
 
-        $taskAssignedMemberListNew = $taskAssignedMemberList. ',' .$assignedUserID;
+        if(strlen($taskAssignedMemberList) == 0){
+            $taskAssignedMemberListNew = $assignedUserID;
+        }else{
+            $taskAssignedMemberListNew = $taskAssignedMemberList. ',' .$assignedUserID;
+        }
         $task->task_assignedMemberID = $taskAssignedMemberListNew;
         $task->save();
         
@@ -113,9 +116,7 @@ class TaskController extends Controller
         $taskListID = $request->taskListID;
         $user = $request->userID;
 
-        $task = Task::where('task_taskListID', $taskListID)
-                    ->where('task_assignedMemberID', 'like', '%'.$user.'%')
-                    ->get();
+        $task = Task::where('task_assignedMemberID', 'like', '%'.$user.'%')->get();
 
         return response($task, 200);
     }
