@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
-import 'package:workflow_sys/view/user/teams/taskCreateByUser.dart';
+import 'package:workflow_sys/view/user/teams/teamDetail.dart';
 
 class selectTeam extends StatefulWidget {
 
@@ -55,7 +55,7 @@ class _selectTeamState extends State<selectTeam> {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(builder: (context){
-                      return taskCreateByUser(isAdmin: true, teamName: teamList[index].teamName, teamID: teamList[index].id);
+                      return teamDetail(isAdmin: true, teamName: teamList[index].teamName, teamID: teamList[index].id);
                     })
                 );
               },

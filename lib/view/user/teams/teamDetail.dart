@@ -16,25 +16,25 @@ import 'package:workflow_sys/view/user/tasks/taskHome.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 import 'package:workflow_sys/view/user/teams/teamSettings.dart';
 
-class taskCreateByUser extends StatefulWidget {
+class teamDetail extends StatefulWidget {
 
   final int teamID;
   final String teamName;
   final bool isAdmin;
 
-  const taskCreateByUser({Key key, this.teamID, this.teamName, this.isAdmin}) : super(key: key);
+  const teamDetail({Key key, this.teamID, this.teamName, this.isAdmin}) : super(key: key);
 
   @override
-  _taskCreateByUserState createState() => _taskCreateByUserState(teamID, teamName, isAdmin);
+  _teamDetailState createState() => _teamDetailState(teamID, teamName, isAdmin);
 }
 
-class _taskCreateByUserState extends State<taskCreateByUser> {
+class _teamDetailState extends State<teamDetail> {
 
   final int teamID;
   String teamName;
   final bool isAdmin;
 
-  _taskCreateByUserState(this.teamID, this.teamName, this.isAdmin);
+  _teamDetailState(this.teamID, this.teamName, this.isAdmin);
 
   GlobalKey<ScaffoldState> teamDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
