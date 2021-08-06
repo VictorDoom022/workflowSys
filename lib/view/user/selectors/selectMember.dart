@@ -112,6 +112,7 @@ class _selectMemberState extends State<selectMember> {
                 if(userID != selectedUserListID[0]){
                   assignTask(context, teamID, selectedUserListID[0]).then((value) {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   });
                 }else{
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You cannot assign to yourself.')));
