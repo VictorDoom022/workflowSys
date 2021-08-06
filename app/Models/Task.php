@@ -21,7 +21,6 @@ class Task extends Model
         'task_name',
         'task_desc',
         'task_userCreateID',
-        'task_collabUserID',
         'task_assignedMemberID',
         'task_startDate',
         'task_dueDate',
