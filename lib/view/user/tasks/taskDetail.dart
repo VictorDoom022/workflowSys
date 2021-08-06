@@ -35,6 +35,7 @@ class _taskDetailState extends State<taskDetail> {
   TextEditingController taskDescController = TextEditingController();
   TextEditingController taskStatusController = TextEditingController();
 
+  String lastAssignedUserName = "";
   DateTime taskStartDate, taskDueDate;
   bool isStartDueDateEnabled = false;
   bool allowUserEdit = true;
@@ -66,6 +67,8 @@ class _taskDetailState extends State<taskDetail> {
     int userID = sharedPreferences.getInt("UserID");
     List<String> collabUserID = task.taskCollabUserID.split(',');
     List<String> assignedUserID = task.taskAssignedMemberID.split(',');
+
+    checkLastAssignedUser(assignedUserID);
 
     bool taskCreator = false;
     bool taskCollabUser = false;
@@ -106,118 +109,141 @@ class _taskDetailState extends State<taskDetail> {
     return userList;
   }
 
+  Future<void> checkLastAssignedUser(List<String> assignedUserList) async {
+    List<User> userList = await getUserJoinedTeam(teamID);
+    for(int i=0; i < userList.length; i++){
+      if(assignedUserList.last == userList[i].id.toString()){
+        setState(() {
+          lastAssignedUserName = userList[i].name;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CupertinoNavigationBar(
           middle: Text('Edit Task'),
         ),
-        body: CardSettings(
-          children: [
-            CardSettingsSection(
-              header: CardSettingsHeader(
-                label: 'Task basic info',
-                color: Colors.amber,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Currently assigned to: ' + lastAssignedUserName),
               ),
-              children: [
-                CardSettingsText(
-                  label: 'Task Name',
-                  enabled: allowUserEdit,
-                  controller: taskNameController,
-                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                ),
-                CardSettingsText(
-                  label: 'Task Description',
-                  enabled: allowUserEdit,
-                  controller: taskDescController,
-                  numberOfLines: 5,
-                ),
-                CardSettingsText(
-                  label: 'Task Status',
-                  enabled: allowUserEdit,
-                  controller: taskStatusController,
-                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                )
-              ],
-            ),
-            CardSettingsSection(
-              header: CardSettingsHeader(
-                label: 'Extras',
-                color: Colors.amber,
-              ),
-              children: [
-                CardSettingsSwitch(
-                  label: 'Enable start/due date section',
-                  initialValue: isStartDueDateEnabled,
-                  fieldPadding: EdgeInsets.fromLTRB(10, 10, 10 , 5),
-                  onChanged: (bool){
-                    setState(() {
-                      isStartDueDateEnabled = bool;
-                    });
-                  },
-                ),
-                CardSettingsDateTimePicker(
-                  enabled: isStartDueDateEnabled,
-                  initialValue: taskStartDate,
-                  label: 'Start Date \n' + taskStartDate.toString(),
-                  onChanged: (dateTime){
-                    setState(() {
-                      taskStartDate = dateTime;
-                    });
-                  },
-                ),
-                CardSettingsDateTimePicker(
-                  enabled: isStartDueDateEnabled,
-                  initialValue: taskDueDate,
-                  label: 'Due Date \n' + taskDueDate.toString(),
-                  onChanged: (dateTime){
-                    setState(() {
-                      taskDueDate = dateTime;
-                    });
-                  },
-                )
-              ],
-            ),
-            CardSettingsSection(
-              header: CardSettingsHeader(
-                label: 'Action',
-                color: Colors.amber,
-              ),
-              children: [
-                CardSettingsButton(
-                    label: 'Assign member',
-                    onPressed: (){
-                      getUserJoinedTeamList().then((value) {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(builder: (_){
-                              return selectMember(type: 6, teamID: taskID, userList: value);
-                            })
-                        );
-                      });
-                    }
-                ),
-                CardSettingsButton(
-                    label: 'Save',
-                    onPressed: (){
-                      if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
-                        LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+              CardSettings(
+                children: [
+                  CardSettingsSection(
+                    header: CardSettingsHeader(
+                      label: 'Task basic info',
+                      color: Colors.amber,
+                    ),
+                    children: [
+                      CardSettingsText(
+                        label: 'Task Name',
+                        enabled: allowUserEdit,
+                        controller: taskNameController,
+                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      ),
+                      CardSettingsText(
+                        label: 'Task Description',
+                        enabled: allowUserEdit,
+                        controller: taskDescController,
+                        numberOfLines: 5,
+                      ),
+                      CardSettingsText(
+                        label: 'Task Status',
+                        enabled: allowUserEdit,
+                        controller: taskStatusController,
+                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      )
+                    ],
+                  ),
+                  CardSettingsSection(
+                    header: CardSettingsHeader(
+                      label: 'Extras',
+                      color: Colors.amber,
+                    ),
+                    children: [
+                      CardSettingsSwitch(
+                        label: 'Enable start/due date section',
+                        initialValue: isStartDueDateEnabled,
+                        fieldPadding: EdgeInsets.fromLTRB(10, 10, 10 , 5),
+                        onChanged: (bool){
+                          setState(() {
+                            isStartDueDateEnabled = bool;
+                          });
+                        },
+                      ),
+                      CardSettingsDateTimePicker(
+                        enabled: isStartDueDateEnabled,
+                        initialValue: taskStartDate,
+                        label: 'Start Date \n' + taskStartDate.toString(),
+                        onChanged: (dateTime){
+                          setState(() {
+                            taskStartDate = dateTime;
+                          });
+                        },
+                      ),
+                      CardSettingsDateTimePicker(
+                        enabled: isStartDueDateEnabled,
+                        initialValue: taskDueDate,
+                        label: 'Due Date \n' + taskDueDate.toString(),
+                        onChanged: (dateTime){
+                          setState(() {
+                            taskDueDate = dateTime;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  CardSettingsSection(
+                    header: CardSettingsHeader(
+                      label: 'Action',
+                      color: Colors.amber,
+                    ),
+                    children: [
+                      CardSettingsButton(
+                          label: 'Assign member',
+                          onPressed: (){
+                            getUserJoinedTeamList().then((value) {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(builder: (_){
+                                    return selectMember(type: 6, teamID: taskID, userList: value);
+                                  })
+                              );
+                            });
+                          }
+                      ),
+                      CardSettingsButton(
+                          label: 'Save',
+                          onPressed: (){
+                            if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
+                              LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 
-                        String startDate = taskStartDate.toString();
-                        String dueDate = taskDueDate.toString();
+                              String startDate = taskStartDate.toString();
+                              String dueDate = taskDueDate.toString();
 
-                        updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        });
-                      }else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
-                      }
-                    }
-                )
-              ],
-            )
-          ],
+                              updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              });
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                            }
+                          }
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         )
     );
   }
