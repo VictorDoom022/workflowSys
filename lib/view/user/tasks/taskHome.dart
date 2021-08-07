@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/user/tasks/taskAssignedToUser.dart';
+import 'package:workflow_sys/view/user/tasks/taskCompleted.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 
 import 'createTask.dart';
@@ -70,6 +71,10 @@ class _taskHomeState extends State<taskHome> {
         icon: CupertinoIcons.text_badge_plus,
         title: Text('Create Task'),
       ),
+      TitledNavigationBarItem(
+        icon: CupertinoIcons.checkmark_circle,
+        title: Text('Completed Task'),
+      ),
     ];
 
   List<Widget> screenList() {
@@ -77,6 +82,7 @@ class _taskHomeState extends State<taskHome> {
       taskListDetail(userReceiver: userReceiver, teamID: teamID, taskListID: taskListID, taskListUserName: taskListUserName),
       taskAssigendToUser(userReceiver: userReceiver, teamID: teamID, taskListID: taskListID),
       createTask(teamID: teamID, taskListID: taskListID),
+      taskCompleted(userReceiver: userReceiver, teamID: teamID, taskListID: taskListID),
     ];
   }
 
