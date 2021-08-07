@@ -25,6 +25,7 @@ class Task extends Model
         'task_assignedMemberID',
         'task_startDate',
         'task_dueDate',
-        'task_status',
+        'task_statusMsg',
+        'task_status'
     ];
 }

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    /*
+        taskStatus docs
+        0 = completed task
+        1 = active task
+    */
     public function createTask(Request $request){
 
         //variables that uses $request without validation
@@ -15,7 +20,7 @@ class TaskController extends Controller
         $taskTeamID = $request->taskTeamID; //forgein key
         $taskStartDate = $request->taskStartDate;
         $taskDueDate = $request->taskDueDate;
-        $taskStatus = $request->taskStatus;
+        $taskStatusMsg = $request->taskStatusMsg;
         $taskCollabUserId = $request->taskCollabUserId; //not planning to implement this function yet
         $taskAssignedMemberId = $request->taskAssignedMemberId; //not planning to implement this function yet
 
@@ -36,7 +41,8 @@ class TaskController extends Controller
                 'task_userCreateID' => $userID,
                 'task_startDate' => $taskStartDate,
                 'task_dueDate' => $taskDueDate,
-                'task_status' => $taskStatus,
+                'task_statusMsg' => $taskStatusMsg,
+                'task_status' => '1',
             ]);
 
             return [

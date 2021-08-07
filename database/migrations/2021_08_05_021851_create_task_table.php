@@ -23,7 +23,8 @@ class CreateTaskTable extends Migration
             $table->string('task_assignedMemberID');
             $table->string('task_startDate');
             $table->string('task_dueDate');
-            $table->string('task_status');
+            $table->string('task_statusMsg');
+            $table->integer('task_status');
             $table->timestamps();
         });
     }
