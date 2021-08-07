@@ -122,6 +122,8 @@ class taskItem extends StatelessWidget {
     for(int i=0; i < userList.length; i++){
       if(assignedMemberList.last == userList[i].id.toString()){
           return userList[i].name;
+      }else{
+        return 'You';
       }
     }
   }

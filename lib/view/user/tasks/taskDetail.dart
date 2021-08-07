@@ -33,7 +33,7 @@ class _taskDetailState extends State<taskDetail> {
 
   TextEditingController taskNameController = TextEditingController();
   TextEditingController taskDescController = TextEditingController();
-  TextEditingController taskStatusController = TextEditingController();
+  TextEditingController taskStatusMsgController = TextEditingController();
 
   String lastAssignedUserName = "";
   DateTime taskStartDate, taskDueDate;
@@ -47,7 +47,7 @@ class _taskDetailState extends State<taskDetail> {
     getTaskByID(taskID).then((value) {
       taskNameController.text = value.taskName;
       taskDescController.text = value.taskDesc;
-      taskStatusController.text = value.taskStatus;
+      taskStatusMsgController.text = value.taskStatusMsg;
 
       if(value.taskStartDate != "null" || value.taskDueDate != "null"){
 
@@ -149,9 +149,9 @@ class _taskDetailState extends State<taskDetail> {
                         numberOfLines: 5,
                       ),
                       CardSettingsText(
-                        label: 'Task Status',
+                        label: 'Task Status Message',
                         enabled: allowUserEdit,
-                        controller: taskStatusController,
+                        controller: taskStatusMsgController,
                         contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                       )
                     ],
@@ -218,13 +218,13 @@ class _taskDetailState extends State<taskDetail> {
                           label: 'Save',
                           enabled: allowUserEdit,
                           onPressed: (){
-                            if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
+                            if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusMsgController.text.isNotEmpty){
                               LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 
                               String startDate = taskStartDate.toString();
                               String dueDate = taskDueDate.toString();
 
-                              updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
+                              updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               });

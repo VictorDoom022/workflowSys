@@ -9,7 +9,7 @@ import 'package:workflow_sys/model/Task.dart';
 
 import 'miscController.dart';
 
-Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatus, String taskStartDate, String taskDueDate) async {
+Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatusMsg, String taskStartDate, String taskDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
@@ -26,7 +26,7 @@ Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID 
         'taskDesc' : taskDesc,
         'taskStartDate': taskStartDate,
         'taskDueDate' : taskDueDate,
-        'taskStatus' : taskStatus
+        'taskStatusMsg' : taskStatusMsg
       },
       headers: {
         'Accept': 'application/json',

@@ -8,7 +8,8 @@ class Task {
   String taskAssignedMemberID;
   String taskStartDate;
   String taskDueDate;
-  String taskStatus;
+  String taskStatusMsg;
+  int taskStatus;
   String createdAt;
   String updatedAt;
 
@@ -22,6 +23,7 @@ class Task {
         this.taskAssignedMemberID,
         this.taskStartDate,
         this.taskDueDate,
+        this.taskStatusMsg,
         this.taskStatus,
         this.createdAt,
         this.updatedAt});
@@ -36,6 +38,7 @@ class Task {
     taskAssignedMemberID = json['task_assignedMemberID'];
     taskStartDate = json['task_startDate'];
     taskDueDate = json['task_dueDate'];
+    taskStatusMsg = json['task_statusMsg'];
     taskStatus = json['task_status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -52,6 +55,7 @@ class Task {
     data['task_assignedMemberID'] = this.taskAssignedMemberID;
     data['task_startDate'] = this.taskStartDate;
     data['task_dueDate'] = this.taskDueDate;
+    data['task_statusMsg'] = this.taskStatusMsg;
     data['task_status'] = this.taskStatus;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
