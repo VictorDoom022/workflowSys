@@ -60,7 +60,8 @@ class TaskController extends Controller
         //variables that uses $request without validation
         $taskListID = $request->taskListID;
 
-        $task = Task::where('task_taskListID', $taskListID)->get();
+        $task = Task::where('task_taskListID', $taskListID)
+                        ->where('task_status' , 1)->get();
 
         return response($task, 200);
     }
@@ -131,7 +132,8 @@ class TaskController extends Controller
         $taskListID = $request->taskListID;
         $user = $request->userID;
 
-        $task = Task::where('task_assignedMemberID', 'like', '%'.$user.'%')->get();
+        $task = Task::where('task_assignedMemberID', 'like', '%'.$user.'%')
+                        ->where('task_status' , 1)->get();
 
         return response($task, 200);
     }
