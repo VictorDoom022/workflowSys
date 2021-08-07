@@ -90,7 +90,7 @@ Future<Task> getTaskByID(int taskID) async {
   }
 }
 
-Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatus, String taskStartDate, String taskDueDate) async {
+Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatusMsg, String taskStartDate, String taskDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -104,7 +104,7 @@ Future<void> updateTask(BuildContext context, int taskID, String taskName, Strin
         'taskDesc' : taskDesc,
         'taskStartDate': taskStartDate,
         'taskDueDate' : taskDueDate,
-        'taskStatus' : taskStatus
+        'taskStatusMsg' : taskStatusMsg
       },
       headers: {
         'Accept': 'application/json',
@@ -167,5 +167,28 @@ Future<List<Task>> getTaskAssignedToUser(int taskListID) async {
     return listTask;
   }else{
     return listTask;
+  }
+}
+
+Future<void> changeTaskStatus(BuildContext context, int taskID, int taskStatus) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/task/changeTaskStatus';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'taskID' : taskID.toString(),
+        'taskStatus' : taskStatus.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
 }

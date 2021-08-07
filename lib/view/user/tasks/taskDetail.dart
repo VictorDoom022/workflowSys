@@ -36,6 +36,7 @@ class _taskDetailState extends State<taskDetail> {
   TextEditingController taskStatusMsgController = TextEditingController();
 
   String lastAssignedUserName = "Not Assigned";
+  int taskStatus;
   DateTime taskStartDate, taskDueDate;
   bool isStartDueDateEnabled = false;
   bool allowUserEdit = true;
@@ -59,6 +60,7 @@ class _taskDetailState extends State<taskDetail> {
       }
 
       checkToAllowEdit(value);
+      checkTaskStatus(value);
     });
   }
 
@@ -94,6 +96,12 @@ class _taskDetailState extends State<taskDetail> {
         allowUserEdit = false;
       });
     }
+  }
+
+  void checkTaskStatus(Task task) {
+    setState(() {
+      taskStatus = task.taskStatus;
+    });
   }
 
   Future<List<User>> getUserJoinedTeamList() async {
@@ -211,6 +219,18 @@ class _taskDetailState extends State<taskDetail> {
                                     return selectMember(type: 6, teamID: taskID, userList: value);
                                   })
                               );
+                            });
+                          }
+                      ),
+                      CardSettingsButton(
+                          label: taskStatus==1 ? 'Mark task as complete' : 'Re-activate task',
+                          enabled: allowUserEdit,
+                          onPressed: (){
+                            LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+
+                            changeTaskStatus(context, taskID, taskStatus).then((value) {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
                             });
                           }
                       ),
