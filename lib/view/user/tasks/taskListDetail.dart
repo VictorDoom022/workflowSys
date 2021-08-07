@@ -119,12 +119,15 @@ class taskItem extends StatelessWidget {
   String checkLastAssignedUser(String taskAssignedMemberList) {
     List<User> userList = userReceiver.user;
     List<String> assignedMemberList = taskAssignedMemberList.split(',');
-    for(int i=0; i < userList.length; i++){
-      if(assignedMemberList.last == userList[i].id.toString()){
+
+    if(taskAssignedMemberList.length !=0){
+      for(int i=0; i < userList.length; i++){
+        if(assignedMemberList.last == userList[i].id.toString()){
           return userList[i].name;
-      }else{
-        return 'You';
+        }
       }
+    }else{
+      return 'Not assigned';
     }
   }
 }

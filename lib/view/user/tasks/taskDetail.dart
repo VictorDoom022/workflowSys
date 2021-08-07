@@ -35,7 +35,7 @@ class _taskDetailState extends State<taskDetail> {
   TextEditingController taskDescController = TextEditingController();
   TextEditingController taskStatusMsgController = TextEditingController();
 
-  String lastAssignedUserName = "";
+  String lastAssignedUserName = "Not Assigned";
   DateTime taskStartDate, taskDueDate;
   bool isStartDueDateEnabled = false;
   bool allowUserEdit = true;
