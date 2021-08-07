@@ -154,4 +154,15 @@ class TaskController extends Controller
             'message'=>'Task status updated.'
         ];
     }
+
+    public function getCompletedTaskByTaskListID(Request $request){
+
+        //variables that uses $request without validation
+        $taskListID = $request->taskListID;
+
+        $task = Task::where('task_taskListID', $taskListID)
+                        ->where('task_status' , 0)->get();
+
+        return response($task, 200);
+    }
 }
