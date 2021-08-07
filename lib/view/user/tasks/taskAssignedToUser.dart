@@ -3,26 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/model/Task.dart';
+import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/initLoading.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 
 class taskAssigendToUser extends StatefulWidget {
 
+  final UserReceiver userReceiver;
   final int teamID;
   final int taskListID;
 
-  const taskAssigendToUser({Key key, this.teamID, this.taskListID}) : super(key: key);
+  const taskAssigendToUser({Key key, this.userReceiver, this.teamID, this.taskListID}) : super(key: key);
 
   @override
-  _taskAssigendToUserState createState() => _taskAssigendToUserState(teamID, taskListID);
+  _taskAssigendToUserState createState() => _taskAssigendToUserState(userReceiver, teamID, taskListID);
 }
 
 class _taskAssigendToUserState extends State<taskAssigendToUser> {
 
+  final UserReceiver userReceiver;
   final int teamID;
   final int taskListID;
 
-  _taskAssigendToUserState(this.teamID, this.taskListID);
+  _taskAssigendToUserState(this.userReceiver, this.teamID, this.taskListID);
 
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
@@ -63,7 +66,7 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
 
             if(snapshot.hasData){
               if(snapshot.data.toString() != "[]"){
-                return taskItem(teamID: teamID, listTask: snapshot.data);
+                return taskItem(userReceiver: userReceiver, teamID: teamID, listTask: snapshot.data);
               }else{
                 return Center(child: Text('No task created'));
               }

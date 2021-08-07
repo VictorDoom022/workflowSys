@@ -165,7 +165,7 @@ class teamItem extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder: (_){
-                      return taskHome(teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
+                      return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
                     }
                 )
             );
