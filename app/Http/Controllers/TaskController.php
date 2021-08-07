@@ -82,7 +82,7 @@ class TaskController extends Controller
         $taskID = $request->taskID;
         $taskStartDate = $request->taskStartDate;
         $taskDueDate = $request->taskDueDate;
-        $taskStatus = $request->taskStatus;
+        $taskStatusMsg = $request->taskStatusMsg;
         $taskCollabUserId = $request->taskCollabUserId; //not planning to implement this function yet
         $taskAssignedMemberId = $request->taskAssignedMemberId; //not planning to implement this function yet
 
@@ -96,7 +96,7 @@ class TaskController extends Controller
         $task->task_desc = $fields['taskDesc'];
         $task->task_startDate = $taskStartDate;
         $task->task_dueDate = $taskDueDate;
-        $task->task_status = $taskStatus;
+        $task->task_statusMsg = $taskStatusMsg;
         $task->save();
 
         return [
@@ -136,5 +136,22 @@ class TaskController extends Controller
                         ->where('task_status' , 1)->get();
 
         return response($task, 200);
+    }
+
+    public function changeTaskStatus(Request $request){
+        
+        //variables that uses $request without validation
+        $taskID = $request->taskID;
+        $taskStatus = $request->taskStatus;
+
+        $changedTaskStatus = $taskStatus==1 ? 0 : 1;
+
+        $task = Task::where('id', $taskID)->first();
+        $task->task_status = $changedTaskStatus;
+        $task->save();
+
+        return [
+            'message'=>'Task status updated.'
+        ];
     }
 }
