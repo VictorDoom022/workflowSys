@@ -42,6 +42,7 @@ class _taskDetailState extends State<taskDetail> {
   int taskStatus;
   DateTime taskStartDate, taskDueDate;
   String taskAssignedDate;
+  List<String> taskAssignedUserIDList;
   bool allowUserEdit = true;
 
   @override
@@ -73,6 +74,10 @@ class _taskDetailState extends State<taskDetail> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int userID = sharedPreferences.getInt("UserID");
     List<String> assignedUserID = task.taskAssignedMemberID.split(',');
+
+    setState(() {
+      taskAssignedUserIDList = assignedUserID;
+    });
 
     checkLastAssignedUser(assignedUserID);
 
@@ -251,7 +256,7 @@ class _taskDetailState extends State<taskDetail> {
                                             Navigator.push(
                                                 context,
                                                 CupertinoPageRoute(builder: (_){
-                                                  return taskAssignedHistory(userList: value, assignedDateList: assignDateList);
+                                                  return taskAssignedHistory(userList: value, assignedUserList: taskAssignedUserIDList, assignedDateList: assignDateList);
                                                 })
                                             );
                                           });

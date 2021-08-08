@@ -6,20 +6,22 @@ import 'package:workflow_sys/model/User.dart';
 class taskAssignedHistory extends StatefulWidget {
 
   final List<User> userList;
+  final List<String> assignedUserList;
   final List<String> assignedDateList;
 
-  const taskAssignedHistory({Key key, this.userList, this.assignedDateList}) : super(key: key);
+  const taskAssignedHistory({Key key, this.userList, this.assignedUserList, this.assignedDateList}) : super(key: key);
 
   @override
-  _taskAssignedHistoryState createState() => _taskAssignedHistoryState(userList, assignedDateList);
+  _taskAssignedHistoryState createState() => _taskAssignedHistoryState(userList, assignedUserList, assignedDateList);
 }
 
 class _taskAssignedHistoryState extends State<taskAssignedHistory> {
 
   final List<User> userList;
+  final List<String> assignedUserList;
   final List<String> assignedDateList;
 
-  _taskAssignedHistoryState(this.userList, this.assignedDateList);
+  _taskAssignedHistoryState(this.userList, this.assignedUserList, this.assignedDateList);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class _taskAssignedHistoryState extends State<taskAssignedHistory> {
       body: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: userList.length,
+        itemCount: assignedDateList.length,
         itemBuilder: (context, index){
           return Card(
             child: Padding(
@@ -50,7 +52,7 @@ class _taskAssignedHistoryState extends State<taskAssignedHistory> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      userList[index].name,
+                      convertUserIDtoName(assignedUserList[index]),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 18,
@@ -64,5 +66,13 @@ class _taskAssignedHistoryState extends State<taskAssignedHistory> {
         },
       ),
     );
+  }
+
+  String convertUserIDtoName(String userID){
+    for(int i=0; i < userList.length; i++){
+      if(userID == userList[i].id.toString()){
+        return userList[i].name;
+      }
+    }
   }
 }
