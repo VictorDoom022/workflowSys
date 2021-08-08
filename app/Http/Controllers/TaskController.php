@@ -165,4 +165,13 @@ class TaskController extends Controller
 
         return response($task, 200);
     }
+
+    public function deleteTaskByTaskID($id){
+        
+        $task = Task::where('id', $id)->delete();
+
+        return [
+            'message'=>'Task deleted.'
+        ];
+    }
 }
