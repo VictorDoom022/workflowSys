@@ -158,18 +158,25 @@ class teamItem extends StatelessWidget {
       shrinkWrap: true,
       itemCount: teamDetailReceiver.taskList.length,
       itemBuilder: (context, index){
-        return ListTile(
-          title: Text(convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List"),
-          onTap: (){
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (_){
-                      return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
-                    }
-                )
-            );
-          },
+        return Card(
+          elevation: 8.0,
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            title: Text(
+                convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List",
+              textAlign: TextAlign.center,
+            ),
+            onTap: (){
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (_){
+                        return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
+                      }
+                  )
+              );
+            },
+          ),
         );
       },
     );

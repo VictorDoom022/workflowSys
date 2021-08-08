@@ -262,91 +262,101 @@ class groupItem extends StatelessWidget {
       shrinkWrap: true,
       itemCount: groupDetailReceiver.team.length,
       itemBuilder: (context, index){
-        return ListTile(
-          title: Text(groupDetailReceiver.team[index].teamName),
-          subtitle: Text("Last activity: " + convertBackendDateTime(groupDetailReceiver.team[index].updatedAt)),
-          onTap: (){
-            HapticFeedback.lightImpact();
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder:(context){
-                      return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
-                    }
-                )
-            );
-          },
-          onLongPress: (){
-            showCupertinoModalPopup(
-              context: context,
-              builder: (_){
-                return CupertinoActionSheet(
-                  title: Text('Choose an action'),
-                  actions: [
-                    CupertinoActionSheetAction(
-                      child: Text('Delete Team'),
-                      onPressed: (){
-                        showDialog(
-                            context: context,
-                            builder: (_){
-                              return CupertinoAlertDialog(
-                                content: Text(
-                                  'Are you sure you want to delete this?',
-                                  style: TextStyle(
-                                      fontSize: 20
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: Text('Cancel'),
-                                    onPressed: (){
-                                      HapticFeedback.lightImpact();
-                                      Navigator.of(
-                                          context,
-                                          rootNavigator: true
-                                      ).pop();
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: Text(
-                                      'Yes',
-                                      style: TextStyle(
-                                          color: Colors.blue
-                                      ),
+        return Card(
+          elevation: 8.0,
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            title: Text(
+                groupDetailReceiver.team[index].teamName,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w300
+              ),
+            ),
+            onTap: (){
+              HapticFeedback.lightImpact();
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder:(context){
+                        return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
+                      }
+                  )
+              );
+            },
+            onLongPress: (){
+              showCupertinoModalPopup(
+                context: context,
+                builder: (_){
+                  return CupertinoActionSheet(
+                    title: Text('Choose an action'),
+                    actions: [
+                      CupertinoActionSheetAction(
+                        child: Text('Delete Team'),
+                        onPressed: (){
+                          showDialog(
+                              context: context,
+                              builder: (_){
+                                return CupertinoAlertDialog(
+                                  content: Text(
+                                    'Are you sure you want to delete this?',
+                                    style: TextStyle(
+                                        fontSize: 20
                                     ),
-                                    onPressed: () async {
-                                      HapticFeedback.lightImpact();
-                                      LoadingScreen.showLoadingScreen(context, groupItemScaffoldKey);
-                                      deleteTeam(context, groupDetailReceiver.team[index].id).then((value) {
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                      });
-                                    },
-                                  )
-                                ],
-                              );
-                            }
-                        );
-                      },
-                    )
-                  ],
-                  cancelButton: CupertinoActionSheetAction(
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                          color: Colors.red
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('Cancel'),
+                                      onPressed: (){
+                                        HapticFeedback.lightImpact();
+                                        Navigator.of(
+                                            context,
+                                            rootNavigator: true
+                                        ).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        'Yes',
+                                        style: TextStyle(
+                                            color: Colors.blue
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        HapticFeedback.lightImpact();
+                                        LoadingScreen.showLoadingScreen(context, groupItemScaffoldKey);
+                                        deleteTeam(context, groupDetailReceiver.team[index].id).then((value) {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                    )
+                                  ],
+                                );
+                              }
+                          );
+                        },
+                      )
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            color: Colors.red
+                        ),
                       ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
                     ),
-                    onPressed: () {
-                      HapticFeedback.lightImpact();
-                      Navigator.pop(context);
-                    },
-                  ),
-                );
-              }
-            );
-          },
+                  );
+                }
+              );
+            },
+          ),
         );
       }
     );
