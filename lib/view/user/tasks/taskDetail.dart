@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:card_settings/widgets/card_settings_panel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
@@ -38,7 +39,6 @@ class _taskDetailState extends State<taskDetail> {
   String lastAssignedUserName = "Not Assigned";
   int taskStatus;
   DateTime taskStartDate, taskDueDate;
-  bool isStartDueDateEnabled = false;
   bool allowUserEdit = true;
 
   @override
@@ -55,7 +55,6 @@ class _taskDetailState extends State<taskDetail> {
         setState(() {
           taskStartDate = convertStringToDateTime(value.taskStartDate);
           taskDueDate = convertStringToDateTime(value.taskDueDate);
-          isStartDueDateEnabled = true;
         });
       }
 
@@ -121,145 +120,283 @@ class _taskDetailState extends State<taskDetail> {
     }
   }
 
+  InputDecoration textFieldInputDecoration = InputDecoration(
+    border: InputBorder.none,
+    focusedBorder: InputBorder.none,
+    enabledBorder: InputBorder.none,
+    errorBorder: InputBorder.none,
+    disabledBorder: InputBorder.none,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CupertinoNavigationBar(
           middle: Text('Edit Task'),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Currently assigned to: ' + lastAssignedUserName),
-              ),
-              CardSettings(
-                children: [
-                  CardSettingsSection(
-                    header: CardSettingsHeader(
-                      label: 'Task basic info',
-                      color: Colors.amber,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Task basic info',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text('Task Name'),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: TextField(
+                                enabled: allowUserEdit,
+                                controller: taskNameController,
+                                decoration: textFieldInputDecoration,
+                              ),
+                            )
+                          ],
+                        ),
+                        Divider(),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text('Task Description'),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: TextField(
+                                enabled: allowUserEdit,
+                                controller: taskDescController,
+                                maxLines: 5,
+                                decoration: textFieldInputDecoration,
+                              ),
+                            )
+                          ],
+                        ),
+                        Divider(),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text('Task Status'),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: TextField(
+                                enabled: allowUserEdit,
+                                controller: taskStatusMsgController,
+                                maxLines: 1,
+                                minLines: 1,
+                                decoration: textFieldInputDecoration,
+                              ),
+                            )
+                          ],
+                        ),
+                        Divider(),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text('Assigned member'),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: TextButton(
+                                child: Text(lastAssignedUserName=='Not Assigned' ? 'Click to assign': lastAssignedUserName),
+                                onPressed: allowUserEdit == true ? () {
+                                  getUserJoinedTeamList().then((value) {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(builder: (_){
+                                          return selectMember(type: 6, teamID: taskID, userList: value);
+                                        })
+                                    );
+                                  });
+                                } : null,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                    children: [
-                      CardSettingsText(
-                        label: 'Task Name',
-                        enabled: allowUserEdit,
-                        controller: taskNameController,
-                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      ),
-                      CardSettingsText(
-                        label: 'Task Description',
-                        enabled: allowUserEdit,
-                        controller: taskDescController,
-                        numberOfLines: 5,
-                      ),
-                      CardSettingsText(
-                        label: 'Task Status Message',
-                        enabled: allowUserEdit,
-                        controller: taskStatusMsgController,
-                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      )
-                    ],
                   ),
-                  CardSettingsSection(
-                    header: CardSettingsHeader(
-                      label: 'Extras',
-                      color: Colors.amber,
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Extras',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text('Start Date'),
+                            ),
+                            Expanded(
+                                flex: 9,
+                                child: TextButton(
+                                  child: Text(taskStartDate==null ? 'Select date' : taskStartDate.toString()),
+                                  onPressed: allowUserEdit==true ? (){
+                                    showDialog(
+                                        context: context,
+                                        builder: (_){
+                                          return Dialog(
+                                            child: SfDateRangePicker(
+                                              showActionButtons: true,
+                                              initialDisplayDate: taskStartDate,
+                                              initialSelectedDate: taskStartDate,
+                                              onSubmit: (date){
+                                                Navigator.of(context).pop();
+                                                setState(() {
+                                                  taskStartDate = date;
+                                                });
+                                              },
+                                              onCancel: (){
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          );
+                                        }
+                                    );
+                                  } : null,
+                                )
+                            )
+                          ],
+                        ),
+                        Divider(),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text('Due Date'),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: TextButton(
+                                child: Text(taskDueDate==null ? 'Select date' : taskDueDate.toString()),
+                                onPressed: allowUserEdit==true ? (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (_){
+                                        return Dialog(
+                                          child: SfDateRangePicker(
+                                            showActionButtons: true,
+                                            initialDisplayDate: taskDueDate,
+                                            initialSelectedDate: taskDueDate,
+                                            onSubmit: (date){
+                                              Navigator.of(context).pop();
+                                              setState(() {
+                                                taskDueDate = date;
+                                              });
+                                            },
+                                            onCancel: (){
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        );
+                                      }
+                                  );
+                                } : null,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                    children: [
-                      CardSettingsSwitch(
-                        label: 'Enable start/due date section',
-                        initialValue: isStartDueDateEnabled,
-                        fieldPadding: EdgeInsets.fromLTRB(10, 10, 10 , 5),
-                        onChanged: (bool){
-                          setState(() {
-                            isStartDueDateEnabled = bool;
-                          });
-                        },
-                      ),
-                      CardSettingsDateTimePicker(
-                        enabled: isStartDueDateEnabled,
-                        initialValue: taskStartDate,
-                        label: 'Start Date \n' + taskStartDate.toString(),
-                        onChanged: (dateTime){
-                          setState(() {
-                            taskStartDate = dateTime;
-                          });
-                        },
-                      ),
-                      CardSettingsDateTimePicker(
-                        enabled: isStartDueDateEnabled,
-                        initialValue: taskDueDate,
-                        label: 'Due Date \n' + taskDueDate.toString(),
-                        onChanged: (dateTime){
-                          setState(() {
-                            taskDueDate = dateTime;
-                          });
-                        },
-                      )
-                    ],
                   ),
-                  CardSettingsSection(
-                    header: CardSettingsHeader(
-                      label: 'Action',
-                      color: Colors.amber,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 40,
+                    width: double.infinity,
+                    child: TextButton(
+                      child: Text(
+                        taskStatus==1 ? 'Mark task as complete' : 'Re-activate task',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                            fontSize: 18
+                        ),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.amber
+                          )
+                      ),
+                      onPressed: allowUserEdit == true ? () {
+                        LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+
+                        changeTaskStatus(context, taskID, taskStatus).then((value) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        });
+                      } : null,
                     ),
-                    children: [
-                      CardSettingsButton(
-                          label: 'Assign member',
-                          enabled: allowUserEdit,
-                          onPressed: (){
-                            getUserJoinedTeamList().then((value) {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(builder: (_){
-                                    return selectMember(type: 6, teamID: taskID, userList: value);
-                                  })
-                              );
-                            });
-                          }
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 40,
+                    width: double.infinity,
+                    child: TextButton(
+                      child: Text(
+                        'Save',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                            fontSize: 18
+                        ),
                       ),
-                      CardSettingsButton(
-                          label: taskStatus==1 ? 'Mark task as complete' : 'Re-activate task',
-                          enabled: allowUserEdit,
-                          onPressed: (){
-                            LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
-
-                            changeTaskStatus(context, taskID, taskStatus).then((value) {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            });
-                          }
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.amber
+                          )
                       ),
-                      CardSettingsButton(
-                          label: 'Save',
-                          enabled: allowUserEdit,
-                          onPressed: (){
-                            if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusMsgController.text.isNotEmpty){
-                              LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+                      onPressed: allowUserEdit==true ? () {
+                        if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusMsgController.text.isNotEmpty){
+                          LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 
-                              String startDate = taskStartDate.toString();
-                              String dueDate = taskDueDate.toString();
+                          String startDate = taskStartDate.toString();
+                          String dueDate = taskDueDate.toString();
 
-                              updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              });
-                            }else{
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
-                            }
-                          }
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ],
+                          updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          });
+                        }else{
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                        }
+                      } : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        )
+        ),
     );
   }
 }

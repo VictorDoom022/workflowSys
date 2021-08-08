@@ -31,7 +31,6 @@ class _createTaskState extends State<createTask> {
   TextEditingController taskStatusController = TextEditingController();
 
   DateTime taskStartDate, taskDueDate;
-  bool isStartDueDateEnabled = false;
 
   InputDecoration textFieldInputDecoration = InputDecoration(
     border: InputBorder.none,
