@@ -12,6 +12,7 @@ import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
+import 'package:workflow_sys/view/user/tasks/taskAssignedHistory.dart';
 
 class taskDetail extends StatefulWidget {
 
@@ -40,6 +41,7 @@ class _taskDetailState extends State<taskDetail> {
   String lastAssignedUserName = "Not Assigned";
   int taskStatus;
   DateTime taskStartDate, taskDueDate;
+  String taskAssignedDate;
   bool allowUserEdit = true;
 
   @override
@@ -52,12 +54,15 @@ class _taskDetailState extends State<taskDetail> {
       taskStatusMsgController.text = value.taskStatusMsg;
 
       if(value.taskStartDate != "null" || value.taskDueDate != "null"){
-
         setState(() {
           taskStartDate = convertStringToDateTime(value.taskStartDate);
           taskDueDate = convertStringToDateTime(value.taskDueDate);
         });
       }
+
+      setState(() {
+        taskAssignedDate = value.taskAssignedDate;
+      });
 
       checkToAllowEdit(value);
       checkTaskStatus(value);
@@ -216,18 +221,44 @@ class _taskDetailState extends State<taskDetail> {
                             ),
                             Expanded(
                               flex: 9,
-                              child: TextButton(
-                                child: Text(lastAssignedUserName=='Not Assigned' ? 'Click to assign': lastAssignedUserName),
-                                onPressed: allowUserEdit == true ? () {
-                                  getUserJoinedTeamList().then((value) {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(builder: (_){
-                                          return selectMember(type: 6, teamID: taskID, userList: value);
-                                        })
-                                    );
-                                  });
-                                } : null,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 6,
+                                    child: TextButton(
+                                      child: Text(lastAssignedUserName=='Not Assigned' ? 'Click to assign': lastAssignedUserName),
+                                      onPressed: allowUserEdit == true ? () {
+                                        getUserJoinedTeamList().then((value) {
+                                          Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(builder: (_){
+                                                return selectMember(type: 6, teamID: taskID, userList: value);
+                                              })
+                                          );
+                                        });
+                                      } : null,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 6,
+                                      child: TextButton(
+                                        child: Text(
+                                            lastAssignedUserName=='Not Assigned' ? 'No history' : 'View assign history'
+                                        ),
+                                        onPressed: () {
+                                          getUserJoinedTeamList().then((value) {
+                                            List<String> assignDateList = taskAssignedDate.split(',');
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(builder: (_){
+                                                  return taskAssignedHistory(userList: value, assignedDateList: assignDateList);
+                                                })
+                                            );
+                                          });
+                                        },
+                                      )
+                                  )
+                                ],
                               ),
                             )
                           ],
