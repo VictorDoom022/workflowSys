@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
@@ -97,20 +98,158 @@ class taskItem extends StatelessWidget {
       shrinkWrap: true,
       itemCount: listTask.length,
       itemBuilder: (context, index){
-        return ListTile(
-          title: Text(listTask[index].taskName),
-          trailing: Text('Assigned to: ' + checkLastAssignedUser(listTask[index].taskAssignedMemberID)),
-          subtitle: Text('Last updated: ' + convertBackendDateTime(listTask[index].updatedAt)),
-          onTap: (){
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder:(context){
-                      return taskDetail(teamID: teamID, taskID: listTask[index].id);
-                    }
-                )
-            );
-          },
+        return Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: GestureDetector(
+            child: Card(
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(10)
+                                )
+                            ),
+                            child: Text(
+                              convertBackendDateTimeToDate(listTask[index].createdAt),
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300
+                              ),
+                            ),
+                          ),
+                          Text(
+                            convertBackendDateTimeToMonth(listTask[index].createdAt),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold
+                            ),
+                          )
+                        ],
+                      )
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          listTask[index].taskName,
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Wrap(
+                          children: [
+                            Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.person_add,
+                                    color: Colors.black54,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    checkLastAssignedUser(listTask[index].taskUserCreateID),
+                                    style: TextStyle(
+                                        fontSize: 15
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.history,
+                                    color: Colors.black54,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    convertBackendDateTime(listTask[index].updatedAt),
+                                    style: TextStyle(
+                                        fontSize: 15
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.person_crop_circle_fill_badge_exclam,
+                                    color: Colors.black54,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    checkLastAssignedUser(listTask[index].taskAssignedMemberID),
+                                    style: TextStyle(
+                                        fontSize: 15
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.info_outline,
+                                    color: Colors.black54,
+                                  ),
+                                  Text(
+                                    listTask[index].taskStatusMsg,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          listTask[index].taskDesc,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 16
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onTap: (){
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder:(context){
+                        return taskDetail(teamID: teamID, taskID: listTask[index].id);
+                      }
+                  )
+              );
+            },
+          ),
         );
       },
     );
