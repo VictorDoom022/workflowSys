@@ -23,6 +23,7 @@ class Task extends Model
         'task_desc',
         'task_userCreateID',
         'task_assignedMemberID',
+        'task_assignedDate',
         'task_startDate',
         'task_dueDate',
         'task_statusMsg',

@@ -109,16 +109,26 @@ class TaskController extends Controller
         //variables that uses $request without validation
         $taskID = $request->taskID;
         $assignedUserID = $request->assignedUserID; // only can assign to one member
+        $taskAssignedDate = $request->taskAssignedDate; // data received in epoch
 
         $task = Task::where('id', $taskID)->first();
         $taskAssignedMemberList = $task->task_assignedMemberID;
+        $taskAssignedDateList = $task->task_assignedDate;
 
         if(strlen($taskAssignedMemberList) == 0){
             $taskAssignedMemberListNew = $assignedUserID;
         }else{
             $taskAssignedMemberListNew = $taskAssignedMemberList. ',' .$assignedUserID;
         }
+
+        if(strlen($taskAssignedDateList) == 0){
+            $taskAssignedDateListNew = $taskAssignedDate;
+        }else{
+            $taskAssignedDateListNew = $taskAssignedDateList. ',' .$taskAssignedDate;
+        }
+
         $task->task_assignedMemberID = $taskAssignedMemberListNew;
+        $task->task_assignedDate = $taskAssignedDateListNew;
         $task->save();
         
         return [

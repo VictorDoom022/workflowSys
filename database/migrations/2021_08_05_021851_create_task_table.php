@@ -21,6 +21,7 @@ class CreateTaskTable extends Migration
             $table->string('task_desc');
             $table->string('task_userCreateID');
             $table->string('task_assignedMemberID');
+            $table->longText('task_assignedDate');
             $table->string('task_startDate');
             $table->string('task_dueDate');
             $table->string('task_statusMsg');
