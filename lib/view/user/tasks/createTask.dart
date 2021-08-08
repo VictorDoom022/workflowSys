@@ -147,6 +147,7 @@ class _createTaskState extends State<createTask> {
                                       builder: (_){
                                         return Dialog(
                                           child: SfDateRangePicker(
+                                            enablePastDates: false,
                                             showActionButtons: true,
                                             onSubmit: (date){
                                               Navigator.of(context).pop();

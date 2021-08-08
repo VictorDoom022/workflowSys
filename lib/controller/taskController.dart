@@ -192,6 +192,7 @@ Future<void> changeTaskStatus(BuildContext context, int taskID, int taskStatus) 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
 }
+
 Future<List<Task>> getCompletedTaskByTaskListID(int taskListID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
@@ -220,3 +221,21 @@ Future<List<Task>> getCompletedTaskByTaskListID(int taskListID) async {
   }
 }
 
+Future<void> deleteTask(BuildContext context, int taskID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/task/deleteTaskByTaskID/' + taskID.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}

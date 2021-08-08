@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:card_settings/widgets/card_settings_panel.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/miscController.dart';
@@ -352,6 +353,71 @@ class _taskDetailState extends State<taskDetail> {
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
                         });
+                      } : null,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 40,
+                    width: double.infinity,
+                    child: TextButton(
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                            fontSize: 18
+                        ),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.red
+                          )
+                      ),
+                      onPressed: allowUserEdit == true ? () {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (_){
+                              return CupertinoAlertDialog(
+                                content: Text(
+                                  'Are you sure you want to delete this task?',
+                                  style: TextStyle(
+                                      fontSize: 20
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: Text('Cancel'),
+                                    onPressed: (){
+                                      HapticFeedback.lightImpact();
+                                      Navigator.of(
+                                          context,
+                                          rootNavigator: true
+                                      ).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text(
+                                      'Yes',
+                                      style: TextStyle(
+                                          color: Colors.blue
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+                                      deleteTask(context, taskID).then((value) {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  )
+                                ],
+                              );
+                            }
+                        );
                       } : null,
                     ),
                   ),
