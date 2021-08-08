@@ -35,6 +35,7 @@ class _taskListDetailState extends State<taskListDetail> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   Future<List<Task>> futureTaskList;
+  String searchKeyWord="";
 
   @override
   void initState() {
@@ -51,33 +52,68 @@ class _taskListDetailState extends State<taskListDetail> {
     refreshController.refreshCompleted();
   }
 
+  Future<List<Task>> searchList() async {
+    List<Task> listTask = await futureTaskList;
+    List<Task> searchList = [];
+
+    if(searchKeyWord == ""){
+      searchList = listTask;
+    }else {
+      for(int i=0; i < listTask.length; i++){
+        if(listTask[i].taskName.toLowerCase().contains(searchKeyWord.toLowerCase()) == true){
+          searchList.add(listTask[i]);
+        }
+      }
+    }
+
+    return searchList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text(taskListUserName + '\'s Task List'),
       ),
-      body: SmartRefresher(
-        controller: refreshController,
-        enablePullDown: true,
-        header: BezierCircleHeader(),
-        onRefresh: getTaskData,
-        child: FutureBuilder<List<Task>>(
-          future: futureTaskList,
-          builder: (context, snapshot){
-            if(snapshot.hasError) print(snapshot.error);
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CupertinoSearchTextField(
+              onChanged: (value){
+                setState(() {
+                  searchKeyWord = value;
+                });
+                searchList();
+              },
+            ),
+          ),
+          Expanded(
+            child: SmartRefresher(
+              controller: refreshController,
+              enablePullDown: true,
+              header: BezierCircleHeader(),
+              onRefresh: getTaskData,
+              child: FutureBuilder<List<Task>>(
+                future: searchKeyWord=="" ? futureTaskList : searchList(),
+                builder: (context, snapshot){
+                  if(snapshot.hasError) print(snapshot.error);
 
-            if(snapshot.hasData){
-              if(snapshot.data.toString() != "[]"){
-                return taskItem(userReceiver: userReceiver, teamID: teamID,listTask: snapshot.data);
-              }else{
-                return Center(child: Text('No task created'));
-              }
-            }else{
-              return Center(child: CupertinoActivityIndicator(radius: 12));
-            }
-          },
-        ),
+                  if(snapshot.hasData){
+                    if(snapshot.data.toString() != "[]"){
+                      return taskItem(userReceiver: userReceiver, teamID: teamID,listTask: snapshot.data);
+                    }else{
+                      return Center(child: Text('No task created'));
+                    }
+                  }else{
+                    return Center(child: CupertinoActivityIndicator(radius: 12));
+                  }
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
