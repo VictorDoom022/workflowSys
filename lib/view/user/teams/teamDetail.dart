@@ -41,6 +41,7 @@ class _teamDetailState extends State<teamDetail> {
 
   Future<TeamDetailReceiver> futureTeamDetailReceiver;
   UserReceiver userReceiver;
+  String searchKeyword;
 
   @override
   void initState() {

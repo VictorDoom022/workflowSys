@@ -34,3 +34,14 @@ DateTime convertStringToDateTime(String dateTimeString){
 
   return dateTime;
 }
+
+int epochFromDate(DateTime dt) {
+  return dt.millisecondsSinceEpoch;
+}
+
+String dateFromEpoch(int epoch){
+  var date = DateTime.fromMillisecondsSinceEpoch(epoch);
+  var formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
+
+  return formattedDate;
+}

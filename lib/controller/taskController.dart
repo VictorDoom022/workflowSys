@@ -128,6 +128,7 @@ Future<void> assignTask(BuildContext context, int taskID, int assignedUserID) as
       body: {
         'taskID' : taskID.toString(),
         'assignedUserID' : assignedUserID.toString(),
+        'taskAssignedDate' : epochFromDate(DateTime.now()).toString(),
       },
       headers: {
         'Accept': 'application/json',
