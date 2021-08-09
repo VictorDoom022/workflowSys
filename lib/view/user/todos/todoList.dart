@@ -100,7 +100,7 @@ class _todoListState extends State<todoList> {
                     if(snapshot.data.toString() != "[]"){
                       return todoItem(todoList: snapshot.data);
                     }else{
-                      return Center(child: Text('No task created'));
+                      return Center(child: Text('No todo created'));
                     }
                   }else{
                     return Center(child: CupertinoActivityIndicator(radius: 12));

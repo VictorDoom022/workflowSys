@@ -99,7 +99,7 @@ class _todoArchivedState extends State<todoArchived> {
                     if(snapshot.data.toString() != "[]"){
                       return todoItem(todoList: snapshot.data);
                     }else{
-                      return Center(child: Text('No task created'));
+                      return Center(child: Text('No archived item'));
                     }
                   }else{
                     return Center(child: CupertinoActivityIndicator(radius: 12));

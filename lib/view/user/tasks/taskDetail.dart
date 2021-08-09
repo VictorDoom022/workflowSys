@@ -250,7 +250,7 @@ class _taskDetailState extends State<taskDetail> {
                                         child: Text(
                                             lastAssignedUserName=='Not Assigned' ? 'No history' : 'View assign history'
                                         ),
-                                        onPressed: () {
+                                        onPressed:  lastAssignedUserName!='Not Assigned' ? () {
                                           getUserJoinedTeamList().then((value) {
                                             List<String> assignDateList = taskAssignedDate.split(',');
                                             Navigator.push(
@@ -260,7 +260,7 @@ class _taskDetailState extends State<taskDetail> {
                                                 })
                                             );
                                           });
-                                        },
+                                        } : null,
                                       )
                                   )
                                 ],
