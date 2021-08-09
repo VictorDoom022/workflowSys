@@ -62,7 +62,7 @@ Future<void> createNewTodo(BuildContext context, String todoName, String todoDes
   }
 }
 
-Future<ToDo> getTodoByID(int todoID) async {
+Future<ToDo> getTodoByID(BuildContext context, int todoID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -81,7 +81,12 @@ Future<ToDo> getTodoByID(int todoID) async {
 
 
   if(response.statusCode == 200){
-    return ToDo.fromJson(jsonDecode(response.body));
+    if(response.body != ""){
+      return ToDo.fromJson(jsonDecode(response.body));
+    }else{
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please pull to refresh and try again')));
+    }
   }
 }
 

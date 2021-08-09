@@ -67,7 +67,7 @@ Future<List<Task>> getTaskByTaskListID(int taskListID) async {
   }
 }
 
-Future<Task> getTaskByID(int taskID) async {
+Future<Task> getTaskByID(BuildContext context, int taskID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -86,7 +86,12 @@ Future<Task> getTaskByID(int taskID) async {
 
 
   if(response.statusCode == 200){
-    return Task.fromJson(jsonDecode(response.body));
+    if(response.body != ""){
+      return Task.fromJson(jsonDecode(response.body));
+    }else{
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please pull to refresh and try again')));
+    }
   }
 }
 

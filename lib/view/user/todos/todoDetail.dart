@@ -35,7 +35,7 @@ class _todoDetailState extends State<todoDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getTodoByID(todoID).then((value) {
+    getTodoByID(context, todoID).then((value) {
       todoNameController.text = value.todoName;
       todoDescController.text = value.todoDesc;
       todoStatusMsgController.text = value.todoStatusMsg;
