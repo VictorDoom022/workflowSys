@@ -238,7 +238,7 @@ class _todoDetailState extends State<todoDetail> {
                   width: double.infinity,
                   child: TextButton(
                     child: Text(
-                      todoStatus==1 ? 'Mark task as complete' : 'Re-activate task',
+                      todoStatus==1 ? 'Archive' : 'Unarchive',
                       style: TextStyle(
                           fontWeight: FontWeight.w300,
                           color: Colors.white,
@@ -251,12 +251,12 @@ class _todoDetailState extends State<todoDetail> {
                         )
                     ),
                     onPressed: () {
-                      // LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
-                      //
-                      // changeTaskStatus(context, taskID, taskStatus).then((value) {
-                      //   Navigator.of(context).pop();
-                      //   Navigator.of(context).pop();
-                      // });
+                      LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
+
+                      changeTodoStatus(context, todoID, todoStatus).then((value) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      });
                     },
                   ),
                 ),
