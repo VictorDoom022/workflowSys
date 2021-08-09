@@ -153,3 +153,29 @@ Future<void> changeTodoStatus(BuildContext context, int todoID, int todoStatus) 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
 }
+
+Future<List<ToDo>> getToDoArchivedList() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/todo/getToDoArchivedByUserID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userID': userID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    List<ToDo> listToDo = (jsonRes as List).map((e) => ToDo.fromJson(e)).toList();
+
+    return listToDo;
+  }
+}

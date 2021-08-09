@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:workflow_sys/view/user/todos/createTodo.dart';
+import 'package:workflow_sys/view/user/todos/todoArchived.dart';
 import 'package:workflow_sys/view/user/todos/todoList.dart';
 
 class todoHome extends StatefulWidget {
@@ -50,12 +51,17 @@ class _todoHomeState extends State<todoHome> {
         icon: Icons.playlist_add,
         title: Text('Create Todo')
     ),
+    TitledNavigationBarItem(
+        icon: Icons.archive_outlined,
+        title: Text('Archived')
+    ),
   ];
 
   List<Widget> screenList() {
     return [
       todoList(),
       createTodo(),
+      todoArchived(),
     ];
   }
 }
