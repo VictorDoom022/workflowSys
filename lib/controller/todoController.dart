@@ -111,3 +111,22 @@ Future<void> updateTodo(BuildContext context, int todoID, String todoName, Strin
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
 }
+
+Future<void> deleteTodo(BuildContext context, int todoID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/todo/deleteTodoById/' + todoID.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}

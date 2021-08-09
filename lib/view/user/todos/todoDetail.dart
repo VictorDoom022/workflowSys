@@ -310,12 +310,12 @@ class _todoDetailState extends State<todoDetail> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    // LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
-                                    // deleteTask(context, taskID).then((value) {
-                                    //   Navigator.of(context).pop();
-                                    //   Navigator.of(context).pop();
-                                    //   Navigator.of(context).pop();
-                                    // });
+                                    LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
+                                    deleteTodo(context, todoID).then((value) {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                    });
                                   },
                                 )
                               ],
