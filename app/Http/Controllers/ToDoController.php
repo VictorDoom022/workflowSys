@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class ToDoController extends Controller
 {
+    /*
+        todo docs
+        0 = archived todo
+        1 = active todo
+    */
     public function createTodo(Request $request){
 
         //variables that uses $request without validation
@@ -26,6 +31,7 @@ class ToDoController extends Controller
             'todo_startDate' => $todoStartDate,
             'todo_dueDate' => $todoDueDate,
             'todo_statusMsg' => $fields['todoStatusMsg'],
+            'todo_status' => 1,
         ]);
 
         return [
@@ -48,7 +54,8 @@ class ToDoController extends Controller
         //variables that uses $request without validation
         $userID = $request->userID;
         
-        $todo = ToDo::where('id', $userID)->get();
+        $todo = ToDo::where('id', $userID)
+                        ->where('todo_status', 1)->get();
 
         return response($todo, 200);
     }
@@ -77,6 +84,23 @@ class ToDoController extends Controller
 
         return [
             'message'=>'Todo updated.'
+        ];
+    }
+
+    public function changeTodoStatus(Request $request){
+
+        //variables that uses $request without validation
+        $todoID = $request->todoID;
+        $todoStatus = $request->todoStatus;
+
+        $changesTodoStatus = $todoStatus==1 ? 0: 1;
+
+        $todo = ToDo::where('id', $todoID)->first();
+        $todo->todo_status = $changesTodoStatus;
+        $todo->save();
+
+        return [
+            'message'=>'Todo status updated.'
         ];
     }
 

@@ -21,7 +21,7 @@ class CreateToDoTable extends Migration
             $table->string('todo_startDate');
             $table->string('todo_dueDate');
             $table->string('todo_statusMsg');
-            $table->string('todo_status');
+            $table->integer('todo_status');
             $table->timestamps();
         });
     }
