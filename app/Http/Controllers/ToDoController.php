@@ -74,7 +74,6 @@ class ToDoController extends Controller
         ]);
 
         $todo = ToDo::where('id', $todoID)->first();
-        $todo->todo_userID = $todoID;
         $todo->todo_name = $fields['todoName'];
         $todo->todo_desc = $fields['todoDesc'];
         $todo->todo_startDate = $todoStartDate;
@@ -93,10 +92,10 @@ class ToDoController extends Controller
         $todoID = $request->todoID;
         $todoStatus = $request->todoStatus;
 
-        $changesTodoStatus = $todoStatus==1 ? 0: 1;
+        $changeTodoStatus = $todoStatus==1 ? 0: 1;
 
         $todo = ToDo::where('id', $todoID)->first();
-        $todo->todo_status = $changesTodoStatus;
+        $todo->todo_status = $changeTodoStatus;
         $todo->save();
 
         return [
