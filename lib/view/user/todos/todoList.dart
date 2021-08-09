@@ -4,6 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/todoController.dart';
 import 'package:workflow_sys/model/ToDo.dart';
+import 'package:workflow_sys/view/user/todos/todoDetail.dart';
 
 import '../userNavDrawer.dart';
 
@@ -230,7 +231,14 @@ class todoItem extends StatelessWidget {
               ),
             ),
             onTap: (){
-
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (_){
+                      return todoDetail(todoID: todoList[index].id);
+                    }
+                  )
+              );
             },
           ),
         );

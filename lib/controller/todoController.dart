@@ -61,3 +61,26 @@ Future<void> createNewTodo(BuildContext context, String todoName, String todoDes
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
 }
+
+Future<ToDo> getTodoByID(int todoID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/todo/getTodoByID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'todoID' : todoID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+
+  if(response.statusCode == 200){
+    return ToDo.fromJson(jsonDecode(response.body));
+  }
+}
