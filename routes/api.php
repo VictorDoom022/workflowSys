@@ -67,4 +67,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('todo/getToDoByUserID', [App\Http\Controllers\ToDoController::class, 'getToDoByUserID']);
     Route::post('todo/updateTodo', [App\Http\Controllers\ToDoController::class, 'updateTodo']);
     Route::post('todo/deleteTodoById/{id}', [App\Http\Controllers\ToDoController::class, 'deleteTodoById']);
+    Route::post('todo/changeTodoStatus', [App\Http\Controllers\ToDoController::class, 'changeTodoStatus']);
 });
