@@ -17,7 +17,7 @@ class CreateToDoTable extends Migration
             $table->id();
             $table->integer('todo_userID');
             $table->string('todo_name');
-            $table->string('todo_desc');
+            $table->longText('todo_desc');
             $table->string('todo_startDate');
             $table->string('todo_dueDate');
             $table->string('todo_statusMsg');
