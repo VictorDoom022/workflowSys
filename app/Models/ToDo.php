@@ -17,6 +17,7 @@ class ToDo extends Model
      * @var array
      */
     protected $fillable = [
+        'todo_userID',
         'todo_name',
         'todo_desc',
         'todo_startDate',

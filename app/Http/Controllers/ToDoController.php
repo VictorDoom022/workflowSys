@@ -54,7 +54,7 @@ class ToDoController extends Controller
         //variables that uses $request without validation
         $userID = $request->userID;
         
-        $todo = ToDo::where('id', $userID)
+        $todo = ToDo::where('todo_userID', $userID)
                         ->where('todo_status', 1)->get();
 
         return response($todo, 200);
