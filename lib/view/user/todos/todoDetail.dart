@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/todoController.dart';
+import 'package:workflow_sys/view/misc/loadingScreen.dart';
 
 class todoDetail extends StatefulWidget {
 
@@ -20,6 +21,8 @@ class _todoDetailState extends State<todoDetail> {
   final int todoID;
 
   _todoDetailState(this.todoID);
+
+  GlobalKey<ScaffoldState> toDoDetailScaffoldKey = GlobalKey();
 
   TextEditingController todoNameController = TextEditingController();
   TextEditingController todoDescController = TextEditingController();
@@ -344,15 +347,15 @@ class _todoDetailState extends State<todoDetail> {
                     ),
                     onPressed: () {
                       if(todoNameController.text.isNotEmpty && todoDescController.text.isNotEmpty && todoStatusMsgController.text.isNotEmpty){
-                        // LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+                        LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
 
                         String startDate = todoStartDate.toString();
                         String dueDate = todoDueDate.toString();
 
-                        // updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
-                        //   Navigator.of(context).pop();
-                        //   Navigator.of(context).pop();
-                        // });
+                        updateTodo(context, todoID, todoNameController.text, todoDescController.text, todoStatusMsgController.text, startDate, dueDate).then((value) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        });
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
                       }

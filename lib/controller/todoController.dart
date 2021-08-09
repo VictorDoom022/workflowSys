@@ -84,3 +84,30 @@ Future<ToDo> getTodoByID(int todoID) async {
     return ToDo.fromJson(jsonDecode(response.body));
   }
 }
+
+Future<void> updateTodo(BuildContext context, int todoID, String todoName, String todoDesc, String todoStatusMsg, String todoStartDate, String todoDueDate) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/todo/updateTodo';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'todoID' : todoID.toString(),
+        'todoName' : todoName,
+        'todoDesc' : todoDesc,
+        'todoStatusMsg' : todoStatusMsg,
+        'todoStartDate': todoStartDate,
+        'todoDueDate' : todoDueDate,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
