@@ -111,4 +111,15 @@ class ToDoController extends Controller
             'message'=>'Todo deleted.'
         ];
     }
+
+    public function getToDoArchivedByUserID(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+        
+        $todo = ToDo::where('todo_userID', $userID)
+                        ->where('todo_status', 0)->get();
+
+        return response($todo, 200);
+    }
 }
