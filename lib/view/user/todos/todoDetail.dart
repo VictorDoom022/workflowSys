@@ -44,9 +44,14 @@ class _todoDetailState extends State<todoDetail> {
         todoStatus = value.todoStatus;
       });
 
-      if(value.todoStartDate != "null" || value.todoDueDate != "null"){
+      if(value.todoStartDate != "null"){
         setState(() {
           todoStartDate = convertStringToDateTime(value.todoStartDate);
+        });
+      }
+
+      if(value.todoDueDate != "null"){
+        setState(() {
           todoDueDate = convertStringToDateTime(value.todoDueDate);
         });
       }

@@ -52,9 +52,14 @@ class _taskDetailState extends State<taskDetail> {
       taskDescController.text = value.taskDesc;
       taskStatusMsgController.text = value.taskStatusMsg;
 
-      if(value.taskStartDate != "null" || value.taskDueDate != "null"){
+      if(value.taskStartDate != "null"){
         setState(() {
           taskStartDate = convertStringToDateTime(value.taskStartDate);
+        });
+      }
+
+      if(value.taskDueDate != "null"){
+        setState(() {
           taskDueDate = convertStringToDateTime(value.taskDueDate);
         });
       }
