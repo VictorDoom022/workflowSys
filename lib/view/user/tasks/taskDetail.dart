@@ -195,7 +195,7 @@ class _taskDetailState extends State<taskDetail> {
                               child: TextField(
                                 enabled: allowUserEdit,
                                 controller: taskDescController,
-                                maxLines: 5,
+                                maxLines: 10,
                                 decoration: textFieldInputDecoration,
                               ),
                             )

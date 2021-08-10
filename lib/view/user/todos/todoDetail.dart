@@ -117,7 +117,7 @@ class _todoDetailState extends State<todoDetail> {
                             flex: 9,
                             child: TextField(
                               controller: todoDescController,
-                              maxLines: 5,
+                              maxLines: 10,
                               decoration: textFieldInputDecoration,
                             ),
                           )

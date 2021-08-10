@@ -91,7 +91,7 @@ class _createTodoState extends State<createTodo> {
                             flex: 9,
                             child: TextField(
                               controller: todoDescController,
-                              maxLines: 5,
+                              maxLines: 10,
                               decoration: textFieldInputDecoration,
                             ),
                           )

@@ -89,7 +89,7 @@ class _createTaskState extends State<createTask> {
                             flex: 9,
                             child: TextField(
                               controller: taskDescController,
-                              maxLines: 5,
+                              maxLines: 10,
                               decoration: textFieldInputDecoration,
                             ),
                           )
