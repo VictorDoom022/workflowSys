@@ -97,6 +97,14 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
             title: 'Danger zone',
             tiles: [
               SettingsTile(
+                title: 'Delete team',
+                enabled: isAdmin,
+                iosChevron: null,
+                onPressed: (_){
+                  deleteTeamSection();
+                },
+              ),
+              SettingsTile(
                 title: 'Quit team',
                 iosChevron: null,
                 onPressed: (_){
@@ -190,6 +198,52 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
                   HapticFeedback.lightImpact();
                   LoadingScreen.showLoadingScreen(context, teamSettingsScaffoldKey);
                   renameTeam(context, teamID, renameTeamController.text).then((value) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  });
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void deleteTeamSection(){
+    showDialog(
+        context: context,
+        builder: (_){
+          return CupertinoAlertDialog(
+            content: Text(
+              'Are you sure you want to delete this?',
+              style: TextStyle(
+                  fontSize: 20
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                      color: Colors.blue
+                  ),
+                ),
+                onPressed: () async {
+                  HapticFeedback.lightImpact();
+                  LoadingScreen.showLoadingScreen(context, teamSettingsScaffoldKey);
+                  deleteTeam(context, teamID).then((value) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   });
