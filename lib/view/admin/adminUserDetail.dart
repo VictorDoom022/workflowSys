@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserDetail.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
@@ -40,138 +41,106 @@ class _adminUserDetailState extends State<adminUserDetail> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'Account ID: ',
-                        style: textTitleStyle,
+                      Row(
+                        children: [
+                          CardRowItem(
+                            title: 'Account ID',
+                            content: user.id.toString(),
+                          ),
+                          CardRowItem(
+                            title: 'Name',
+                            content: user.name,
+                          ),
+                        ],
                       ),
-                      Text(
-                        user.id.toString(),
-                        style: textInfoStyle,
+                      Row(
+                        children: [
+                          CardRowItem(
+                            title: 'Email',
+                            content: user.email,
+                          ),
+                          CardRowItem(
+                            title: 'Create At',
+                            content: convertBackendDateTime(user.createdAt),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          CardRowItem(
+                            title: 'Account Status',
+                            content: userDetail.userDetailStatus,
+                          ),
+                          CardRowItem(
+                            title: 'Account Enabled',
+                            content: userDetail.userDetailAccEnable==1 ? 'true' : 'false',
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          CardRowItem(
+                            title: 'Account Type',
+                            content: user.position,
+                          ),
+                        ],
                       )
                     ],
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Name: ',
-                        style: textTitleStyle,
-                      ),
-                      Text(
-                        user.name,
-                        style: textInfoStyle,
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Email: ',
-                        style: textTitleStyle,
-                      ),
-                      Text(
-                        user.email,
-                        style: textInfoStyle,
-                      )
-                    ],
-                  ),
-                  Container(),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Create at : ',
-                        style: textTitleStyle,
-                      ),
-                      Text(
-                        user.createdAt,
-                        style: textInfoStyle,
-                      )
-                    ],
-                  ),
-                  Container(),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Account type : ',
-                        style: textTitleStyle,
-                      ),
-                      Text(
-                        user.position,
-                        style: textInfoStyle,
-                      )
-                    ],
-                  ),
-                  Container(),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Account Status: ',
-                        style: textTitleStyle,
-                      ),
-                      Text(
-                        userDetail.userDetailStatus,
-                        style: textInfoStyle,
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Enabled: ',
-                        style: textTitleStyle,
-                      ),
-                      Text(
-                        userDetail.userDetailAccEnable==1 ? 'yes' : 'false',
-                        style: textInfoStyle,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+class CardRowItem extends StatelessWidget {
+
+  final String title;
+  final String content;
+
+  const CardRowItem({Key key, this.title, this.content}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    TextStyle titleTextStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
+
+    return Expanded(
+      flex: 3,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Text(
+                title,
+              style: titleTextStyle,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(content),
+          )
+        ],
+      ),
+    );
+  }
+}
+
