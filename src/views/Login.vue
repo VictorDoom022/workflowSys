@@ -6,25 +6,60 @@
             
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control">
+                <input type="email" v-model="email" class="form-control">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control">
+                <input type="password" v-model="password" class="form-control">
             </div>
 
             <div class="mb-3">
-                <button class="btn btn-primary">Login</button>
+                <button class="btn btn-primary" @click="login">Login</button>
             </div>
+
+            {{ token }} - {{ user }}
         </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import Vue from 'vue'
 
+export default {
+    data() {
+        return {
+            email: '',
+            password: '',
+            user: [],
+            userDetail: [],
+            token: '',
+        }
+    },
+    methods: {
+        login(){
+            Vue.axios.post(
+                'login', {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    email: this.email,
+                    password: this.password,
+                }
+            ).then((response) => {
+                if(response.status == 201){
+                    console.log("Invalid")
+                }else{
+                    this.user = response.data['user']
+                    this.userDetail = response.data['userDetail']
+                    this.token = response.data['token']
+                }
+            })
+
+            // to store into local storage
+        }
+    }
 }
 </script>
 
