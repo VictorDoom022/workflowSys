@@ -1,34 +1,40 @@
 <template>
-  <div class="d-flex justify-content-center">
-    <div class="card">
-        <div class="card-body">
-            <h1 class="card-title">Login</h1>
-            <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" v-model="email" class="form-control">
-            </div>
+    <div>
+        <div class="d-flex justify-content-center">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">Login</h1>
+                    <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" v-model="email" class="form-control">
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" v-model="password" class="form-control">
-            </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" v-model="password" class="form-control">
+                    </div>
 
-            <div class="mb-3">
-                <button class="btn btn-primary" @click="login">Login</button>
-            </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary" @click="login">Login</button>
+                    </div>
 
-            {{ token }} - {{ user }}
+                    {{ token }} - {{ user }}
+                </div>
+            </div>
         </div>
+        <Loading v-if="isLoading" />
     </div>
-  </div>
+  
 </template>
 
 <script>
 import Vue from 'vue'
 import storeData from '../functions/storeData'
+import Loading from '../components/Loading.vue'
 
 export default {
+    components: { Loading },
     data() {
         return {
             email: '',
@@ -37,10 +43,12 @@ export default {
             userDetail: [],
             token: '',
             error: null,
+            isLoading: false,
         }
     },
     methods: {
         login(){
+            this.isLoading = true;
             Vue.axios.post(
                 'login', {
                     headers: {
@@ -50,6 +58,7 @@ export default {
                     password: this.password,
                 }
             ).then((response) => {
+                this.isLoading = false;
                 if(response.status == 201){
                     this.error = response.data['message'][0]
                 }else{
