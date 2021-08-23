@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-body">
             <h1 class="card-title">Login</h1>
-            
+            <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
             <div class="mb-3">
                 <label class="form-label">Email</label>
                 <input type="email" v-model="email" class="form-control">
@@ -35,6 +35,7 @@ export default {
             user: [],
             userDetail: [],
             token: '',
+            error: null,
         }
     },
     methods: {
@@ -49,7 +50,7 @@ export default {
                 }
             ).then((response) => {
                 if(response.status == 201){
-                    console.log("Invalid")
+                    this.error = response.data['message'][0]
                 }else{
                     this.user = response.data['user']
                     this.userDetail = response.data['userDetail']
