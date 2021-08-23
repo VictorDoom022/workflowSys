@@ -1,21 +1,21 @@
 <template>
    <div>
   <b-navbar toggleable="md" type="dark" variant="dark">
-    <router-link :to="{ name: 'AdminHome' }">
-      <b-navbar-brand href="#">
+    <b-navbar-brand href="#">
+      <router-link :to="{ name: 'AdminHome' }" class="navbar-brand">
         Workflow Sys
-      </b-navbar-brand>
-    </router-link>
+      </router-link>
+    </b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <router-link :to="{ name: 'AdminHome' }">
-          <b-nav-item>
-            Users
-          </b-nav-item>
-        </router-link>
+        <b-nav-item>
+          <router-link :to="{ name: 'AdminHome' }" class="nav-link">
+              Users
+          </router-link>
+        </b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
