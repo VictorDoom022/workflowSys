@@ -6,7 +6,7 @@
       <b-container>
           <b-row>
               <b-col md="4" v-for="(user, index) in users" :key="user.id">
-                  <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
+                  <div @click="navigateToUserDetail(user.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
                       <div class="card-body">
                           <h5 class="card-title">{{ user.name }}</h5>
                           <h6 class="card-subtitle">{{ user.email }}</h6>
@@ -30,6 +30,11 @@ export default {
         return {
             users: [],
             userDetails: [],
+        }
+    },
+    methods: {
+        navigateToUserDetail(userID){
+            this.$router.push({ name: 'UserDetails', params: { userID: userID } })
         }
     },
     mounted() {

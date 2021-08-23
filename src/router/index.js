@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import AdminHome from '../views/admin/AdminHome.vue'
+import UserDetails from '../views/admin/UserDetails.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,12 @@ const routes = [
     path: '/adminHome',
     name: 'AdminHome',
     component: AdminHome
+  },
+  {
+    path: '/userDetails/:userID',
+    name: 'UserDetails',
+    component: UserDetails,
+    props: true,
   },
 ]
 
