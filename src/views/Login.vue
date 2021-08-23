@@ -26,6 +26,7 @@
 
 <script>
 import Vue from 'vue'
+import storeData from '../functions/storeData'
 
 export default {
     data() {
@@ -55,10 +56,10 @@ export default {
                     this.user = response.data['user']
                     this.userDetail = response.data['userDetail']
                     this.token = response.data['token']
+
+                    storeData.dispatch('createUserSession', response.data)
                 }
             })
-
-            // to store into local storage
         }
     }
 }
