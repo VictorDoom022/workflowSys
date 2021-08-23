@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card:hover{
   box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
   transition: all 0.2s ease-in-out;
