@@ -4,7 +4,14 @@
         <div class="text-start mt-3 mx-2">
             <b-button variant="outline-dark" @click="navigateBack">back</b-button>
         </div>
-        <b-container>
+
+        <div v-if="user == null" class="mx-auto">
+            <div class="spinner-border text-dark" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <b-container v-if="user != null">
             <div class="card mt-3 px-5 justify-content-md-center">
                 <table class="table table-striped table-hover mt-2">
                     <thead class="table-dark">
