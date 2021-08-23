@@ -26,7 +26,7 @@
           <template #button-content>
             <em>{{ username }}</em>
           </template>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import storeData from '../../functions/storeData'
 
 export default {
@@ -42,6 +43,23 @@ export default {
     return {
       username: '',
     }
+  },
+  methods: {
+    logout(){
+      Vue.axios.post(
+        'logout', {
+          headers: {
+            'Authorization' : 'Bearer ' + storeData.state.userData['token'].toString(),
+            'Content-Type': 'application/json',
+              
+          },
+        }
+      ).then((response) => {
+        storeData.dispatch('createUserSession', null).then(() => {
+          this.$router.push('/')
+        })
+      })
+    },
   },
   mounted() {
     this.username = storeData.state.userData['user'].name
