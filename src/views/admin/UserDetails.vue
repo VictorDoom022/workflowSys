@@ -49,7 +49,7 @@
 
 <script>
 import Vue from 'vue'
-import storeData from '../../functions/storeData'
+import loggedInUserData from '../../functions/loggedInUserData'
 import AdminTopNav from '../../components/admin/AdminTopNav.vue'
 
 export default {
@@ -66,7 +66,7 @@ export default {
             url: 'http://localhost:8000/api/users/'+  this.userID,
             method: 'GET',
             headers: {
-                Authorization : 'Bearer ' + storeData.state.userData['token'],
+                Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
                 'Content-Type': 'application/json',
             },
         }).then((response) => {

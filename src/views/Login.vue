@@ -30,7 +30,7 @@
 
 <script>
 import Vue from 'vue'
-import storeData from '../functions/storeData'
+import loggedInUserData from '../functions/loggedInUserData'
 import Loading from '../components/Loading.vue'
 
 export default {
@@ -60,14 +60,14 @@ export default {
                     this.error = response.data['message'][0]
                 }else{
                     this.error = null;
-                    storeData.dispatch('createUserSession', response.data)
+                    loggedInUserData.dispatch('createUserSession', response.data)
                     this.redirect()
                 }
             })
         },
         redirect(){
-            if(storeData.state.userData != null){
-                if(storeData.state.userData['user'].position == 'admin'){
+            if(loggedInUserData.state.userData != null){
+                if(loggedInUserData.state.userData['user'].position == 'admin'){
                     this.$router.push('adminHome')
                 }else{
                     console.log('user')

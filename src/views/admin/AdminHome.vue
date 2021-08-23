@@ -27,7 +27,7 @@
 
 <script>
 import AdminTopNav from '../../components/admin/AdminTopNav.vue'
-import storeData from '../../functions/storeData'
+import loggedInUserData from '../../functions/loggedInUserData'
 import Vue from 'vue'
 
 export default {
@@ -48,7 +48,7 @@ export default {
             url: 'users',
             method: 'GET',
             headers: {
-                Authorization : 'Bearer ' + storeData.state.userData['token'],
+                Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
                 'Content-Type': 'application/json',
             },
             }

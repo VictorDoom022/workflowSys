@@ -36,7 +36,7 @@
 
 <script>
 import Vue from 'vue'
-import storeData from '../../functions/storeData'
+import loggedInUserData from '../../functions/loggedInUserData'
 
 export default {
   data() {
@@ -50,20 +50,20 @@ export default {
         url: 'logout',
         method: 'POST',
         headers: {
-            Authorization : 'Bearer ' + storeData.state.userData['token'],
+            Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
             'Content-Type': 'application/json',
           },
         }
       ).then((response) => {
-        storeData.dispatch('createUserSession', null).then(() => {
+        loggedInUserData.dispatch('createUserSession', null).then(() => {
           this.$router.push('/')
         })
       })
     },
   },
   mounted() {
-    if(storeData.state.userData != null){
-      this.username = storeData.state.userData['user'].name
+    if(loggedInUserData.state.userData != null){
+      this.username = loggedInUserData.state.userData['user'].name
     }else{
       this.$router.push('/')
     }
