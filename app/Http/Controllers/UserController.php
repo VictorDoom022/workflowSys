@@ -9,9 +9,15 @@ use App\Models\UserDetail;
 class UserController extends Controller
 {
     public function getUserByID($id){
-        $user = User::findOrFail($id);
+        $user = User::where('id', $id)->first();
+        $userDetail = UserDetail::where('id', $id)->first();
 
-        return $user;
+        $response=[
+            'user' => $user,
+            'userDetail' => $userDetail,
+        ];
+
+        return $response;
     }
 
     public function getAllUserData(){
