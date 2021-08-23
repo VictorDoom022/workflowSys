@@ -62,7 +62,11 @@ export default {
     },
   },
   mounted() {
-    this.username = storeData.state.userData['user'].name
+    if(storeData.state.userData != null){
+      this.username = storeData.state.userData['user'].name
+    }else{
+      this.$router.push('/')
+    }
   }
 }
 </script>
