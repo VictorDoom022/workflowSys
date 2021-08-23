@@ -46,12 +46,12 @@ export default {
   },
   methods: {
     logout(){
-      Vue.axios.post(
-        'logout', {
-          headers: {
-            'Authorization' : 'Bearer ' + storeData.state.userData['token'].toString(),
+      Vue.axios({
+        url: 'logout',
+        method: 'POST',
+        headers: {
+            Authorization : 'Bearer ' + storeData.state.userData['token'],
             'Content-Type': 'application/json',
-              
           },
         }
       ).then((response) => {
