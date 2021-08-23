@@ -24,7 +24,7 @@
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template #button-content>
-            <em>User</em>
+            <em>{{ username }}</em>
           </template>
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -35,8 +35,17 @@
 </template>
 
 <script>
-export default {
+import storeData from '../../functions/storeData'
 
+export default {
+  data() {
+    return {
+      username: '',
+    }
+  },
+  mounted() {
+    this.username = storeData.state.userData['user'].name
+  }
 }
 </script>
 
