@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h1 class="card-title">Login</h1>
                     <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
-                    <form>
+                    <form @submit.prevent="login">
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" v-model="email" class="form-control" autocomplete="on">
@@ -16,8 +16,8 @@
                             <input type="password" v-model="password" class="form-control" autocomplete="current-password">
                         </div>
 
-                        <div class="mb-3">
-                            <button class="btn btn-primary" @click="login">Login</button>
+                        <div class="submit mb-3">
+                            <button class="btn btn-primary">Login</button>
                         </div>
                     </form>
                 </div>
