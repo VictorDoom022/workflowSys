@@ -3,7 +3,13 @@
       <AdminTopNav />
       <h1>User Lists</h1>
 
-      <b-container>
+      <div v-if="!users" class="mx-auto">
+          <div class="spinner-border text-dark" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
+
+      <b-container v-if="users">
           <b-row>
               <b-col md="4" v-for="(user, index) in users" :key="user.id">
                   <div @click="navigateToUserDetail(user.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
