@@ -59,10 +59,24 @@ export default {
                 if(response.status == 201){
                     this.error = response.data['message'][0]
                 }else{
+                    this.error = null;
                     storeData.dispatch('createUserSession', response.data)
+                    this.redirect()
                 }
             })
+        },
+        redirect(){
+            if(storeData.state.userData != null){
+                if(storeData.state.userData['user'].position == 'admin'){
+                    this.$router.push('adminHome')
+                }else{
+                    console.log('user')
+                }
+            }
         }
+    },
+    mounted() {
+        this.redirect()
     }
 }
 </script>
