@@ -11,7 +11,12 @@
 
       <b-container v-if="users">
           <b-row>
-              <b-col md="4" v-for="(user, index) in users" :key="user.id">
+
+              <b-col md="12" class="mb-3">
+                  <input type="text" v-model="searchTerm" class="form-control" placeholder="Search user...">
+              </b-col>
+
+              <b-col md="4" v-for="(user, index) in searchUser" :key="user.id">
                   <div @click="navigateToUserDetail(user.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
                       <div class="card-body">
                           <h5 class="card-title">{{ user.name }}</h5>
@@ -40,11 +45,23 @@ export default {
         return {
             users: [],
             userDetails: [],
+            searchTerm: '',
         }
     },
     methods: {
         navigateToUserDetail(userID){
             this.$router.push({ name: 'UserDetails', params: { userID: userID } })
+        }
+    },
+    computed: {
+        searchUser(){
+            return this.users.filter((user) => {
+                if(this.searchTerm == ''){
+                    return user.name
+                }else{
+                    return user.name  == this.searchTerm;
+                }
+            })
         }
     },
     mounted() {
