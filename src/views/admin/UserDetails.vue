@@ -48,7 +48,8 @@
                 </table>
                 
                 <div class="align-middle mb-3">
-                    <input type="text" @click="confirmBan()" class="btn btn-danger" value="Ban User">
+                    <input type="text" v-if="userDetail.userDetail_accEnable == 0" @click="confirmBan()" class="btn btn-danger" value="Unban User">
+                    <input type="text" v-if="userDetail.userDetail_accEnable == 1" @click="confirmBan()" class="btn btn-danger" value="Ban User">
                 </div>
 
             </div>
@@ -81,10 +82,10 @@ export default {
         confirmBan(){
             Vue.swal.fire({
                 title: 'Warning!',
-                text: 'Do you want to ban this user?',
+                text: 'Do you want to ban/unban this user?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ban',
+                confirmButtonText: 'Ban/Unban',
                 confirmButtonColor: '#dc3545',
             }).then((result) => {
                 if(result.isConfirmed){
