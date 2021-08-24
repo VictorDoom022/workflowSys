@@ -15,8 +15,12 @@
                   <div @click="navigateToUserDetail(user.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
                       <div class="card-body">
                           <h5 class="card-title">{{ user.name }}</h5>
-                          <h6 class="card-subtitle">{{ user.email }}</h6>
-                          <p class="card-text">{{ userDetails[index].userDetail_status }}</p>
+                          <h6 class="card-subtitle text-muted">{{ user.email }}</h6>
+                          <div class="card-text">
+                              {{ userDetails[index].userDetail_status }}
+                              <p class="text-success mb-0" v-if=" userDetails[index].userDetail_accEnable == 1">Enabled</p>
+                              <p class="text-danger mb-0" v-if=" userDetails[index].userDetail_accEnable == 0">Banned</p>
+                          </div>
                       </div>
                   </div>
               </b-col>              

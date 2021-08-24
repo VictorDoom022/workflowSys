@@ -38,7 +38,12 @@
                     </tr>
                     <tr>
                         <th class="text-end">Account enabled</th>
-                        <td class="text-start">{{ userDetail.userDetail_accEnable }}</td>
+                        <td class="text-start text-success" v-if=" userDetail.userDetail_accEnable == 1">
+                            Enabled
+                        </td>
+                        <td class="text-start text-danger" v-if=" userDetail.userDetail_accEnable == 0">
+                            Banned
+                        </td>
                     </tr>
                 </table>
             </div>
