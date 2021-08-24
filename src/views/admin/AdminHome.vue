@@ -59,7 +59,7 @@ export default {
                 if(this.searchTerm == ''){
                     return user.name
                 }else{
-                    return user.name  == this.searchTerm;
+                    return user.name.includes(this.searchTerm) || user.email.includes(this.searchTerm);
                 }
             })
         }
