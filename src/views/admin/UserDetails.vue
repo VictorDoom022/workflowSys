@@ -72,17 +72,7 @@ export default {
         }
     },
     mounted() {
-        Vue.axios({
-            url: 'http://localhost:8000/api/users/'+  this.userID,
-            method: 'GET',
-            headers: {
-                Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                'Content-Type': 'application/json',
-            },
-        }).then((response) => {
-            this.user = response.data['user']
-            this.userDetail = response.data['userDetail']
-        })
+        this.getUserDetails()
     },
     methods: {
         navigateBack(){
@@ -98,10 +88,45 @@ export default {
                 confirmButtonColor: '#dc3545',
             }).then((result) => {
                 if(result.isConfirmed){
-                    // to toggle ban
+                    this.togleUserBan()
                 }
             })
         },
+        togleUserBan(){
+            Vue.axios({
+                url: 'http://localhost:8000/api/users/toggleUserBan/'+  this.userID,
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                // get updated data again
+                this.getUserDetails()
+                Vue.swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    icon: response.status == 200 ? 'success' : 'error',
+                    title: response.data['message']
+                })
+            })
+        },
+        getUserDetails() {
+            Vue.axios({
+                url: 'http://localhost:8000/api/users/'+  this.userID,
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.user = response.data['user']
+                this.userDetail = response.data['userDetail']
+            })
+        }
     }
 }
 </script>
