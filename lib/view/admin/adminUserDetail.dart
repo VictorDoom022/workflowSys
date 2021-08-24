@@ -53,50 +53,34 @@ class _adminUserDetailState extends State<adminUserDetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        children: [
-                          CardRowItem(
-                            title: 'Account ID',
-                            content: user.id.toString(),
-                          ),
-                          CardRowItem(
-                            title: 'Name',
-                            content: user.name,
-                          ),
-                        ],
+                      CardRowItem(
+                        title: 'Account ID',
+                        content: user.id.toString(),
                       ),
-                      Row(
-                        children: [
-                          CardRowItem(
-                            title: 'Email',
-                            content: user.email,
-                          ),
-                          CardRowItem(
-                            title: 'Create At',
-                            content: convertBackendDateTime(user.createdAt),
-                          )
-                        ],
+                      CardRowItem(
+                        title: 'Name',
+                        content: user.name,
                       ),
-                      Row(
-                        children: [
-                          CardRowItem(
-                            title: 'Account Status',
-                            content: userDetail.userDetailStatus,
-                          ),
-                          CardRowItem(
-                            title: 'Account Enabled',
-                            content: userDetail.userDetailAccEnable==1 ? 'true' : 'false',
-                          )
-                        ],
+                      CardRowItem(
+                        title: 'Email',
+                        content: user.email,
                       ),
-                      Row(
-                        children: [
-                          CardRowItem(
-                            title: 'Account Type',
-                            content: user.position,
-                          ),
-                        ],
-                      )
+                      CardRowItem(
+                        title: 'Create At',
+                        content: convertBackendDateTime(user.createdAt),
+                      ),
+                      CardRowItem(
+                        title: 'Account Status',
+                        content: userDetail.userDetailStatus,
+                      ),
+                      CardRowItem(
+                        title: 'Account Enabled',
+                        content: userDetail.userDetailAccEnable==1 ? 'true' : 'false',
+                      ),
+                      CardRowItem(
+                        title: 'Account Type',
+                        content: user.position,
+                      ),
                     ],
                   ),
                 ),
@@ -123,23 +107,20 @@ class CardRowItem extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
-    return Expanded(
-      flex: 3,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Text(
-                title,
-              style: titleTextStyle,
-            ),
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: Text(
+              title,
+            style: titleTextStyle,
           ),
-          Expanded(
-            flex: 3,
-            child: Text(content),
-          )
-        ],
-      ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(content),
+        )
+      ],
     );
   }
 }
