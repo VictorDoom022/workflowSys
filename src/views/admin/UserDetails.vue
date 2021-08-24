@@ -34,7 +34,10 @@
                     </tr>
                     <tr>
                         <th class="text-end">Account Status</th>
-                        <td class="text-start">{{ userDetail.userDetail_status }}</td>
+                        <td class="text-start">
+                            {{ userDetail.userDetail_status }}
+                            <b-icon @click="setUserStatusInputBox()" icon="pencil-fill" font-scale="1" class="px-0 py-0"></b-icon>
+                        </td>
                     </tr>
                     <tr>
                         <th class="text-end">Account enabled</th>
@@ -104,15 +107,47 @@ export default {
             }).then((response) => {
                 // get updated data again
                 this.getUserDetails()
-                Vue.swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    icon: response.status == 200 ? 'success' : 'error',
-                    title: response.data['message']
-                })
+                this.toastMessage(response)
+            })
+        },
+        setUserStatusInputBox() {
+            Vue.swal.fire({
+                title: 'Enter user status',
+                input: 'text',
+                inputPlaceholder: 'Enter status',
+                confirmButtonColor: '#28a745',
+                showCancelButton: true,
+            }).then((result) => {
+                this.setUserStatus(result.value)
+            })
+        },
+        setUserStatus(newUserStatus) {
+            Vue.axios({
+                url: 'http://localhost:8000/api/users/setUserStatus',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    userDetail_id: this.userID,
+                    statusMsg: newUserStatus,
+                },
+            }).then((response) => {
+                // get updated data again
+                this.getUserDetails()
+                this.toastMessage(response)
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
             })
         },
         getUserDetails() {
@@ -132,6 +167,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.bi-pencil-fill:hover{
+    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
 </style>
