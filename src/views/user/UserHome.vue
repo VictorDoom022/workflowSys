@@ -11,10 +11,10 @@
         <div class="container-fluid">
           <b-row>
             <b-col md="12" class="mb-3">
-                <input type="text" class="form-control" placeholder="Search groups...">
+                <input type="text" v-model="searchTerm" class="form-control" placeholder="Search groups...">
             </b-col>
 
-            <b-col md="4" v-for="group in groups" :key="group.id">
+            <b-col md="4" v-for="group in searchGroup" :key="group.id">
               <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
                     <div class="card-body">
                         <h4 class="card-title text-center">{{ group.group_name }}</h4>
@@ -38,6 +38,7 @@ export default {
     data() {
       return {
         groups: [],
+        searchTerm: '',
       }
     },
     mounted() {
@@ -53,6 +54,17 @@ export default {
             this.groups = response.data
             console.log(this.groups)
         })
+    },
+    computed: {
+      searchGroup(){
+        return this.groups.filter((group) => {
+          if(this.searchTerm == ''){
+            return group.group_name
+          }else{
+            return group.group_name.includes(this.searchTerm)
+          }
+        })
+      }
     }
 }
 </script>
