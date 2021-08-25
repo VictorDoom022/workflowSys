@@ -1,28 +1,31 @@
 <template>
     <div>
-        <div class="d-flex justify-content-center mt-5">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title">Login</h1>
-                    <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
-                    <form @submit.prevent="login">
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" v-model="email" class="form-control" autocomplete="on">
-                        </div>
+        <main class="form-signin">
+            <form @submit.prevent="login">
+                <h1 class="title my-4">
+                    <span class="title-orange">Workflow</span>
+                    <span class="title-black">Sys</span>
+                </h1>
+                
+                <h1 class="h3 mb-3 fw-normal">Welcome</h1>
 
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" v-model="password" class="form-control" autocomplete="current-password">
-                        </div>
+                <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
 
-                        <div class="submit mb-3">
-                            <button class="btn btn-primary">Login</button>
-                        </div>
-                    </form>
+                <div class="form-floating">
+                    <input type="email" v-model="email" class="form-control" placeholder="Email" autocomplete="on">
+                    <label for="floatingInput">Email address</label>
                 </div>
-            </div>
-        </div>
+
+                <div class="form-floating">
+                    <input type="password" v-model="password" class="form-control" placeholder="Password" autocomplete="current-password">
+                    <label>Password</label>
+                </div>
+
+                <div class="submit">
+                    <button class="w-100 btn btn-lg btn-primary">Login</button>
+                </div>
+            </form>
+        </main>
         <Loading v-if="isLoading" />
     </div>
   
@@ -81,6 +84,58 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+html,
+body {
+  height: 100%;
+}
 
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.title-orange{
+    color: #E46B10FF;
+}
+
+.btn-primary {
+    background-image: linear-gradient(to right, #FBB448FF 0%, #F7892BFF 100%);
+    border-color: transparent !important;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 </style>
