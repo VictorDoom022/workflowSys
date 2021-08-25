@@ -4,7 +4,7 @@
       <main>
         <b-jumbotron header="Groups">
           <p>Hello there~</p>
-          <b-button variant="primary mr-1">Join Group</b-button>
+          <b-button @click="showJoinGroupDialog()" variant="primary mr-1">Join Group</b-button>
           <b-button variant="success">Create Group</b-button>
         </b-jumbotron>
 
@@ -63,7 +63,47 @@ export default {
         ).then((response) => {
             this.groups = response.data
         })
-      }
+      },
+      showJoinGroupDialog() {
+        Vue.swal.fire({
+            title: 'Enter join code',
+            input: 'text',
+            inputPlaceholder: 'Code',
+            confirmButtonColor: '#28a745',
+            showCancelButton: true,
+        }).then((result) => {
+            this.joinGroup(result.value)
+        })
+      },
+      joinGroup(joinCode){
+        Vue.axios({
+            url: 'http://localhost:8000/api/group/joinGroup',
+            method: 'POST',
+            headers: {
+                Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                'Content-Type': 'application/json',
+            },
+            data: {
+                userID: loggedInUserData.state.userData['user'].id,
+                joinCode: joinCode,
+            },
+          }
+        ).then((response) => {
+            this.fetchGroupData()
+            this.toastMessage(response)
+        })
+      },
+      toastMessage(response) {
+        Vue.swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            icon: response.status == 200 ? 'success' : 'error',
+            title: response.data['message']
+        })
+      },
     },
     computed: {
       searchGroup(){
