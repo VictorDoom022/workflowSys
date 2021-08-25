@@ -6,10 +6,10 @@
         </svg>
       </div>
       
-      <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <span class="fs-4">Workflow Sys</span>
-            <svg class="pl-1 pt-1" width="40" height="32"><use xlink:href="#appIcon"/></svg>
+      <div class="sidebar-item d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+        <a href="/" class="appTitleSection d-flex align-items-center mb-3 mb-md-0 mt-md-3 me-md-auto text-white text-decoration-none">
+            <span class="nav-label fs-4">Workflow Sys</span>
+            <svg class="appIcon pl-1 pt-1" width="40" height="32"><use xlink:href="#appIcon"/></svg>
         </a>
 
         <hr>
@@ -17,14 +17,14 @@
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
                 <a href="#" class="nav-link active" aria-current="page">
-                <b-icon icon="house-fill"></b-icon>
-                    Home
+                    <b-icon class="mr-1" icon="house-fill"></b-icon>
+                    <span class="nav-label">Home</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link text-white">
-                <b-icon icon="list-check"></b-icon>
-                    To-do
+                    <b-icon class="mr-1" icon="list-check"></b-icon>
+                    <span class="nav-label">To-do</span>
                 </a>
             </li>
         </ul>
@@ -35,7 +35,7 @@
           <template #button-content>
             <em class="align-items-center text-white text-decoration-none">
                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>{{ username }}</strong>
+                <strong class="nav-label">{{ username }}</strong>
             </em>
           </template>
           <b-dropdown-item >Sign Out</b-dropdown-item>
@@ -106,7 +106,26 @@ main {
   overflow-y: auto;
 }
 
+.sidebar-item{
+    width: 280px;
+}
+
 .fw-semibold { font-weight: 600; }
 .lh-tight { line-height: 1.25; }
 
+
+@media only screen and (max-width: 768px) {
+    .appTitleSection{
+        text-align: center;
+        display: inline !important;
+    }
+
+    .nav-label{
+        display:none;
+    }
+
+    .sidebar-item{
+        width: 100px;
+    }
+}
 </style>

@@ -34,5 +34,20 @@ export default {
 
 main{
   grid-area: main;
+  margin-left: -100px;
+}
+
+/* md */
+@media only screen and (max-width: 768px) {
+  main{
+    margin-left: -50px ;
+  }
+}
+
+/* sm */
+@media only screen and (max-width: 576px) {
+  main{
+    margin-left: -30px ;
+  }
 }
 </style>
