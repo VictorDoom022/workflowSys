@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import AdminHome from '../views/admin/AdminHome.vue'
 import UserDetails from '../views/admin/UserDetails.vue'
 import UserHome from '../views/user/UserHome.vue'
+import TeamList from '../views/user/TeamList.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,12 @@ const routes = [
     path: '/userHome',
     name: 'UserHome',
     component: UserHome
+  },
+  {
+    path: '/groupDetail/:groupID',
+    name: 'TeamList',
+    component: TeamList,
+    props: true,
   },
 ]
 
