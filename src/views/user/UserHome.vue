@@ -2,7 +2,11 @@
   <div class="main">
       <UserSideNav />
       <main>
-        <h1>Hey</h1>
+        <b-jumbotron header="Groups">
+          <p>Hello there~</p>
+          <b-button variant="primary mr-1">Join Group</b-button>
+          <b-button variant="success">Create Group</b-button>
+        </b-jumbotron>
       </main>
   </div>
 </template>
