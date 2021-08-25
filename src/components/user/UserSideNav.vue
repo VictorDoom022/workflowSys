@@ -31,19 +31,15 @@
         
         <hr>
 
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <b-nav-item-dropdown right style="list-style: none;">
+          <template #button-content>
+            <em class="align-items-center text-white text-decoration-none">
                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" width="32" height="32" class="rounded-circle me-2">
                 <strong>{{ username }}</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
-        </div>
+            </em>
+          </template>
+          <b-dropdown-item >Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
       </div>
       <div class="b-example-divider"></div>
   </nav>
