@@ -125,9 +125,9 @@ class GroupController extends Controller
                 if($groupMemberArray[$i] == $userID){
                     //user already join the group
                     $userJoinedGroupBefore = true;
-                    return [
+                    return response([
                         'message'=>'You joined before.'
-                    ];
+                    ],201);
                 }
             }
 
@@ -163,9 +163,9 @@ class GroupController extends Controller
                 'message'=>'Group Joined.'
             ];
         }else{
-            return [
+            return response([
                 'message'=>'Code invalid/Group does not exist.'
-            ];
+            ], 201);
         }        
     }
 
