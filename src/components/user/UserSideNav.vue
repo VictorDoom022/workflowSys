@@ -1,47 +1,33 @@
 <template>
-  <nav class="sidebar d-flex">
-      <div style="display: none">
-        <svg id="appIcon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f8f9fa">
-            <path d="M0 0h24v24H0z" fill="none"/><path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3z"/>
-        </svg>
-      </div>
-      
-      <div class="sidebar-item d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
-        <a href="/" class="appTitleSection d-flex align-items-center mb-3 mb-md-0 mt-md-3 me-md-auto text-white text-decoration-none">
-            <span class="nav-label fs-4">Workflow Sys</span>
-            <svg class="appIcon pl-1 pt-1" width="40" height="32"><use xlink:href="#appIcon"/></svg>
-        </a>
+  <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">
+            <b-icon class="mr-1" icon="house-fill"></b-icon>
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <b-icon class="mr-1" icon="list-check"></b-icon>  
+            Todo
+          </a>
+        </li>
+      </ul>
 
-        <hr>
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center text-center px-3 mt-4 mb-1 text-muted">
+        <span>Signed in as {{ username }}</span>
+      </h6>
 
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
-                    <b-icon class="mr-1" icon="house-fill"></b-icon>
-                    <span class="nav-label">Home</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-white">
-                    <b-icon class="mr-1" icon="list-check"></b-icon>
-                    <span class="nav-label">To-do</span>
-                </a>
-            </li>
-        </ul>
-        
-        <hr>
-
-        <b-nav-item-dropdown right style="list-style: none;">
-          <template #button-content>
-            <em class="align-items-center text-white text-decoration-none">
-                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong class="nav-label">{{ username }}</strong>
-            </em>
-          </template>
-          <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </div>
-      <div class="b-example-divider"></div>
+      <ul class="nav flex-column mb-2">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <!-- To implement stuffs -->
+          </a>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
@@ -56,20 +42,7 @@ export default {
         }
     },
     methods: {
-        logout(){
-            Vue.axios({
-                url: 'logout',
-                method: 'POST',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-            }).then((response) => {
-                loggedInUserData.dispatch('createUserSession', null).then(() => {
-                this.$router.push('/')
-                })
-            })
-        },
+        
     },
     mounted() {
       if(loggedInUserData.state.userData != null){
@@ -83,66 +56,55 @@ export default {
 
 <style scoped>
 .sidebar {
-    grid-area: sd;
+  position: fixed;
+  top: 0;
+  /* rtl:raw:
+  right: 0;
+  */
+  bottom: 0;
+  /* rtl:remove */
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-main {
-  display: flex;
-  flex-wrap: nowrap;
-  height: 100vh;
-  height: -webkit-fill-available;
-  max-height: 100vh;
-  overflow-x: auto;
-  overflow-y: hidden;
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
 }
 
-.b-example-divider {
-  flex-shrink: 0;
-  width: .1rem;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, .1);
-  border: solid rgba(0, 0, 0, .15);
-  border-width: 1px 0;
-  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-.bi {
-  text-align: center;
-  vertical-align: -.125em;
-  pointer-events: none;
-  fill: currentColor;
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
 }
 
-.dropdown-toggle { outline: 0; }
-
-.nav-flush .nav-link {
-  border-radius: 0;
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #727272;
 }
 
-.scrollarea {
-  overflow-y: auto;
+.sidebar .nav-link.active {
+  color: #2470dc;
 }
 
-.sidebar-item{
-    width: 280px;
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
 }
 
-.fw-semibold { font-weight: 600; }
-.lh-tight { line-height: 1.25; }
-
-
-@media only screen and (max-width: 768px) {
-    .appTitleSection{
-        text-align: center;
-        display: inline !important;
-    }
-
-    .nav-label{
-        display:none;
-    }
-
-    .sidebar-item{
-        width: 100px;
-    }
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
 }
 </style>

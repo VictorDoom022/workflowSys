@@ -1,47 +1,60 @@
 <template>
   <div class="main">
-      <UserSideNav />
-      <main>
-        <b-jumbotron header="Groups">
-          <p>Hello there~</p>
-          <b-button @click="showJoinGroupDialog()" variant="primary mr-1">Join Group</b-button>
-          <b-button @click="showEnterGroupNameDialog()" variant="success">Create Group</b-button>
-        </b-jumbotron>
 
-        <div v-if="groups.length == 0" class="mx-auto">
-            <div class="spinner-border text-dark" role="status" style="width: 3rem; height: 3rem;">
-                <span class="visually-hidden">Loading...</span>
+    <UserTopNav />
+    <div class="container-fluid">
+      <div class="row">
+        <UserSideNav />
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Groups</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button type="button" @click="showJoinGroupDialog()" class="btn btn-sm btn-outline-secondary mx-1">Join Group</button>
+              <button type="button" @click="showEnterGroupNameDialog()" class="btn btn-sm btn-outline-success mx-1">Create Group</button>
             </div>
-        </div>
+          </div>
 
-        <div v-if="groups.length !=0" class="container-fluid">
-          <b-row>
-            <b-col md="12" class="mb-3">
-                <input type="text" v-model="searchTerm" class="form-control" placeholder="Search groups...">
-            </b-col>
+          <div v-if="groups.length == 0" class="mx-auto">
+              <div class="spinner-border text-dark" role="status" style="width: 3rem; height: 3rem;">
+                  <span class="visually-hidden">Loading...</span>
+              </div>
+          </div>
 
-            <b-col md="4" v-for="group in searchGroup" :key="group.id">
-              <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
-                    <div class="card-body">
-                        <h4 class="card-title text-center">{{ group.group_name }}</h4>
-                    </div>
-                </div>
-            </b-col>  
-          </b-row>
-        </div>
+          <div v-if="groups.length !=0" class="container-fluid">
+            <b-row>
+              <b-col md="12" class="mb-3">
+                  <input type="text" v-model="searchTerm" class="form-control" placeholder="Search groups...">
+              </b-col>
 
-      </main>
-      <input type="hidden" id="textToCopy" :value="groupJoinCodeTemp">
+              <b-col md="4" v-for="group in searchGroup" :key="group.id">
+                <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
+                      <div class="card-body">
+                          <h4 class="card-title text-center">{{ group.group_name }}</h4>
+                      </div>
+                  </div>
+              </b-col>  
+            </b-row>
+          </div>
+
+        </main>
+
+      </div>
+    </div>
+      
+    <input type="hidden" id="textToCopy" :value="groupJoinCodeTemp">
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import UserSideNav from '../../components/user/UserSideNav.vue'
+import UserTopNav from '../../components/user/UserTopNav.vue'
 import loggedInUserData from '../../functions/loggedInUserData'
 
 export default {
-    components: { UserSideNav },
+    components: { UserSideNav, UserTopNav },
     data() {
       return {
         groups: [],
@@ -176,19 +189,6 @@ export default {
 </script>
 
 <style scoped>
-/* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Grid_Template_Areas */
-.main{
-  display: grid;
-  grid-template-columns: 0fr 3fr;
-  gap: 0em;
-  grid-template-areas:
-    "sd main"
-}
-
-main{
-  grid-area: main;
-}
-
 .card{
   cursor: pointer;
 }
