@@ -42,6 +42,10 @@ export default {
       }
     },
     mounted() {
+        this.fetchGroupData()
+    },
+    methods: {
+      fetchGroupData(){
         Vue.axios({
             url: 'http://localhost:8000/api/group/userID/' + loggedInUserData.state.userData['user'].id,
             method: 'POST',
@@ -52,8 +56,8 @@ export default {
             }
         ).then((response) => {
             this.groups = response.data
-            console.log(this.groups)
         })
+      }
     },
     computed: {
       searchGroup(){
