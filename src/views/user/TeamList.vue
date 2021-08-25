@@ -15,7 +15,7 @@
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" class="btn btn-sm btn-primary mx-1">Settings</button>
-                            <button type="button" class="btn btn-sm btn-success mx-1">Create Team</button>
+                            <button @click="showEnterTeamNameDialog()" type="button" class="btn btn-sm btn-success mx-1">Create Team</button>
                         </div>
                     </div>
 
@@ -60,10 +60,10 @@ export default {
         }
     },
     mounted() {
-        this.getGroupDetail()
+        this.fetchGroupDetail()
     },
     methods: {
-        getGroupDetail(){
+        fetchGroupDetail(){
             Vue.axios({
                 url: '/group/getGroupDetailByGroupUserID',
                 method: 'POST',
@@ -82,7 +82,49 @@ export default {
         },
         navigateBack(){
             this.$router.go(-1)
-        }
+        },
+        showEnterTeamNameDialog(){
+            Vue.swal.fire({
+                title: 'Enter new team name',
+                input: 'text',
+                inputPlaceholder: 'Name',
+                confirmButtonColor: '#28a745',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.createTeam(result.value)
+                }
+            })
+        },
+        createTeam(newTeamName){
+            Vue.axios({
+                url: '/team/createTeam',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                    userID: loggedInUserData.state.userData['user'].id,
+                    teamName: newTeamName
+                },
+            }).then((response) => {
+                this.fetchGroupDetail()
+                this.toastMessage(response)
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
+            })
+      },
     },
     computed: {
         searchTeam(){
