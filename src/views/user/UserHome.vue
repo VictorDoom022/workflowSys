@@ -13,7 +13,9 @@ import UserSideNav from '../../components/user/UserSideNav.vue'
 export default {
     components: { UserSideNav },
     data() {
-
+      return {
+        
+      }
     },
 }
 </script>

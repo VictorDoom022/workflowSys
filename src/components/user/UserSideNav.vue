@@ -34,7 +34,7 @@
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>mdo</strong>
+                <strong>{{ username }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                 <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -50,10 +50,21 @@
 </template>
 
 <script>
+import loggedInUserData from '../../functions/loggedInUserData'
+
 export default {
     data() {
-        
-    }
+        return {
+            username: '',
+        }
+    },
+    mounted() {
+      if(loggedInUserData.state.userData != null){
+        this.username = loggedInUserData.state.userData['user'].name
+      }else{
+        this.$router.push('/')
+      }
+  }
 }
 </script>
 
