@@ -62,7 +62,7 @@ export default {
     },
   },
   mounted() {
-    if(loggedInUserData.state.userData != null){
+    if(loggedInUserData.state.userData != null && loggedInUserData.state.userData['user'].position == "admin"){
       this.username = loggedInUserData.state.userData['user'].name
     }else{
       this.$router.push('/')
