@@ -38,7 +38,7 @@
                 <strong class="nav-label">{{ username }}</strong>
             </em>
           </template>
-          <b-dropdown-item >Sign Out</b-dropdown-item>
+          <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </div>
       <div class="b-example-divider"></div>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import loggedInUserData from '../../functions/loggedInUserData'
 
 export default {
@@ -53,6 +54,22 @@ export default {
         return {
             username: '',
         }
+    },
+    methods: {
+        logout(){
+            Vue.axios({
+                url: 'logout',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                loggedInUserData.dispatch('createUserSession', null).then(() => {
+                this.$router.push('/')
+                })
+            })
+        },
     },
     mounted() {
       if(loggedInUserData.state.userData != null){
