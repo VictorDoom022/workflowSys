@@ -8,7 +8,13 @@
           <b-button variant="success">Create Group</b-button>
         </b-jumbotron>
 
-        <div class="container-fluid">
+        <div v-if="groups.length == 0" class="mx-auto">
+            <div class="spinner-border text-dark" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div v-if="groups.length !=0" class="container-fluid">
           <b-row>
             <b-col md="12" class="mb-3">
                 <input type="text" v-model="searchTerm" class="form-control" placeholder="Search groups...">
