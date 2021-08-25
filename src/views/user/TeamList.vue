@@ -20,7 +20,7 @@
                                 <input type="text" v-model="searchTerm" class="form-control" placeholder="Search team...">
                             </b-col>
 
-                            <b-col md="4" v-for="team in teamList" :key="team.id">
+                            <b-col md="4" v-for="team in searchTeam" :key="team.id">
                                 <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
                                     <div class="card-body">
                                         <h4 class="card-title text-center">{{ team.team_name }}</h4>
@@ -51,6 +51,7 @@ export default {
         return {
             groupDetail: [],
             teamList: [],
+            searchTerm: '',
         }
     },
     mounted() {
@@ -74,6 +75,17 @@ export default {
                 this.teamList = response.data['team']
             })
         },
+    },
+    computed: {
+        searchTeam(){
+            return this.teamList.filter((team) => {
+                if(this.searchTerm == ''){
+                    return team.team_name
+                }else{
+                    return team.team_name.includes(this.searchTerm)
+                }
+            })
+        }
     }
 }
 </script>
