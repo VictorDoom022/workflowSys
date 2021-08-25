@@ -70,7 +70,7 @@ export default {
                 if(loggedInUserData.state.userData['user'].position == 'admin'){
                     this.$router.push('adminHome')
                 }else{
-                    console.log('user')
+                    this.$router.push('userHome')
                 }
             }
         }
