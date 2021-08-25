@@ -5,7 +5,7 @@
         <b-jumbotron header="Groups">
           <p>Hello there~</p>
           <b-button @click="showJoinGroupDialog()" variant="primary mr-1">Join Group</b-button>
-          <b-button variant="success">Create Group</b-button>
+          <b-button @click="showEnterGroupNameDialog()" variant="success">Create Group</b-button>
         </b-jumbotron>
 
         <div v-if="groups.length == 0" class="mx-auto">
@@ -31,6 +31,7 @@
         </div>
 
       </main>
+      <input type="hidden" id="textToCopy" :value="groupJoinCodeTemp">
   </div>
 </template>
 
@@ -45,6 +46,7 @@ export default {
       return {
         groups: [],
         searchTerm: '',
+        groupJoinCodeTemp: '',
       }
     },
     mounted() {
@@ -91,6 +93,58 @@ export default {
         ).then((response) => {
             this.fetchGroupData()
             this.toastMessage(response)
+        })
+      },
+      showEnterGroupNameDialog(){
+        Vue.swal.fire({
+            title: 'Enter new group name',
+            input: 'text',
+            inputPlaceholder: 'Name',
+            confirmButtonColor: '#28a745',
+            showCancelButton: true,
+        }).then((result) => {
+            if(result.value != null){
+              this.createGroup(result.value)
+            }
+        })
+      },
+      createGroup(newGroupName) {
+        Vue.axios({
+            url: 'http://localhost:8000/api/createGroup',
+            method: 'POST',
+            headers: {
+                Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                'Content-Type': 'application/json',
+            },
+            data: {
+                groupName: newGroupName,
+                userID: loggedInUserData.state.userData['user'].id,
+            },
+          }
+        ).then((response) => {
+            this.fetchGroupData()
+            this.groupJoinCodeTemp = response.data.group_joinCode
+
+            Vue.swal.fire({
+              title: 'Your group\'s join code',
+              text: this.groupJoinCodeTemp,
+              confirmButtonText: 'Copy',
+              confirmButtonColor: '#28a745',
+              showCancelButton: true,
+            }).then((result) => {
+              if(result.isConfirmed){
+                // select the hidden input
+                let testingCodeToCopy = document.querySelector('#textToCopy')
+                // change it to input type text since it cannot copy from input type hidden
+                testingCodeToCopy.setAttribute('type', 'text')
+                testingCodeToCopy.select()
+                // copy the grouo code from the input field
+                document.execCommand('copy')
+                // set it back to hidden again & reset the variable
+                testingCodeToCopy.setAttribute('type', 'hidden')
+                this.groupJoinCodeTemp = ''
+              }
+            })
         })
       },
       toastMessage(response) {
