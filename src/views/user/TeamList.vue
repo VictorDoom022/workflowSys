@@ -7,7 +7,12 @@
 
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Group ({{ groupDetail.group_name }})</h1>
+                        <h1 class="h2">
+                            <span @click="navigateBack()" style="cursor:pointer">
+                                <b-icon class="mr-1" icon="caret-left-fill"></b-icon>
+                            </span>
+                            Group ({{ groupDetail.group_name }})
+                        </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" class="btn btn-sm btn-primary mx-1">Settings</button>
                             <button type="button" class="btn btn-sm btn-success mx-1">Create Team</button>
@@ -75,6 +80,9 @@ export default {
                 this.teamList = response.data['team']
             })
         },
+        navigateBack(){
+            this.$router.go(-1)
+        }
     },
     computed: {
         searchTeam(){
