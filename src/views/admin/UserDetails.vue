@@ -98,7 +98,7 @@ export default {
         },
         togleUserBan(){
             Vue.axios({
-                url: 'http://localhost:8000/api/users/toggleUserBan/'+  this.userID,
+                url: '/users/toggleUserBan/'+  this.userID,
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
@@ -125,7 +125,7 @@ export default {
         },
         setUserStatus(newUserStatus) {
             Vue.axios({
-                url: 'http://localhost:8000/api/users/setUserStatus',
+                url: '/users/setUserStatus',
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
@@ -154,7 +154,7 @@ export default {
         },
         getUserDetails() {
             Vue.axios({
-                url: 'http://localhost:8000/api/users/'+  this.userID,
+                url: '/users/'+  this.userID,
                 method: 'GET',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],

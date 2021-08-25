@@ -55,7 +55,7 @@ export default {
     methods: {
       fetchGroupData(){
         Vue.axios({
-            url: 'http://localhost:8000/api/group/userID/' + loggedInUserData.state.userData['user'].id,
+            url: '/group/userID/' + loggedInUserData.state.userData['user'].id,
             method: 'POST',
             headers: {
                 Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
@@ -81,7 +81,7 @@ export default {
       },
       joinGroup(joinCode){
         Vue.axios({
-            url: 'http://localhost:8000/api/group/joinGroup',
+            url: '/group/joinGroup',
             method: 'POST',
             headers: {
                 Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
@@ -112,7 +112,7 @@ export default {
       },
       createGroup(newGroupName) {
         Vue.axios({
-            url: 'http://localhost:8000/api/createGroup',
+            url: '/createGroup',
             method: 'POST',
             headers: {
                 Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],

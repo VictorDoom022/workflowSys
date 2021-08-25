@@ -66,7 +66,7 @@ export default {
     },
     mounted() {
         Vue.axios({
-            url: 'users',
+            url: '/users',
             method: 'GET',
             headers: {
                 Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
