@@ -29,7 +29,7 @@
               </b-col>
 
               <b-col md="4" v-for="group in searchGroup" :key="group.id">
-                <div @click="navigateToTeamList(group)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
+                <div @click="navigateToTeamList(group.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
                       <div class="card-body">
                           <h4 class="card-title text-center">{{ group.group_name }}</h4>
                       </div>
