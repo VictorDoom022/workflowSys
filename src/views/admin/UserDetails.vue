@@ -118,7 +118,9 @@ export default {
                 confirmButtonColor: '#28a745',
                 showCancelButton: true,
             }).then((result) => {
-                this.setUserStatus(result.value)
+                if(!result.isDismissed){
+                    this.setUserStatus(result.value)
+                }
             })
         },
         setUserStatus(newUserStatus) {

@@ -74,7 +74,9 @@ export default {
             confirmButtonColor: '#28a745',
             showCancelButton: true,
         }).then((result) => {
-            this.joinGroup(result.value)
+            if(!result.isDismissed){
+              this.joinGroup(result.value)
+            }    
         })
       },
       joinGroup(joinCode){
@@ -103,7 +105,7 @@ export default {
             confirmButtonColor: '#28a745',
             showCancelButton: true,
         }).then((result) => {
-            if(result.value != null){
+            if(!result.isDismissed){
               this.createGroup(result.value)
             }
         })
