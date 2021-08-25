@@ -171,7 +171,7 @@ Future<void> joinGroup(BuildContext context, String joinCode) async {
       }
   );
 
-  if(response.statusCode == 200){
+  if(response.statusCode == 200 || response.statusCode == 201){
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
   }
