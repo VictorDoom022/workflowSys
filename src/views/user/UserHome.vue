@@ -16,10 +16,14 @@
             </div>
           </div>
 
-          <div v-if="groups.length == 0" class="mx-auto">
+          <div v-if="isLoading" class="mx-auto">
               <div class="spinner-border text-dark" role="status" style="width: 3rem; height: 3rem;">
                   <span class="visually-hidden">Loading...</span>
               </div>
+          </div>
+
+          <div v-if="groups.length == 0" class="mx-auto">
+              <h1>No groups joined</h1>
           </div>
 
           <div v-if="groups.length !=0" class="container-fluid">
@@ -60,6 +64,7 @@ export default {
         groups: [],
         searchTerm: '',
         groupJoinCodeTemp: '',
+        isLoading: true,
       }
     },
     mounted() {
@@ -77,6 +82,7 @@ export default {
             }
         ).then((response) => {
             this.groups = response.data
+            this.isLoading = false
         })
       },
       showJoinGroupDialog() {
