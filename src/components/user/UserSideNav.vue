@@ -3,10 +3,10 @@
     <div class="position-sticky pt-3">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">
+          <router-link :to="{ name: 'UserHome' }" class="nav-link active" aria-current="page">
             <b-icon class="mr-1" icon="house-fill"></b-icon>
             Home
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">

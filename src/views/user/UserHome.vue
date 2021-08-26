@@ -22,7 +22,7 @@
               </div>
           </div>
 
-          <div v-if="groups.length == 0" class="mx-auto">
+          <div v-if="isLoading==false && groups.length == 0" class="mx-auto">
               <h1>No groups joined</h1>
           </div>
 
