@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserTopNav />
+        <UserTopNav @searchWord="searchFromNavBar" />
         <div class="container-fluid">
             <div class="row">
                 <UserSideNav />
@@ -139,7 +139,10 @@ export default {
                 icon: response.status == 200 ? 'success' : 'error',
                 title: response.data['message']
             })
-      },
+        },
+        searchFromNavBar(searchWordFromNavBar){
+            this.searchTerm = searchWordFromNavBar
+        }
     },
     computed: {
         searchTeam(){
