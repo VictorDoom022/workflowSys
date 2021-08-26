@@ -23,10 +23,6 @@
 
                     <div class="container-fluid">
                         <b-row>
-                            <b-col md="12" class="mb-3">
-                                <input type="text" v-model="searchTerm" class="form-control" placeholder="Search team...">
-                            </b-col>
-
                             <b-col md="4" v-for="team in searchTeam" :key="team.id">
                                 <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
                                     <div class="card-body">
@@ -34,7 +30,6 @@
                                     </div>
                                 </div>
                             </b-col> 
-
                         </b-row>
                     </div>
 
