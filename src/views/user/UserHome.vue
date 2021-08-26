@@ -28,10 +28,6 @@
 
           <div v-if="groups.length !=0" class="container-fluid">
             <b-row>
-              <b-col md="12" class="mb-3">
-                  <input type="text" v-model="searchTerm" class="form-control" placeholder="Search groups...">
-              </b-col>
-
               <b-col md="4" v-for="group in searchGroup" :key="group.id">
                 <div @click="navigateToTeamList(group.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
                       <div class="card-body">
