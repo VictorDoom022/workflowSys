@@ -8,7 +8,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
+        <input class="form-control form-control-dark w-100" v-model="searchWord" @keydown="searchData()" type="text" placeholder="Search" aria-label="Search">
 
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
@@ -23,6 +23,11 @@ import Vue from 'vue'
 import loggedInUserData from '../../functions/loggedInUserData'
 
 export default {
+    data() {
+        return {
+            searchWord : '',
+        }
+    },
     methods: {
         logout(){
             Vue.axios({
@@ -37,6 +42,9 @@ export default {
                 this.$router.push('/')
                 })
             })
+        },
+        searchData(){
+            this.$emit('searchWord', this.searchWord)
         },
     }
 }

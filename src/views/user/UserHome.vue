@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 
-    <UserTopNav />
+    <UserTopNav @searchWord="searchFromNavBar" />
     <div class="container-fluid">
       <div class="row">
         <UserSideNav />
@@ -181,6 +181,9 @@ export default {
       },
       navigateToTeamList(groupID){
         this.$router.push({ name: 'TeamList', params: { groupID: groupID }})
+      },
+      searchFromNavBar(searchWordFromNavBar){
+        this.searchTerm = searchWordFromNavBar
       }
     },
     computed: {
