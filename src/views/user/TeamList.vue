@@ -132,7 +132,7 @@ export default {
                 if(this.searchTerm == ''){
                     return team.team_name
                 }else{
-                    return team.team_name.includes(this.searchTerm)
+                    return team.team_name.toLowerCase().includes(this.searchTerm.toLowerCase())
                 }
             })
         }
