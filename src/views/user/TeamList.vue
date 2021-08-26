@@ -17,7 +17,7 @@
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" class="btn btn-sm btn-primary mx-1">Settings</button>
-                            <button @click="showEnterTeamNameDialog()" type="button" class="btn btn-sm btn-success mx-1">Create Team</button>
+                            <button v-if="isAdmin" @click="showEnterTeamNameDialog()" type="button" class="btn btn-sm btn-success mx-1">Create Team</button>
                         </div>
                     </div>
 
@@ -60,6 +60,7 @@ export default {
             groupDetail: [],
             teamList: [],
             searchTerm: '',
+            isAdmin: false,
         }
     },
     mounted() {
@@ -81,7 +82,18 @@ export default {
             }).then((response) => {
                 this.groupDetail = response.data['group']
                 this.teamList = response.data['team']
+                this.checkUserAdmin()
             })
+        },
+        checkUserAdmin(){
+            let adminList = this.groupDetail.group_adminList
+            let adminListArr = adminList.split(',')
+            
+            for(let i = 0; i < adminListArr.length; i++){
+                if(adminListArr[i] == loggedInUserData.state.userData['user'].id){
+                    this.isAdmin = true;
+                }
+            }
         },
         navigateBack(){
             this.$router.go(-1)
