@@ -188,7 +188,7 @@ export default {
           if(this.searchTerm == ''){
             return group.group_name
           }else{
-            return group.group_name.toLowerCase().includes(this.searchTerm)
+            return group.group_name.toLowerCase().includes(this.searchTerm.toLowerCase())
           }
         })
       }
