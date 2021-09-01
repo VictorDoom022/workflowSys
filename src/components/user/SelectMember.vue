@@ -4,7 +4,7 @@
         <input type="text" v-model="searchTerm" class="form-control" placeholder="Search member...">
 
         <div class="my-3">
-            <div v-for="user in searchUser" :key="user.id" @click="selectUser(user.id)" class="card my-1">
+            <div v-for="(user, index) in searchUser" :key="user.id" v-bind:class="{ shadow: selectedUserID[index] == user.id }" @click="selectUser(user.id)" class="card my-1">
                 <div class="card-body">
                     <h5 class="card-title">{{ user.name }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
