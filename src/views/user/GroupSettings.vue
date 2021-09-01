@@ -40,7 +40,7 @@
                                         <div class="list-group-item">
                                             <div class="row align-items-center">
                                                 <div class="col">
-                                                    <strong class="mb-0">View grouo admin</strong>
+                                                    <strong class="mb-0">View group admin</strong>
                                                     <p class="text-muted mb-0">View all admins in the group</p>
                                                 </div>
                                                 <div class="col-auto">
@@ -52,9 +52,9 @@
                                         </div>
                                     </div>
 
-                                    <strong class="mb-0">Admin</strong>
+                                    <strong v-if="isAdmin" class="mb-0">Admin</strong>
 
-                                    <div class="list-group mb-5 shadow">
+                                    <div v-if="isAdmin" class="list-group mb-5 shadow">
                                         <div class="list-group-item">
                                             <div class="row align-items-center">
                                                 <div class="col">
@@ -154,10 +154,43 @@ export default {
     components: { UserSideNav, UserTopNav, Loading },
     data() {
         return {
-
+            groupDetail: [],
+            teamList: [],
+            isAdmin: false,
         }
     },
+    mounted() {
+        this.fetchGroupDetail()
+    },
     methods: {
+        fetchGroupDetail(){
+            Vue.axios({
+                url: '/group/getGroupDetailByGroupUserID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                    userID: loggedInUserData.state.userData['user'].id,
+                },
+            }).then((response) => {
+                this.groupDetail = response.data['group']
+                this.teamList = response.data['team']
+                this.checkUserAdmin()
+            })
+        },
+        checkUserAdmin(){
+            let adminList = this.groupDetail.group_adminList
+            let adminListArr = adminList.split(',')
+            
+            for(let i = 0; i < adminListArr.length; i++){
+                if(adminListArr[i] == loggedInUserData.state.userData['user'].id){
+                    this.isAdmin = true;
+                }
+            }
+        },
         navigateBack(){
             this.$router.go(-1)
         },
