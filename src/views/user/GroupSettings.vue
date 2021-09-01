@@ -45,7 +45,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="showAllAdminDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -203,6 +203,22 @@ export default {
         showAllMembersDialog(){
             Vue.axios({
                 url: '/group/getGroupUserByGroupID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.showModal = !this.showModal
+            })
+        },
+        showAllAdminDialog(){
+            Vue.axios({
+                url: '/group/getGroupAdminUser',
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
