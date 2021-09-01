@@ -112,9 +112,9 @@
 
                                     </div>
 
-                                    <strong class="mb-0 text-danger">Danger Zone</strong>
+                                    <strong v-if="isAdmin" class="mb-0 text-danger">Danger Zone</strong>
 
-                                    <div class="list-group mb-5 shadow">
+                                    <div v-if="isAdmin" class="list-group mb-5 shadow">
                                         <div class="list-group-item">
                                             <div class="row align-items-center">
                                                 <div class="col">
