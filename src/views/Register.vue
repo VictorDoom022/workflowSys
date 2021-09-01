@@ -70,30 +70,33 @@ export default {
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    name: this.name,
                     email: this.email,
                     password: this.password,
+                    password_confirmation: this.confirm_password,
                 }
             ).then((response) => {
                 this.isLoading = false;
-
-                // if(response.status == 201){
-                //     this.error = response.data['message'][0]
-                // }else{
-                //     this.error = null;
-                //     loggedInUserData.dispatch('createUserSession', response.data)
-                //     this.redirect()
-                // }
+                console.log(response);
+                if(response.status == 200){
+                    this.error = null;
+                    loggedInUserData.dispatch('createUserSession', response.data)
+                    this.redirect()
+                }
+            }).catch((e) => {
+                this.isLoading = false;
+                this.error = "Invalid input";
             })
         },
-        // redirect(){
-        //     if(loggedInUserData.state.userData != null){
-        //         if(loggedInUserData.state.userData['user'].position == 'admin'){
-        //             this.$router.push('adminHome')
-        //         }else{
-        //             this.$router.push('userHome')
-        //         }
-        //     }
-        // }
+        redirect(){
+            if(loggedInUserData.state.userData != null){
+                if(loggedInUserData.state.userData['user'].position == 'admin'){
+                    this.$router.push('adminHome')
+                }else{
+                    this.$router.push('userHome')
+                }
+            }
+        }
     },
     mounted() {
         this.redirect()
