@@ -123,7 +123,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                                        <button @click="showConfirmDeleteGroupDialog()" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,6 +188,32 @@ export default {
                 },
             }).then((response) => {
                 this.toastMessage(response)
+            })
+        },
+        showConfirmDeleteGroupDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to delete the group?',
+                text: 'Everthing related to this group will be deleted.',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.deleteGroup();
+                }
+            })
+        },
+        deleteGroup(){
+            Vue.axios({
+                url: '/group/deleteGroup/' + this.groupID,
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'UserHome'})
             })
         },
         toastMessage(response) {
