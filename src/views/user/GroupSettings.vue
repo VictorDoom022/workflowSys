@@ -62,7 +62,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <button class="btn btn-outline-primary btn-sm">Rename</button>
+                                                        <button @click="showRenameGroupDialog()" class="btn btn-outline-primary btn-sm">Rename</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -160,6 +160,46 @@ export default {
     methods: {
         navigateBack(){
             this.$router.go(-1)
+        },
+        showRenameGroupDialog(){
+            Vue.swal.fire({
+                title: 'Enter new group name',
+                input: 'text',
+                inputPlaceholder: 'Name',
+                confirmButtonColor: '#28a745',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.renameGroup(result.value);
+                }
+            })
+        },
+        renameGroup(newGroupName){
+            Vue.axios({
+                url: '/group/renameGroup',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                    groupName: newGroupName
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
+            })
         },
     }
 }
