@@ -31,7 +31,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="showAllMembersDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,6 +139,9 @@
 
             </div>
         </div>
+
+        <SelectMember v-if="showModal" :userList="userListForModal" />
+
     </div>
 </template>
 
@@ -146,17 +149,20 @@
 import Vue from 'vue'
 import UserSideNav from '../../components/user/UserSideNav.vue'
 import UserTopNav from '../../components/user/UserTopNav.vue'
+import SelectMember from '../../components/user/SelectMember.vue';
 import loggedInUserData from '../../functions/loggedInUserData'
 import Loading from '../../components/Loading.vue'
 
 export default {
     props: ['groupID'],
-    components: { UserSideNav, UserTopNav, Loading },
+    components: { UserSideNav, UserTopNav, Loading, SelectMember },
     data() {
         return {
             groupDetail: [],
             teamList: [],
             isAdmin: false,
+            showModal: false,
+            userListForModal: null,
         }
     },
     mounted() {
@@ -193,6 +199,22 @@ export default {
         },
         navigateBack(){
             this.$router.go(-1)
+        },
+        showAllMembersDialog(){
+            Vue.axios({
+                url: '/group/getGroupUserByGroupID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.showModal = !this.showModal
+            })
         },
         showRenameGroupDialog(){
             Vue.swal.fire({
