@@ -16,7 +16,7 @@
                             Group ({{ groupDetail.group_name }})
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-sm btn-primary mx-1">Settings</button>
+                            <button type="button" @click="navigateToGroupSettings()" class="btn btn-sm btn-primary mx-1">Settings</button>
                             <button v-if="isAdmin" @click="showEnterTeamNameDialog()" type="button" class="btn btn-sm btn-success mx-1">Create Team</button>
                         </div>
                     </div>
@@ -137,6 +137,9 @@ export default {
         },
         searchFromNavBar(searchWordFromNavBar){
             this.searchTerm = searchWordFromNavBar
+        },
+        navigateToGroupSettings(){
+            this.$router.push({ name: 'GroupSettings', params: { groupID: this.groupID }})
         }
     },
     computed: {
