@@ -1,39 +1,48 @@
 <template>
     <div>
         <main class="form-signin">
-            <form @submit.prevent="login">
+            <form @submit.prevent="register">
                 <h1 class="title my-4">
                     <span class="title-orange">Workflow</span>
                     <span class="title-black">Sys</span>
                 </h1>
                 
-                <h1 class="h3 mb-3 fw-normal">Welcome</h1>
+                <h1 class="h3 mb-3 fw-normal">Register</h1>
 
                 <b-alert variant="danger" v-if="error" show>{{ error }}</b-alert>
 
                 <div class="form-floating">
-                    <input type="email" v-model="email" class="form-control" placeholder="Email" autocomplete="on">
+                    <input type="text" v-model="name" class="form-control remove-bottom-border" placeholder="Name" autocomplete="off">
+                    <label>Name</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="email" v-model="email" class="form-control" style="border-radius: 0;" placeholder="Email" autocomplete="on">
                     <label for="floatingInput">Email address</label>
                 </div>
 
                 <div class="form-floating">
-                    <input type="password" v-model="password" class="form-control" placeholder="Password" autocomplete="current-password">
+                    <input type="password" v-model="password" class="form-control" style="border-radius: 0;" placeholder="Password" autocomplete="current-password">
                     <label>Password</label>
                 </div>
 
+                <div class="form-floating">
+                    <input type="password" v-model="confirm_password" class="form-control remove-top-border" placeholder="Password" autocomplete="current-password">
+                    <label>Confirm Password</label>
+                </div>
+
                 <div class="submit">
-                    <button class="w-100 btn btn-lg btn-primary">Login</button>
+                    <button class="w-100 btn btn-lg btn-primary">Register</button>
                 </div>
             </form>
 
-            <router-link :to="{ name: 'Register' }" class="register-btn mt-3" style="text-decoration:none; color: unset">
-                Don't have an account? <span class="title-orange">Register</span>
+            <router-link :to="{ name: 'Login' }" class="login-btn mt-3" style="text-decoration:none; color: unset">
+                Already have an an account? <span class="title-orange">Login</span>
             </router-link>
-            
+
         </main>
         <Loading v-if="isLoading" />
     </div>
-  
 </template>
 
 <script>
@@ -45,17 +54,19 @@ export default {
     components: { Loading },
     data() {
         return {
+            name: '',
             email: '',
             password: '',
+            confirm_password: '',
             error: null,
             isLoading: false,
         }
     },
     methods: {
-        login(){
+        register(){
             this.isLoading = true;
             Vue.axios.post(
-                'login', {
+                '/register', {
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -64,24 +75,25 @@ export default {
                 }
             ).then((response) => {
                 this.isLoading = false;
-                if(response.status == 201){
-                    this.error = response.data['message'][0]
-                }else{
-                    this.error = null;
-                    loggedInUserData.dispatch('createUserSession', response.data)
-                    this.redirect()
-                }
+
+                // if(response.status == 201){
+                //     this.error = response.data['message'][0]
+                // }else{
+                //     this.error = null;
+                //     loggedInUserData.dispatch('createUserSession', response.data)
+                //     this.redirect()
+                // }
             })
         },
-        redirect(){
-            if(loggedInUserData.state.userData != null){
-                if(loggedInUserData.state.userData['user'].position == 'admin'){
-                    this.$router.push('adminHome')
-                }else{
-                    this.$router.push('userHome')
-                }
-            }
-        }
+        // redirect(){
+        //     if(loggedInUserData.state.userData != null){
+        //         if(loggedInUserData.state.userData['user'].position == 'admin'){
+        //             this.$router.push('adminHome')
+        //         }else{
+        //             this.$router.push('userHome')
+        //         }
+        //     }
+        // }
     },
     mounted() {
         this.redirect()
@@ -132,20 +144,20 @@ body {
   z-index: 2;
 }
 
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+.remove-top-border{
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.remove-bottom-border{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
-.register-btn :hover{
+.login-btn :hover{
     cursor: pointer;
     background: rgba(250, 225, 225, 0.8) !important;
 }
+
 </style>
