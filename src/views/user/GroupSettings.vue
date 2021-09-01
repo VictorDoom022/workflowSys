@@ -15,6 +15,126 @@
                         </h1>
                     </div>
 
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+                                <div class="my-4">
+
+                                    <strong class="mb-0">General</strong>
+
+                                    <div class="list-group mb-5 shadow">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">View members</strong>
+                                                    <p class="text-muted mb-0">View all members in the group</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">View grouo admin</strong>
+                                                    <p class="text-muted mb-0">View all admins in the group</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <strong class="mb-0">Admin</strong>
+
+                                    <div class="list-group mb-5 shadow">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">Rename group</strong>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <button class="btn btn-outline-primary btn-sm">Rename</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">View all teams</strong>
+                                                    <p class="text-muted mb-0">Some teams will not be shown in the group page. Check them out here!</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">Set member as admin</strong>
+                                                    <p class="text-muted mb-0">Add a new member to be the admin of your group</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">Remove admin</strong>
+                                                    <p class="text-muted mb-0">Revoke admin privileges</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <strong class="mb-0 text-danger">Danger Zone</strong>
+
+                                    <div class="list-group mb-5 shadow">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">Delete group</strong>
+                                                    <p class="text-muted mb-0">Nuke everything related to this group</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </main>
 
             </div>
