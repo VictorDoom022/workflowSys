@@ -50,7 +50,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <button class="btn btn-outline-primary btn-sm">Rename</button>
+                                                        <button @click="showRenameTeamDialog()" class="btn btn-outline-primary btn-sm">Rename</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,6 +188,35 @@ export default {
                 this.showModal = !this.showModal
             })
         },
+        showRenameTeamDialog(){
+            Vue.swal.fire({
+                title: 'Enter new team name',
+                input: 'text',
+                inputPlaceholder: 'Name',
+                confirmButtonColor: '#28a745',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.renameTeam(result.value);
+                }
+            })
+        },
+        renameTeam(newTeamName){
+            Vue.axios({
+                url: '/team/renameTeam',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID : this.teamID,
+                    teamName: newTeamName
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+            })
+        },
         addMemberToTeamDialog(){
             Vue.axios({
                 url: '/team/getTeamUserDiff',
@@ -224,6 +253,17 @@ export default {
                 this.modalViewOnly = false
                 this.modalType = 4
                 this.showModal = !this.showModal
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
             })
         },
         navigateBack(){
