@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['userList', 'viewOnly'],
+    props: ['userList'],
     data() {
         return {
             modalShown: true,
@@ -29,14 +29,12 @@ export default {
             console.log('ok');
         },
         selectUser(userID){
-            if(!this.viewOnly){
-                if(this.selectedUserID.includes(userID)) {
-                    // remove selected if user being selected again
-                    this.selectedUserID.splice(this.selectedUserID.indexOf(userID), 1)
-                }else{
-                    this.selectedUserID.push(userID);
-                }
-            } 
+            if(this.selectedUserID.includes(userID)) {
+                // remove selected if user being selected again
+                this.selectedUserID.splice(this.selectedUserID.indexOf(userID), 1)
+            }else{
+                this.selectedUserID.push(userID);
+            }
         }
     },
     computed: {
