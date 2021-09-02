@@ -7,6 +7,7 @@ import UserDetails from '../views/admin/UserDetails.vue'
 import UserHome from '../views/user/UserHome.vue'
 import TeamList from '../views/user/groups/TeamList.vue'
 import GroupSettings from '../views/user/groups/GroupSettings.vue'
+import TaskListList from '../views/user/teams/TaskListList.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,12 @@ const routes = [
     path: '/groupSettings/:groupID',
     name: 'GroupSettings',
     component: GroupSettings,
+    props: true,
+  },
+  {
+    path: '/teamDetail/:teamID',
+    name: 'TaskListList',
+    component: TaskListList,
     props: true,
   },
 ]

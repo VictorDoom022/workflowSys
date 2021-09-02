@@ -24,7 +24,7 @@
                     <div class="container-fluid">
                         <b-row>
                             <b-col md="4" v-for="team in searchTeam" :key="team.id">
-                                <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
+                                <div @click="navigateToTaskListList(team.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
                                     <div class="card-body">
                                         <h4 class="card-title text-center">{{ team.team_name }}</h4>
                                     </div>
@@ -140,6 +140,9 @@ export default {
         },
         navigateToGroupSettings(){
             this.$router.push({ name: 'GroupSettings', params: { groupID: this.groupID }})
+        },
+        navigateToTaskListList(teamID){
+            this.$router.push({ name: 'TaskListList', params: {teamID: teamID}})
         }
     },
     computed: {
@@ -156,6 +159,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.card {
+    cursor: pointer;
+}
 </style>
