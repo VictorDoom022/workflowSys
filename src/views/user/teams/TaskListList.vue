@@ -16,7 +16,7 @@
                             Team ({{ teamDetail.team_name }})
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-sm btn-primary mx-1">Settings</button>
+                            <button type="button" @click="navigateToTeamSettings()" class="btn btn-sm btn-primary mx-1">Settings</button>
                         </div>
                     </div>
 
@@ -113,6 +113,9 @@ export default {
                 return _.assign(user, _.find(taskListTemp, ['taskList_userID', user.id.toString()]))
             })
             this.combinedData = mergedData
+        },
+        navigateToTeamSettings(){
+            this.$router.push({ name: 'TeamSettings', params: { groupID: this.teamID }})
         },
     },
     computed: {
