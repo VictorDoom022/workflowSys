@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserTopNav />
+        <UserTopNav @searchWord="searchFromNavBar" />
         <div class="container-fluid">
             <div class="row">
                 <UserSideNav />
@@ -22,7 +22,7 @@
 
                     <div class="container-fluid">
                         <b-row>
-                            <b-col md="4" v-for="taskList in taskListList" :key="taskList.id">
+                            <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id">
                                 <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
                                     <div class="card-body">
                                         <h4 class="card-title text-center">{{ convertUserIDToName(taskList.taskList_userID) }}</h4>
@@ -54,6 +54,7 @@ export default {
             teamDetail: [],
             taskListList: [],
             isLoading: true,
+            searchTerm: '',
         }
     },
     mounted() {
@@ -99,6 +100,33 @@ export default {
         navigateBack(){
             this.$router.go(-1)
         },
+        searchFromNavBar(searchWordFromNavBar){
+            this.searchTerm = searchWordFromNavBar
+        }
+    },
+    computed: {
+        searchTaskList(){
+            // user input: username
+            if(this.searchTerm == ''){
+                return this.taskListList.filter((task) => {
+                    return task.taskList_userID
+                })
+            }
+
+            if(this.searchTerm != ''){
+                // search in user list
+                return this.userData.filter((user) => {
+                    // if username match with name in userData
+                    if(user.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                        // display the matched results
+                        return this.taskListList.filter((task) => {
+                            return task.taskList_userID.includes(user.id)
+                        })
+                    }
+                })
+            }
+            
+        }
     },
 }
 </script>
