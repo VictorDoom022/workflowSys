@@ -58,6 +58,20 @@
                                         <div class="list-group-item">
                                             <div class="row align-items-center">
                                                 <div class="col">
+                                                    <strong class="mb-0">Join code</strong>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <input class="joinCodeInputText" id="joinCode" type="text" :value="groupDetail.group_joinCode" readonly>
+                                                        <b-icon @click="copyJoinCode()" class="mr-1 copyIcon" icon="clipboard"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
                                                     <strong class="mb-0">Rename group</strong>
                                                 </div>
                                                 <div class="col-auto">
@@ -338,10 +352,32 @@ export default {
                 title: response.data['message']
             })
         },
+        copyJoinCode(){
+            // select the hidden input
+            let testingCodeToCopy = document.querySelector('#joinCode')
+
+            testingCodeToCopy.select()
+            // copy the grouo code from the input field
+            document.execCommand('copy')
+        }
     }
 }
 </script>
 
-<style>
+<style scoped>
+.copyIcon:hover {
+    cursor: pointer;
+}
 
+.joinCodeInputText {
+    border: none;
+    text-align: right;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.joinCodeInputText:focus {
+    border: none;
+    outline :none;
+}
 </style>
