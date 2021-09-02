@@ -78,7 +78,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="removeMemberFromTeam()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,6 +204,25 @@ export default {
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 3
+                this.showModal = !this.showModal
+            })
+        },
+        removeMemberFromTeam(){
+            Vue.axios({
+                url: '/team/getTeamUser',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                    teamID: this.teamID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.modalViewOnly = false
+                this.modalType = 4
                 this.showModal = !this.showModal
             })
         },

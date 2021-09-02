@@ -39,6 +39,8 @@ export default {
                 this.removeMemberFromAdmin()
             }else if(this.type == 3){
                 this.addMemberToTeam()
+            }else if(this.type == 4){
+                this.removeMemberFromTeam()
             }
         },
         selectUser(userID){
@@ -86,6 +88,22 @@ export default {
         addMemberToTeam(){
             Vue.axios({
                 url: '/team/addMemberToTeam',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID : this.teamID,
+                    userList : this.selectedUserID.join(','),
+                },
+            }).then((response) => {
+                this.toastMessage(response);
+            })
+        },
+        removeMemberFromTeam(){
+            Vue.axios({
+                url: '/team/removeMemberFromTeam',
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
