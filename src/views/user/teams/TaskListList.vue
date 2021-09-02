@@ -46,7 +46,7 @@ import Loading from '../../../components/Loading.vue'
 import lodash from 'lodash'
 
 export default {
-    props: ['teamID'],
+    props: ['groupID', 'teamID'],
     components: { UserSideNav, UserTopNav, Loading },
     data() {
         return {
@@ -115,7 +115,7 @@ export default {
             this.combinedData = mergedData
         },
         navigateToTeamSettings(){
-            this.$router.push({ name: 'TeamSettings', params: { groupID: this.teamID }})
+            this.$router.push({ name: 'TeamSettings', params: { teamID: this.teamID, groupID: this.groupID }})
         },
     },
     computed: {

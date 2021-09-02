@@ -52,13 +52,13 @@ const routes = [
     props: true,
   },
   {
-    path: '/teamDetail/:teamID',
+    path: '/teamDetail/:groupID/:teamID',
     name: 'TaskListList',
     component: TaskListList,
     props: true,
   },
   {
-    path: '/teamSettings/:teamID',
+    path: '/teamSettings/:groupID/:teamID',
     name: 'TeamSettings',
     component: TeamSettings,
     props: true,
