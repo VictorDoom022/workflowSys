@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="showRemoveAdminDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -251,6 +251,24 @@ export default {
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 1
+                this.showModal = !this.showModal
+            })
+        },
+        showRemoveAdminDialog(){
+            Vue.axios({
+                url: '/group/getGroupAdminUser',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.modalViewOnly = false
+                this.modalType = 2
                 this.showModal = !this.showModal
             })
         },

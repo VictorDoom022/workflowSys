@@ -33,6 +33,8 @@ export default {
         okButtonClick(){
             if(this.type == 1){
                 this.setMemberAsAdmin()
+            }else if(this.type == 2){
+                this.removeMemberFromAdmin()
             }
         },
         selectUser(userID){
@@ -48,6 +50,22 @@ export default {
         setMemberAsAdmin(){
             Vue.axios({
                 url: '/group/setMemberAsAdmin',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID : this.groupID,
+                    userList : this.selectedUserID.join(','),
+                },
+            }).then((response) => {
+                this.toastMessage(response);
+            })
+        },
+        removeMemberFromAdmin(){
+            Vue.axios({
+                url: '/group/removeMemberFromGroupAdmin',
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
