@@ -64,7 +64,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="addMemberToTeamDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -124,7 +124,7 @@
             </div>
         </div>
 
-        <SelectMember v-if="showModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
+        <SelectMember v-if="showModal" :teamID="this.teamID" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
     
     </div>
 </template>
@@ -138,7 +138,7 @@ import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
 
 export default {
-    props: ['teamID'],
+    props: ['groupID','teamID'],
     components: { UserSideNav, UserTopNav, Loading, SelectMember },
     data() {
         return {
@@ -185,6 +185,25 @@ export default {
             }).then((response) => {
                 this.userListForModal = response.data
                 this.modalViewOnly = true;
+                this.showModal = !this.showModal
+            })
+        },
+        addMemberToTeamDialog(){
+            Vue.axios({
+                url: '/team/getTeamUserDiff',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                    teamID: this.teamID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.modalViewOnly = false
+                this.modalType = 3
                 this.showModal = !this.showModal
             })
         },

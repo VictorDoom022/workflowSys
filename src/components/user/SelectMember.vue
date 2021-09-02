@@ -19,9 +19,11 @@ import Vue from 'vue'
 import loggedInUserData from '../../functions/loggedInUserData'
 /*
     type 1 = set member as admin
+    type 2 = remove member from admin
+    type 3 = add member to team
 */
 export default {
-    props: ['groupID', 'userList', 'viewOnly', 'type'],
+    props: ['groupID', 'teamID', 'userList', 'viewOnly', 'type'],
     data() {
         return {
             modalShown: true,
@@ -35,6 +37,8 @@ export default {
                 this.setMemberAsAdmin()
             }else if(this.type == 2){
                 this.removeMemberFromAdmin()
+            }else if(this.type == 3){
+                this.addMemberToTeam()
             }
         },
         selectUser(userID){
@@ -73,6 +77,22 @@ export default {
                 },
                 data: {
                     groupID : this.groupID,
+                    userList : this.selectedUserID.join(','),
+                },
+            }).then((response) => {
+                this.toastMessage(response);
+            })
+        },
+        addMemberToTeam(){
+            Vue.axios({
+                url: '/team/addMemberToTeam',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID : this.teamID,
                     userList : this.selectedUserID.join(','),
                 },
             }).then((response) => {
