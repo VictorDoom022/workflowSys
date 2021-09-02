@@ -4,7 +4,7 @@
         <input type="text" v-model="searchTerm" class="form-control" placeholder="Search member...">
 
         <div class="my-3">
-            <div v-for="(user, index) in searchUser" :key="user.id" v-bind:class="{ shadow: selectedUserID[index] == user.id }" @click="selectUser(user.id)" class="card my-1">
+            <div v-for="user in searchUser" :key="user.id" v-bind:class="{ shadow: selectedUserID.includes(user.id) }" @click="selectUser(user.id)" class="card my-1">
                 <div class="card-body">
                     <h5 class="card-title">{{ user.name }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['userList'],
+    props: ['userList', 'viewOnly'],
     data() {
         return {
             modalShown: true,
@@ -29,12 +29,14 @@ export default {
             console.log('ok');
         },
         selectUser(userID){
-            if(this.selectedUserID.includes(userID)) {
-                // remove selected if user being selected again
-                this.selectedUserID.splice(this.selectedUserID.indexOf(userID), 1)
-            }else{
-                this.selectedUserID.push(userID);
-            }
+            if(!this.viewOnly){
+                if(this.selectedUserID.includes(userID)) {
+                    // remove selected if user being selected again
+                    this.selectedUserID.splice(this.selectedUserID.indexOf(userID), 1)
+                }else{
+                    this.selectedUserID.push(userID);
+                }
+            } 
         }
     },
     computed: {

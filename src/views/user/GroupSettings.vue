@@ -140,7 +140,7 @@
             </div>
         </div>
 
-        <SelectMember v-if="showModal" :userList="userListForModal" />
+        <SelectMember v-if="showModal" :userList="userListForModal" :viewOnly="modalViewOnly" />
 
     </div>
 </template>
@@ -163,6 +163,7 @@ export default {
             isAdmin: false,
             showModal: false,
             userListForModal: null,
+            modalViewOnly: false,
         }
     },
     mounted() {
@@ -213,6 +214,7 @@ export default {
                 },
             }).then((response) => {
                 this.userListForModal = response.data
+                this.modalViewOnly = true;
                 this.showModal = !this.showModal
             })
         },
@@ -229,6 +231,7 @@ export default {
                 },
             }).then((response) => {
                 this.userListForModal = response.data
+                this.modalViewOnly = true;
                 this.showModal = !this.showModal
             })
         },
