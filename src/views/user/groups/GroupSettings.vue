@@ -161,11 +161,11 @@
 
 <script>
 import Vue from 'vue'
-import UserSideNav from '../../components/user/UserSideNav.vue'
-import UserTopNav from '../../components/user/UserTopNav.vue'
-import SelectMember from '../../components/user/SelectMember.vue'
-import loggedInUserData from '../../functions/loggedInUserData'
-import Loading from '../../components/Loading.vue'
+import UserSideNav from '../../../components/user/UserSideNav.vue'
+import UserTopNav from '../../../components/user/UserTopNav.vue'
+import SelectMember from '../../../components/user/SelectMember.vue'
+import loggedInUserData from '../../../functions/loggedInUserData'
+import Loading from '../../../components/Loading.vue'
 
 export default {
     props: ['groupID'],

@@ -5,8 +5,8 @@ import Register from '../views/Register.vue'
 import AdminHome from '../views/admin/AdminHome.vue'
 import UserDetails from '../views/admin/UserDetails.vue'
 import UserHome from '../views/user/UserHome.vue'
-import TeamList from '../views/user/TeamList.vue'
-import GroupSettings from '../views/user/GroupSettings.vue'
+import TeamList from '../views/user/groups/TeamList.vue'
+import GroupSettings from '../views/user/groups/GroupSettings.vue'
 
 Vue.use(VueRouter)
 
