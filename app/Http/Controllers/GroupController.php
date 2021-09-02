@@ -362,4 +362,55 @@ class GroupController extends Controller
             'message'=>'Group Renamed.',
         ];
     }
+
+    public function checkIsUserAdminByGroupID(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+        $groupID = $request->groupID;
+
+        $group = Group::where('id', $groupID)->first();
+        $groupAdminList = $group->group_adminList;
+
+        $groupAdminListArray = explode(',', $groupAdminList);
+        $isAdmin = false;
+
+        for($i = 0; $i < count($groupAdminListArray); $i++){
+            if($groupAdminListArray[$i] == $userID){
+                $isAdmin = true;
+            }
+        }
+
+        return [
+            'message'=>$isAdmin,
+        ];
+    }
+
+    public function checkIsUserAdminByTeamID(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+        $teamID = $request->teamID;
+
+        // get Group ID from team
+        $team = Team::where('id', $teamID)->first();
+        $teamGroupID = $team->team_groupID;
+
+        // get Group by ID
+        $group = Group::where('id', $teamGroupID)->first();
+        $groupAdminList = $group->group_adminList;
+
+        $groupAdminListArray = explode(',', $groupAdminList);
+        $isAdmin = false;
+
+        for($i = 0; $i < count($groupAdminListArray); $i++){
+            if($groupAdminListArray[$i] == $userID){
+                $isAdmin = true;
+            }
+        }
+
+        return [
+            'message'=>$isAdmin,
+        ];
+    }
 }
