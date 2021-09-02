@@ -90,7 +90,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="showSetAdminDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,7 +140,7 @@
             </div>
         </div>
 
-        <SelectMember v-if="showModal" :userList="userListForModal" :viewOnly="modalViewOnly" />
+        <SelectMember v-if="showModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
 
     </div>
 </template>
@@ -149,7 +149,7 @@
 import Vue from 'vue'
 import UserSideNav from '../../components/user/UserSideNav.vue'
 import UserTopNav from '../../components/user/UserTopNav.vue'
-import SelectMember from '../../components/user/SelectMember.vue';
+import SelectMember from '../../components/user/SelectMember.vue'
 import loggedInUserData from '../../functions/loggedInUserData'
 import Loading from '../../components/Loading.vue'
 
@@ -164,6 +164,7 @@ export default {
             showModal: false,
             userListForModal: null,
             modalViewOnly: false,
+            modalType: 0,
         }
     },
     mounted() {
@@ -232,6 +233,24 @@ export default {
             }).then((response) => {
                 this.userListForModal = response.data
                 this.modalViewOnly = true;
+                this.showModal = !this.showModal
+            })
+        },
+        showSetAdminDialog(){
+            Vue.axios({
+                url: '/group/getGroupNonAdminUser',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.modalViewOnly = false
+                this.modalType = 1
                 this.showModal = !this.showModal
             })
         },

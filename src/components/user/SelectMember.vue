@@ -15,8 +15,13 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import loggedInUserData from '../../functions/loggedInUserData'
+/*
+    type 1 = set member as admin
+*/
 export default {
-    props: ['userList', 'viewOnly'],
+    props: ['groupID', 'userList', 'viewOnly', 'type'],
     data() {
         return {
             modalShown: true,
@@ -26,7 +31,9 @@ export default {
     },
     methods: {
         okButtonClick(){
-            console.log('ok');
+            if(this.type == 1){
+                this.setMemberAsAdmin()
+            }
         },
         selectUser(userID){
             if(!this.viewOnly){
@@ -37,7 +44,34 @@ export default {
                     this.selectedUserID.push(userID);
                 }
             } 
-        }
+        },
+        setMemberAsAdmin(){
+            Vue.axios({
+                url: '/group/setMemberAsAdmin',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID : this.groupID,
+                    userList : this.selectedUserID.join(','),
+                },
+            }).then((response) => {
+                this.toastMessage(response);
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
+            })
+      },
     },
     computed: {
       searchUser(){
