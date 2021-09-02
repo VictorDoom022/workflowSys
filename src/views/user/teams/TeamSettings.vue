@@ -110,7 +110,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <button class="btn btn-outline-danger btn-sm">Quit</button>
+                                                        <button @click="showConfirmQuitTeamDialog()" class="btn btn-outline-danger btn-sm">Quit</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,6 +281,39 @@ export default {
                 },
             }).then((response) => {
                 this.toastMessage(response)
+                this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
+            })
+        },
+        showConfirmQuitTeamDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to quit this team?',
+                text: 'Everthing related to you in this team will be deleted.',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.quitTeam();
+                }
+            })
+        },
+        quitTeam(){
+            var tempUserIDArray = []
+            tempUserIDArray.push(loggedInUserData.state.userData['user'].id)
+
+            Vue.axios({
+                url: '/team/removeMemberFromTeam',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID : this.teamID,
+                    userList : tempUserIDArray.join(','),
+                },
+            }).then((response) => {
+                this.toastMessage(response);
                 this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
             })
         },
