@@ -33,7 +33,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="showAllTeamMembersDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,6 +123,9 @@
                 </main>
             </div>
         </div>
+
+        <SelectMember v-if="showModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
+    
     </div>
 </template>
 
@@ -141,6 +144,10 @@ export default {
         return {
             isAdmin: false,
             isLoading: true,
+            showModal: false,
+            userListForModal: null,
+            modalViewOnly: false,
+            modalType: 0,
         }
     },
     mounted() {
@@ -162,6 +169,23 @@ export default {
             }).then((response) => {
                 this.isAdmin = response.data['message']
                 this.isLoading = false;
+            })
+        },
+        showAllTeamMembersDialog(){
+            Vue.axios({
+                url: '/team/getTeamUser',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID: this.teamID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.modalViewOnly = true;
+                this.showModal = !this.showModal
             })
         },
         navigateBack(){
