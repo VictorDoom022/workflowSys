@@ -96,7 +96,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                                        <button @click="showConfirmDeleteTeamDialog()" class="btn btn-outline-danger btn-sm">Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,6 +253,35 @@ export default {
                 this.modalViewOnly = false
                 this.modalType = 4
                 this.showModal = !this.showModal
+            })
+        },
+        showConfirmDeleteTeamDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to delete this team?',
+                text: 'Everthing related to this team will be deleted.',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.deleteTeam();
+                }
+            })
+        },
+        deleteTeam(){
+            Vue.axios({
+                url: '/team/deleteTeam',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID: this.teamID,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
             })
         },
         toastMessage(response) {
