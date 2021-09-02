@@ -25,7 +25,7 @@
                             <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id">
                                 <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
                                     <div class="card-body">
-                                        <h4 class="card-title text-center">{{ convertUserIDToName(taskList.taskList_userID) }}</h4>
+                                        <h4 class="card-title text-center">{{ taskList.name }}</h4>
                                     </div>
                                 </div>
                             </b-col> 
@@ -43,6 +43,7 @@ import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
+import lodash from 'lodash'
 
 export default {
     props: ['teamID'],
@@ -55,6 +56,7 @@ export default {
             taskListList: [],
             isLoading: true,
             searchTerm: '',
+            combinedData: [],
         }
     },
     mounted() {
@@ -86,6 +88,7 @@ export default {
                 }).then((response) => {
                     this.teamDetail = response.data['team']
                     this.taskListList = response.data['taskList']
+                    this.mergeTaskUserData()
                     this.isLoading = false
                 })
             })
@@ -102,30 +105,25 @@ export default {
         },
         searchFromNavBar(searchWordFromNavBar){
             this.searchTerm = searchWordFromNavBar
-        }
+        },
+        mergeTaskUserData(){
+            var taskListTemp = this.taskListList
+
+            var mergedData = _.map(this.userData, function (user) {
+                return _.assign(user, _.find(taskListTemp, ['taskList_userID', user.id.toString()]))
+            })
+            this.combinedData = mergedData
+        },
     },
     computed: {
         searchTaskList(){
-            // user input: username
-            if(this.searchTerm == ''){
-                return this.taskListList.filter((task) => {
-                    return task.taskList_userID
-                })
-            }
-
-            if(this.searchTerm != ''){
-                // search in user list
-                return this.userData.filter((user) => {
-                    // if username match with name in userData
-                    if(user.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
-                        // display the matched results
-                        return this.taskListList.filter((task) => {
-                            return task.taskList_userID.includes(user.id)
-                        })
-                    }
-                })
-            }
-            
+            return this.combinedData.filter((task) => {
+                if(this.searchTerm == ''){
+                    return task.name
+                }else{
+                    return  task.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+                }
+            })
         }
     },
 }
