@@ -16,7 +16,16 @@
                     </div>
 
                     <div class="container-fluid">
-
+                        <table class="table table-bordered track_tbl">
+                            <tr>
+                                <th>Name</th>
+                                <th>Date</th>
+                            </tr>
+                            <tr v-for="(assignedUser, index) in assigendUserListParsed" :key="'assignedUser' + index">
+                                <td>{{ convertUserIDToName(assigendUserListParsed.split(',')[index]) }}</td>
+                                <td>{{ convertDateTimeEpochToDateTime(assigendDateListParsed.split(',')[index]) }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </main>
             </div>
@@ -31,10 +40,31 @@ import UserTopNav from '../../../components/user/UserTopNav.vue'
 export default {
     props: ['userList', 'assigendUserList', 'assigendDateList'],
     components: { UserSideNav, UserTopNav },
+    data() {
+        return {
+            userListParsed: [],
+            assigendUserListParsed: [],
+            assigendDateListParsed: [],
+        }
+    },
     mounted(){
-        
+        this.userListParsed = JSON.parse(this.userList)
+        this.assigendUserListParsed = JSON.parse(this.assigendUserList)
+        this.assigendDateListParsed = JSON.parse(this.assigendDateList)
     },
     methods: {
+        convertUserIDToName(userID){
+            for(var i=0; i < this.userListParsed.length; i++){
+                if(userID == this.userListParsed[i].id){
+                    return this.userListParsed[i].name
+                }
+            }
+        },
+        convertDateTimeEpochToDateTime(epochDateTime){
+            let convertedDateTime = new Date(1000*epochDateTime)
+            // for some reason dont know why date,moth,year result will be a mess after converting to date format
+            return convertedDateTime
+        },
         navigateBack(){
             this.$router.go(-1)
         },

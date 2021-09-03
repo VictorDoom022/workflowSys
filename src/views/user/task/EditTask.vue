@@ -152,7 +152,6 @@ export default {
             }).then((response) => {
                 this.taskData = response.data
                 this.setTaskData()
-                console.log(this.taskData)
             })
         },
         setTaskData(){
