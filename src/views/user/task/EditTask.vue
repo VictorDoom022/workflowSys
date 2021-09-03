@@ -59,7 +59,7 @@
                                 </div>
 
                                 <div class="submit col-md-12 d-grid">
-                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <button class="btn btn-primary" type="submit">Edit</button>
                                 </div>
                             </div>
                         </form>
@@ -119,6 +119,38 @@ export default {
             this.taskStartDate = this.taskData.task_startDate
             this.taskDueDate = this.taskData.task_dueDate
             this.isLoading = false
+        },
+        editTask(){
+            Vue.axios({
+                url: '/task/updateTask',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    taskID : this.taskID,
+                    taskName : this.taskName,
+                    taskDesc : this.taskDesc,
+                    taskStartDate : this.taskStartDate.length == 0 ? 'null' : this.taskStartDate,
+                    taskDueDate : this.taskDueDate.length == 0 ? 'null' : this.taskDueDate,
+                    taskStatusMsg : this.taskStatusMsg,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'TaskList', params: { teamID: this.teamID, taskListID: this.taskListID }})
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
+            })
         },
         navigateBack(){
             this.$router.go(-1)
