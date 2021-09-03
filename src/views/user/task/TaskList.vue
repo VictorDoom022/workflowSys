@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserTopNav/>
+        <UserTopNav @searchWord="searchFromNavBar" />
         <div class="container-fluid">
             <div class="row">
                 <UserSideNav />
@@ -16,7 +16,15 @@
                     </div>
 
                     <div class="container-fluid">
-
+                        <b-row>
+                            <b-col md="4" v-for="task in searchTask" :key="task.id">
+                                <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
+                                    <div class="card-body">
+                                        <h4 class="card-title text-center">{{ task.task_name }}</h4>
+                                    </div>
+                                </div>
+                            </b-col> 
+                        </b-row>
                     </div>
                 </main>
             </div>
@@ -34,13 +42,48 @@ import Loading from '../../../components/Loading.vue'
 export default {
     props: ['taskListID'],
     components: { UserSideNav, UserTopNav, Loading },
+    data() {
+        return {
+            taskList: [],
+            searchTerm: '',
+        }
+    },
     mounted() {
-
+        this.fetchTaskListData()
     },
     methods: {
+        fetchTaskListData(){
+            Vue.axios({
+                url: '/task/getTaskByTaskListID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    taskListID: this.taskListID,
+                },
+            }).then((response) => {
+                this.taskList = response.data;
+            })
+        },
         navigateBack(){
             this.$router.go(-1)
         },
+        searchFromNavBar(searchWordFromNavBar){
+            this.searchTerm = searchWordFromNavBar
+        },
+    },
+    computed: {
+        searchTask(){
+            return this.taskList.filter((task) => {
+                if(this.searchTerm == ''){
+                    return task.task_name
+                }else{
+                    return task.task_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+                }
+            })
+        }
     },
 }
 </script>
