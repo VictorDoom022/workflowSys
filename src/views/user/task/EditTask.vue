@@ -59,8 +59,15 @@
                                     </h6>
                                 </div>
 
-                                <div class="col-md-6 d-grid mb-2">
-                                    <input @click="showSelectUserDialog()" :disabled="!allowEdit" class="btn btn-success" type="button" value="Assign User">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6 d-grid mb-2">
+                                            <input @click="showSelectUserDialog()" :disabled="!allowEdit" class="btn btn-success" type="button" value="Assign User">
+                                        </div>
+                                        <div class="col-md-6 d-grid mb-2">
+                                            <input @click="navigateToAssignHistory()" :disabled="!allowEdit" class="btn btn-warning" type="button" value="View assign history">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-12 mb-2 border-top"></div>
@@ -267,6 +274,14 @@ export default {
         },
         navigateBack(){
             this.$router.go(-1)
+        },
+        navigateToAssignHistory(){
+            this.$router.push({ name: 'TaskAssignedHistory', params: { 
+                userList: JSON.stringify(this.userData), 
+                assigendUserList: JSON.stringify(this.taskData.task_assignedMemberID), 
+                assigendDateList: JSON.stringify(this.taskData.task_assignedDate), 
+                } 
+            })
         },
     },
 }

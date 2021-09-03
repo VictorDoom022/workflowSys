@@ -12,6 +12,7 @@ import TeamSettings from '../views/user/teams/TeamSettings.vue'
 import TaskList from '../views/user/task/TaskList.vue'
 import CreateTask from '../views/user/task/CreateTask.vue'
 import EditTask from '../views/user/task/EditTask.vue'
+import TaskAssignedHistory from '../views/user/task/TaskAssignedHistory.vue'
 
 Vue.use(VueRouter)
 
@@ -82,6 +83,12 @@ const routes = [
     path: '/editTask/:teamID/:taskID',
     name: 'EditTask',
     component: EditTask,
+    props: true,
+  },
+  {
+    path: '/taskAssignHistory/:userList/:assigendUserList/:assigendDateList',
+    name: 'TaskAssignedHistory',
+    component: TaskAssignedHistory,
     props: true,
   },
 ]
