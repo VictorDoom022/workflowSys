@@ -25,9 +25,11 @@ import loggedInUserData from '../../functions/loggedInUserData'
     type 1 = set member as admin
     type 2 = remove member from admin
     type 3 = add member to team
+    type 4 = remove member from team
+    type 5 = assign task to team member
 */
 export default {
-    props: ['groupID', 'teamID', 'userList', 'viewOnly', 'type'],
+    props: ['groupID', 'teamID', 'taskID', 'userList', 'viewOnly', 'type'],
     data() {
         return {
             modalShown: true,
@@ -50,6 +52,8 @@ export default {
                 this.addMemberToTeam()
             }else if(this.type == 4){
                 this.removeMemberFromTeam()
+            }else if(this.type == 5){
+                this.assignTaskToTeamMember()
             }
         },
         selectUser(userID){
@@ -125,6 +129,26 @@ export default {
             }).then((response) => {
                 this.toastMessage(response);
             })
+        },
+        assignTaskToTeamMember(){
+            Vue.axios({
+                url: '/task/assignTask',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    taskID : this.taskID,
+                    assignedUserID : this.selectedUserID[0],
+                    taskAssignedDate : this.convertDateTimeToEpoch(Date()),
+                },
+            }).then((response) => {
+                this.toastMessage(response);
+            })
+        },
+        convertDateTimeToEpoch(dateTime){
+            return Date.parse(dateTime)
         },
         toastMessage(response) {
             Vue.swal.fire({

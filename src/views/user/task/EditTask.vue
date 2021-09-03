@@ -48,6 +48,14 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6 mb-2 text-center">
+                                    <h6 class="fw-bold mt-2">Currently assigend to:</h6>
+                                </div>
+
+                                <div class="col-md-6 d-grid mb-2">
+                                    <input @click="showSelectUserDialog()" :disabled="!allowEdit" class="btn btn-success" type="button" value="Assign User">
+                                </div>
+
                                 <div class="col-md-12 mb-2 border-top"></div>
 
                                 <h1>Extras</h1>
@@ -74,6 +82,9 @@
                 </main>
             </div>
         </div>
+
+        <SelectMember v-if="showModal" @modalShown="toggleModal" :taskID="taskID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
+
     </div>
 </template>
 
@@ -83,10 +94,11 @@ import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import Loading from '../../../components/Loading.vue'
+import SelectMember from '../../../components/user/SelectMember.vue'
 
 export default {
-    props: ['taskID'],
-    components: { UserSideNav, UserTopNav, Loading },
+    props: ['teamID', 'taskID'],
+    components: { UserSideNav, UserTopNav, Loading, SelectMember },
     data() {
         return {
             isLoading: true,
@@ -101,6 +113,10 @@ export default {
             taskDueDate: '',
             taskUserCreateID: '',
             taskAssignedUserID: '',
+            showModal: false,
+            userListForModal: null,
+            modalViewOnly: false,
+            modalType: 0,
         }
     },
     mounted() {
@@ -183,6 +199,27 @@ export default {
             let dateStr = new Date(dbDate)
             let dateToDisplay = dateStr.getFullYear() + '/' + dateStr.getMonth() + '/' + dateStr.getDate() + ' ' + dateStr.getHours() + ':' + dateStr.getMinutes()
             return dateToDisplay
+        },
+        toggleModal(isModalShown){
+            this.showModal = isModalShown
+        },
+        showSelectUserDialog(){
+            Vue.axios({
+                url: '/team/getTeamUser',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    teamID : this.teamID,
+                },
+            }).then((response) => {
+                this.userListForModal = response.data
+                this.modalViewOnly = false
+                this.modalType = 5
+                this.showModal = !this.showModal
+            })
         },
         editTask(){
             Vue.axios({
