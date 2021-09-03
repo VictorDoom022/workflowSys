@@ -63,6 +63,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.card {
+    cursor: pointer;
+}
 </style>

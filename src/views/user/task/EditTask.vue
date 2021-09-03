@@ -5,7 +5,9 @@
             <div class="row">
                 <UserSideNav />
 
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <Loading v-if="isLoading"/>
+
+                <main v-if="!isLoading" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">
                             <span @click="navigateBack()" style="cursor:pointer">
@@ -73,12 +75,15 @@ import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
+import Loading from '../../../components/Loading.vue'
 
 export default {
     props: ['taskID'],
-    components: { UserSideNav, UserTopNav },
+    components: { UserSideNav, UserTopNav, Loading },
     data() {
         return {
+            isLoading: true,
+            taskData: [],
             taskName : '',
             taskDesc: '',
             taskStatusMsg: '',
@@ -86,7 +91,35 @@ export default {
             taskDueDate: '',
         }
     },
+    mounted() {
+        this.fetchTaskData()
+    },
     methods: {
+        fetchTaskData(){
+            Vue.axios({
+                url: '/task/getTaskByID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    taskID : this.taskID,
+                },
+            }).then((response) => {
+                this.taskData = response.data
+                this.setTaskData()
+                console.log(this.taskData)
+            })
+        },
+        setTaskData(){
+            this.taskName = this.taskData.task_name
+            this.taskDesc = this.taskData.task_desc
+            this.taskStatusMsg = this.taskData.task_statusMsg
+            this.taskStartDate = this.taskData.task_startDate
+            this.taskDueDate = this.taskData.task_dueDate
+            this.isLoading = false
+        },
         navigateBack(){
             this.$router.go(-1)
         },
