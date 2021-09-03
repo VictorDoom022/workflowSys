@@ -1,10 +1,12 @@
 <template>
     <div class="container-fluid">
-        <b-row>
+        <b-row v-if="taskList.length">
             <b-col md="12" v-for="task in searchTask" :key="task.id">
                 <TaskItem :task="task" />
             </b-col> 
         </b-row>
+
+        <h2 v-if="!taskList.length">No Task Yet</h2>
     </div>
 </template>
 
