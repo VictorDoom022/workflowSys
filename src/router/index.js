@@ -11,6 +11,7 @@ import TaskListList from '../views/user/teams/TaskListList.vue'
 import TeamSettings from '../views/user/teams/TeamSettings.vue'
 import TaskList from '../views/user/task/TaskList.vue'
 import CreateTask from '../views/user/task/CreateTask.vue'
+import EditTask from '../views/user/task/EditTask.vue'
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,12 @@ const routes = [
     path: '/createTask/:teamID/:taskListID',
     name: 'CreateTask',
     component: CreateTask,
+    props: true,
+  },
+  {
+    path: '/editTask/:taskID',
+    name: 'EditTask',
+    component: EditTask,
     props: true,
   },
 ]

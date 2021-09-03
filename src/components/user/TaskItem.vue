@@ -1,5 +1,5 @@
 <template>
-  <div class="container card my-1">
+  <div @click="navigateToEditTask(task.id)" class="container card my-1">
         <div class="row row-striped">
             <div class="col-lg-2 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(task.updated_at) }}</span></p>
@@ -56,6 +56,9 @@ export default {
                 }
             }
         },
+        navigateToEditTask(taskID){
+            this.$router.push({ name: 'EditTask', params: { taskID: taskID } })
+        }
     }
 }
 </script>
