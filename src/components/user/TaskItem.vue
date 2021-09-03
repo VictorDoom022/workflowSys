@@ -18,8 +18,8 @@
                     </li>
                     <li class="list-inline-item">
                         <b-icon class="mr-1" icon="person-lines-fill"></b-icon>
-                        <span v-if="task.userAssignID">{{ convertUserIDToName(task.task_userAssignID) }}</span>
-                        <span v-if="!task.userAssignID">Not assigned</span>
+                        <span v-if="task.task_assignedMemberID">{{ convertUserIDToName(task.task_assignedMemberID) }}</span>
+                        <span v-if="!task.task_assignedMemberID">Not assigned</span>
                     </li>
                     <li class="list-inline-item">
                         <b-icon icon="info-circle"></b-icon>

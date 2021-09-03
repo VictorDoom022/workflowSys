@@ -29,7 +29,6 @@ export default {
         }
     },
     mounted() {
-        console.log('taskAssigendMounted')
         this.fetchTaskListAssignedData()
     },
     methods: {
@@ -47,6 +46,7 @@ export default {
                 },
             }).then((response) => {
                 this.taskList = response.data
+                console.log(response.data)
                 this.isLoading = false
             })
         },
