@@ -20,13 +20,13 @@
 
                     <b-tabs content-class="mt-3">
                         <b-tab title="Task Created" active>
-                            <TaskCreated :taskListID="taskListID" :searchTerm="searchTerm" />
+                            <TaskCreated :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Assigned To You">
-                            <TaskAssigend :taskListID="taskListID" :searchTerm="searchTerm" />
+                            <TaskAssigend :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Completed Task">
-                            <TaskCompleted :taskListID="taskListID" :searchTerm="searchTerm" />
+                            <TaskCompleted :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                     </b-tabs>
                 </main>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import Loading from '../../../components/Loading.vue'
@@ -49,6 +51,8 @@ export default {
     data() {
         return {
             taskList: [],
+            userData: [],
+            userDetailData: [],
             searchTerm: '',
         }
     },
@@ -57,7 +61,23 @@ export default {
             this.$emit('searchTerm', this.searchTerm);
         }
     },
+    mounted() {
+        this.fetchUserData()
+    },
     methods: {
+        fetchUserData(){
+            Vue.axios({
+                url: '/users',
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.userData = response.data['user'];
+                this.userDetailData = response.data['userDetail'];
+            })
+        },
         navigateBack(){
             this.$router.go(-1)
         },

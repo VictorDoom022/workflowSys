@@ -20,7 +20,7 @@ import Loading from '../../Loading.vue'
 import TaskItem from '../TaskItem.vue'
 
 export default {
-    props: ['taskListID', 'searchTerm'],
+    props: ['taskListID', 'searchTerm', 'userData', 'userDetailData'],
     components: { Loading, TaskItem },
     data() {
         return {
