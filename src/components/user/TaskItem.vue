@@ -1,13 +1,13 @@
 <template>
   <div class="container card my-1">
         <div class="row row-striped">
-            <div class="col-2 text-right">
+            <div class="col-lg-2 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(task.updated_at) }}</span></p>
-                <h4>{{ convertDBDateToMonthString(task.updated_at) }}</h4>
+                <h4 class="mb-0">{{ convertDBDateToMonthString(task.updated_at) }}</h4>
             </div>
-            <div class="col-10">
-                <h3 class="text-start"><strong>{{ task.task_name }}</strong></h3>
-                <ul class="list-inline text-start">
+            <div class="col-lg-10">
+                <h3 class="text-start mb-0"><strong>{{ task.task_name }}</strong></h3>
+                <ul class="list-inline text-start mb-1">
                     <li class="list-inline-item">
                         <b-icon class="mr-1" icon="person-plus-fill"></b-icon>
                         {{ convertUserIDToName(task.task_userCreateID) }}

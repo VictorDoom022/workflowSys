@@ -4,7 +4,7 @@
         <Loading v-if="isLoading" />
 
         <b-row v-if="taskList.length">
-            <b-col md="12" v-for="task in searchTask" :key="task.id">
+            <b-col md="6" v-for="task in searchTask" :key="task.id">
                 <TaskItem :task="task" :userData="userData" :userDetailData="userDetailData" />
             </b-col> 
         </b-row>
