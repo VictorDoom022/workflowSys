@@ -156,7 +156,7 @@
             </div>
         </div>
 
-        <SelectMember v-if="showModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
+        <SelectMember v-if="showModal" @modalShown="toggleModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
 
     </div>
 </template>
@@ -217,6 +217,9 @@ export default {
         },
         navigateBack(){
             this.$router.go(-1)
+        },
+        toggleModal(isModalShown){
+            this.showModal = isModalShown
         },
         showAllMembersDialog(){
             Vue.axios({

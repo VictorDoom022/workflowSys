@@ -124,7 +124,7 @@
             </div>
         </div>
 
-        <SelectMember v-if="showModal" :teamID="this.teamID" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
+        <SelectMember v-if="showModal" @modalShown="toggleModal" :teamID="this.teamID" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
     
     </div>
 </template>
@@ -170,6 +170,9 @@ export default {
                 this.isAdmin = response.data['message']
                 this.isLoading = false;
             })
+        },
+        toggleModal(isModalShown){
+            this.showModal = isModalShown
         },
         showAllTeamMembersDialog(){
             Vue.axios({

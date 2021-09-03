@@ -31,6 +31,11 @@ export default {
             selectedUserID : [],
         }
     },
+    watch: {
+        modalShown: function(val) {
+            this.$emit('modalShown', val)
+        }
+    }, 
     methods: {
         okButtonClick(){
             if(this.type == 1){
