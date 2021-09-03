@@ -202,7 +202,7 @@ export default {
                 },
             }).then((response) => {
                 this.toastMessage(response)
-                this.$router.push({ name: 'TaskList', params: { teamID: this.teamID, taskListID: this.taskListID }})
+                this.fetchTaskData()
             })
         },
         toastMessage(response) {
