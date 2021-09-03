@@ -49,7 +49,14 @@
                                 </div>
 
                                 <div class="col-md-6 mb-2 text-center">
-                                    <h6 class="fw-bold mt-2">Currently assigend to: {{ getLastAssigendUser(taskData.task_assignedMemberID) }}</h6>
+                                    <h6 class="fw-bold mt-2">
+                                        <span v-if="taskData.task_assignedMemberID.length">
+                                            Currently assigend to: {{ getLastAssigendUser(taskData.task_assignedMemberID) }}
+                                        </span>
+                                        <span v-if="!taskData.task_assignedMemberID.length">
+                                            Not assigend
+                                        </span>
+                                    </h6>
                                 </div>
 
                                 <div class="col-md-6 d-grid mb-2">
