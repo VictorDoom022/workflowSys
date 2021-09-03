@@ -13,6 +13,9 @@
                             </span>
                             Task List
                         </h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <button type="button" @click="navigateToCreateTask()" class="btn btn-sm btn-primary mx-1">Create Task</button>
+                        </div>
                     </div>
 
                     <b-tabs content-class="mt-3">
@@ -61,6 +64,9 @@ export default {
         searchFromNavBar(searchWordFromNavBar){
             this.searchTerm = searchWordFromNavBar
         },
+        navigateToCreateTask(){
+            this.$router.push({ name: 'CreateTask' })
+        }
     },
 }
 </script>

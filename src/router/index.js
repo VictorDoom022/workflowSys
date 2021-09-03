@@ -10,6 +10,7 @@ import GroupSettings from '../views/user/groups/GroupSettings.vue'
 import TaskListList from '../views/user/teams/TaskListList.vue'
 import TeamSettings from '../views/user/teams/TeamSettings.vue'
 import TaskList from '../views/user/task/TaskList.vue'
+import CreateTask from '../views/user/task/CreateTask.vue'
 
 Vue.use(VueRouter)
 
@@ -69,6 +70,11 @@ const routes = [
     name: 'TaskList',
     component: TaskList,
     props: true,
+  },
+  {
+    path: '/createTask',
+    name: 'CreateTask',
+    component: CreateTask
   },
 ]
 
