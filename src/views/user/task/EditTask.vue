@@ -23,19 +23,19 @@
                                 <h1>Basic Task Info</h1>
                                 <div class="col-md-6 ">
                                     <div class="form-floating mb-3">
-                                        <input type="text" v-model="taskName" class="form-control" placeholder="Task Name" autocomplete="off" required>
+                                        <input type="text" v-model="taskName" :disabled="!allowEdit" class="form-control" placeholder="Task Name" autocomplete="off" required>
                                         <label>Task Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" v-model="taskStatusMsg" class="form-control" placeholder="Task Name" autocomplete="off" required>
+                                        <input type="text" v-model="taskStatusMsg" :disabled="!allowEdit" class="form-control" placeholder="Task Name" autocomplete="off" required>
                                         <label>Task Status</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
-                                        <textarea type="text" v-model="taskDesc" class="form-control" placeholder="Task Description" style="height: 150px" autocomplete="off" required>
+                                        <textarea type="text" v-model="taskDesc" :disabled="!allowEdit" class="form-control" placeholder="Task Description" style="height: 150px" autocomplete="off" required>
                                         </textarea>
                                         <label>Task Description</label>
                                     </div>
@@ -46,20 +46,20 @@
                                 <h1>Extras</h1>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="date" v-model="taskStartDate" class="form-control" placeholder="Start Date" autocomplete="off">
+                                        <input type="date" v-model="taskStartDate" :disabled="!allowEdit" class="form-control" placeholder="Start Date" autocomplete="off">
                                         <label>Start Date</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="date" v-model="taskDueDate" class="form-control" placeholder="Due Date" autocomplete="off">
+                                        <input type="date" v-model="taskDueDate" :disabled="!allowEdit" class="form-control" placeholder="Due Date" autocomplete="off">
                                         <label>Due Date</label>
                                     </div>
                                 </div>
 
                                 <div class="submit col-md-12 d-grid">
-                                    <button class="btn btn-primary" type="submit">Edit</button>
+                                    <button :disabled="!allowEdit" class="btn btn-primary" type="submit">Edit</button>
                                 </div>
                             </div>
                         </form>
@@ -83,12 +83,15 @@ export default {
     data() {
         return {
             isLoading: true,
+            allowEdit: false,
             taskData: [],
             taskName : '',
             taskDesc: '',
             taskStatusMsg: '',
             taskStartDate: '',
             taskDueDate: '',
+            taskUserCreateID: '',
+            taskAssignedUserID: '',
         }
     },
     mounted() {
@@ -118,6 +121,30 @@ export default {
             this.taskStatusMsg = this.taskData.task_statusMsg
             this.taskStartDate = this.taskData.task_startDate
             this.taskDueDate = this.taskData.task_dueDate
+            this.taskUserCreateID = this.taskData.task_userCreateID
+            this.taskAssignedUserID = this.taskData.task_assignedMemberID
+            this.checkAllowToEdit()
+        },
+        checkAllowToEdit(){
+            var isTaskCreator = false
+            var isAssignedUser = false
+            var tempTaskAssignUserIDArr = this.taskAssignedUserID.split(',')
+
+            if(loggedInUserData.state.userData['user'].id == this.taskUserCreateID){
+                isTaskCreator = true
+            }
+
+            for(var i = 0; i < tempTaskAssignUserIDArr.length; i++){
+                if(tempTaskAssignUserIDArr[i] == loggedInUserData.state.userData['user'].id){
+                    isAssignedUser = true
+                }
+            }
+
+            if(isTaskCreator || isAssignedUser){
+                this.allowEdit = true
+            }else{
+                this.allowEdit = false
+            }
             this.isLoading = false
         },
         editTask(){
