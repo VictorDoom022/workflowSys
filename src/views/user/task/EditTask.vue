@@ -49,7 +49,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-2 text-center">
-                                    <h6 class="fw-bold mt-2">Currently assigend to:</h6>
+                                    <h6 class="fw-bold mt-2">Currently assigend to: {{ getLastAssigendUser(taskData.task_assignedMemberID) }}</h6>
                                 </div>
 
                                 <div class="col-md-6 d-grid mb-2">
@@ -220,6 +220,11 @@ export default {
                 this.modalType = 5
                 this.showModal = !this.showModal
             })
+        },
+        getLastAssigendUser(taskAssignUserList){
+            var taskAssignUserListArr = taskAssignUserList.split(',')
+            // get last element of array
+            return this.convertUserIDToName(taskAssignUserListArr[taskAssignUserListArr.length-1])
         },
         editTask(){
             Vue.axios({
