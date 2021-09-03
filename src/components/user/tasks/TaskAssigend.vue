@@ -46,7 +46,6 @@ export default {
                 },
             }).then((response) => {
                 this.taskList = response.data
-                console.log(response.data)
                 this.isLoading = false
             })
         },
