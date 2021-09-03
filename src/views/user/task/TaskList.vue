@@ -48,7 +48,7 @@ import TaskAssigend from '../../../components/user/tasks/TaskAssigend.vue'
 import TaskCompleted from '../../../components/user/tasks/TaskCompleted.vue'
 
 export default {
-    props: ['taskListID'],
+    props: ['teamID', 'taskListID'],
     components: { UserSideNav, UserTopNav, Loading, TaskCreated, TaskAssigend, TaskCompleted },
     data() {
         return {
@@ -87,7 +87,7 @@ export default {
             this.searchTerm = searchWordFromNavBar
         },
         navigateToCreateTask(){
-            this.$router.push({ name: 'CreateTask' })
+            this.$router.push({ name: 'CreateTask', params: { teamID: this.teamID, taskList: this.taskListID } })
         }
     },
 }

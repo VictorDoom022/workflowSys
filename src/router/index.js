@@ -66,15 +66,16 @@ const routes = [
     props: true,
   },
   {
-    path: '/taskListDetail/:taskListID',
+    path: '/taskListDetail/:teamID/:taskListID',
     name: 'TaskList',
     component: TaskList,
     props: true,
   },
   {
-    path: '/createTask',
+    path: '/createTask/:teamID/:taskList',
     name: 'CreateTask',
-    component: CreateTask
+    component: CreateTask,
+    props: true,
   },
 ]
 

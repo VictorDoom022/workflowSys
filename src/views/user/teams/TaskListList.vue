@@ -107,7 +107,7 @@ export default {
             this.$router.push({ name: 'TeamSettings', params: { teamID: this.teamID, groupID: this.groupID }})
         },
         navigateToTaskList(taskListID){
-            this.$router.push({ name: 'TaskList', params: { taskListID: taskListID }})
+            this.$router.push({ name: 'TaskList', params: { teamID: this.teamID, taskListID: taskListID }})
         }
     },
     computed: {
