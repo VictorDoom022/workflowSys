@@ -37,10 +37,10 @@ export default {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
                     'Content-Type': 'application/json',
                 },
-            }).then((response) => {
-                loggedInUserData.dispatch('createUserSession', null).then(() => {
+            })
+
+            loggedInUserData.dispatch('createUserSession', null).then(() => {
                 this.$router.push('/')
-                })
             })
         },
         searchData(){
