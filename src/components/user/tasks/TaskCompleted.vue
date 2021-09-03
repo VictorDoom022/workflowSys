@@ -10,8 +10,8 @@
 
 <script>
 import Vue from 'vue'
-import loggedInUserData from '../../functions/loggedInUserData'
-import TaskItem from './TaskItem.vue'
+import loggedInUserData from '../../../functions/loggedInUserData'
+import TaskItem from '../TaskItem.vue'
 
 export default {
     props: ['taskListID', 'searchTerm'],
@@ -22,19 +22,19 @@ export default {
         }
     },
     mounted() {
-        this.fetchTaskListData()
+        this.fetchTaskListAssignedData()
     },
     methods: {
-        fetchTaskListData(){
+        fetchTaskListAssignedData(){
             Vue.axios({
-                url: '/task/getTaskByTaskListID',
+                url: '/task/getCompletedTaskByTaskListID',
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
                     'Content-Type': 'application/json',
                 },
                 data: {
-                    taskListID: this.taskListID,
+                    taskListID : this.taskListID,
                 },
             }).then((response) => {
                 this.taskList = response.data;

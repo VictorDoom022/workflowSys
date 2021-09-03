@@ -36,9 +36,9 @@
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import Loading from '../../../components/Loading.vue'
-import TaskCreated from '../../../components/user/TaskCreated.vue'
-import TaskAssigend from '../../../components/user/TaskAssigend.vue'
-import TaskCompleted from '../../../components/user/TaskCompleted.vue'
+import TaskCreated from '../../../components/user/tasks/TaskCreated.vue'
+import TaskAssigend from '../../../components/user/tasks/TaskAssigend.vue'
+import TaskCompleted from '../../../components/user/tasks/TaskCompleted.vue'
 
 export default {
     props: ['taskListID'],

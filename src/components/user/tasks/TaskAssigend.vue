@@ -10,8 +10,8 @@
 
 <script>
 import Vue from 'vue'
-import loggedInUserData from '../../functions/loggedInUserData'
-import TaskItem from './TaskItem.vue'
+import loggedInUserData from '../../../functions/loggedInUserData'
+import TaskItem from '../TaskItem.vue'
 
 export default {
     props: ['taskListID', 'searchTerm'],
