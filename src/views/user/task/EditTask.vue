@@ -21,6 +21,13 @@
                         <form @submit.prevent="editTask()" class="form">
                             <div class="row">
                                 <h1>Basic Task Info</h1>
+
+                                <div class="d-flex justify-content-center">
+                                    <p class="text-muted mb-1 mx-3">Created by: {{ convertUserIDToName(taskUserCreateID) }}</p>
+                                    <p class="text-muted mb-1 mx-3">Created on: {{ convertDBDateToString(taskData.created_at) }}</p>
+                                    <p class="text-muted mb-1 mx-3">Last updated on: {{ convertDBDateToString(taskData.updated_at) }}</p>
+                                </div>
+                                
                                 <div class="col-md-6 ">
                                     <div class="form-floating mb-3">
                                         <input type="text" v-model="taskName" :disabled="!allowEdit" class="form-control" placeholder="Task Name" autocomplete="off" required>
@@ -85,6 +92,8 @@ export default {
             isLoading: true,
             allowEdit: false,
             taskData: [],
+            userData: [],
+            userDetailData: [],
             taskName : '',
             taskDesc: '',
             taskStatusMsg: '',
@@ -96,6 +105,7 @@ export default {
     },
     mounted() {
         this.fetchTaskData()
+        this.fetchUserData()
     },
     methods: {
         fetchTaskData(){
@@ -146,6 +156,33 @@ export default {
                 this.allowEdit = false
             }
             this.isLoading = false
+        },
+        fetchUserData(){
+            this.isLoading = true
+            Vue.axios({
+                url: '/users',
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.isLoading = false
+                this.userData = response.data['user'];
+                this.userDetailData = response.data['userDetail'];
+            })
+        },
+        convertUserIDToName(userID){
+            for(var i=0; i < this.userData.length; i++){
+                if(userID == this.userData[i].id){
+                    return this.userData[i].name
+                }
+            }
+        },
+        convertDBDateToString(dbDate){
+            let dateStr = new Date(dbDate)
+            let dateToDisplay = dateStr.getFullYear() + '/' + dateStr.getMonth() + '/' + dateStr.getDate() + ' ' + dateStr.getHours() + ':' + dateStr.getMinutes()
+            return dateToDisplay
         },
         editTask(){
             Vue.axios({
