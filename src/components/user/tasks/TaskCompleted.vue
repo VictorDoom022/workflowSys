@@ -5,7 +5,7 @@
 
         <b-row v-if="taskList.length">
             <b-col md="12" v-for="task in searchTask" :key="task.id">
-                <TaskItem :task="task" />
+                <TaskItem :task="task" :userData="userData" :userDetailData="userDetailData" />
             </b-col> 
         </b-row>
 

@@ -2,17 +2,31 @@
   <div class="container card my-1">
         <div class="row row-striped">
             <div class="col-2 text-right">
-                <p class="display-4"><span class="badge badge-secondary">23</span></p>
-                <h2>OCT</h2>
+                <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(task.updated_at) }}</span></p>
+                <h4>{{ convertDBDateToMonthString(task.updated_at) }}</h4>
             </div>
             <div class="col-10">
-                <h3><strong>{{ task.task_name }}</strong></h3>
-                <ul class="list-inline">
-                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Monday</li>
-                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 12:30 PM - 2:00 PM</li>
-                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Cafe</li>
+                <h3 class="text-start"><strong>{{ task.task_name }}</strong></h3>
+                <ul class="list-inline text-start">
+                    <li class="list-inline-item">
+                        <b-icon class="mr-1" icon="person-plus-fill"></b-icon>
+                        {{ convertUserIDToName(task.task_userCreateID) }}
+                    </li>
+                    <li class="list-inline-item">
+                        <b-icon class="mr-1" icon="clock-history"></b-icon>
+                            {{ convertDBDateToString(task.updated_at) }}
+                    </li>
+                    <li class="list-inline-item">
+                        <b-icon class="mr-1" icon="person-lines-fill"></b-icon>
+                        <span v-if="task.userAssignID">{{ convertUserIDToName(task.task_userAssignID) }}</span>
+                        <span v-if="!task.userAssignID">Not assigned</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <b-icon icon="info-circle"></b-icon>
+                        {{ task.task_statusMsg }}
+                    </li>
                 </ul>
-                <p>{{ task.task_desc }}</p>
+                <p class="text-start">{{ task.task_desc }}</p>
             </div>
         </div>
     </div>
@@ -20,7 +34,29 @@
 
 <script>
 export default {
-    props: ['task']
+    props: ['task', 'userData', 'userDetailData'],
+    methods: {
+        convertDBDateToString(dbDate){
+            let dateStr = new Date(dbDate)
+            let dateToDisplay = dateStr.getFullYear() + '/' + dateStr.getMonth() + '/' + dateStr.getDate() + ' ' + dateStr.getHours() + ':' + dateStr.getMinutes()
+            return dateToDisplay
+        },
+        convertDBDateToDate(dbDate){
+            let dateStr = new Date(dbDate)
+            return dateStr.getDate()
+        },
+        convertDBDateToMonthString(dbDate){
+            let dateStr = new Date(dbDate)
+            return dateStr.toLocaleDateString('default', { month: 'short' })
+        },
+        convertUserIDToName(userID){
+            for(var i=0; i < this.userData.length; i++){
+                if(userID == this.userData[i].id){
+                    return this.userData[i].name
+                }
+            }
+        },
+    }
 }
 </script>
 
