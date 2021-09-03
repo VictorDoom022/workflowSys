@@ -89,6 +89,7 @@
 
                                 <div class="submit col-md-12 d-grid">
                                     <button :disabled="!allowEdit" class="btn btn-primary" type="submit">Edit</button>
+                                    <input :disabled="!allowEdit" @click="showDeleteTaskDialog()" type="button" class="btn btn-danger my-2" value="Delete"/>
                                 </div>
                             </div>
                         </form>
@@ -238,6 +239,31 @@ export default {
             var taskAssignUserListArr = taskAssignUserList.split(',')
             // get last element of array
             return this.convertUserIDToName(taskAssignUserListArr[taskAssignUserListArr.length-1])
+        },
+        showDeleteTaskDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to delete this task?',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.deleteTask();
+                }
+            })
+        },
+        deleteTask(){
+            Vue.axios({
+                url: '/task/deleteTaskByTaskID/' + this.taskID,
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.back()
+            })
         },
         editTask(){
             Vue.axios({
