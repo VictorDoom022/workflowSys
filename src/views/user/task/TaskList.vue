@@ -17,12 +17,8 @@
 
                     <div class="container-fluid">
                         <b-row>
-                            <b-col md="4" v-for="task in searchTask" :key="task.id">
-                                <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
-                                    <div class="card-body">
-                                        <h4 class="card-title text-center">{{ task.task_name }}</h4>
-                                    </div>
-                                </div>
+                            <b-col md="12" v-for="task in searchTask" :key="task.id">
+                                <TaskItem :task="task"/>
                             </b-col> 
                         </b-row>
                     </div>
@@ -36,12 +32,13 @@
 import Vue from 'vue'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
+import TaskItem from '../../../components/user/TaskItem.vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
 
 export default {
     props: ['taskListID'],
-    components: { UserSideNav, UserTopNav, Loading },
+    components: { UserSideNav, UserTopNav, Loading, TaskItem },
     data() {
         return {
             taskList: [],
@@ -89,5 +86,4 @@ export default {
 </script>
 
 <style>
-
 </style>
