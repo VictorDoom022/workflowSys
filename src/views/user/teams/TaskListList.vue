@@ -22,7 +22,7 @@
 
                     <div class="container-fluid">
                         <b-row>
-                            <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id">
+                            <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
                                 <div class="card border-dark mb-2" style="text-align:left; min-height:100px">
                                     <div class="card-body">
                                         <h4 class="card-title text-center">{{ convertUserIDToName(taskList.taskList_userID) }}</h4>
@@ -106,6 +106,9 @@ export default {
         navigateToTeamSettings(){
             this.$router.push({ name: 'TeamSettings', params: { teamID: this.teamID, groupID: this.groupID }})
         },
+        navigateToTaskList(taskListID){
+            this.$router.push({ name: 'TaskList', params: { taskListID: taskListID }})
+        }
     },
     computed: {
         searchTaskList(){
@@ -134,6 +137,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.card {
+    cursor: pointer;
+}
 </style>
