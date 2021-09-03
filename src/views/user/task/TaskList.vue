@@ -15,13 +15,17 @@
                         </h1>
                     </div>
 
-                    <div class="container-fluid">
-                        <b-row>
-                            <b-col md="12" v-for="task in searchTask" :key="task.id">
-                                <TaskItem :task="task"/>
-                            </b-col> 
-                        </b-row>
-                    </div>
+                    <b-tabs content-class="mt-3">
+                        <b-tab title="Task Created" active>
+                            <TaskCreated :taskListID="taskListID" />
+                        </b-tab>
+                        <b-tab title="Create Task">
+                            <p>I'm the second tab</p>
+                        </b-tab>
+                        <b-tab title="Completed Task">
+                            <p>I'm a disabled tab!</p>
+                        </b-tab>
+                    </b-tabs>
                 </main>
             </div>
         </div>
@@ -29,16 +33,14 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
-import TaskItem from '../../../components/user/TaskItem.vue'
-import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
+import TaskCreated from '../../../components/user/TaskCreated.vue'
 
 export default {
     props: ['taskListID'],
-    components: { UserSideNav, UserTopNav, Loading, TaskItem },
+    components: { UserSideNav, UserTopNav, Loading, TaskCreated },
     data() {
         return {
             taskList: [],
@@ -46,24 +48,9 @@ export default {
         }
     },
     mounted() {
-        this.fetchTaskListData()
+
     },
     methods: {
-        fetchTaskListData(){
-            Vue.axios({
-                url: '/task/getTaskByTaskListID',
-                method: 'POST',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                data: {
-                    taskListID: this.taskListID,
-                },
-            }).then((response) => {
-                this.taskList = response.data;
-            })
-        },
         navigateBack(){
             this.$router.go(-1)
         },
