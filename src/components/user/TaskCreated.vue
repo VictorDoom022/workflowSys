@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <b-row>
             <b-col md="12" v-for="task in searchTask" :key="task.id">
-                <TaskItem :task="task"/>
+                <TaskItem :task="task" />
             </b-col> 
         </b-row>
     </div>
@@ -14,12 +14,11 @@ import loggedInUserData from '../../functions/loggedInUserData'
 import TaskItem from './TaskItem.vue'
 
 export default {
-    props: ['taskListID'],
+    props: ['taskListID', 'searchTerm'],
     components: { TaskItem },
     data() {
         return {
             taskList: [],
-            searchTerm: '',
         }
     },
     mounted() {

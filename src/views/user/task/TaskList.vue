@@ -17,7 +17,7 @@
 
                     <b-tabs content-class="mt-3">
                         <b-tab title="Task Created" active>
-                            <TaskCreated :taskListID="taskListID" />
+                            <TaskCreated :taskListID="taskListID" :searchTerm="searchTerm" />
                         </b-tab>
                         <b-tab title="Create Task">
                             <p>I'm the second tab</p>
@@ -47,8 +47,10 @@ export default {
             searchTerm: '',
         }
     },
-    mounted() {
-
+    watch: {
+        searchTerm: function(value) {
+            this.$emit('searchTerm', this.searchTerm);
+        }
     },
     methods: {
         navigateBack(){
@@ -57,17 +59,6 @@ export default {
         searchFromNavBar(searchWordFromNavBar){
             this.searchTerm = searchWordFromNavBar
         },
-    },
-    computed: {
-        searchTask(){
-            return this.taskList.filter((task) => {
-                if(this.searchTerm == ''){
-                    return task.task_name
-                }else{
-                    return task.task_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-                }
-            })
-        }
     },
 }
 </script>
