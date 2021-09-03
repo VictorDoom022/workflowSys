@@ -89,6 +89,7 @@
 
                                 <div class="submit col-md-12 d-grid">
                                     <button :disabled="!allowEdit" class="btn btn-primary" type="submit">Edit</button>
+                                    <input :disabled="!allowEdit" @click="showToggleTaskStatusDialog()" type="button" class="btn btn-info my-2" value="Mark/Unmark as complete"/>
                                     <input :disabled="!allowEdit" @click="showDeleteTaskDialog()" type="button" class="btn btn-danger my-2" value="Delete"/>
                                 </div>
                             </div>
@@ -239,6 +240,35 @@ export default {
             var taskAssignUserListArr = taskAssignUserList.split(',')
             // get last element of array
             return this.convertUserIDToName(taskAssignUserListArr[taskAssignUserListArr.length-1])
+        },
+        showToggleTaskStatusDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to mark/unmark this task as complete?',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.toggleTaskStatus();
+                }
+            })
+        },
+        toggleTaskStatus(){
+            Vue.axios({
+                url: '/task/changeTaskStatus',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    taskID : this.taskID,
+                    taskStatus : this.taskData.task_status,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.back()
+            })
         },
         showDeleteTaskDialog(){
             Vue.swal.fire({
