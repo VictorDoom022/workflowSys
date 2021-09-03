@@ -34,7 +34,7 @@
 
 <script>
 export default {
-    props: ['task', 'userData', 'userDetailData'],
+    props: ['teamID', 'task', 'userData', 'userDetailData'],
     methods: {
         convertDBDateToString(dbDate){
             let dateStr = new Date(dbDate)
@@ -57,7 +57,7 @@ export default {
             }
         },
         navigateToEditTask(taskID){
-            this.$router.push({ name: 'EditTask', params: { taskID: taskID } })
+            this.$router.push({ name: 'EditTask', params: { teamID: this.teamID, taskID: taskID } })
         }
     }
 }

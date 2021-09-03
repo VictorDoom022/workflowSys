@@ -22,13 +22,13 @@
 
                     <b-tabs content-class="mt-3">
                         <b-tab title="Task Created" active>
-                            <TaskCreated :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCreated :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Assigned To You">
-                            <TaskAssigend :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskAssigend :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Completed Task">
-                            <TaskCompleted :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCompleted :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                     </b-tabs>
                 </main>

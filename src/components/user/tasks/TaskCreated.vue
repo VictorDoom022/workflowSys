@@ -5,7 +5,7 @@
 
         <b-row v-if="taskList.length">
             <b-col md="6" v-for="task in searchTask" :key="task.id">
-                <TaskItem :task="task" :userData="userData" :userDetailData="userDetailData" />
+                <TaskItem :teamID="teamID" :task="task" :userData="userData" :userDetailData="userDetailData" />
             </b-col> 
         </b-row>
 
@@ -20,7 +20,7 @@ import Loading from '../../Loading.vue'
 import TaskItem from '../TaskItem.vue'
 
 export default {
-    props: ['taskListID', 'searchTerm', 'userData', 'userDetailData'],
+    props: ['teamID', 'taskListID', 'searchTerm', 'userData', 'userDetailData'],
     components: { Loading, TaskItem },
     data() {
         return {

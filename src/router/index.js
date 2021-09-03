@@ -79,7 +79,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/editTask/:taskID',
+    path: '/editTask/:teamID/:taskID',
     name: 'EditTask',
     component: EditTask,
     props: true,
