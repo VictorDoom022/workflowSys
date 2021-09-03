@@ -23,7 +23,7 @@
                             <TaskAssigend :taskListID="taskListID" :searchTerm="searchTerm" />
                         </b-tab>
                         <b-tab title="Completed Task">
-                            <p>I'm a disabled tab!</p>
+                            <TaskCompleted :taskListID="taskListID" :searchTerm="searchTerm" />
                         </b-tab>
                     </b-tabs>
                 </main>
@@ -38,10 +38,11 @@ import UserTopNav from '../../../components/user/UserTopNav.vue'
 import Loading from '../../../components/Loading.vue'
 import TaskCreated from '../../../components/user/TaskCreated.vue'
 import TaskAssigend from '../../../components/user/TaskAssigend.vue'
+import TaskCompleted from '../../../components/user/TaskCompleted.vue'
 
 export default {
     props: ['taskListID'],
-    components: { UserSideNav, UserTopNav, Loading, TaskCreated, TaskAssigend },
+    components: { UserSideNav, UserTopNav, Loading, TaskCreated, TaskAssigend, TaskCompleted },
     data() {
         return {
             taskList: [],

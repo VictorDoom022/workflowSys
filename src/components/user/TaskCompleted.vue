@@ -22,21 +22,19 @@ export default {
         }
     },
     mounted() {
-        console.log('taskAssigendMounted')
         this.fetchTaskListAssignedData()
     },
     methods: {
         fetchTaskListAssignedData(){
             Vue.axios({
-                url: '/task/taskAssignedToUser',
+                url: '/task/getCompletedTaskByTaskListID',
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
                     'Content-Type': 'application/json',
                 },
                 data: {
-                    taskListID: this.taskListID,
-                    'userID'  :  loggedInUserData.state.userData['user'].id,
+                    taskListID : this.taskListID,
                 },
             }).then((response) => {
                 this.taskList = response.data;
