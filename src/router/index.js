@@ -72,7 +72,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/createTask/:teamID/:taskList',
+    path: '/createTask/:teamID/:taskListID',
     name: 'CreateTask',
     component: CreateTask,
     props: true,
