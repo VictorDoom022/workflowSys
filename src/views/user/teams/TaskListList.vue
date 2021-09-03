@@ -93,7 +93,7 @@ export default {
         convertUserIDToName(userID){
             for(var i=0; i < this.userData.length; i++){
                 if(userID == this.userData[i].id){
-                    return this.userData[i].name
+                    return this.userData[i].name + '\'s Task List'
                 }
             }
         },

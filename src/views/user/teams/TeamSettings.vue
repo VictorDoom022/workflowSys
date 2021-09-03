@@ -175,6 +175,7 @@ export default {
             this.showModal = isModalShown
         },
         showAllTeamMembersDialog(){
+            this.isLoading = true
             Vue.axios({
                 url: '/team/getTeamUser',
                 method: 'POST',
@@ -186,6 +187,7 @@ export default {
                     teamID: this.teamID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = true;
                 this.showModal = !this.showModal
@@ -221,6 +223,7 @@ export default {
             })
         },
         addMemberToTeamDialog(){
+            this.isLoading = true
             Vue.axios({
                 url: '/team/getTeamUserDiff',
                 method: 'POST',
@@ -233,6 +236,7 @@ export default {
                     teamID: this.teamID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 3
@@ -240,6 +244,7 @@ export default {
             })
         },
         removeMemberFromTeam(){
+            this.isLoading = true
             Vue.axios({
                 url: '/team/getTeamUser',
                 method: 'POST',
@@ -252,6 +257,7 @@ export default {
                     teamID: this.teamID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 4
@@ -338,6 +344,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.b-icon {
+    cursor: pointer;
+}
 </style>

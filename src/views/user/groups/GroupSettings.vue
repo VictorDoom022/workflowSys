@@ -5,7 +5,7 @@
             <div class="row">
                 <UserSideNav />
 
-                <Loading v-if="groupDetail.length == 0"/>
+                <Loading v-if="isLoading"/>
 
                 <main v-if="groupDetail.length != 0" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -181,6 +181,7 @@ export default {
             userListForModal: null,
             modalViewOnly: false,
             modalType: 0,
+            isLoading: true,
         }
     },
     mounted() {
@@ -214,6 +215,7 @@ export default {
                     this.isAdmin = true;
                 }
             }
+            this.isLoading = false
         },
         navigateBack(){
             this.$router.go(-1)
@@ -222,6 +224,7 @@ export default {
             this.showModal = isModalShown
         },
         showAllMembersDialog(){
+            this.isLoading = true
             Vue.axios({
                 url: '/group/getGroupUserByGroupID',
                 method: 'POST',
@@ -233,12 +236,14 @@ export default {
                     groupID: this.groupID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = true;
                 this.showModal = !this.showModal
             })
         },
         showAllAdminDialog(){
+            this.isLoading = true
             Vue.axios({
                 url: '/group/getGroupAdminUser',
                 method: 'POST',
@@ -250,12 +255,14 @@ export default {
                     groupID: this.groupID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = true;
                 this.showModal = !this.showModal
             })
         },
         showSetAdminDialog(){
+            this.isLoading = true
             Vue.axios({
                 url: '/group/getGroupNonAdminUser',
                 method: 'POST',
@@ -267,6 +274,7 @@ export default {
                     groupID: this.groupID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 1
@@ -274,6 +282,7 @@ export default {
             })
         },
         showRemoveAdminDialog(){
+            this.isLoading = true
             Vue.axios({
                 url: '/group/getGroupAdminUser',
                 method: 'POST',
@@ -285,6 +294,7 @@ export default {
                     groupID: this.groupID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 2
@@ -384,5 +394,9 @@ export default {
 .joinCodeInputText:focus {
     border: none;
     outline :none;
+}
+
+.b-icon {
+    cursor: pointer;
 }
 </style>
