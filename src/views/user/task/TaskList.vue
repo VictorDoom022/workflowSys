@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    <b-tabs content-class="mt-3">
+                    <b-tabs content-class="mt-3" align="center" fill>
                         <b-tab title="Task Created" active>
                             <TaskCreated :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>

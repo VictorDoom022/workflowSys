@@ -3,7 +3,7 @@
         <div class="row row-striped">
             <div class="col-lg-2 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(task.updated_at) }}</span></p>
-                <h4 class="mb-0">{{ convertDBDateToMonthString(task.updated_at) }}</h4>
+                <h4 class="mb-0 d-inline-block">{{ convertDBDateToMonthString(task.updated_at) }}</h4>
             </div>
             <div class="col-lg-10">
                 <h3 class="text-start mb-0"><strong>{{ task.task_name }}</strong></h3>

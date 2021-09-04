@@ -15,7 +15,7 @@
                         </div>
                     </div>
 
-                    <b-tabs content-class="mt-3">
+                    <b-tabs content-class="mt-3" align="center" fill>
                         <b-tab title="Active" active>
                             <TodoActive :searchTerm="searchTerm" />
                         </b-tab>
