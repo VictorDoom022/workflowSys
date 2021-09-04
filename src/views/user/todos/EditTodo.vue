@@ -5,7 +5,9 @@
             <div class="row">
                 <UserSideNav />
 
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <Loading v-if="isLoading"/>
+
+                <main v-if="!isLoading" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">
                             <span @click="navigateBack()" style="cursor:pointer">
@@ -74,12 +76,14 @@ import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
+import Loading from '../../../components/Loading.vue'
 
 export default {
     props: ['todoID'],
-    components: { UserSideNav, UserTopNav },
+    components: { UserSideNav, UserTopNav, Loading },
     data() {
         return {
+            isLoading: true,
             todo: [],
             todoName : '',
             todoDesc: '',
@@ -114,6 +118,7 @@ export default {
             this.todoStatusMsg = this.todo.todo_statusMsg
             this.todoStartDate = this.todo.todo_startDate
             this.todoDueDate = this.todo.todo_dueDate
+            this.isLoading = false
         },
         showToggleTodoStatusDialog(){
             Vue.axios({
