@@ -1,5 +1,8 @@
 <template>
     <div class="container-fluid">
+
+        <Loading v-if="isLoading" />
+
         <b-row v-if="todoList.length">
             <b-col md="6" v-for="todo in searchTodo" :key="todo.id">
                 <TodoItem :todo="todo" />
@@ -13,11 +16,12 @@
 <script>
 import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
+import Loading from '../../Loading.vue'
 import TodoItem from '../TodoItem.vue'
 
 export default {
     props: ['searchTerm'],
-    components: { TodoItem },
+    components: { Loading, TodoItem },
     data(){
         return {
             isLoading: true,
