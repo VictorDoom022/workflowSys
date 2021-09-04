@@ -29,7 +29,7 @@
           <div v-if="groups.length !=0" class="container-fluid">
             <b-row>
               <b-col md="4" v-for="group in searchGroup" :key="group.id">
-                <div @click="navigateToTeamList(group.id)" class="card border-dark mb-2" style="text-align:left; min-height:100px">
+                <div @click="navigateToTeamList(group.id)" class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                       <div class="card-body">
                           <h4 class="card-title text-center">{{ group.group_name }}</h4>
                       </div>
