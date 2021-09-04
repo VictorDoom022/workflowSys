@@ -1,0 +1,64 @@
+<template>
+    <div class="container-fluid">
+        <b-row v-if="todoList.length">
+            <b-col md="6" v-for="todo in searchTodo" :key="todo.id">
+                <TodoItem :todo="todo" />
+            </b-col> 
+        </b-row>
+
+        <h2 v-if="!todoList.length">No Archived Todos Yet</h2>
+    </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import loggedInUserData from '../../../functions/loggedInUserData'
+import TodoItem from '../TodoItem.vue'
+
+export default {
+    components: { TodoItem },
+    data(){
+        return {
+            isLoading: true,
+            todoList: [],
+            searchTerm: '',
+        }
+    },
+    mounted(){
+        this.fetchArchivedTodoListData()
+    },
+    methods: {
+        fetchArchivedTodoListData(){
+            Vue.axios({
+                url: '/todo/getToDoArchivedByUserID',
+                method: 'POST', 
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    userID: loggedInUserData.state.userData['user'].id,
+                },
+            }).then((response) => {
+                this.isLoading = false
+                this.todoList = response.data
+            })
+        },
+    },
+    computed: {
+        searchTodo(){
+            return this.todoList.filter((todo) => {
+                if(this.searchTerm == ''){
+                    return todo.todo_name
+                }else{
+                    return todo.todo_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+                }
+            })
+        }
+    },
+}
+</script>
+
+<style>
+
+</style>
