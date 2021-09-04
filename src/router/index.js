@@ -108,6 +108,7 @@ const routes = [
     path: '/editTodo/:todoID',
     name: 'EditTodo',
     component: EditTodo,
+    props: true,
   },
 ]
 

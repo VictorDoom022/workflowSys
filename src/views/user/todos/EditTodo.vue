@@ -16,7 +16,7 @@
                     </div>
 
                     <div class="container-fluid">
-                        <form @submit.prevent="createTodo()" class="form">
+                        <form @submit.prevent="editTodo()" class="form">
                             <div class="row">
                                 <h1>Todo Basic Info</h1>
                                 <div class="col-md-6 ">
@@ -92,7 +92,59 @@ export default {
     },
     methods: {
         fetchTodoData(){
-
+            Vue.axios({
+                url: '/todo/getTodoByID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    todoID : this.todoID,
+                },
+            }).then((response) => {
+                this.todo = response.data
+                this.setTodoData()
+            })
+        },
+        setTodoData(){
+            this.todoName  = this.todo.todo_name
+            this.todoDesc = this.todo.todo_desc
+            this.todoStatusMsg = this.todo.todo_statusMsg
+            this.todoStartDate = this.todo.todo_startDate
+            this.todoDueDate = this.todo.todo_dueDate
+        },
+        editTodo(){
+            Vue.axios({
+                url: '/todo/updateTodo',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    todoID : this.todoID,
+                    todoName : this.todoName,
+                    todoDesc : this.todoDesc,
+                    todoStatusMsg : this.todoStatusMsg,
+                    todoStartDate : this.todoStartDate.length == 0 ? 'null' : this.todoStartDate,
+                    todoDueDate : this.todoDueDate.length == 0 ? 'null' : this.todoDueDate,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.fetchTodoData()
+            })
+        },
+        toastMessage(response) {
+            Vue.swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: response.status == 200 ? 'success' : 'error',
+                title: response.data['message']
+            })
         },
         navigateBack(){
             this.$router.go(-1)
