@@ -17,10 +17,10 @@
 
                     <b-tabs content-class="mt-3">
                         <b-tab title="Active" active>
-                            <TodoActive />
+                            <TodoActive :searchTerm="searchTerm" />
                         </b-tab>
                         <b-tab title="Archive">
-                            <TodoArchive />
+                            <TodoArchive :searchTerm="searchTerm" />
                         </b-tab>
                     </b-tabs>
 

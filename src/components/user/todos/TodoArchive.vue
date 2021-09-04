@@ -16,12 +16,12 @@ import loggedInUserData from '../../../functions/loggedInUserData'
 import TodoItem from '../TodoItem.vue'
 
 export default {
+    props: ['searchTerm'],
     components: { TodoItem },
     data(){
         return {
             isLoading: true,
             todoList: [],
-            searchTerm: '',
         }
     },
     mounted(){
