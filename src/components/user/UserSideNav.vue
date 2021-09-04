@@ -3,16 +3,16 @@
     <div class="position-sticky pt-3">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <router-link :to="{ name: 'UserHome' }" class="nav-link active" aria-current="page">
+          <router-link :to="{ name: 'UserHome' }" class="nav-link" aria-current="page">
             <b-icon class="mr-1" icon="house-fill"></b-icon>
             Home
           </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link :to="{ name: 'TodoList' }" class="nav-link">
             <b-icon class="mr-1" icon="list-check"></b-icon>  
             Todo
-          </a>
+          </router-link>
         </li>
       </ul>
 
@@ -94,12 +94,12 @@ export default {
   color: #727272;
 }
 
-.sidebar .nav-link.active {
+.sidebar .nav-link.router-link-active {
   color: #2470dc;
 }
 
 .sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
+.sidebar .nav-link.router-link-active .feather {
   color: inherit;
 }
 

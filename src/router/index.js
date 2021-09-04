@@ -13,6 +13,7 @@ import TaskList from '../views/user/task/TaskList.vue'
 import CreateTask from '../views/user/task/CreateTask.vue'
 import EditTask from '../views/user/task/EditTask.vue'
 import TaskAssignedHistory from '../views/user/task/TaskAssignedHistory.vue'
+import TodoList from '../views/user/todos/TodoList.vue'
 
 Vue.use(VueRouter)
 
@@ -90,6 +91,11 @@ const routes = [
     name: 'TaskAssignedHistory',
     component: TaskAssignedHistory,
     props: true,
+  },
+  {
+    path: '/todos',
+    name: 'TodoList',
+    component: TodoList,
   },
 ]
 
