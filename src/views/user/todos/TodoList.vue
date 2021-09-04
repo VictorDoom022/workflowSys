@@ -5,7 +5,9 @@
             <div class="row">
                 <UserSideNav />
 
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <Loading v-if="isLoading" />
+
+                <main v-if="!isLoading" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">
                             Todo List
@@ -16,7 +18,13 @@
                     </div>
 
                     <div class="container-fluid">
+                        <b-row v-if="todoList.length">
+                            <b-col md="6" v-for="todo in todoList" :key="todo.id">
+                                <TodoItem :todo="todo" />
+                            </b-col> 
+                        </b-row>
 
+                        <h2 v-if="!todoList.length">No Todos Yet</h2>
                     </div>
                 </main>
             </div>
@@ -29,19 +37,38 @@ import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
+import Loading from '../../../components/Loading.vue'
+import TodoItem from '../../../components/user/TodoItem.vue'
 
 export default {
-    components: { UserSideNav, UserTopNav },
+    components: { UserSideNav, UserTopNav, Loading, TodoItem },
     data(){
         return {
-
+            isLoading: true,
+            todoList: [],
         }
     },
     mounted(){
-
+        this.fetchTodoListData()
     },
     methods: {
-
+        fetchTodoListData(){
+            Vue.axios({
+                url: '/todo/getToDoByUserID',
+                method: 'POST', 
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    userID: loggedInUserData.state.userData['user'].id,
+                },
+            }).then((response) => {
+                this.isLoading = false
+                console.log(response.data);
+                this.todoList = response.data
+            })
+        }
     },
 }
 </script>
