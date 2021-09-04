@@ -58,6 +58,7 @@
 
                                 <div class="submit col-md-12 d-grid">
                                     <button class="btn btn-primary" type="submit">Save</button>
+                                    <input @click="showToggleTodoStatusDialog()" type="button" class="btn btn-secondary my-2" value="Archive/Unarchive"/>
                                 </div>
                             </div>
                         </form>
@@ -113,6 +114,23 @@ export default {
             this.todoStatusMsg = this.todo.todo_statusMsg
             this.todoStartDate = this.todo.todo_startDate
             this.todoDueDate = this.todo.todo_dueDate
+        },
+        showToggleTodoStatusDialog(){
+            Vue.axios({
+                url: '/todo/changeTodoStatus',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    todoID : this.todoID,
+                    todoStatus : this.todo.todo_status,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'TodoList' })
+            })
         },
         editTodo(){
             Vue.axios({
