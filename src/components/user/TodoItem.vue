@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateToEditTask(todo.id)" class="container card my-1">
+  <div @click="navigateToEditTodo(todo.id)" class="container card my-1">
         <div class="row row-striped">
             <div class="col-lg-2 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(todo.updated_at) }}</span></p>
@@ -40,8 +40,8 @@ export default {
             let dateStr = new Date(dbDate)
             return dateStr.toLocaleDateString('default', { month: 'short' })
         },
-        navigateToEditTodo(taskID){
-            
+        navigateToEditTodo(todoID){
+            this.$router.push({ name: 'EditTodo', params: { todoID: todoID }})
         }
     }
 }
