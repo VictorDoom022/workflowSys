@@ -13,7 +13,7 @@
                             Todo List
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-sm btn-primary mx-1">Create Todo</button>
+                            <button @click="navigateToCreateTodo()" type="button" class="btn btn-sm btn-primary mx-1">Create Todo</button>
                         </div>
                     </div>
 
@@ -72,6 +72,9 @@ export default {
         },
         searchFromNavBar(searchWordFromNavBar){
             this.searchTerm = searchWordFromNavBar
+        },
+        navigateToCreateTodo(){
+            this.$router.push({ name: 'CreateTodo' })
         },
     },
     computed: {
