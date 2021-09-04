@@ -21,19 +21,19 @@
                                 <h1>Todo Basic Info</h1>
                                 <div class="col-md-6 ">
                                     <div class="form-floating mb-3">
-                                        <input type="text" v-model="taskName" class="form-control" placeholder="Todo Name" autocomplete="off" required>
+                                        <input type="text" v-model="todoName" class="form-control" placeholder="Todo Name" autocomplete="off" required>
                                         <label>Todo Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" v-model="taskStatusMsg" class="form-control" placeholder="Todo Status" autocomplete="off" required>
+                                        <input type="text" v-model="todoStatusMsg" class="form-control" placeholder="Todo Status" autocomplete="off" required>
                                         <label>Todo Status</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
-                                        <textarea type="text" v-model="taskDesc" class="form-control" placeholder="Todo Description" style="height: 150px" autocomplete="off" required>
+                                        <textarea type="text" v-model="todoDesc" class="form-control" placeholder="Todo Description" style="height: 150px" autocomplete="off" required>
                                         </textarea>
                                         <label>Todo Description</label>
                                     </div>
@@ -44,14 +44,14 @@
                                 <h1>Extras</h1>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="date" v-model="taskStartDate" class="form-control" placeholder="Start Date" autocomplete="off">
+                                        <input type="date" v-model="todoStartDate" class="form-control" placeholder="Start Date" autocomplete="off">
                                         <label>Start Date</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="date" v-model="taskDueDate" class="form-control" placeholder="Due Date" autocomplete="off">
+                                        <input type="date" v-model="todoDueDate" class="form-control" placeholder="Due Date" autocomplete="off">
                                         <label>Due Date</label>
                                     </div>
                                 </div>
@@ -79,7 +79,11 @@ export default {
     components: { UserSideNav, UserTopNav },
     data() {
         return {
-
+            todoName : '',
+            todoDesc: '',
+            todoStatusMsg: '',
+            todoStartDate: '',
+            todoDueDate: '',
         }
     },
     methods: {
@@ -87,7 +91,25 @@ export default {
             this.$router.go(-1)
         },
         createTodo(){
-            
+            Vue.axios({
+                url: '/todo/createTodo',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    userID : loggedInUserData.state.userData['user'].id,
+                    todoName : this.todoName,
+                    todoDesc : this.todoDesc,
+                    todoStartDate : this.todoStartDate.length == 0 ? 'null' : this.todoStartDate,
+                    todoDueDate : this.todoDueDate.length == 0 ? 'null' : this.todoDueDate,
+                    todoStatusMsg : this.todoStatusMsg,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'TodoList' })
+            })
         },
         toastMessage(response) {
             Vue.swal.fire({
