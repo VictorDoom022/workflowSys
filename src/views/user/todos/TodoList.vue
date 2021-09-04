@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserTopNav />
+        <UserTopNav @searchWord="searchFromNavBar" />
         <div class="container-fluid">
             <div class="row">
                 <UserSideNav />
@@ -19,7 +19,7 @@
 
                     <div class="container-fluid">
                         <b-row v-if="todoList.length">
-                            <b-col md="6" v-for="todo in todoList" :key="todo.id">
+                            <b-col md="6" v-for="todo in searchTodo" :key="todo.id">
                                 <TodoItem :todo="todo" />
                             </b-col> 
                         </b-row>
@@ -46,6 +46,7 @@ export default {
         return {
             isLoading: true,
             todoList: [],
+            searchTerm: '',
         }
     },
     mounted(){
@@ -67,6 +68,20 @@ export default {
                 this.isLoading = false
                 console.log(response.data);
                 this.todoList = response.data
+            })
+        },
+        searchFromNavBar(searchWordFromNavBar){
+            this.searchTerm = searchWordFromNavBar
+        },
+    },
+    computed: {
+        searchTodo(){
+            return this.todoList.filter((todo) => {
+                if(this.searchTerm == ''){
+                    return todo.todo_name
+                }else{
+                    return todo.todo_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+                }
             })
         }
     },
