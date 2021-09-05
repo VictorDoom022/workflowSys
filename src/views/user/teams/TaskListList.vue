@@ -25,7 +25,7 @@
                             <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                                     <div class="card-body">
-                                        <h2 class="card-title align-middle text-center">{{ convertUserIDToName(taskList.taskList_userID) }}</h2>
+                                        <h2 class="card-title align-middle text-center">{{ taskList.taskList_userID }}</h2>
                                     </div>
                                 </div>
                             </b-col> 
@@ -53,6 +53,7 @@ export default {
             userDetailData: [],
             teamDetail: [],
             taskListList: [],
+            newTaskListList: [],
             isLoading: true,
             searchTerm: '',
         }
@@ -86,16 +87,21 @@ export default {
                 }).then((response) => {
                     this.teamDetail = response.data['team']
                     this.taskListList = response.data['taskList']
+                    this.replaceTaskListListData()
                     this.isLoading = false
                 })
             })
         },
-        convertUserIDToName(userID){
-            for(var i=0; i < this.userData.length; i++){
-                if(userID == this.userData[i].id){
-                    return this.userData[i].name + '\'s Task List'
+        replaceTaskListListData(){
+            for(var i = 0; i < this.taskListList.length; i++) {
+                for(var j = i; j < this.userData.length; j++) {
+                    if(this.taskListList[i].taskList_userID == this.userData[j].id){
+                        // replace userID with user name
+                        this.taskListList[i].taskList_userID = this.userData[j].name
+                    }
                 }
             }
+            this.newTaskListList = this.taskListList
         },
         navigateBack(){
             this.$router.go(-1)
@@ -112,25 +118,13 @@ export default {
     },
     computed: {
         searchTaskList(){
-            // user input: username
-            if(this.searchTerm == ''){
-                return this.taskListList.filter((task) => {
+            return this.newTaskListList.filter((task) => {
+                if(this.searchTerm == ''){
                     return task.taskList_userID
-                })
-            }
-
-            if(this.searchTerm != ''){
-                // search in user list
-                return this.userData.filter((user) => {
-                    // if username match with name in userData
-                    if(user.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
-                        // display the matched results
-                        return this.taskListList.filter((task) => {
-                            return task.taskList_userID.includes(user.id)
-                        })
-                    }
-                })
-            }
+                }else{
+                    return task.taskList_userID.toLowerCase().includes(this.searchTerm.toLowerCase());
+                }
+            })
             
         }
     },
