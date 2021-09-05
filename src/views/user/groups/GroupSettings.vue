@@ -92,7 +92,7 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="custom-control custom-switch">
-                                                        <b-icon class="mr-1" icon="chevron-right"></b-icon>
+                                                        <b-icon @click="showAllTeamDialog()" class="mr-1" icon="chevron-right"></b-icon>
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
         </div>
 
         <SelectMember v-if="showModal" @modalShown="toggleModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
-
+        <SelectTeam v-if="showTeamModal" @teamModalShown="toggleTeamModal" :groupID="groupID" :teamList="teamList"/>
     </div>
 </template>
 
@@ -166,18 +166,20 @@ import Vue from 'vue'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import SelectMember from '../../../components/user/SelectMember.vue'
+import SelectTeam from '../../../components/user/SelectTeam.vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
 
 export default {
     props: ['groupID'],
-    components: { UserSideNav, UserTopNav, Loading, SelectMember },
+    components: { UserSideNav, UserTopNav, Loading, SelectMember, SelectTeam },
     data() {
         return {
             groupDetail: [],
             teamList: [],
             isAdmin: false,
             showModal: false,
+            showTeamModal: false,
             userListForModal: null,
             modalViewOnly: false,
             modalType: 0,
@@ -223,6 +225,9 @@ export default {
         toggleModal(isModalShown){
             this.showModal = isModalShown
         },
+        toggleTeamModal(isTeamModalShown){
+            this.showTeamModal = isTeamModalShown
+        },
         showAllMembersDialog(){
             this.isLoading = true
             Vue.axios({
@@ -260,6 +265,10 @@ export default {
                 this.modalViewOnly = true;
                 this.showModal = !this.showModal
             })
+        },
+        showAllTeamDialog(){
+                this.modalViewOnly = true
+                this.showTeamModal = !this.showTeamModal
         },
         showSetAdminDialog(){
             this.isLoading = true
