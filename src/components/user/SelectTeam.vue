@@ -12,7 +12,7 @@
         </div>
 
         <div class="my-3" v-if="!teamList.length">
-            <h2 class="text-center">No users</h2>
+            <h2 class="text-center">No team(s)</h2>
         </div>
     </b-modal>
 </template>

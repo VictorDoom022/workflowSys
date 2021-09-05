@@ -5,9 +5,9 @@
             <div class="row">
                 <UserSideNav />
 
-                <Loading v-if="teamList.length ==0"/>
+                <Loading v-if="isLoading"/>
 
-                <main v-if="teamList.length !=0" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">
                             <span @click="navigateBack()" style="cursor:pointer">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
 
-                    <div class="container-fluid">
+                    <div v-if="teamList.length !=0" class="container-fluid">
                         <b-row>
                             <b-col md="4" v-for="team in searchTeam" :key="team.id">
                                 <div @click="navigateToTaskListList(team.id)" class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px; border-radius: 0px;">
@@ -32,6 +32,8 @@
                             </b-col> 
                         </b-row>
                     </div>
+
+                    <h2 v-if="!teamList.length">No Team Created Yet</h2>
 
                 </main>
 
@@ -55,6 +57,7 @@ export default {
             groupDetail: [],
             teamList: [],
             searchTerm: '',
+            isLoading: true,
             isAdmin: false,
         }
     },
@@ -89,6 +92,7 @@ export default {
                     this.isAdmin = true;
                 }
             }
+            this.isLoading = false
         },
         navigateBack(){
             this.$router.go(-1)
