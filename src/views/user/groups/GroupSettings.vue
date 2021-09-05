@@ -157,7 +157,7 @@
         </div>
 
         <SelectMember v-if="showModal" @modalShown="toggleModal" :groupID="this.groupID" :userList="userListForModal" :viewOnly="modalViewOnly" :type="modalType"/>
-        <SelectTeam v-if="showTeamModal" @teamModalShown="toggleTeamModal" :groupID="groupID" :teamList="teamList"/>
+        <SelectTeam v-if="showTeamModal" @teamModalShown="toggleTeamModal" :groupID="groupID" :teamList="teamListForModal"/>
     </div>
 </template>
 
@@ -181,6 +181,7 @@ export default {
             showModal: false,
             showTeamModal: false,
             userListForModal: null,
+            teamListForModal: null,
             modalViewOnly: false,
             modalType: 0,
             isLoading: true,
@@ -267,8 +268,21 @@ export default {
             })
         },
         showAllTeamDialog(){
+            Vue.axios({
+                url: '/group/getGroupTeamByGroupID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                },
+            }).then((response) => {
+                this.teamListForModal = response.data
                 this.modalViewOnly = true
                 this.showTeamModal = !this.showTeamModal
+            })
         },
         showSetAdminDialog(){
             this.isLoading = true
