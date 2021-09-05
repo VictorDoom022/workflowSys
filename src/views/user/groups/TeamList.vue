@@ -95,7 +95,7 @@ export default {
             this.isLoading = false
         },
         navigateBack(){
-            this.$router.go(-1)
+            this.$router.push({ name: 'UserHome'})
         },
         showEnterTeamNameDialog(){
             Vue.swal.fire({

@@ -104,7 +104,7 @@ export default {
             this.newTaskListList = this.taskListList
         },
         navigateBack(){
-            this.$router.go(-1)
+            this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
         },
         searchFromNavBar(searchWordFromNavBar){
             this.searchTerm = searchWordFromNavBar
