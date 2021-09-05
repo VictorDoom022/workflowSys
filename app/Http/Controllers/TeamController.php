@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Models\Group;
 use App\Models\TaskList;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -164,10 +165,13 @@ class TeamController extends Controller
         for($i=0; $i<count($removeUserListArr); $i++){
             // remove user's task list
             $taskList = TaskList::where('taskList_userID', $removeUserListArr[$i])
-                                ->where('taskList_teamID', $teamID)
-                                ->delete();
+                                ->where('taskList_teamID', $teamID)->first();
+
+            // remove user's task
+            $task = Task::where('task_taskListID', $taskList->id)->delete();
+            $taskList->delete();
         }
-        
+
         return [
             'message'=>'Member removed.'
         ];
