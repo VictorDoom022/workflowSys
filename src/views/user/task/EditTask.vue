@@ -65,7 +65,7 @@
                                             <input @click="showSelectUserDialog()" :disabled="!allowEdit" class="btn btn-success" type="button" value="Assign User">
                                         </div>
                                         <div class="col-md-6 d-grid mb-2">
-                                            <input @click="navigateToAssignHistory()" :disabled="!allowEdit" class="btn btn-warning" type="button" value="View assign history">
+                                            <input @click="navigateToAssignHistory()" class="btn btn-warning" type="button" value="View assign history">
                                         </div>
                                     </div>
                                 </div>

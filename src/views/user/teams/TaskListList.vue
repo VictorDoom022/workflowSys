@@ -25,7 +25,7 @@
                             <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                                     <div class="card-body">
-                                        <h4 class="card-title text-center">{{ convertUserIDToName(taskList.taskList_userID) }}</h4>
+                                        <h2 class="card-title align-middle text-center">{{ convertUserIDToName(taskList.taskList_userID) }}</h2>
                                     </div>
                                 </div>
                             </b-col> 

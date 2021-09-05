@@ -79,6 +79,14 @@ export default {
   transition: .3s ease;
 }
 
+.card p{
+    -webkit-line-clamp: 1; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
 /* breakpoint lg */
 @media screen and (max-width: 992px) {
     .card h3{

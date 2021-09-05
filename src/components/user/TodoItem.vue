@@ -58,6 +58,15 @@ export default {
   transition: .3s ease;
 }
 
+.card p{
+    display: block;/* or inline-block */
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 3.6em;
+    line-height: 1.8em;
+}
+
 /* breakpoint lg */
 @media screen and (max-width: 992px) {
     .card h3{

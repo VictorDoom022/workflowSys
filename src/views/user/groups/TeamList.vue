@@ -26,7 +26,7 @@
                             <b-col md="4" v-for="team in searchTeam" :key="team.id">
                                 <div @click="navigateToTaskListList(team.id)" class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px; border-radius: 0px;">
                                     <div class="card-body">
-                                        <h4 class="card-title text-center">{{ team.team_name }}</h4>
+                                        <h2 class="card-title align-middle text-center">{{ team.team_name }}</h2>
                                     </div>
                                 </div>
                             </b-col> 
