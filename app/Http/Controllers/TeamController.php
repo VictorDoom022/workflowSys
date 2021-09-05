@@ -183,6 +183,21 @@ class TeamController extends Controller
         $teamID = $request->teamID;
 
         $team = Team::where('id', $teamID)->delete();
+        // get taskList data
+        $taskList = TaskList::where('taskList_teamID', $teamID)->get();
+        // get all taskList ID
+        $taskListIDArr = [];
+        // loop every $taskList and store taskList ID into array
+        foreach($taskList as $task){
+            array_push($taskListIDArr, $task->id);
+        }
+
+        // delete all task by taskListID
+        // loop the stored taskListIDArr to delete task by id 
+        for($i=0; $i<count($taskListIDArr); $i++){
+            $task = Task::where('task_taskListID', $taskListIDArr[$i])->delete();
+        }
+        // delete the task list finally
         $taskList = TaskList::where('taskList_teamID', $teamID)->delete();
 
         return [
