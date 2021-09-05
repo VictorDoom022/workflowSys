@@ -17,7 +17,7 @@
                         {{ todo.todo_statusMsg }}
                     </li>
                 </ul>
-                <p class="text-start">{{ todo.todo_desc }}</p>
+                <p class="text-start text-muted">{{ todo.todo_desc }}</p>
             </div>
         </div>
     </div>
@@ -48,7 +48,31 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    cursor: pointer;
+.card{
+  cursor: pointer;
+  transition: .5s ease;
+}
+
+.card:hover{
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
+  transition: .3s ease;
+}
+
+/* breakpoint lg */
+@media screen and (max-width: 992px) {
+    .card h3{
+        margin: auto;
+        text-align: unset !important;
+    }
+
+    .card ul{
+        margin: auto;
+        text-align: unset !important;
+    }
+
+    .card p{
+        margin: auto;
+        text-align: unset !important;
+    }
 }
 </style>

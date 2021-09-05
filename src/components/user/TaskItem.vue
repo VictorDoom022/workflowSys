@@ -18,7 +18,7 @@
                     </li>
                     <li class="list-inline-item">
                         <b-icon class="mr-1" icon="person-lines-fill"></b-icon>
-                        <span v-if="task.task_assignedMemberID">{{ convertUserIDToName(task.task_assignedMemberID) }}</span>
+                        <span v-if="task.task_assignedMemberID">{{ getLastAssigendUser(task.task_assignedMemberID) }}</span>
                         <span v-if="!task.task_assignedMemberID">Not assigned</span>
                     </li>
                     <li class="list-inline-item">
@@ -26,7 +26,7 @@
                         {{ task.task_statusMsg }}
                     </li>
                 </ul>
-                <p class="text-start">{{ task.task_desc }}</p>
+                <p class="text-start text-muted">{{ task.task_desc }}</p>
             </div>
         </div>
     </div>
@@ -49,6 +49,11 @@ export default {
             let dateStr = new Date(dbDate)
             return dateStr.toLocaleDateString('default', { month: 'short' })
         },
+        getLastAssigendUser(taskAssignUserList){
+            var taskAssignUserListArr = taskAssignUserList.split(',')
+            // get last element of array
+            return this.convertUserIDToName(taskAssignUserListArr[taskAssignUserListArr.length-1])
+        },
         convertUserIDToName(userID){
             for(var i=0; i < this.userData.length; i++){
                 if(userID == this.userData[i].id){
@@ -64,7 +69,31 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    cursor: pointer;
+.card{
+  cursor: pointer;
+  transition: .5s ease;
+}
+
+.card:hover{
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
+  transition: .3s ease;
+}
+
+/* breakpoint lg */
+@media screen and (max-width: 992px) {
+    .card h3{
+        margin: auto;
+        text-align: unset !important;
+    }
+
+    .card ul{
+        margin: auto;
+        text-align: unset !important;
+    }
+
+    .card p{
+        margin: auto;
+        text-align: unset !important;
+    }
 }
 </style>

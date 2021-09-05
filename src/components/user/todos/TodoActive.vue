@@ -4,7 +4,7 @@
         <Loading v-if="isLoading" />
 
         <b-row v-if="todoList.length">
-            <b-col md="6" v-for="todo in searchTodo" :key="todo.id">
+            <b-col md="6" xl="4"  v-for="todo in searchTodo" :key="todo.id">
                 <TodoItem :todo="todo" />
             </b-col> 
         </b-row>

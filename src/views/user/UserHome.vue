@@ -199,5 +199,11 @@ export default {
 <style scoped>
 .card{
   cursor: pointer;
+  transition: .5s ease;
+}
+
+.card:hover{
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
+  transition: .3s ease;
 }
 </style>
