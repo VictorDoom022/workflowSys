@@ -17,7 +17,7 @@
                         {{ todo.todo_statusMsg }}
                     </li>
                 </ul>
-                <p class="text-start text-muted">{{ todo.todo_desc }}</p>
+                <p class="text-start text-muted">{{ todo.todo_desc.slice(0,20) + '...' }}</p>
             </div>
         </div>
     </div>
@@ -56,15 +56,6 @@ export default {
 .card:hover{
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
   transition: .3s ease;
-}
-
-.card p{
-    display: block;/* or inline-block */
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    overflow: hidden;
-    max-height: 3.6em;
-    line-height: 1.8em;
 }
 
 /* breakpoint lg */

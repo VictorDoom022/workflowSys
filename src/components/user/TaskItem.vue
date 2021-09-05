@@ -26,7 +26,7 @@
                         {{ task.task_statusMsg }}
                     </li>
                 </ul>
-                <p class="text-start text-muted">{{ task.task_desc }}</p>
+                <p class="text-start text-muted">{{ task.task_desc.slice(0,20) + '...' }}</p>
             </div>
         </div>
     </div>
@@ -77,14 +77,6 @@ export default {
 .card:hover{
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
   transition: .3s ease;
-}
-
-.card p{
-    -webkit-line-clamp: 1; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
 }
 
 /* breakpoint lg */
