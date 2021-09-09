@@ -47,6 +47,10 @@ class _taskDetailState extends State<taskDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getTaskData();
+  }
+
+  void getTaskData(){
     getTaskByID(context, taskID).then((value) {
       taskNameController.text = value.taskName;
       taskDescController.text = value.taskDesc;
@@ -242,7 +246,9 @@ class _taskDetailState extends State<taskDetail> {
                                               CupertinoPageRoute(builder: (_){
                                                 return selectMember(type: 6, teamID: taskID, userList: value);
                                               })
-                                          );
+                                          ).then((value) {
+                                            getTaskData();
+                                          });
                                         });
                                       } : null,
                                     ),

@@ -108,7 +108,6 @@ class _selectMemberState extends State<selectMember> {
               if(selectedUserListID.length == 1){
                 assignTask(context, teamID, selectedUserListID[0]).then((value) {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pop();
                 });
               }else{
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You can only select one member')));
