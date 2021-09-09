@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/todoController.dart';
+import 'package:workflow_sys/view/misc/TaskForm.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 
 class todoDetail extends StatefulWidget {
@@ -79,294 +80,178 @@ class _todoDetailState extends State<todoDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Task basic info',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Name'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextField(
-                              controller: todoNameController,
-                              decoration: textFieldInputDecoration,
-                            ),
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Description'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextField(
-                              controller: todoDescController,
-                              maxLines: 10,
-                              decoration: textFieldInputDecoration,
-                            ),
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Status'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextField(
-                              controller: todoStatusMsgController,
-                              maxLines: 1,
-                              minLines: 1,
-                              decoration: textFieldInputDecoration,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+              TaskFormCard(
+                cardTitle: 'Task basic info',
+                cardItemList: [
+                  TaskItem(
+                    itemTitle: 'Name',
+                    itemWidget: TextField(
+                      controller: todoNameController,
+                      decoration: textFieldInputDecoration,
+                    ),
                   ),
-                ),
-              ),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Extras',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Start Date'),
-                          ),
-                          Expanded(
-                              flex: 9,
-                              child: TextButton(
-                                child: Text(todoStartDate==null ? 'Select date' : todoStartDate.toString()),
-                                onPressed: (){
-                                  showDialog(
-                                      context: context,
-                                      builder: (_){
-                                        return Dialog(
-                                          child: SfDateRangePicker(
-                                            showActionButtons: true,
-                                            initialDisplayDate: todoStartDate,
-                                            initialSelectedDate: todoStartDate,
-                                            onSubmit: (date){
-                                              Navigator.of(context).pop();
-                                              setState(() {
-                                                todoStartDate = date;
-                                              });
-                                            },
-                                            onCancel: (){
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        );
-                                      }
-                                  );
-                                },
-                              )
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Due Date'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextButton(
-                              child: Text(todoDueDate==null ? 'Select date' : todoDueDate.toString()),
-                              onPressed: (){
-                                showDialog(
-                                    context: context,
-                                    builder: (_){
-                                      return Dialog(
-                                        child: SfDateRangePicker(
-                                          showActionButtons: true,
-                                          initialDisplayDate: todoDueDate,
-                                          initialSelectedDate: todoDueDate,
-                                          onSubmit: (date){
-                                            Navigator.of(context).pop();
-                                            setState(() {
-                                              todoDueDate = date;
-                                            });
-                                          },
-                                          onCancel: (){
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      );
-                                    }
-                                );
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Description',
+                    itemWidget: TextField(
+                      controller: todoDescController,
+                      maxLines: 10,
+                      decoration: textFieldInputDecoration,
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: TextButton(
-                    child: Text(
-                      todoStatus==1 ? 'Archive' : 'Unarchive',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                          fontSize: 18
-                      ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Status',
+                    itemWidget: TextField(
+                      controller: todoStatusMsgController,
+                      maxLines: 1,
+                      minLines: 1,
+                      decoration: textFieldInputDecoration,
                     ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.amber
-                        )
-                    ),
-                    onPressed: () {
-                      LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
-
-                      changeTodoStatus(context, todoID, todoStatus).then((value) {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      });
-                    },
                   ),
-                ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: TextButton(
-                    child: Text(
-                      'Delete',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                          fontSize: 18
-                      ),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.red
-                        )
-                    ),
-                    onPressed: () {
-                      showCupertinoDialog(
-                          context: context,
-                          builder: (_){
-                            return CupertinoAlertDialog(
-                              content: Text(
-                                'Are you sure you want to delete this todo?',
-                                style: TextStyle(
-                                    fontSize: 20
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: Text('Cancel'),
-                                  onPressed: (){
-                                    HapticFeedback.lightImpact();
-                                    Navigator.of(
-                                        context,
-                                        rootNavigator: true
-                                    ).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text(
-                                    'Yes',
-                                    style: TextStyle(
-                                        color: Colors.blue
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
-                                    deleteTodo(context, todoID).then((value) {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
+              TaskFormCard(
+                cardTitle: 'Extras',
+                cardItemList: [
+                  TaskItem(
+                    itemTitle: 'Start Date',
+                    itemWidget: TextButton(
+                      child: Text(todoStartDate==null ? 'Select date' : todoStartDate.toString()),
+                      onPressed: (){
+                        showDialog(
+                            context: context,
+                            builder: (_){
+                              return Dialog(
+                                child: SfDateRangePicker(
+                                  showActionButtons: true,
+                                  initialDisplayDate: todoStartDate,
+                                  initialSelectedDate: todoStartDate,
+                                  onSubmit: (date){
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      todoStartDate = date;
                                     });
                                   },
-                                )
-                              ],
-                            );
-                          }
-                      );
-                    },
+                                  onCancel: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              );
+                            }
+                        );
+                      },
+                    ),
                   ),
-                ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Due Date',
+                    itemWidget: TextButton(
+                      child: Text(todoDueDate==null ? 'Select date' : todoDueDate.toString()),
+                      onPressed: (){
+                        showDialog(
+                            context: context,
+                            builder: (_){
+                              return Dialog(
+                                child: SfDateRangePicker(
+                                  showActionButtons: true,
+                                  initialDisplayDate: todoDueDate,
+                                  initialSelectedDate: todoDueDate,
+                                  onSubmit: (date){
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      todoDueDate = date;
+                                    });
+                                  },
+                                  onCancel: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: TextButton(
-                    child: Text(
-                      'Save',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                          fontSize: 18
-                      ),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.amber
-                        )
-                    ),
-                    onPressed: () {
-                      if(todoNameController.text.isNotEmpty && todoDescController.text.isNotEmpty && todoStatusMsgController.text.isNotEmpty){
-                        LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
+              TaskFormButton(
+                buttonText: todoStatus==1 ? 'Archive' : 'Unarchive',
+                buttonColor: Colors.amber,
+                buttonFunction: () {
+                  LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
 
-                        String startDate = todoStartDate.toString();
-                        String dueDate = todoDueDate.toString();
-
-                        updateTodo(context, todoID, todoNameController.text, todoDescController.text, todoStatusMsgController.text, startDate, dueDate).then((value) {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        });
-                      }else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                  changeTodoStatus(context, todoID, todoStatus).then((value) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  });
+                },
+              ),
+              TaskFormButton(
+                buttonText: 'Delete',
+                buttonColor: Colors.red,
+                buttonFunction: () {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (_){
+                        return CupertinoAlertDialog(
+                          content: Text(
+                            'Are you sure you want to delete this todo?',
+                            style: TextStyle(
+                                fontSize: 20
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: (){
+                                HapticFeedback.lightImpact();
+                                Navigator.of(
+                                    context,
+                                    rootNavigator: true
+                                ).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                'Yes',
+                                style: TextStyle(
+                                    color: Colors.blue
+                                ),
+                              ),
+                              onPressed: () {
+                                LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
+                                deleteTodo(context, todoID).then((value) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                            )
+                          ],
+                        );
                       }
-                    },
-                  ),
-                ),
+                  );
+                },
+              ),
+              TaskFormButton(
+                buttonText: 'Save',
+                buttonColor: Colors.amber,
+                buttonFunction: () {
+                  if(todoNameController.text.isNotEmpty && todoDescController.text.isNotEmpty && todoStatusMsgController.text.isNotEmpty){
+                    LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
+
+                    String startDate = todoStartDate.toString();
+                    String dueDate = todoDueDate.toString();
+
+                    updateTodo(context, todoID, todoNameController.text, todoDescController.text, todoStatusMsgController.text, startDate, dueDate).then((value) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    });
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                  }
+                },
               ),
             ],
           ),
