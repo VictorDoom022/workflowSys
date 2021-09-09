@@ -144,43 +144,25 @@ class _createTaskState extends State<createTask> {
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: TextButton(
-                    child: Text(
-                      'Save',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                          fontSize: 18
-                      ),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.amber
-                        )
-                    ),
-                    onPressed: () {
-                      if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
-                        LoadingScreen.showLoadingScreen(context, createTaskScaffoldKey);
-                        String startDate = taskStartDate.toString();
-                        String dueDate = taskDueDate.toString();
+              TaskFormButton(
+                buttonText: 'Save',
+                buttonColor: Colors.amber,
+                buttonFunction: () {
+                  if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusController.text.isNotEmpty){
+                    LoadingScreen.showLoadingScreen(context, createTaskScaffoldKey);
+                    String startDate = taskStartDate.toString();
+                    String dueDate = taskDueDate.toString();
 
-                        createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
-                          Navigator.of(context).pop();
-                          taskNameController.clear();
-                          taskDescController.clear();
-                          taskStatusController.clear();
-                        });
-                      }else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
-                      }
-                    },
-                  ),
-                ),
+                    createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
+                      Navigator.of(context).pop();
+                      taskNameController.clear();
+                      taskDescController.clear();
+                      taskStatusController.clear();
+                    });
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                  }
+                },
               ),
             ],
           ),
