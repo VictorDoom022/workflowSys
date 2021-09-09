@@ -8,6 +8,7 @@ import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/view/misc/TaskForm.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
 import 'package:workflow_sys/view/user/tasks/taskAssignedHistory.dart';
@@ -159,218 +160,148 @@ class _taskDetailState extends State<taskDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Task basic info',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Text('Task Name'),
-                            ),
-                            Expanded(
-                              flex: 9,
-                              child: TextField(
-                                enabled: allowUserEdit,
-                                controller: taskNameController,
-                                decoration: textFieldInputDecoration,
-                              ),
-                            )
-                          ],
-                        ),
-                        Divider(),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Text('Task Description'),
-                            ),
-                            Expanded(
-                              flex: 9,
-                              child: TextField(
-                                enabled: allowUserEdit,
-                                controller: taskDescController,
-                                maxLines: 10,
-                                decoration: textFieldInputDecoration,
-                              ),
-                            )
-                          ],
-                        ),
-                        Divider(),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Text('Task Status'),
-                            ),
-                            Expanded(
-                              flex: 9,
-                              child: TextField(
-                                enabled: allowUserEdit,
-                                controller: taskStatusMsgController,
-                                maxLines: 1,
-                                minLines: 1,
-                                decoration: textFieldInputDecoration,
-                              ),
-                            )
-                          ],
-                        ),
-                        Divider(),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Text('Assigned member'),
-                            ),
-                            Expanded(
-                              flex: 9,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: TextButton(
-                                      child: Text(lastAssignedUserName=='Not Assigned' ? 'Click to assign': lastAssignedUserName),
-                                      onPressed: allowUserEdit == true ? () {
-                                        getUserJoinedTeamList().then((value) {
-                                          Navigator.push(
-                                              context,
-                                              CupertinoPageRoute(builder: (_){
-                                                return selectMember(type: 6, teamID: taskID, userList: value);
-                                              })
-                                          ).then((value) {
-                                            getTaskData();
-                                          });
-                                        });
-                                      } : null,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 6,
-                                      child: TextButton(
-                                        child: Text(
-                                            lastAssignedUserName=='Not Assigned' ? 'No history' : 'View assign history'
-                                        ),
-                                        onPressed:  lastAssignedUserName!='Not Assigned' ? () {
-                                          getUserJoinedTeamList().then((value) {
-                                            List<String> assignDateList = taskAssignedDate.split(',');
-                                            Navigator.push(
-                                                context,
-                                                CupertinoPageRoute(builder: (_){
-                                                  return taskAssignedHistory(userList: value, assignedUserList: taskAssignedUserIDList, assignedDateList: assignDateList);
-                                                })
-                                            );
-                                          });
-                                        } : null,
-                                      )
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
+                TaskFormCard(
+                  cardTitle: 'Task basic info',
+                  cardItemList: [
+                    TaskItem(
+                      itemTitle: 'Task Name',
+                      itemWidget: TextField(
+                        enabled: allowUserEdit,
+                        controller: taskNameController,
+                        decoration: textFieldInputDecoration,
+                      ),
                     ),
-                  ),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Extras',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Task Description',
+                      itemWidget: TextField(
+                        enabled: allowUserEdit,
+                        controller: taskDescController,
+                        maxLines: 10,
+                        decoration: textFieldInputDecoration,
+                      ),
+                    ),
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Task Status',
+                      itemWidget: TextField(
+                        enabled: allowUserEdit,
+                        controller: taskStatusMsgController,
+                        maxLines: 1,
+                        minLines: 1,
+                        decoration: textFieldInputDecoration,
+                      ),
+                    ),
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Assign Member',
+                      itemWidget: Row(
+                        children: [
+                          Expanded(
+                            flex: 6,
+                            child: TextButton(
+                              child: Text(lastAssignedUserName=='Not Assigned' ? 'Click to assign': lastAssignedUserName),
+                              onPressed: allowUserEdit == true ? () {
+                                getUserJoinedTeamList().then((value) {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(builder: (_){
+                                        return selectMember(type: 6, teamID: taskID, userList: value);
+                                      })
+                                  ).then((value) {
+                                    getTaskData();
+                                  });
+                                });
+                              } : null,
+                            ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Text('Start Date'),
-                            ),
-                            Expanded(
-                                flex: 9,
-                                child: TextButton(
-                                  child: Text(taskStartDate==null ? 'Select date' : taskStartDate.toString()),
-                                  onPressed: allowUserEdit==true ? (){
-                                    showDialog(
-                                        context: context,
-                                        builder: (_){
-                                          return Dialog(
-                                            child: SfDateRangePicker(
-                                              showActionButtons: true,
-                                              initialDisplayDate: taskStartDate,
-                                              initialSelectedDate: taskStartDate,
-                                              onSubmit: (date){
-                                                Navigator.of(context).pop();
-                                                setState(() {
-                                                  taskStartDate = date;
-                                                });
-                                              },
-                                              onCancel: (){
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          );
-                                        }
-                                    );
-                                  } : null,
-                                )
-                            )
-                          ],
-                        ),
-                        Divider(),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Text('Due Date'),
-                            ),
-                            Expanded(
-                              flex: 9,
+                          Expanded(
+                              flex: 6,
                               child: TextButton(
-                                child: Text(taskDueDate==null ? 'Select date' : taskDueDate.toString()),
-                                onPressed: allowUserEdit==true ? (){
-                                  showDialog(
-                                      context: context,
-                                      builder: (_){
-                                        return Dialog(
-                                          child: SfDateRangePicker(
-                                            showActionButtons: true,
-                                            initialDisplayDate: taskDueDate,
-                                            initialSelectedDate: taskDueDate,
-                                            onSubmit: (date){
-                                              Navigator.of(context).pop();
-                                              setState(() {
-                                                taskDueDate = date;
-                                              });
-                                            },
-                                            onCancel: (){
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        );
-                                      }
-                                  );
+                                child: Text(
+                                    lastAssignedUserName=='Not Assigned' ? 'No history' : 'View assign history'
+                                ),
+                                onPressed:  lastAssignedUserName!='Not Assigned' ? () {
+                                  getUserJoinedTeamList().then((value) {
+                                    List<String> assignDateList = taskAssignedDate.split(',');
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(builder: (_){
+                                          return taskAssignedHistory(userList: value, assignedUserList: taskAssignedUserIDList, assignedDateList: assignDateList);
+                                        })
+                                    );
+                                  });
                                 } : null,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
+                              )
+                          )
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
+                ),
+                TaskFormCard(
+                  cardTitle: 'Extras',
+                  cardItemList: [
+                    TaskItem(
+                      itemTitle: 'Start Date',
+                      itemWidget: TextButton(
+                        child: Text(taskStartDate==null ? 'Select date' : taskStartDate.toString()),
+                        onPressed: allowUserEdit==true ? (){
+                          showDialog(
+                              context: context,
+                              builder: (_){
+                                return Dialog(
+                                  child: SfDateRangePicker(
+                                    showActionButtons: true,
+                                    initialDisplayDate: taskStartDate,
+                                    initialSelectedDate: taskStartDate,
+                                    onSubmit: (date){
+                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        taskStartDate = date;
+                                      });
+                                    },
+                                    onCancel: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                );
+                              }
+                          );
+                        } : null,
+                      ),
+                    ),
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Due Date',
+                      itemWidget: TextButton(
+                        child: Text(taskDueDate==null ? 'Select date' : taskDueDate.toString()),
+                        onPressed: allowUserEdit==true ? (){
+                          showDialog(
+                              context: context,
+                              builder: (_){
+                                return Dialog(
+                                  child: SfDateRangePicker(
+                                    showActionButtons: true,
+                                    initialDisplayDate: taskDueDate,
+                                    initialSelectedDate: taskDueDate,
+                                    onSubmit: (date){
+                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        taskDueDate = date;
+                                      });
+                                    },
+                                    onCancel: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                );
+                              }
+                          );
+                        } : null,
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
