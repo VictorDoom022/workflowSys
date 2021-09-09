@@ -53,3 +53,39 @@ class TaskItem extends StatelessWidget {
     );
   }
 }
+
+class TaskFormButton extends StatelessWidget {
+
+  final String buttonText;
+  final Color buttonColor;
+  final Function buttonFunction;
+
+  const TaskFormButton({Key key, this.buttonText, this.buttonColor, this.buttonFunction}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 40,
+        width: double.infinity,
+        child: TextButton(
+          child: Text(
+            buttonText,
+            style: TextStyle(
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+                fontSize: 18
+            ),
+          ),
+          onPressed: buttonFunction,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              buttonColor
+            )
+          ),
+        ),
+      ),
+    );
+  }
+}

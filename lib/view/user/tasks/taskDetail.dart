@@ -303,137 +303,83 @@ class _taskDetailState extends State<taskDetail> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: TextButton(
-                      child: Text(
-                        taskStatus==1 ? 'Mark task as complete' : 'Re-activate task',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                            fontSize: 18
-                        ),
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.amber
-                          )
-                      ),
-                      onPressed: allowUserEdit == true ? () {
-                        LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+                TaskFormButton(
+                  buttonText: taskStatus==1 ? 'Mark task as complete' : 'Re-activate task',
+                  buttonColor: Colors.amber,
+                  buttonFunction: allowUserEdit == true ? () {
+                    LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 
-                        changeTaskStatus(context, taskID, taskStatus).then((value) {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        });
-                      } : null,
-                    ),
-                  ),
+                    changeTaskStatus(context, taskID, taskStatus).then((value) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    });
+                  } : null,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: TextButton(
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                            fontSize: 18
-                        ),
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.red
-                          )
-                      ),
-                      onPressed: allowUserEdit == true ? () {
-                        showCupertinoDialog(
-                            context: context,
-                            builder: (_){
-                              return CupertinoAlertDialog(
-                                content: Text(
-                                  'Are you sure you want to delete this task?',
+                TaskFormButton(
+                  buttonText: 'Delete',
+                  buttonColor: Colors.red,
+                  buttonFunction: allowUserEdit == true ? () {
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (_){
+                          return CupertinoAlertDialog(
+                            content: Text(
+                              'Are you sure you want to delete this task?',
+                              style: TextStyle(
+                                  fontSize: 20
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text('Cancel'),
+                                onPressed: (){
+                                  HapticFeedback.lightImpact();
+                                  Navigator.of(
+                                      context,
+                                      rootNavigator: true
+                                  ).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  'Yes',
                                   style: TextStyle(
-                                      fontSize: 20
+                                      color: Colors.blue
                                   ),
                                 ),
-                                actions: [
-                                  TextButton(
-                                    child: Text('Cancel'),
-                                    onPressed: (){
-                                      HapticFeedback.lightImpact();
-                                      Navigator.of(
-                                          context,
-                                          rootNavigator: true
-                                      ).pop();
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: Text(
-                                      'Yes',
-                                      style: TextStyle(
-                                          color: Colors.blue
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
-                                      deleteTask(context, taskID).then((value) {
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                      });
-                                    },
-                                  )
-                                ],
-                              );
-                            }
-                        );
-                      } : null,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: TextButton(
-                      child: Text(
-                        'Save',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                            fontSize: 18
-                        ),
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.amber
-                          )
-                      ),
-                      onPressed: allowUserEdit==true ? () {
-                        if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusMsgController.text.isNotEmpty){
-                          LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
-
-                          String startDate = taskStartDate.toString();
-                          String dueDate = taskDueDate.toString();
-
-                          updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                          });
-                        }else{
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                                onPressed: () {
+                                  LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+                                  deleteTask(context, taskID).then((value) {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                              )
+                            ],
+                          );
                         }
-                      } : null,
-                    ),
-                  ),
+                    );
+                  } : null,
+                ),
+                TaskFormButton(
+                  buttonText: 'Save',
+                  buttonColor: Colors.amber,
+                  buttonFunction: allowUserEdit==true ? () {
+                    if(taskNameController.text.isNotEmpty && taskDescController.text.isNotEmpty && taskStatusMsgController.text.isNotEmpty){
+                      LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+
+                      String startDate = taskStartDate.toString();
+                      String dueDate = taskDueDate.toString();
+
+                      updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      });
+                    }else{
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name, description & status cannot be empty')));
+                    }
+                  } : null,
                 ),
               ],
             ),
