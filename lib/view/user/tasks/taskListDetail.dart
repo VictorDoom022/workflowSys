@@ -103,7 +103,39 @@ class _taskListDetailState extends State<taskListDetail> {
 
                   if(snapshot.hasData){
                     if(snapshot.data.toString() != "[]"){
-                      return taskItem(userReceiver: userReceiver, teamID: teamID,listTask: snapshot.data);
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index){
+                          return Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: GestureDetector(
+                              child:
+                              TaskCard(
+                                taskDate: convertBackendDateTimeToDate(snapshot.data[index].createdAt),
+                                taskMonth: convertBackendDateTimeToMonth(snapshot.data[index].createdAt),
+                                title: snapshot.data[index].taskName,
+                                taskCreateUserName: checkLastAssignedUser(snapshot.data[index].taskUserCreateID),
+                                lastUpdatedTime: convertBackendDateTime(snapshot.data[index].updatedAt),
+                                lastAssignedUserName: checkLastAssignedUser(snapshot.data[index].taskAssignedMemberID),
+                                statusMsg: snapshot.data[index].taskStatusMsg,
+                                desc: snapshot.data[index].taskDesc,
+                              ),
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder:(context){
+                                          return taskDetail(teamID: teamID, taskID: snapshot.data[index].id);
+                                        }
+                                    )
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
                     }else{
                       return Center(child: Text('No task created'));
                     }
@@ -116,52 +148,6 @@ class _taskListDetailState extends State<taskListDetail> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class taskItem extends StatelessWidget {
-
-  final UserReceiver userReceiver;
-  final int teamID;
-  final List<Task> listTask;
-
-  const taskItem({Key key, this.userReceiver, this.teamID, this.listTask}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: listTask.length,
-      itemBuilder: (context, index){
-        return Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: GestureDetector(
-            child:
-            TaskCard(
-              taskDate: convertBackendDateTimeToDate(listTask[index].createdAt),
-              taskMonth: convertBackendDateTimeToMonth(listTask[index].createdAt),
-              title: listTask[index].taskName,
-              taskCreateUserName: checkLastAssignedUser(listTask[index].taskUserCreateID),
-              lastUpdatedTime: convertBackendDateTime(listTask[index].updatedAt),
-              lastAssignedUserName: checkLastAssignedUser(listTask[index].taskAssignedMemberID),
-              statusMsg: listTask[index].taskStatusMsg,
-              desc: listTask[index].taskDesc,
-            ),
-            onTap: (){
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder:(context){
-                        return taskDetail(teamID: teamID, taskID: listTask[index].id);
-                      }
-                  )
-              );
-            },
-          ),
-        );
-      },
     );
   }
 

@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/model/Task.dart';
+import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
+import 'package:workflow_sys/view/misc/TaskCard.dart';
+import 'package:workflow_sys/view/user/tasks/taskDetail.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
 
 class taskCompleted extends StatefulWidget {
@@ -96,7 +100,39 @@ class _taskCompletedState extends State<taskCompleted> {
 
                   if(snapshot.hasData){
                     if(snapshot.data.toString() != "[]"){
-                      return taskItem(userReceiver: userReceiver, teamID: teamID, listTask: snapshot.data);
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index){
+                          return Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: GestureDetector(
+                              child:
+                              TaskCard(
+                                taskDate: convertBackendDateTimeToDate(snapshot.data[index].createdAt),
+                                taskMonth: convertBackendDateTimeToMonth(snapshot.data[index].createdAt),
+                                title: snapshot.data[index].taskName,
+                                taskCreateUserName: checkLastAssignedUser(snapshot.data[index].taskUserCreateID),
+                                lastUpdatedTime: convertBackendDateTime(snapshot.data[index].updatedAt),
+                                lastAssignedUserName: checkLastAssignedUser(snapshot.data[index].taskAssignedMemberID),
+                                statusMsg: snapshot.data[index].taskStatusMsg,
+                                desc: snapshot.data[index].taskDesc,
+                              ),
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder:(context){
+                                          return taskDetail(teamID: teamID, taskID: snapshot.data[index].id);
+                                        }
+                                    )
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
                     }else{
                       return Center(child: Text('No task completed'));
                     }
@@ -110,5 +146,20 @@ class _taskCompletedState extends State<taskCompleted> {
         ],
       ),
     );
+  }
+
+  String checkLastAssignedUser(String taskAssignedMemberList) {
+    List<User> userList = userReceiver.user;
+    List<String> assignedMemberList = taskAssignedMemberList.split(',');
+
+    if(taskAssignedMemberList.length !=0){
+      for(int i=0; i < userList.length; i++){
+        if(assignedMemberList.last == userList[i].id.toString()){
+          return userList[i].name;
+        }
+      }
+    }else{
+      return 'Not assigned';
+    }
   }
 }
