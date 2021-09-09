@@ -130,7 +130,43 @@ class _userHomeState extends State<userHome> {
 
                 if(snapshot.hasData){
                   if(snapshot.data.toString() != "[]"){
-                    return groupItem(listGroup: snapshot.data);
+                    return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index){
+                          return Card(
+                            elevation: 8.0,
+                            child: Container(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                title: Text(
+                                  snapshot.data[index].groupName,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w300
+                                  ),
+                                ),
+                                onTap: (){
+                                  HapticFeedback.lightImpact();
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder:(context){
+                                            return groupDetail(groupID: snapshot.data[index].id, groupName: snapshot.data[index].groupName);
+                                          }
+                                      )
+                                  ).then((value) {
+                                    getGroupListData();
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                    );
                   }else{
                     return Center(child: Text('No groups joined'));
                   }
@@ -254,50 +290,3 @@ class _userHomeState extends State<userHome> {
     );
   }
 }
-
-class groupItem extends StatelessWidget {
-
-  final List<Group> listGroup;
-
-  const groupItem({Key key, this.listGroup}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: listGroup.length,
-      itemBuilder: (context, index){
-        return Card(
-          elevation: 8.0,
-          child: Container(
-            child: ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              title: Text(
-                  listGroup[index].groupName,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w300
-                ),
-              ),
-              onTap: (){
-                HapticFeedback.lightImpact();
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder:(context){
-                          return groupDetail(groupID: listGroup[index].id, groupName: listGroup[index].groupName);
-                        }
-                    )
-                );
-              },
-            ),
-          ),
-        );
-      }
-    );
-  }
-}
-
