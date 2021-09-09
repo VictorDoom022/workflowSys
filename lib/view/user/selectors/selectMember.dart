@@ -105,18 +105,11 @@ class _selectMemberState extends State<selectMember> {
                 Navigator.of(context).pop();
               });
             }else if(type == 6){
-              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-              int userID = sharedPreferences.getInt("UserID");
-
               if(selectedUserListID.length == 1){
-                if(userID != selectedUserListID[0]){
-                  assignTask(context, teamID, selectedUserListID[0]).then((value) {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  });
-                }else{
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You cannot assign to yourself.')));
-                }
+                assignTask(context, teamID, selectedUserListID[0]).then((value) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                });
               }else{
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You can only select one member')));
               }
