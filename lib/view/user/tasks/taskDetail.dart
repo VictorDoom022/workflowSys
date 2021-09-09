@@ -305,7 +305,7 @@ class _taskDetailState extends State<taskDetail> {
                 ),
                 TaskFormButton(
                   buttonText: taskStatus==1 ? 'Mark task as complete' : 'Re-activate task',
-                  buttonColor: Colors.amber,
+                  buttonColor: Colors.black45,
                   buttonFunction: allowUserEdit == true ? () {
                     LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 

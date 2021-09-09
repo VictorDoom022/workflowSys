@@ -177,7 +177,7 @@ class _todoDetailState extends State<todoDetail> {
               ),
               TaskFormButton(
                 buttonText: todoStatus==1 ? 'Archive' : 'Unarchive',
-                buttonColor: Colors.amber,
+                buttonColor: Colors.black45,
                 buttonFunction: () {
                   LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
 
