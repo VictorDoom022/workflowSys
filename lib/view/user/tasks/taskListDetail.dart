@@ -7,6 +7,7 @@ import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
+import 'package:workflow_sys/view/misc/TaskCard.dart';
 import 'package:workflow_sys/view/user/tasks/createTask.dart';
 import 'package:workflow_sys/view/user/tasks/taskDetail.dart';
 
@@ -137,143 +138,16 @@ class taskItem extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(1.0),
           child: GestureDetector(
-            child: Card(
-              child: Row(
-                children: [
-                  Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(10)
-                                )
-                            ),
-                            child: Text(
-                              convertBackendDateTimeToDate(listTask[index].createdAt),
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w300
-                              ),
-                            ),
-                          ),
-                          Text(
-                            convertBackendDateTimeToMonth(listTask[index].createdAt),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            ),
-                          )
-                        ],
-                      )
-                  ),
-                  Expanded(
-                    flex: 10,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          listTask[index].taskName,
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Wrap(
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.person_add,
-                                    color: Colors.black54,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    checkLastAssignedUser(listTask[index].taskUserCreateID),
-                                    style: TextStyle(
-                                        fontSize: 15
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.history,
-                                    color: Colors.black54,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    convertBackendDateTime(listTask[index].updatedAt),
-                                    style: TextStyle(
-                                        fontSize: 15
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.person_crop_circle_fill_badge_exclam,
-                                    color: Colors.black54,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    checkLastAssignedUser(listTask[index].taskAssignedMemberID),
-                                    style: TextStyle(
-                                        fontSize: 15
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.info_outline,
-                                    color: Colors.black54,
-                                  ),
-                                  Text(
-                                    listTask[index].taskStatusMsg,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          listTask[index].taskDesc,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 16
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            child:
+            TaskCard(
+              taskDate: convertBackendDateTimeToDate(listTask[index].createdAt),
+              taskMonth: convertBackendDateTimeToMonth(listTask[index].createdAt),
+              title: listTask[index].taskName,
+              taskCreateUserName: checkLastAssignedUser(listTask[index].taskUserCreateID),
+              lastUpdatedTime: convertBackendDateTime(listTask[index].updatedAt),
+              lastAssignedUserName: checkLastAssignedUser(listTask[index].taskAssignedMemberID),
+              statusMsg: listTask[index].taskStatusMsg,
+              desc: listTask[index].taskDesc,
             ),
             onTap: (){
               Navigator.push(
