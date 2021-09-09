@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/taskController.dart';
+import 'package:workflow_sys/view/misc/TaskForm.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 
 class createTask extends StatefulWidget {
@@ -51,159 +52,97 @@ class _createTaskState extends State<createTask> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Task basic info',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Task Name'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextField(
-                              controller: taskNameController,
-                              decoration: textFieldInputDecoration,
-                            ),
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Task Description'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextField(
-                              controller: taskDescController,
-                              maxLines: 10,
-                              decoration: textFieldInputDecoration,
-                            ),
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Task Status'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextField(
-                              controller: taskStatusController,
-                              maxLines: 1,
-                              minLines: 1,
-                              decoration: textFieldInputDecoration,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+              TaskFormCard(
+                cardTitle: 'Task basic info',
+                cardItemList: [
+                  TaskItem(
+                    itemTitle: 'Task Name',
+                    itemWidget: TextField(
+                      controller: taskNameController,
+                      decoration: textFieldInputDecoration,
+                    ),
                   ),
-                ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Task Description',
+                    itemWidget: TextField(
+                      controller: taskDescController,
+                      maxLines: 10,
+                      decoration: textFieldInputDecoration,
+                    ),
+                  ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Task Status',
+                    itemWidget: TextField(
+                      controller: taskStatusController,
+                      maxLines: 1,
+                      minLines: 1,
+                      decoration: textFieldInputDecoration,
+                    ),
+                  ),
+                ],
               ),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Extras',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Start Date'),
-                          ),
-                          Expanded(
-                              flex: 9,
-                              child: TextButton(
-                                child: Text(taskStartDate==null ? 'Select date' : taskStartDate.toString()),
-                                onPressed: (){
-                                  showDialog(
-                                      context: context,
-                                      builder: (_){
-                                        return Dialog(
-                                          child: SfDateRangePicker(
-                                            enablePastDates: false,
-                                            showActionButtons: true,
-                                            onSubmit: (date){
-                                              Navigator.of(context).pop();
-                                              setState(() {
-                                                taskStartDate = date;
-                                              });
-                                            },
-                                            onCancel: (){
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        );
-                                      }
-                                  );
-                                },
-                              )
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text('Due Date'),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: TextButton(
-                              child: Text(taskDueDate==null ? 'Select date' : taskDueDate.toString()),
-                              onPressed: (){
-                                showDialog(
-                                    context: context,
-                                    builder: (_){
-                                      return Dialog(
-                                        child: SfDateRangePicker(
-                                          showActionButtons: true,
-                                          onSubmit: (date){
-                                            Navigator.of(context).pop();
-                                            setState(() {
-                                              taskDueDate = date;
-                                            });
-                                          },
-                                          onCancel: (){
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      );
-                                    }
-                                );
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+              TaskFormCard(
+                cardTitle: 'Extras',
+                cardItemList: [
+                  TaskItem(
+                    itemTitle: 'Start Date',
+                    itemWidget: TextButton(
+                      child: Text(taskStartDate==null ? 'Select date' : taskStartDate.toString()),
+                      onPressed: (){
+                        showDialog(
+                            context: context,
+                            builder: (_){
+                              return Dialog(
+                                child: SfDateRangePicker(
+                                  enablePastDates: false,
+                                  showActionButtons: true,
+                                  onSubmit: (date){
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      taskStartDate = date;
+                                    });
+                                  },
+                                  onCancel: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              );
+                            }
+                        );
+                      },
+                    ),
                   ),
-                ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Due Date',
+                    itemWidget: TextButton(
+                      child: Text(taskDueDate==null ? 'Select date' : taskDueDate.toString()),
+                      onPressed: (){
+                        showDialog(
+                            context: context,
+                            builder: (_){
+                              return Dialog(
+                                child: SfDateRangePicker(
+                                  showActionButtons: true,
+                                  onSubmit: (date){
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      taskDueDate = date;
+                                    });
+                                  },
+                                  onCancel: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
