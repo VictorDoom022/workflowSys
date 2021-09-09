@@ -127,7 +127,9 @@ class _taskCompletedState extends State<taskCompleted> {
                                           return taskDetail(teamID: teamID, taskID: snapshot.data[index].id);
                                         }
                                     )
-                                );
+                                ).then((value) {
+                                  getTaskCompletedData();
+                                });
                               },
                             ),
                           );

@@ -130,7 +130,9 @@ class _taskListDetailState extends State<taskListDetail> {
                                           return taskDetail(teamID: teamID, taskID: snapshot.data[index].id);
                                         }
                                     )
-                                );
+                                ).then((value) {
+                                  getTaskData();
+                                });
                               },
                             ),
                           );

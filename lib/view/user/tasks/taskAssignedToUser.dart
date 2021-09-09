@@ -128,7 +128,9 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
                                           return taskDetail(teamID: teamID, taskID: snapshot.data[index].id);
                                         }
                                     )
-                                );
+                                ).then((value) {
+                                  getTaskAssignedData();
+                                });
                               },
                             ),
                           );
