@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/todoController.dart';
 import 'package:workflow_sys/model/ToDo.dart';
+import 'package:workflow_sys/view/misc/TodoCard.dart';
+import 'package:workflow_sys/view/user/todos/todoDetail.dart';
 import 'package:workflow_sys/view/user/todos/todoList.dart';
 
 import '../userNavDrawer.dart';
@@ -97,7 +100,39 @@ class _todoArchivedState extends State<todoArchived> {
 
                   if(snapshot.hasData){
                     if(snapshot.data.toString() != "[]"){
-                      return todoItem(todoList: snapshot.data);
+                      List<ToDo> todoList = snapshot.data;
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: todoList.length,
+                        itemBuilder: (context, index){
+                          return Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: GestureDetector(
+                              child: TodoCard(
+                                todoDate: convertBackendDateTimeToDate(todoList[index].createdAt),
+                                todoMonth: convertBackendDateTimeToMonth(todoList[index].createdAt),
+                                name: todoList[index].todoName,
+                                lastUpdatedTime: convertBackendDateTime(todoList[index].updatedAt),
+                                statusMsg: todoList[index].todoStatusMsg,
+                                desc: todoList[index].todoDesc,
+                              ),
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (_){
+                                          return todoDetail(todoID: todoList[index].id);
+                                        }
+                                    )
+                                ).then((value) {
+                                  getTodoArchiveListData();
+                                });
+                              },
+                            ),
+                          );
+                        },
+                      );
                     }else{
                       return Center(child: Text('No archived item'));
                     }

@@ -99,7 +99,39 @@ class _todoListState extends State<todoList> {
 
                   if(snapshot.hasData){
                     if(snapshot.data.toString() != "[]"){
-                      return todoItem(todoList: snapshot.data);
+                      List<ToDo> todoList = snapshot.data;
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: todoList.length,
+                        itemBuilder: (context, index){
+                          return Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: GestureDetector(
+                              child: TodoCard(
+                                todoDate: convertBackendDateTimeToDate(todoList[index].createdAt),
+                                todoMonth: convertBackendDateTimeToMonth(todoList[index].createdAt),
+                                name: todoList[index].todoName,
+                                lastUpdatedTime: convertBackendDateTime(todoList[index].updatedAt),
+                                statusMsg: todoList[index].todoStatusMsg,
+                                desc: todoList[index].todoDesc,
+                              ),
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (_){
+                                          return todoDetail(todoID: todoList[index].id);
+                                        }
+                                    )
+                                ).then((value) {
+                                  getTodoListData();
+                                });
+                              },
+                            ),
+                          );
+                        },
+                      );
                     }else{
                       return Center(child: Text('No todo created'));
                     }
@@ -115,44 +147,3 @@ class _todoListState extends State<todoList> {
     );
   }
 }
-class todoItem extends StatelessWidget {
-
-  final List<ToDo> todoList;
-
-  const todoItem({Key key, this.todoList}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: todoList.length,
-      itemBuilder: (context, index){
-        return Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: GestureDetector(
-            child: TodoCard(
-              todoDate: convertBackendDateTimeToDate(todoList[index].createdAt),
-              todoMonth: convertBackendDateTimeToMonth(todoList[index].createdAt),
-              name: todoList[index].todoName,
-              lastUpdatedTime: convertBackendDateTime(todoList[index].updatedAt),
-              statusMsg: todoList[index].todoStatusMsg,
-              desc: todoList[index].todoDesc,
-            ),
-            onTap: (){
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (_){
-                      return todoDetail(todoID: todoList[index].id);
-                    }
-                  )
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-}
-
