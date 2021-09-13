@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Team;
 use App\Models\UserDetail;
+use App\Models\Task;
 use App\Models\TaskList;
 use App\Models\User;
 
@@ -308,12 +309,7 @@ class GroupController extends Controller
         //loop for deleting team & taskList
         for($i=0; $i < count($groupTeamListArray); $i++){
             //get team task list
-            $team = Team::where('id', $groupTeamListArray[$i])->first();
-            $teamTaskList = $team->team_taskListID;
-            $teamTaskListArr = explode(',', $teamTaskList);
-            $team->delete();
-            //directly delete taskList by taskList_teamID
-            $taskList = TaskList::where('taskList_teamID', $team->id)->delete();
+            $this->deleteTeam($groupTeamListArray[$i]);
         }
 
         //get all userDetail who joined the group
@@ -342,6 +338,31 @@ class GroupController extends Controller
 
         return [
             'message'=>'Group deleted.'
+        ];
+    }
+
+    public function deleteTeam($teamID){
+
+        $team = Team::where('id', $teamID)->delete();
+        // get taskList data
+        $taskList = TaskList::where('taskList_teamID', $teamID)->get();
+        // get all taskList ID
+        $taskListIDArr = [];
+        // loop every $taskList and store taskList ID into array
+        foreach($taskList as $task){
+            array_push($taskListIDArr, $task->id);
+        }
+
+        // delete all task by taskListID
+        // loop the stored taskListIDArr to delete task by id 
+        for($i=0; $i<count($taskListIDArr); $i++){
+            $task = Task::where('task_taskListID', $taskListIDArr[$i])->delete();
+        }
+        // delete the task list finally
+        $taskList = TaskList::where('taskList_teamID', $teamID)->delete();
+
+        return [
+            'message'=>'Team Deleted.',
         ];
     }
 
