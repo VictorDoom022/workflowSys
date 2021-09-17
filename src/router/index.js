@@ -16,6 +16,7 @@ import TaskAssignedHistory from '../views/user/task/TaskAssignedHistory.vue'
 import TodoList from '../views/user/todos/TodoList.vue'
 import CreateTodo from '../views/user/todos/CreateTodo.vue'
 import EditTodo from '../views/user/todos/EditTodo.vue'
+import Error404 from '../views/Error404.vue'
 
 Vue.use(VueRouter)
 
@@ -110,6 +111,11 @@ const routes = [
     component: EditTodo,
     props: true,
   },
+  {
+    path: '/:catchAll(.*)',
+    name: 'Error404',
+    component: Error404
+  }
 ]
 
 const router = new VueRouter({
