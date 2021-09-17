@@ -39,6 +39,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label>Task Description</label>
+                                        <ckeditor :editor="editor"></ckeditor>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12 mb-2 border-top"></div>
 
                                 <h1>Extras</h1>
@@ -73,6 +80,7 @@ import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default {
     // taskListPageData contains - groupID, teamID, taskListID
@@ -89,6 +97,7 @@ export default {
             taskStatusMsg: '',
             taskStartDate: '',
             taskDueDate: '',
+            editor: ClassicEditor,
         }
     },
     mounted() {
@@ -145,5 +154,7 @@ export default {
 </script>
 
 <style>
-
+.ck-editor__editable {
+    min-height: 200px;
+}
 </style>

@@ -4,6 +4,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
+import CKEditor from '@ckeditor/ckeditor5-vue2';
 
 Vue.config.productionTip = false
 
@@ -22,6 +23,7 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
+Vue.use(CKEditor)
 
 new Vue({
   router,
