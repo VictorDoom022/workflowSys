@@ -163,8 +163,12 @@ export default {
                     taskID : this.taskID,
                 },
             }).then((response) => {
-                this.taskData = response.data
-                this.setTaskData()
+                if(response.data.length == 0){
+                    this.$router.push({name : "Error404" })
+                }else{
+                    this.taskData = response.data
+                    this.setTaskData()
+                }
             })
         },
         setTaskData(){

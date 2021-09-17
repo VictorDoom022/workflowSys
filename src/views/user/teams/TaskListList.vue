@@ -5,9 +5,9 @@
             <div class="row">
                 <UserSideNav />
 
-                <Loading v-if="taskListList.length == 0"/>
+                <Loading v-if="isLoading"/>
 
-                <main v-if="taskListList.length !=0" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">
                             <span @click="navigateBack()" style="cursor:pointer">
@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    <div class="container-fluid">
+                    <div v-if="taskListList.length !=0" class="container-fluid">
                         <b-row>
                             <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
@@ -30,6 +30,10 @@
                                 </div>
                             </b-col> 
                         </b-row>
+                    </div>
+
+                    <div v-if="isLoading==false && taskListList.length == 0" class="mx-auto">
+                        <h1>No Task List Created</h1>
                     </div>
                 </main>
             </div>
@@ -92,10 +96,14 @@ export default {
                         teamID : this.teamID
                     }
                 }).then((response) => {
-                    this.teamDetail = response.data['team']
-                    this.taskListList = response.data['taskList']
-                    this.replaceTaskListListData()
                     this.isLoading = false
+                    if(response.data['team'] != null){
+                        this.teamDetail = response.data['team']
+                        this.taskListList = response.data['taskList']
+                        this.replaceTaskListListData()
+                    }else{
+                        this.$router.push({name : "Error404" })
+                    }
                 })
             })
         },

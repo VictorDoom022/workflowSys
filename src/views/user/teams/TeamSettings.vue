@@ -175,6 +175,9 @@ export default {
             }).then((response) => {
                 this.isAdmin = response.data['message']
                 this.isLoading = false;
+            }).catch((e) => {
+                // if error occures means the team doesn't exist
+                this.$router.push({name : "Error404" })
             })
         },
         toggleModal(isModalShown){

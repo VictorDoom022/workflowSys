@@ -204,9 +204,13 @@ export default {
                     userID: loggedInUserData.state.userData['user'].id,
                 },
             }).then((response) => {
-                this.groupDetail = response.data['group']
-                this.teamList = response.data['team']
-                this.checkUserAdmin()
+                if(response.data['group'] != null){
+                    this.groupDetail = response.data['group']
+                    this.teamList = response.data['team']
+                    this.checkUserAdmin()
+                }else{
+                    this.$router.push({name : "Error404" })
+                }
             })
         },
         checkUserAdmin(){
