@@ -22,13 +22,13 @@
 
                     <b-tabs content-class="mt-3" align="center" fill>
                         <b-tab title="Task Created" active>
-                            <TaskCreated :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCreated :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Assigned To You">
-                            <TaskAssigend :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskAssigend :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Completed Task">
-                            <TaskCompleted :teamID="teamID" :taskListID="taskListID" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCompleted :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                     </b-tabs>
                 </main>
@@ -48,10 +48,15 @@ import TaskAssigend from '../../../components/user/tasks/TaskAssigend.vue'
 import TaskCompleted from '../../../components/user/tasks/TaskCompleted.vue'
 
 export default {
-    props: ['teamID', 'taskListID'],
+    // taskListPageData contains - groupID, teamID, taskListID
+    props: ['taskListPageData'],
     components: { UserSideNav, UserTopNav, Loading, TaskCreated, TaskAssigend, TaskCompleted },
     data() {
         return {
+            pageDataParsed: [],
+            groupID: null,
+            teamID: null,
+            taskListID: null,
             taskList: [],
             userData: [],
             userDetailData: [],
@@ -64,6 +69,10 @@ export default {
         }
     },
     mounted() {
+        this.pageDataParsed = JSON.parse(this.taskListPageData)
+        this.groupID = this.pageDataParsed.groupID
+        this.teamID = this.pageDataParsed.teamID
+        this.taskListID = this.pageDataParsed.taskListID
         this.fetchUserData()
     },
     methods: {

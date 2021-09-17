@@ -5,7 +5,7 @@
 
         <b-row v-if="taskList.length">
             <b-col md="6" v-for="task in searchTask" :key="task.id">
-                <TaskItem :teamID="teamID" :task="task" :userData="userData" :userDetailData="userDetailData" />
+                <TaskItem :taskPageData="taskListPageData" :task="task" :userData="userData" :userDetailData="userDetailData" />
             </b-col> 
         </b-row>
 
@@ -20,15 +20,24 @@ import Loading from '../../Loading.vue'
 import TaskItem from '../TaskItem.vue'
 
 export default {
-    props: ['teamID', 'taskListID', 'searchTerm', 'userData', 'userDetailData'],
+    // taskListPageData contains - groupID, teamID, taskListID
+    props: ['taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
     components: { Loading, TaskItem },
     data() {
         return {
+            pageDataParsed: [],
+            groupID: null,
+            teamID: null,
+            taskListID: null,
             taskList: [],
             isLoading: true,
         }
     },
     mounted() {
+        this.pageDataParsed = JSON.parse(this.taskListPageData)
+        this.groupID = this.pageDataParsed.groupID
+        this.teamID = this.pageDataParsed.teamID
+        this.taskListID = this.pageDataParsed.taskListID
         this.fetchTaskListData()
     },
     methods: {

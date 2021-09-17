@@ -113,10 +113,16 @@ import Loading from '../../../components/Loading.vue'
 import SelectMember from '../../../components/user/SelectMember.vue'
 
 export default {
-    props: ['teamID', 'taskID'],
+    // taskPageData contains - groupID, teamID, taskListID, taskID
+    props: ['taskPageData'],
     components: { UserSideNav, UserTopNav, Loading, SelectMember },
     data() {
         return {
+            pageDataParsed: [],
+            groupID: null,
+            teamID: null,
+            taskListID: null,
+            taskID: null,
             isLoading: true,
             allowEdit: false,
             taskData: [],
@@ -136,6 +142,11 @@ export default {
         }
     },
     mounted() {
+        this.pageDataParsed = JSON.parse(this.taskPageData)
+        this.groupID = this.pageDataParsed.groupID
+        this.teamID = this.pageDataParsed.teamID
+        this.taskListID = this.pageDataParsed.taskListID
+        this.taskID = this.pageDataParsed.taskID
         this.fetchTaskData()
         this.fetchUserData()
     },

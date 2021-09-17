@@ -34,7 +34,8 @@
 
 <script>
 export default {
-    props: ['teamID', 'task', 'userData', 'userDetailData'],
+    // taskPageData contains - groupID, teamID, taskListID
+    props: ['taskPageData', 'task', 'userData', 'userDetailData'],
     methods: {
         convertDBDateToString(dbDate){
             let dateStr = new Date(dbDate)
@@ -62,7 +63,13 @@ export default {
             }
         },
         navigateToEditTask(taskID){
-            this.$router.push({ name: 'EditTask', params: { teamID: this.teamID, taskID: taskID } })
+            var jsonPageData = {
+                groupID: this.taskPageData.groupID,
+                teamID: this.taskPageData.teamID,
+                taskListID: this.taskPageData.taskListID,
+                taskID: taskID,
+            }
+            this.$router.push({ name: 'EditTask', params: { taskPageData: JSON.stringify(jsonPageData) } })
         }
     }
 }

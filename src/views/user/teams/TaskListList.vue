@@ -45,10 +45,14 @@ import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
 
 export default {
-    props: ['groupID', 'teamID'],
+    // taskListListPageData contains - groupID, teamID
+    props: ['taskListListPageData'],
     components: { UserSideNav, UserTopNav, Loading },
     data() {
         return {
+            pageDataParsed: [],
+            groupID: null,
+            teamID: null,
             userData: [],
             userDetailData: [],
             teamDetail: [],
@@ -59,6 +63,9 @@ export default {
         }
     },
     mounted() {
+        this.pageDataParsed = JSON.parse(this.taskListListPageData)
+        this.groupID = this.pageDataParsed.groupID
+        this.teamID = this.pageDataParsed.teamID
         this.fetchTeamData()
     },
     methods: {
@@ -113,7 +120,12 @@ export default {
             this.$router.push({ name: 'TeamSettings', params: { teamID: this.teamID, groupID: this.groupID }})
         },
         navigateToTaskList(taskListID){
-            this.$router.push({ name: 'TaskList', params: { teamID: this.teamID, taskListID: taskListID }})
+            var jsonPageData = {
+                groupID: this.groupID,
+                teamID: this.teamID,
+                taskListID: taskListID,
+            }
+            this.$router.push({ name: 'TaskList', params: { taskListPageData: JSON.stringify(jsonPageData) }})
         }
     },
     computed: {
