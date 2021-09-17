@@ -13,7 +13,7 @@
                             <span @click="navigateBack()" style="cursor:pointer">
                                 <b-icon class="mr-1" icon="caret-left-fill"></b-icon>
                             </span>
-                            Task List
+                            <a @click="navigateToGroup()" class="titleBreadcrumb">Group</a>/<a @click="navigateBack()" class="titleBreadcrumb">Team</a>/Task List
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" @click="navigateToCreateTask()" class="btn btn-sm btn-primary mx-1">Create Task</button>
@@ -101,10 +101,17 @@ export default {
         },
         navigateToCreateTask(){
             this.$router.push({ name: 'CreateTask', params: { taskListPageData: this.taskListPageData } })
-        }
+        },
+        navigateToGroup(){
+            this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
+        },
     },
 }
 </script>
 
-<style>
+<style scoped>
+.titleBreadcrumb{
+    cursor: pointer;
+    color: #343a40;
+}
 </style>

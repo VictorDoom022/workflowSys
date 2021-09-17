@@ -13,7 +13,7 @@
                             <span @click="navigateBack()" style="cursor:pointer">
                                 <b-icon class="mr-1" icon="caret-left-fill"></b-icon>
                             </span>
-                            Team ({{ teamDetail.team_name }})
+                            <a @click="navigateBack()" class="titleBreadcrumb">Group</a>/Team ({{ teamDetail.team_name }})
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" @click="navigateToTeamSettings()" class="btn btn-sm btn-primary mx-1">Settings</button>
@@ -164,5 +164,10 @@ export default {
 .card:hover{
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
   transition: .3s ease;
+}
+
+.titleBreadcrumb{
+    cursor: pointer;
+    color: #343a40;
 }
 </style>
