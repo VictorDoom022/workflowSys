@@ -221,7 +221,7 @@ export default {
             this.isLoading = false
         },
         navigateBack(){
-            this.$router.go(-1)
+            this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
         },
         toggleModal(isModalShown){
             this.showModal = isModalShown

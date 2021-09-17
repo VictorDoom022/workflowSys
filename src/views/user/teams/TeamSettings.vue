@@ -344,7 +344,11 @@ export default {
             })
         },
         navigateBack(){
-            this.$router.go(-1)
+            var jsonPageData = {
+                groupID: this.groupID,
+                teamID: this.teamID,
+            }
+            this.$router.push({ name: 'TaskListList', params: { taskListListPageData: JSON.stringify(jsonPageData) }})
         },
     },
 }

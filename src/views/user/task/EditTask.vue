@@ -339,7 +339,12 @@ export default {
             })
         },
         navigateBack(){
-            this.$router.go(-1)
+            var jsonPageData = {
+                groupID: this.groupID,
+                teamID: this.teamID,
+                taskListID: this.taskListID,
+            }
+            this.$router.push({ name: 'TaskList', params: { taskListPageData: JSON.stringify(jsonPageData) }})
         },
         navigateToAssignHistory(){
             this.$router.push({ name: 'TaskAssignedHistory', params: { 
