@@ -64,13 +64,12 @@ export default {
                 }
             ).then((response) => {
                 this.isLoading = false;
-                if(response.status == 201){
-                    this.error = response.data['message'][0]
-                }else{
-                    this.error = null;
-                    loggedInUserData.dispatch('createUserSession', response.data)
-                    this.redirect()
-                }
+                this.error = null;
+                loggedInUserData.dispatch('createUserSession', response.data)
+                this.redirect()
+            }).catch((e) =>{
+                this.isLoading = false;
+                this.error = "Incorrect email or password."
             })
         },
         redirect(){
