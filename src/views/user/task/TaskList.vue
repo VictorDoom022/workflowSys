@@ -96,7 +96,7 @@ export default {
             this.searchTerm = searchWordFromNavBar
         },
         navigateToCreateTask(){
-            this.$router.push({ name: 'CreateTask', params: { teamID: this.teamID, taskListID: this.taskListID } })
+            this.$router.push({ name: 'CreateTask', params: { taskListPageData: this.taskListPageData } })
         }
     },
 }

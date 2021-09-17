@@ -65,7 +65,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/teamSettings/:groupID/:teamID',
+    path: '/teamSettings/:teamPageData',
     name: 'TeamSettings',
     component: TeamSettings,
     props: true,
@@ -77,7 +77,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/createTask/:teamID/:taskListID',
+    path: '/createTask/:taskListPageData',
     name: 'CreateTask',
     component: CreateTask,
     props: true,

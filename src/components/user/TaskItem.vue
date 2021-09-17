@@ -63,10 +63,11 @@ export default {
             }
         },
         navigateToEditTask(taskID){
+            var pageDataParsed = JSON.parse(this.taskPageData)
             var jsonPageData = {
-                groupID: this.taskPageData.groupID,
-                teamID: this.taskPageData.teamID,
-                taskListID: this.taskPageData.taskListID,
+                groupID: pageDataParsed.groupID,
+                teamID: pageDataParsed.teamID,
+                taskListID: pageDataParsed.taskListID,
                 taskID: taskID,
             }
             this.$router.push({ name: 'EditTask', params: { taskPageData: JSON.stringify(jsonPageData) } })

@@ -138,10 +138,13 @@ import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../../components/Loading.vue'
 
 export default {
-    props: ['groupID','teamID'],
+    props: ['teamPageData'],
     components: { UserSideNav, UserTopNav, Loading, SelectMember },
     data() {
         return {
+            pageDataParsed: [],
+            groupID: null,
+            teamID: null,
             isAdmin: false,
             isLoading: true,
             showModal: false,
@@ -151,6 +154,9 @@ export default {
         }
     },
     mounted() {
+        this.pageDataParsed = JSON.parse(this.teamPageData)
+        this.groupID = this.pageDataParsed.groupID
+        this.teamID = this.pageDataParsed.teamID
         this.checkIsUserAdmin()
     },
     methods: {

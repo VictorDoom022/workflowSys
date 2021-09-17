@@ -75,16 +75,27 @@ import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 
 export default {
-    props: ['teamID', 'taskListID'],
+    // taskListPageData contains - groupID, teamID, taskListID
+    props: ['taskListPageData'],
     components: { UserSideNav, UserTopNav },
     data() {
         return {
+            pageDataParsed: [],
+            groupID: null,
+            teamID: null,
+            taskListID: null,
             taskName : '',
             taskDesc: '',
             taskStatusMsg: '',
             taskStartDate: '',
             taskDueDate: '',
         }
+    },
+    mounted() {
+        this.pageDataParsed = JSON.parse(this.taskListPageData)
+        this.groupID = this.pageDataParsed.groupID
+        this.teamID = this.pageDataParsed.teamID
+        this.taskListID = this.pageDataParsed.taskListID
     },
     methods: {
         navigateBack(){

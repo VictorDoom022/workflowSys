@@ -117,7 +117,11 @@ export default {
             this.searchTerm = searchWordFromNavBar
         },
         navigateToTeamSettings(){
-            this.$router.push({ name: 'TeamSettings', params: { teamID: this.teamID, groupID: this.groupID }})
+            var jsonPageData = {
+                groupID: this.groupID,
+                teamID: this.teamID,
+            }
+            this.$router.push({ name: 'TeamSettings', params: { teamPageData: JSON.stringify(jsonPageData) }})
         },
         navigateToTaskList(taskListID){
             var jsonPageData = {

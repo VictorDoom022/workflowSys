@@ -33,7 +33,11 @@ export default {
     },
     methods: {
         navigateToTaskListList(teamID){
-            this.$router.push({ name: 'TaskListList', params: { groupID: this.groupID, teamID: teamID}})
+            var jsonPageData = {
+                groupID: this.groupID,
+                teamID: teamID,
+            }
+            this.$router.push({ name: 'TaskListList', params: { taskListListPageData: JSON.stringify(jsonPageData) }})
         }
     },
     computed: {
