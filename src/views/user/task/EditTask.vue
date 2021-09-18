@@ -48,6 +48,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label>Task Detailed Description</label>
+                                        <ckeditor v-model="taskDetailedDesc" :editor="editor"></ckeditor>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 mb-2 text-center">
                                     <h6 class="fw-bold mt-2">
                                         <span v-if="taskData.task_assignedMemberID.length">
@@ -111,6 +118,7 @@ import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import Loading from '../../../components/Loading.vue'
 import SelectMember from '../../../components/user/SelectMember.vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default {
     // taskPageData contains - groupID, teamID, taskListID, taskID
@@ -130,6 +138,7 @@ export default {
             userDetailData: [],
             taskName : '',
             taskDesc: '',
+            taskDetailedDesc: '',
             taskStatusMsg: '',
             taskStartDate: '',
             taskDueDate: '',
@@ -139,6 +148,7 @@ export default {
             userListForModal: null,
             modalViewOnly: false,
             modalType: 0,
+            editor: ClassicEditor,
         }
     },
     mounted() {
@@ -174,6 +184,7 @@ export default {
         setTaskData(){
             this.taskName = this.taskData.task_name
             this.taskDesc = this.taskData.task_desc
+            this.taskDetailedDesc = this.taskData.task_detailedDesc
             this.taskStatusMsg = this.taskData.task_statusMsg
             this.taskStartDate = this.taskData.task_startDate
             this.taskDueDate = this.taskData.task_dueDate
@@ -322,6 +333,7 @@ export default {
                     taskID : this.taskID,
                     taskName : this.taskName,
                     taskDesc : this.taskDesc,
+                    taskDetailedDesc : this.taskDetailedDesc,
                     taskStartDate : this.taskStartDate.length == 0 ? 'null' : this.taskStartDate,
                     taskDueDate : this.taskDueDate.length == 0 ? 'null' : this.taskDueDate,
                     taskStatusMsg : this.taskStatusMsg,

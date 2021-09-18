@@ -41,8 +41,8 @@
 
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label>Task Description</label>
-                                        <ckeditor :editor="editor"></ckeditor>
+                                        <label>Task Detailed Description</label>
+                                        <ckeditor v-model="taskDetailedDesc" :editor="editor"></ckeditor>
                                     </div>
                                 </div>
 
@@ -80,7 +80,7 @@ import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default {
     // taskListPageData contains - groupID, teamID, taskListID
@@ -94,6 +94,7 @@ export default {
             taskListID: null,
             taskName : '',
             taskDesc: '',
+            taskDetailedDesc: '',
             taskStatusMsg: '',
             taskStartDate: '',
             taskDueDate: '',
@@ -129,6 +130,7 @@ export default {
                     taskTeamID : this.teamID,
                     taskName : this.taskName,
                     taskDesc : this.taskDesc,
+                    taskDetailedDesc : this.taskDetailedDesc,
                     taskStartDate : this.taskStartDate.length == 0 ? 'null' : this.taskStartDate,
                     taskDueDate : this.taskDueDate.length == 0 ? 'null' : this.taskDueDate,
                     taskStatusMsg : this.taskStatusMsg,
