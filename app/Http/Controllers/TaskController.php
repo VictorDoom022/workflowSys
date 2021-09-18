@@ -27,6 +27,7 @@ class TaskController extends Controller
         $fields = $request->validate([
             'taskName' => ['required', 'string'],
             'taskDesc' => ['string'],
+            'taskDetailedDesc' => ['string'],
         ]);
 
         //check if user belongs to the taskList
@@ -38,6 +39,7 @@ class TaskController extends Controller
                 'task_teamID' => $taskTeamID,
                 'task_name' => $fields['taskName'],
                 'task_desc' => $fields['taskDesc'],
+                'task_detailedDesc' => $fields['taskDetailedDesc'],
                 'task_userCreateID' => $userID,
                 'task_startDate' => $taskStartDate,
                 'task_dueDate' => $taskDueDate,
@@ -89,11 +91,13 @@ class TaskController extends Controller
         $fields = $request->validate([
             'taskName' => ['required', 'string'],
             'taskDesc' => ['string'],
+            'taskDetailedDesc' => ['string'],
         ]);
 
         $task = Task::where('id', $taskID)->first();
         $task->task_name = $fields['taskName'];
         $task->task_desc = $fields['taskDesc'];
+        $task->task_detailedDesc = $fields['taskDetailedDesc'];
         $task->task_startDate = $taskStartDate;
         $task->task_dueDate = $taskDueDate;
         $task->task_statusMsg = $taskStatusMsg;
