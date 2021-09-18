@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/miscController.dart';
@@ -37,6 +38,7 @@ class _taskDetailState extends State<taskDetail> {
   TextEditingController taskDescController = TextEditingController();
   TextEditingController taskStatusMsgController = TextEditingController();
 
+  String taskDetailedDesc = '';
   String lastAssignedUserName = "Not Assigned";
   int taskStatus;
   DateTime taskStartDate, taskDueDate;
@@ -56,6 +58,7 @@ class _taskDetailState extends State<taskDetail> {
       taskNameController.text = value.taskName;
       taskDescController.text = value.taskDesc;
       taskStatusMsgController.text = value.taskStatusMsg;
+      taskDetailedDesc = value.taskDetailedDesc;
 
       if(value.taskStartDate != "null"){
         setState(() {
@@ -179,6 +182,42 @@ class _taskDetailState extends State<taskDetail> {
                         controller: taskDescController,
                         maxLines: 10,
                         decoration: textFieldInputDecoration,
+                      ),
+                    ),
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Task Detailed Description (Read-only)',
+                      itemWidget: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 10,
+                          maxHeight: 250,
+                          minWidth: double.infinity,
+                        ),
+                        child: SingleChildScrollView(
+                          child: Html(
+                            data: taskDetailedDesc,
+                              style: {
+                                // tables will have the below background color
+                                "table": Style(
+                                  backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+                                ),
+                                // some other granular customizations are also possible
+                                "tr": Style(
+                                  border: Border(bottom: BorderSide(color: Colors.grey)),
+                                ),
+                                "th": Style(
+                                  padding: EdgeInsets.all(6),
+                                  backgroundColor: Colors.grey,
+                                ),
+                                "td": Style(
+                                  padding: EdgeInsets.all(6),
+                                  alignment: Alignment.topLeft,
+                                ),
+                                // text that renders h1 elements will be red
+                                "h1": Style(color: Colors.red),
+                              }
+                          ),
+                        ),
                       ),
                     ),
                     Divider(),

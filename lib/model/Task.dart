@@ -4,6 +4,7 @@ class Task {
   String taskTeamID;
   String taskName;
   String taskDesc;
+  String taskDetailedDesc;
   String taskUserCreateID;
   String taskAssignedMemberID;
   String taskAssignedDate;
@@ -20,6 +21,7 @@ class Task {
         this.taskTeamID,
         this.taskName,
         this.taskDesc,
+        this.taskDetailedDesc,
         this.taskUserCreateID,
         this.taskAssignedMemberID,
         this.taskAssignedDate,
@@ -36,6 +38,7 @@ class Task {
     taskTeamID = json['taskTeamID'];
     taskName = json['task_name'];
     taskDesc = json['task_desc'];
+    taskDetailedDesc = json['task_detailedDesc'];
     taskUserCreateID = json['task_userCreateID'];
     taskAssignedMemberID = json['task_assignedMemberID'];
     taskAssignedDate = json['task_assignedDate'];
@@ -54,6 +57,7 @@ class Task {
     data['taskTeamID'] = this.taskTeamID;
     data['task_name'] = this.taskName;
     data['task_desc'] = this.taskDesc;
+    data['task_detailedDesc'] = this.taskDetailedDesc;
     data['task_userCreateID'] = this.taskUserCreateID;
     data['task_assignedMemberID'] = this.taskAssignedMemberID;
     data['task_assignedDate'] = this.taskAssignedDate;

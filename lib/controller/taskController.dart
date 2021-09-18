@@ -24,6 +24,7 @@ Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID 
         'taskTeamID' : taskTeamID.toString(),
         'taskName' : taskName,
         'taskDesc' : taskDesc,
+        'taskDetailedDesc': '', // flutter does not support rich text editor
         'taskStartDate': taskStartDate,
         'taskDueDate' : taskDueDate,
         'taskStatusMsg' : taskStatusMsg
