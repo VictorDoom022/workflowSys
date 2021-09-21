@@ -205,12 +205,15 @@ class GroupController extends Controller
         
         $group = Group::where('id', $groupID)->first();
         $groupMemberList = $group->group_memberList;
-
-        $groupMemberListArray = explode(',', $groupMemberList);
         $userArr = [];
-        for($i = 0; $i < count($groupMemberListArray); $i++){
-            $user = User::where('id', $groupMemberListArray[$i])->first()->toArray();
-            $userArr[$i] = $user;
+
+        if(strlen($groupMemberList) != 0){
+            $groupMemberListArray = explode(',', $groupMemberList);
+            
+            for($i = 0; $i < count($groupMemberListArray); $i++){
+                $user = User::where('id', $groupMemberListArray[$i])->first()->toArray();
+                $userArr[$i] = $user;
+            }
         }
 
         return response($userArr, 200);
