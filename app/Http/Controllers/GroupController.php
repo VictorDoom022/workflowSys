@@ -459,6 +459,24 @@ class GroupController extends Controller
 
         // set the newMemberList as group_memberList
         $group->group_memberList = $newMemberList;
+
+        // loop through the toBeRemovedUserListArray array to update userDetail_joinedGroupID
+        for($i = 0; $i < count($toBeRemovedUserListArray); $i++){
+            $userDetail = UserDetail::where('id', $toBeRemovedUserListArray[$i])->first();
+            $userCurrentJoinedGroupID = $userDetail->userDetail_joinedGroupID;
+
+            $userCurrentJoinedGroupIDArray = explode(',', $userCurrentJoinedGroupID);
+
+            for($j=0; $j < count($userCurrentJoinedGroupIDArray); $j++){
+                if($userCurrentJoinedGroupIDArray[$j] == $groupID){
+                    unset($userCurrentJoinedGroupIDArray[$j]);
+                }
+            }
+
+            $newUserJoinedGroup = implode(',', $userCurrentJoinedGroupIDArray);
+            $userDetail->userDetail_joinedGroupID = $newUserJoinedGroup;
+            $userDetail->save();
+        }
         
         // remove member from team
         // loop through the currentTeamListArray array to remove them from each team
