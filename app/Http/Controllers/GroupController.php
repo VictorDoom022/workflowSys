@@ -506,16 +506,29 @@ class GroupController extends Controller
         $remainingUserString = implode(',', $remainingUser);
         // save the remainingUserString back to team's memberID
         $team->team_memberID = $remainingUserString;
-        $team->save();
 
         for($i=0; $i<count($removeUserListArr); $i++){
             // remove user's task list
             $taskList = TaskList::where('taskList_userID', $removeUserListArr[$i])
                                 ->where('taskList_teamID', $teamID)->first();
 
+            $teamTaskListID = $team->team_taskListID;
+            $currentTeamTaskListIDArray = explode(',', $teamTaskListID);
+
+            for($j=0; $j < count($currentTeamTaskListIDArray); $j++){
+                if($currentTeamTaskListIDArray[$j] == $taskList->id){
+                    unset($currentTeamTaskListIDArray[$j]);
+                }
+            }
+
+            $newTeamTaskListID = implode(',', $currentTeamTaskListIDArray);
+            $team->team_taskListID = $newTeamTaskListID;
+                    
             // remove user's task
             $task = Task::where('task_taskListID', $taskList->id)->delete();
             $taskList->delete();
         }
+
+        $team->save();
     }
 }
