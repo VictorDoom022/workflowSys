@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('group/renameGroup', [App\Http\Controllers\GroupController::class, 'renameGroup']);
     Route::post('group/checkIsUserAdminByGroupID', [App\Http\Controllers\GroupController::class, 'checkIsUserAdminByGroupID']);
     Route::post('group/checkIsUserAdminByTeamID', [App\Http\Controllers\GroupController::class, 'checkIsUserAdminByTeamID']);
+    Route::post('group/removeMemberFromGroup', [App\Http\Controllers\GroupController::class, 'removeMemberFromGroup']);
 
     //Team routes
     Route::post('team/getTeamID', [App\Http\Controllers\TeamController::class, 'getTeamDetail']);

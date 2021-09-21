@@ -434,4 +434,67 @@ class GroupController extends Controller
             'message'=>$isAdmin,
         ];
     }
+
+    public function removeMemberFromGroup(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        $userList = $request->userList;
+
+        // remove selected userID from group_memberList
+        $group = Group::where('id', $groupID)->first();
+        $currentGroupMemberList = $group->group_memberList;
+        $teamList = $group->group_teamListID;
+
+        $currentGroupMemberListArray = explode(',', $currentGroupMemberList);
+        $toBeRemovedUserListArray = explode(',', $userList);
+        $currentTeamListArray = explode(',', $teamList);
+
+        // find the difference between two arrays and merge them
+        $newMemberListArray = array_merge(array_diff($toBeRemovedUserListArray, $currentTeamListArray));
+        $newMemberList = implode(',', $newMemberListArray);
+
+        // set the newMemberList as group_memberList
+        $group->group_memberList = $newMemberList;
+        
+        // remove member from team
+        // loop through the currentTeamListArray array to remove them from each team
+        for($i = 0; $i < count($currentTeamListArray); $i++){
+            $this->removeMemberFromTeam($currentTeamListArray[$i],$userList);
+        }
+
+        $group->save();
+
+        return [
+            'message'=>'Member removed',
+        ];
+    }
+
+    // copied from TeamController
+    public function removeMemberFromTeam($teamID, $userList){
+
+        $team = Team::where('id', $teamID)->first();
+        $teamMemberID = $team->team_memberID;
+
+        $teamMemberArr = explode(',' , $teamMemberID);
+        $removeUserListArr = explode(',' , $userList);
+
+        // compare and merge user that remains in the team
+        $remainingUser = array_merge(array_diff($teamMemberArr, $removeUserListArr));
+        //convert array back to string
+        $remainingUserString = implode(',', $remainingUser);
+        // save the remainingUserString back to team's memberID
+        $team->team_memberID = $remainingUserString;
+        $team->save();
+
+        for($i=0; $i<count($removeUserListArr); $i++){
+            // remove user's task list
+            $taskList = TaskList::where('taskList_userID', $removeUserListArr[$i])
+                                ->where('taskList_teamID', $teamID)->first();
+
+            // remove user's task
+            $task = Task::where('task_taskListID', $taskList->id)->delete();
+            $taskList->delete();
+        }
+    }
 }
