@@ -126,6 +126,20 @@
                                             </div>
                                         </div>
 
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">Remove user</strong>
+                                                    <p class="text-muted mb-0">Remove user from group</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <b-icon @click="showRemoveMemberDialog()" class="mr-1" icon="chevron-right"></b-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <strong v-if="isAdmin" class="mb-0 text-danger">Danger Zone</strong>
@@ -325,6 +339,26 @@ export default {
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 2
+                this.showModal = !this.showModal
+            })
+        },
+        showRemoveMemberDialog(){
+            this.isLoading = true
+            Vue.axios({
+                url: '/group/getGroupUserByGroupID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID: this.groupID,
+                },
+            }).then((response) => {
+                this.isLoading = false
+                this.userListForModal = response.data
+                this.modalViewOnly = false
+                this.modalType = 6
                 this.showModal = !this.showModal
             })
         },

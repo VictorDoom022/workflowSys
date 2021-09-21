@@ -27,6 +27,7 @@ import loggedInUserData from '../../functions/loggedInUserData'
     type 3 = add member to team
     type 4 = remove member from team
     type 5 = assign task to team member
+    type 6 = remove user from group
 */
 export default {
     props: ['groupID', 'teamID', 'taskID', 'userList', 'viewOnly', 'type'],
@@ -54,6 +55,8 @@ export default {
                 this.removeMemberFromTeam()
             }else if(this.type == 5){
                 this.assignTaskToTeamMember()
+            }else if(this.type == 6) {
+                this.removeUserFromGroup()
             }
         },
         selectUser(userID){
@@ -145,6 +148,23 @@ export default {
                 },
             }).then((response) => {
                 this.toastMessage(response);
+            })
+        },
+        removeUserFromGroup(){
+            Vue.axios({
+                url: '/group/removeMemberFromGroup',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID : this.groupID,
+                    userList : this.selectedUserID.join(','),
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'UserHome'})
             })
         },
         convertDateTimeToEpoch(dateTime){
