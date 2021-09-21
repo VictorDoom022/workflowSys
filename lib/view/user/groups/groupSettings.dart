@@ -118,6 +118,13 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
             title: 'Danger zone',
             tiles: [
               SettingsTile(
+                title: 'Leave group',
+                iosChevron: null,
+                onPressed: (_){
+                  leaveGroup();
+                },
+              ),
+              SettingsTile(
                 title: 'Delete group',
                 enabled: isAdmin,
                 iosChevron: null,
@@ -276,6 +283,43 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
                 onPressed: (){
                   HapticFeedback.lightImpact();
                   deleteGroup(context, groupID);
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void leaveGroup(){
+    showDialog(
+        context: context,
+        builder: (_){
+          return CupertinoAlertDialog(
+            content: Text('Are you sure you want to leave this group?'),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                      color: Colors.blue
+                  ),
+                ),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  removeMemberFromGroup(context, groupID).then((value){
+                    Navigator.popAndPushNamed(context, '/userHome');
+                  });
                 },
               )
             ],
