@@ -142,10 +142,23 @@
 
                                     </div>
 
-                                    <strong v-if="isAdmin" class="mb-0 text-danger">Danger Zone</strong>
+                                    <strong class="mb-0 text-danger">Danger Zone</strong>
 
-                                    <div v-if="isAdmin" class="list-group mb-5 shadow">
+                                    <div class="list-group mb-5 shadow">
                                         <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <strong class="mb-0">Leave group</strong>
+                                                    <p class="text-muted mb-0">Nuke everything related to you in this group</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="custom-control custom-switch">
+                                                        <button @click="showConfirmLeaveGroupDialog()" class="btn btn-outline-danger btn-sm">Leave</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-if="isAdmin" class="list-group-item">
                                             <div class="row align-items-center">
                                                 <div class="col">
                                                     <strong class="mb-0">Delete group</strong>
@@ -412,6 +425,36 @@ export default {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
                     'Content-Type': 'application/json',
                 }
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.push({ name: 'UserHome'})
+            })
+        },
+        showConfirmLeaveGroupDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to leave the group?',
+                text: 'Everthing related to you in this group will be deleted.',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.leaveGroup();
+                }
+            })
+        },
+        leaveGroup(){
+            Vue.axios({
+                url: '/group/removeMemberFromGroup',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID : this.groupID,
+                    userList : loggedInUserData.state.userData['user'].id,
+                },
             }).then((response) => {
                 this.toastMessage(response)
                 this.$router.push({ name: 'UserHome'})
