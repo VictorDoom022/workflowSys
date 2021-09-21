@@ -454,7 +454,7 @@ class GroupController extends Controller
         $currentTeamListArray = explode(',', $teamList);
 
         // find the difference between two arrays and merge them
-        $newMemberListArray = array_merge(array_diff($toBeRemovedUserListArray, $currentTeamListArray));
+        $newMemberListArray = array_merge(array_diff($currentGroupMemberListArray, $toBeRemovedUserListArray));
         $newMemberList = implode(',', $newMemberListArray);
 
         // set the newMemberList as group_memberList
