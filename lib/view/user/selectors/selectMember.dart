@@ -14,6 +14,7 @@ class selectMember extends StatefulWidget {
   // type 4 = add member as admin (teamID = groupID since serve the same purpose)
   // type 5 = remove admin (teamID = groupID since serve the same purpose)
   // type 6 = assign task to member (teamID = taskID) can select one only
+  // type 7 = remove member from group (teamID = groupID since serve the same purpose)
 
   final int type;
   final int teamID;
@@ -70,6 +71,9 @@ class _selectMemberState extends State<selectMember> {
       case 6:
         appTitleSet = 'Assign task to team member';
         break;
+      case 7:
+        appTitleSet = 'Select member to remove from group';
+        break;
     }
 
     setState(() {
@@ -112,6 +116,10 @@ class _selectMemberState extends State<selectMember> {
               }else{
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You can only select one member')));
               }
+            }else if(type == 7){
+              removeMemberFromGroup(context, teamID, selectedUserListID).then((value) {
+                Navigator.of(context).pop();
+              });
             }
           },
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
@@ -110,6 +111,13 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
                 enabled: isAdmin,
                 onPressed: (_){
                   removeAdmin();
+                },
+              ),
+              SettingsTile(
+                title: 'Remove member from group',
+                enabled: isAdmin,
+                onPressed: (_){
+                  removeMemberFromGroupSection();
                 },
               ),
             ],
@@ -256,6 +264,19 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
     });
   }
 
+  void removeMemberFromGroupSection(){
+    LoadingScreen.showLoadingScreen(context, groupSettingsScaffoldKey);
+    getGroupUser().then((value) {
+      Navigator.of(context).pop();
+      Navigator.push(
+          context,
+          CupertinoPageRoute(builder: (context){
+            return selectMember(type: 7, userList: value, teamID: groupID);
+          })
+      );
+    });
+  }
+
   void deleteGroupSection(){
     showDialog(
         context: context,
@@ -315,9 +336,15 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
                       color: Colors.blue
                   ),
                 ),
-                onPressed: (){
+                onPressed: () async {
                   HapticFeedback.lightImpact();
-                  removeMemberFromGroup(context, groupID).then((value){
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  List<int> userList = [];
+
+                  int userID = sharedPreferences.getInt("UserID");
+                  userList.add(userID);
+
+                  removeMemberFromGroup(context, groupID, userList).then((value){
                     Navigator.popAndPushNamed(context, '/userHome');
                   });
                 },

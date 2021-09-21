@@ -371,7 +371,7 @@ Future<void> renameGroup(BuildContext context, int groupID, String groupName) as
   }
 }
 
-Future<void> removeMemberFromGroup(BuildContext context, int groupID) async {
+Future<void> removeMemberFromGroup(BuildContext context, int groupID, List<int> memberIDList) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
@@ -382,7 +382,7 @@ Future<void> removeMemberFromGroup(BuildContext context, int groupID) async {
       url,
       body: {
         'groupID' : groupID.toString(),
-        'userList' : userID.toString(),
+        'userList' : memberIDList.join(','),
       },
       headers: {
         'Accept': 'application/json',
