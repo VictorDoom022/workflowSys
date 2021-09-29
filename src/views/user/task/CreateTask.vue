@@ -31,6 +31,30 @@
                                         <label>Task Status</label>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <select type="text" v-model="taskColor" class="form-select" autocomplete="off">
+                                            <option value="0" :selected="taskColor">Default</option>
+                                            <option value="1">Blue</option>
+                                            <option value="2">Red</option>
+                                            <option value="3">Yellow</option>
+                                            <option value="4">Green</option>
+                                            <option value="5">Grey</option>
+                                            <option value="6">Black</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <select type="text" v-model="taskPriority" class="form-select" autocomplete="off">
+                                            <option value="0"></option>
+                                            <option value="1">Low</option>
+                                            <option value="2" :selected="taskPriority">Medium (Default)</option>
+                                            <option value="3">High</option>
+                                            <option value="4">Very High</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
                                         <textarea type="text" v-model="taskDesc" class="form-control" placeholder="Task Description" style="height: 150px" autocomplete="off" required>
@@ -96,6 +120,8 @@ export default {
             taskDesc: '',
             taskDetailedDesc: '',
             taskStatusMsg: '',
+            taskColor: 0,
+            taskPriority: 2,
             taskStartDate: '',
             taskDueDate: '',
             editor: ClassicEditor,
@@ -134,6 +160,8 @@ export default {
                     taskStartDate : this.taskStartDate.length == 0 ? 'null' : this.taskStartDate,
                     taskDueDate : this.taskDueDate.length == 0 ? 'null' : this.taskDueDate,
                     taskStatusMsg : this.taskStatusMsg,
+                    taskColor : this.taskColor,
+                    taskPriority : this.taskPriority,
                 },
             }).then((response) => {
                 this.toastMessage(response)
