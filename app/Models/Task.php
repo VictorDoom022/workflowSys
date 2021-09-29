@@ -28,6 +28,8 @@ class Task extends Model
         'task_startDate',
         'task_dueDate',
         'task_statusMsg',
-        'task_status'
+        'task_status',
+        'task_color',
+        'task_priority',
     ];
 }

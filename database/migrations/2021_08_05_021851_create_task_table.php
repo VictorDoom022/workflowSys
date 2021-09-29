@@ -19,7 +19,7 @@ class CreateTaskTable extends Migration
             $table->string('task_teamID');
             $table->string('task_name');
             $table->longText('task_desc');
-            $table->longText('task_detailedDesc');
+            $table->longText('task_detailedDesc')->nullable();
             $table->string('task_userCreateID');
             $table->string('task_assignedMemberID');
             $table->longText('task_assignedDate');
@@ -27,6 +27,8 @@ class CreateTaskTable extends Migration
             $table->string('task_dueDate');
             $table->string('task_statusMsg');
             $table->integer('task_status');
+            $table->integer('task_color');
+            $table->integer('task_priority');
             $table->timestamps();
         });
     }

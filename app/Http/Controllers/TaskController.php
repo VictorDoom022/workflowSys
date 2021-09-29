@@ -11,6 +11,22 @@ class TaskController extends Controller
         taskStatus docs
         0 = completed task
         1 = active task
+
+        taskColor docs
+        0 = default
+        1 = blue (primary)
+        2 = red (danger)
+        3 = yellow (warning)
+        4 = green (success)
+        5 = grey (secondary)
+        6 = black (dark)
+
+        taskPriority docs
+        0 = very low
+        1 = Low
+        2 = Medium (Default)
+        3 = High
+        4 = very High
     */
     public function createTask(Request $request){
 
@@ -21,13 +37,15 @@ class TaskController extends Controller
         $taskStartDate = $request->taskStartDate;
         $taskDueDate = $request->taskDueDate;
         $taskStatusMsg = $request->taskStatusMsg;
+        $taskColor = $request->taskColor;
+        $taskPriority = $request->taskPriority;
         $taskCollabUserId = $request->taskCollabUserId; //not planning to implement this function yet
         $taskAssignedMemberId = $request->taskAssignedMemberId; //not planning to implement this function yet
+        $taskDetailedDesc = $request->taskDetailedDesc;
 
         $fields = $request->validate([
             'taskName' => ['required', 'string'],
             'taskDesc' => ['string'],
-            'taskDetailedDesc' => ['string'],
         ]);
 
         //check if user belongs to the taskList
@@ -39,12 +57,14 @@ class TaskController extends Controller
                 'task_teamID' => $taskTeamID,
                 'task_name' => $fields['taskName'],
                 'task_desc' => $fields['taskDesc'],
-                'task_detailedDesc' => $fields['taskDetailedDesc'],
+                'task_detailedDesc' => $taskDetailedDesc,
                 'task_userCreateID' => $userID,
                 'task_startDate' => $taskStartDate,
                 'task_dueDate' => $taskDueDate,
                 'task_statusMsg' => $taskStatusMsg,
                 'task_status' => '1',
+                'task_color' => $taskColor,
+                'task_priority' => $taskPriority,
             ]);
 
             return [
@@ -85,6 +105,8 @@ class TaskController extends Controller
         $taskStartDate = $request->taskStartDate;
         $taskDueDate = $request->taskDueDate;
         $taskStatusMsg = $request->taskStatusMsg;
+        $taskColor = $request->taskColor;
+        $taskPriority = $request->taskPriority;
         $taskCollabUserId = $request->taskCollabUserId; //not planning to implement this function yet
         $taskAssignedMemberId = $request->taskAssignedMemberId; //not planning to implement this function yet
 
@@ -101,6 +123,8 @@ class TaskController extends Controller
         $task->task_startDate = $taskStartDate;
         $task->task_dueDate = $taskDueDate;
         $task->task_statusMsg = $taskStatusMsg;
+        $task->task_color = $taskColor;
+        $task->task_priority = $taskPriority;
         $task->save();
 
         return [
