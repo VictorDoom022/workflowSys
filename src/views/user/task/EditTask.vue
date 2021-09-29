@@ -41,7 +41,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
+                                    <div class="mb-3 d-flex">
+                                        <label class="mt-2 mr-2">Color</label>
                                         <select type="text" v-model="taskColor" class="form-select" autocomplete="off">
                                             <option value="0" :selected="taskColor">Default</option>
                                             <option value="1" :selected="taskColor">Blue</option>
@@ -54,7 +55,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
+                                    <div class="mb-3 d-flex">
+                                        <label class="mt-2 mr-2">Priority</label>
                                         <select type="text" v-model="taskPriority" class="form-select" autocomplete="off">
                                             <option value="0" :selected="taskPriority">Very Low</option>
                                             <option value="1" :selected="taskPriority">Low</option>
