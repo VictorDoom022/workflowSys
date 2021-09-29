@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateToEditTask(task.id)" class="container card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0 my-1">
+  <div @click="navigateToEditTask(task.id)" class="container card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0 my-1" :class="convertColorTypeToClassName(task.task_color)">
         <div class="row row-striped">
             <div class="col-lg-2 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(task.updated_at) }}</span></p>
@@ -13,20 +13,20 @@
                         {{ convertUserIDToName(task.task_userCreateID) }}
                     </li>
                     <li class="list-inline-item">
-                        <b-icon class="mr-1" icon="clock-history"></b-icon>
-                            {{ convertDBDateToString(task.updated_at) }}
-                    </li>
-                    <li class="list-inline-item">
                         <b-icon class="mr-1" icon="person-lines-fill"></b-icon>
                         <span v-if="task.task_assignedMemberID">{{ getLastAssigendUser(task.task_assignedMemberID) }}</span>
                         <span v-if="!task.task_assignedMemberID">Not assigned</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <b-icon class="mr-1" icon="exclamation-triangle"></b-icon>
+                            {{ convertPriorityTypeToString(task.task_priority) }}
                     </li>
                     <li class="list-inline-item">
                         <b-icon icon="info-circle"></b-icon>
                         {{ task.task_statusMsg }}
                     </li>
                 </ul>
-                <p class="text-start text-muted">{{ task.task_desc.slice(0,20) + '...' }}</p>
+                <p class="text-start">{{ task.task_desc.slice(0,20) + '...' }}</p>
             </div>
         </div>
     </div>
@@ -37,6 +37,14 @@ export default {
     // taskPageData contains - groupID, teamID, taskListID
     props: ['taskPageData', 'task', 'userData', 'userDetailData'],
     methods: {
+        convertColorTypeToClassName(colorID) {
+            let colorClassArray = ['default', 'bg-primary text-white', 'bg-danger text-white', 'bg-warning text-white', 'bg-success text-white', ' bg-secondary text-white', 'bg-dark text-white']
+            return colorClassArray[colorID]
+        },
+        convertPriorityTypeToString(priorityID){
+            let priorityStringArray = ['Very Low', 'Low', 'Medium', 'High', 'Very High']
+            return priorityStringArray[priorityID]
+        },
         convertDBDateToString(dbDate){
             let dateStr = new Date(dbDate)
             let dateToDisplay = dateStr.getFullYear() + '/' + dateStr.getMonth() + '/' + dateStr.getDate() + ' ' + dateStr.getHours() + ':' + dateStr.getMinutes()
