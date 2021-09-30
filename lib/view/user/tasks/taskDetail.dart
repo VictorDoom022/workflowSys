@@ -46,6 +46,11 @@ class _taskDetailState extends State<taskDetail> {
   List<String> taskAssignedUserIDList;
   bool allowUserEdit = true;
 
+  List<String> colorList = ['Default', 'Blue', 'Red', 'Yellow', 'Green', 'Grey', 'Black'];
+  List<String> priorityList = ['Very Low', 'Low', 'Medium (Default)', 'High', 'Very High'];
+  String selectedColor;
+  String selectedPriority;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -59,6 +64,11 @@ class _taskDetailState extends State<taskDetail> {
       taskDescController.text = value.taskDesc;
       taskStatusMsgController.text = value.taskStatusMsg;
       taskDetailedDesc = value.taskDetailedDesc;
+
+      setState(() {
+        selectedColor = colorList[value.taskColor];
+        selectedPriority = priorityList[value.taskPriority];
+      });
 
       if(value.taskStartDate != "null"){
         setState(() {
@@ -172,6 +182,44 @@ class _taskDetailState extends State<taskDetail> {
                         enabled: allowUserEdit,
                         controller: taskNameController,
                         decoration: textFieldInputDecoration,
+                      ),
+                    ),
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Color',
+                      itemWidget: DropdownButton<String>(
+                        value: selectedColor,
+                        isExpanded: true,
+                        items: colorList.map((e){
+                          return DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          );
+                        }).toList(),
+                        onChanged: (selectedItem){
+                          setState(() {
+                            selectedColor = selectedItem;
+                          });
+                        },
+                      ),
+                    ),
+                    Divider(),
+                    TaskItem(
+                      itemTitle: 'Priority',
+                      itemWidget: DropdownButton<String>(
+                        value: selectedPriority,
+                        isExpanded: true,
+                        items: priorityList.map((e){
+                          return DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          );
+                        }).toList(),
+                        onChanged: (selectedItem){
+                          setState(() {
+                            selectedPriority = selectedItem;
+                          });
+                        },
                       ),
                     ),
                     Divider(),
@@ -410,8 +458,10 @@ class _taskDetailState extends State<taskDetail> {
 
                       String startDate = taskStartDate.toString();
                       String dueDate = taskDueDate.toString();
+                      int taskColor = colorList.indexOf(selectedColor);
+                      int taskPriority = priorityList.indexOf(selectedPriority);
 
-                      updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, startDate, dueDate).then((value) {
+                      updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, taskColor, taskPriority, startDate, dueDate).then((value) {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       });

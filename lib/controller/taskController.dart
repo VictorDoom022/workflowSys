@@ -98,7 +98,7 @@ Future<Task> getTaskByID(BuildContext context, int taskID) async {
   }
 }
 
-Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatusMsg, String taskStartDate, String taskDueDate) async {
+Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority, String taskStartDate, String taskDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
@@ -112,7 +112,9 @@ Future<void> updateTask(BuildContext context, int taskID, String taskName, Strin
         'taskDesc' : taskDesc,
         'taskStartDate': taskStartDate,
         'taskDueDate' : taskDueDate,
-        'taskStatusMsg' : taskStatusMsg
+        'taskStatusMsg' : taskStatusMsg,
+        'taskColor' : taskColor.toString(),
+        'taskPriority' : taskPriority.toString(),
       },
       headers: {
         'Accept': 'application/json',

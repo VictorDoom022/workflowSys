@@ -82,7 +82,6 @@ class _createTaskState extends State<createTask> {
                         setState(() {
                           selectedColor = selectedItem;
                         });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(selectedItem)));
                       },
                     ),
                   ),
@@ -102,7 +101,6 @@ class _createTaskState extends State<createTask> {
                         setState(() {
                           selectedPriority = selectedItem;
                         });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(selectedItem)));
                       },
                     ),
                   ),
