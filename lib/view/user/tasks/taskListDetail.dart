@@ -121,6 +121,8 @@ class _taskListDetailState extends State<taskListDetail> {
                                 lastAssignedUserName: checkLastAssignedUser(snapshot.data[index].taskAssignedMemberID),
                                 statusMsg: snapshot.data[index].taskStatusMsg,
                                 desc: snapshot.data[index].taskDesc,
+                                color: snapshot.data[index].taskColor,
+                                priority: snapshot.data[index].taskPriority,
                               ),
                               onTap: (){
                                 Navigator.push(

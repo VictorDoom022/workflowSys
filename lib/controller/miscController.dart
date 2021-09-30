@@ -45,3 +45,9 @@ String dateFromEpoch(int epoch){
 
   return formattedDate;
 }
+
+String convertPriorityTypeToString(int priorityType){
+  List<String> priorityList = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
+
+  return priorityList[priorityType];
+}

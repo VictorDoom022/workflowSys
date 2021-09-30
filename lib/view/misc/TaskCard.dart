@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:workflow_sys/controller/miscController.dart';
 
 class TaskCard extends StatelessWidget {
 
@@ -11,8 +12,10 @@ class TaskCard extends StatelessWidget {
   final String lastAssignedUserName;
   final String statusMsg;
   final String desc;
+  final int color;
+  final int priority;
 
-  const TaskCard({Key key, this.taskDate, this.taskMonth, this.title, this.taskCreateUserName, this.lastUpdatedTime, this.lastAssignedUserName, this.statusMsg, this.desc}) : super(key: key);
+  const TaskCard({Key key, this.taskDate, this.taskMonth, this.title, this.taskCreateUserName, this.lastUpdatedTime, this.lastAssignedUserName, this.statusMsg, this.desc, this.color, this.priority}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,12 +92,12 @@ class TaskCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.history,
+                            CupertinoIcons.person_crop_circle_fill_badge_exclam,
                             color: Colors.black54,
                           ),
                           SizedBox(width: 5),
                           Text(
-                            lastUpdatedTime,
+                            lastAssignedUserName,
                             style: TextStyle(
                                 fontSize: 15
                             ),
@@ -108,12 +111,12 @@ class TaskCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            CupertinoIcons.person_crop_circle_fill_badge_exclam,
+                            Icons.warning_amber_rounded,
                             color: Colors.black54,
                           ),
                           SizedBox(width: 5),
                           Text(
-                            lastAssignedUserName,
+                            convertPriorityTypeToString(priority),
                             style: TextStyle(
                                 fontSize: 15
                             ),
