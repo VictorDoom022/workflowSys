@@ -15,11 +15,26 @@ class TaskCard extends StatelessWidget {
   final int color;
   final int priority;
 
-  const TaskCard({Key key, this.taskDate, this.taskMonth, this.title, this.taskCreateUserName, this.lastUpdatedTime, this.lastAssignedUserName, this.statusMsg, this.desc, this.color, this.priority}) : super(key: key);
+  TaskCard({Key key, this.taskDate, this.taskMonth, this.title, this.taskCreateUserName, this.lastUpdatedTime, this.lastAssignedUserName, this.statusMsg, this.desc, this.color, this.priority}) : super(key: key);
+
+  Color setCardBackgroundColor(colorID){
+    // taskColor docs
+    // 0 = default
+    // 1 = blue (primary)
+    // 2 = red (danger)
+    // 3 = yellow (warning)
+    // 4 = green (success)
+    // 5 = grey (secondary)
+    // 6 = black (dark)
+    List<Color> colorList = [ThemeData().cardColor, Colors.blueAccent, Colors.redAccent, Colors.yellow, Colors.greenAccent, Colors.black26, Colors.black];
+
+    return colorList[colorID];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: setCardBackgroundColor(color),
       child: Row(
         children: [
           Expanded(
