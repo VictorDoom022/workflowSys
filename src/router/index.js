@@ -15,6 +15,7 @@ import EditTask from '../views/user/task/EditTask.vue'
 import TaskAssignedHistory from '../views/user/task/TaskAssignedHistory.vue'
 import TodoList from '../views/user/todos/TodoList.vue'
 import CreateTodo from '../views/user/todos/CreateTodo.vue'
+import UserProfile from '../views/user/profile/UserProfile.vue'
 import EditTodo from '../views/user/todos/EditTodo.vue'
 import Error404 from '../views/Error404.vue'
 
@@ -110,6 +111,11 @@ const routes = [
     name: 'EditTodo',
     component: EditTodo,
     props: true,
+  },
+  {
+    path: '/userProfile',
+    name: 'UserProfile',
+    component: UserProfile,
   },
   {
     path: '/:catchAll(.*)',
