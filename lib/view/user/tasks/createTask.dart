@@ -30,6 +30,10 @@ class _createTaskState extends State<createTask> {
   TextEditingController taskStatusController = TextEditingController();
 
   DateTime taskStartDate, taskDueDate;
+  List<String> colorList = ['Default', 'Blue', 'Red', 'Yellow', 'Green', 'Grey', 'Black'];
+  List<String> priorityList = ['Very Low', 'Low', 'Medium (Default)', 'High', 'Very High'];
+  String selectedColor = 'Default';
+  String selectedPriority = 'Medium (Default)';
 
   InputDecoration textFieldInputDecoration = InputDecoration(
     border: InputBorder.none,
@@ -60,6 +64,46 @@ class _createTaskState extends State<createTask> {
                     itemWidget: TextField(
                       controller: taskNameController,
                       decoration: textFieldInputDecoration,
+                    ),
+                  ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Color',
+                    itemWidget: DropdownButton<String>(
+                      value: selectedColor,
+                      isExpanded: true,
+                      items: colorList.map((e){
+                        return DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                      onChanged: (selectedItem){
+                        setState(() {
+                          selectedColor = selectedItem;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(selectedItem)));
+                      },
+                    ),
+                  ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Priority',
+                    itemWidget: DropdownButton<String>(
+                      value: selectedPriority,
+                      isExpanded: true,
+                      items: priorityList.map((e){
+                        return DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                      onChanged: (selectedItem){
+                        setState(() {
+                          selectedPriority = selectedItem;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(selectedItem)));
+                      },
                     ),
                   ),
                   Divider(),
@@ -152,8 +196,10 @@ class _createTaskState extends State<createTask> {
                     LoadingScreen.showLoadingScreen(context, createTaskScaffoldKey);
                     String startDate = taskStartDate.toString();
                     String dueDate = taskDueDate.toString();
+                    int taskColor = colorList.indexOf(selectedColor);
+                    int taskPriority = priorityList.indexOf(selectedPriority);
 
-                    createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, startDate, dueDate).then((value) {
+                    createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, taskColor, taskPriority ,startDate, dueDate).then((value) {
                       Navigator.of(context).pop();
                       taskNameController.clear();
                       taskDescController.clear();

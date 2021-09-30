@@ -9,7 +9,7 @@ import 'package:workflow_sys/model/Task.dart';
 
 import 'miscController.dart';
 
-Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatusMsg, String taskStartDate, String taskDueDate) async {
+Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority,String taskStartDate, String taskDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
@@ -27,7 +27,9 @@ Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID 
         'taskDetailedDesc': '', // flutter does not support rich text editor
         'taskStartDate': taskStartDate,
         'taskDueDate' : taskDueDate,
-        'taskStatusMsg' : taskStatusMsg
+        'taskStatusMsg' : taskStatusMsg,
+        'taskColor' : taskColor.toString(),
+        'taskPriority' : taskPriority.toString(),
       },
       headers: {
         'Accept': 'application/json',

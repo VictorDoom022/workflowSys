@@ -12,6 +12,8 @@ class Task {
   String taskDueDate;
   String taskStatusMsg;
   int taskStatus;
+  int taskColor;
+  int taskPriority;
   String createdAt;
   String updatedAt;
 
@@ -29,6 +31,8 @@ class Task {
         this.taskDueDate,
         this.taskStatusMsg,
         this.taskStatus,
+        this.taskColor,
+        this.taskPriority,
         this.createdAt,
         this.updatedAt});
 
@@ -46,6 +50,8 @@ class Task {
     taskDueDate = json['task_dueDate'];
     taskStatusMsg = json['task_statusMsg'];
     taskStatus = json['task_status'];
+    taskColor = json['task_color'];
+    taskPriority = json['task_priority'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -65,6 +71,8 @@ class Task {
     data['task_dueDate'] = this.taskDueDate;
     data['task_statusMsg'] = this.taskStatusMsg;
     data['task_status'] = this.taskStatus;
+    data['task_color'] = this.taskColor;
+    data['task_priority'] = this.taskPriority;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
