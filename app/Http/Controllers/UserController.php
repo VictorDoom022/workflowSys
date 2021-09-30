@@ -73,4 +73,23 @@ class UserController extends Controller
             'message' => 'Toggled'
         ];
     }
+
+    public function uploadProfilePicture(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
+        // save the file into /public/upload/userProfilePictures/{userID}
+        $profilePicture = time().'.'.$request->file('profilePicture')->getClientOriginalExtension();
+        $filePath = 'upload/userProfilePictures/' . $userID;
+        $fullFilePath = $request->file('profilePicture')->move(public_path($filePath), $profilePicture);
+
+        $userDetail = UserDetail::where('id', $userID)->first();
+        $userDetail->userDetail_profilePictureDir = $filePath . $profilePicture;
+        $userDetail->save();
+
+        return [
+           'message' => $profilePicture
+        ];
+    }
 }

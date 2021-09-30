@@ -18,6 +18,7 @@ class UserDetail extends Migration
             $table->string('userDetail_joinedGroupID');
             $table->string('userDetail_status');
             $table->integer('userDetail_accEnable');
+            $table->string('userDetail_profilePictureDir');
         });
     }
 

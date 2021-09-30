@@ -24,6 +24,7 @@ class UserDetail extends Model
         'userDetail_joinedGroupID',
         'userDetail_status',
         'userDetail_accEnable',
+        'userDetail_profilePictureDir'
     ];
     
     public function groups(){
