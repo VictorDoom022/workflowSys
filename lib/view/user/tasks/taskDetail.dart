@@ -185,7 +185,7 @@ class _taskDetailState extends State<taskDetail> {
                       ),
                     ),
                     Divider(),
-                    TaskItem(
+                    taskDetailedDesc != null ? TaskItem(
                       itemTitle: 'Task Detailed Description (Read-only)',
                       itemWidget: ConstrainedBox(
                         constraints: BoxConstraints(
@@ -219,8 +219,8 @@ class _taskDetailState extends State<taskDetail> {
                           ),
                         ),
                       ),
-                    ),
-                    Divider(),
+                    ) : Container(),
+                    taskDetailedDesc != null ? Divider() : Container(),
                     TaskItem(
                       itemTitle: 'Task Status',
                       itemWidget: TextField(
