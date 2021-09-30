@@ -79,17 +79,18 @@ class UserController extends Controller
         //variables that uses $request without validation
         $userID = $request->userID;
 
-        // save the file into /public/upload/userProfilePictures/{userID}
+        //save the file into /public/upload/userProfilePictures/{userID}
         $profilePicture = time().'.'.$request->file('profilePicture')->getClientOriginalExtension();
         $filePath = 'upload/userProfilePictures/' . $userID;
         $fullFilePath = $request->file('profilePicture')->move(public_path($filePath), $profilePicture);
 
+        //save the file's location to db
         $userDetail = UserDetail::where('id', $userID)->first();
         $userDetail->userDetail_profilePictureDir = $filePath . $profilePicture;
         $userDetail->save();
 
         return [
-           'message' => $profilePicture
+           'message' => 'Uploaded successfully',
         ];
     }
 }
