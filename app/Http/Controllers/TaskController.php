@@ -109,17 +109,17 @@ class TaskController extends Controller
         $taskPriority = $request->taskPriority;
         $taskCollabUserId = $request->taskCollabUserId; //not planning to implement this function yet
         $taskAssignedMemberId = $request->taskAssignedMemberId; //not planning to implement this function yet
+        $taskDetailedDesc = $request->taskDetailedDesc;
 
         $fields = $request->validate([
             'taskName' => ['required', 'string'],
             'taskDesc' => ['string'],
-            'taskDetailedDesc' => ['string'],
         ]);
 
         $task = Task::where('id', $taskID)->first();
         $task->task_name = $fields['taskName'];
         $task->task_desc = $fields['taskDesc'];
-        $task->task_detailedDesc = $fields['taskDetailedDesc'];
+        $task->task_detailedDesc = $taskDetailedDesc;
         $task->task_startDate = $taskStartDate;
         $task->task_dueDate = $taskDueDate;
         $task->task_statusMsg = $taskStatusMsg;
