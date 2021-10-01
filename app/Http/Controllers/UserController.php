@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User; 
-use App\Models\UserDetail; 
+use App\Models\UserDetail;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -86,7 +87,7 @@ class UserController extends Controller
 
         //save the file's location to db
         $userDetail = UserDetail::where('id', $userID)->first();
-        $userDetail->userDetail_profilePictureDir = $filePath . $profilePicture;
+        $userDetail->userDetail_profilePictureDir = $filePath . '/' .$profilePicture;
         $userDetail->save();
 
         return [
