@@ -5,7 +5,9 @@
             <div class="row">
                 <UserSideNav />
 
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <Loading v-if="isLoading"/>
+
+                <main v-if="!isLoading" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Profile</h1>
                     </div>
@@ -15,7 +17,7 @@
                                 <div class="text-center card-box">
                                     <div class="member-card pt-2 pb-2">
                                         <div class="thumb-lg member-thumb mx-auto">
-                                            <img src="https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg" class="rounded-circle img-thumbnail" alt="profile-image">
+                                            <img :src="'http://192.168.0.181:8000/' + userDetail.userDetail_profilePictureDir" class="rounded-circle img-thumbnail" style="height: 90px; width: 90px" alt="profile-image">
                                         </div>
                                         
                                         <div class="mt-2">
@@ -28,7 +30,7 @@
                                                 <label class="form-label">Change Profile Picture</label>
                                                 <div class="d-flex">
                                                     <input class="form-control form-control-sm"  type="file" accept="image/*" @change="onFileChange">
-                                                    <button class="btn btn-primary btn-sm ml-1">Change</button>
+                                                    <button class="btn btn-primary btn-sm ml-1" :disabled="!fileData">Change</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -71,12 +73,14 @@
 import Vue from 'vue'
 import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
+import Loading from '../../../components/Loading.vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 
 export default {
-    components: { UserSideNav, UserTopNav },
+    components: { UserSideNav, UserTopNav, Loading },
     data() {
         return {
+            isLoading: true,
             user: null,
             userDetail: null,
             fileData: '',
@@ -95,6 +99,7 @@ export default {
                     'Content-Type': 'application/json',
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.user = response.data['user']
                 this.userDetail = response.data['userDetail']
             })
@@ -114,7 +119,6 @@ export default {
         },
         onFileChange(e){
             this.fileData = e.target.files[0]
-            console.log(e.target.files[0])
         },
         uploadProfilePicture(){
             let formData = new FormData()
@@ -131,6 +135,7 @@ export default {
                     },
                 }
             ).then((response) => {
+                this.getUserDetails()
                 this.toastMessage(response)
             })
         },
