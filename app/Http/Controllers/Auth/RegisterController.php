@@ -92,7 +92,8 @@ class RegisterController extends Controller
         $userDetail=UserDetail::create([
             'userDetail_joinedGroupID' => '',
             'userDetail_status' => 'active',
-            'userDetail_accEnable' => 1
+            'userDetail_accEnable' => 1,
+            'userDetail_profilePictureDir' => 'upload/userProfilePictures/userProfilePic.jpg',
         ]);
 
         $token=$user->createToken('loginToken')->plainTextToken;
