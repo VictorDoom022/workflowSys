@@ -11,11 +11,53 @@
                     </div>
 
                     <div class="container-fluid">
-                        <form @submit.prevent="uploadProfilePicture">
-                            <input type="file" accept="image/*" @change="onFileChange">
+                            <div class="justify-content-center align-items-center">
+                                <div class="text-center card-box">
+                                    <div class="member-card pt-2 pb-2">
+                                        <div class="thumb-lg member-thumb mx-auto">
+                                            <img src="https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg" class="rounded-circle img-thumbnail" alt="profile-image">
+                                        </div>
+                                        
+                                        <div class="mt-2">
+                                            <h4>{{ user.name }}</h4>
+                                            <p class="text-muted">{{ user.email }}</p>
+                                        </div>
 
-                            <button class="btn btn-primary">Submit</button>
-                        </form>
+                                        <div class="col-md-6" style="margin-left: auto; margin-right: auto">
+                                            <form @submit.prevent="uploadProfilePicture">
+                                                <label class="form-label">Change Profile Picture</label>
+                                                <div class="d-flex">
+                                                    <input class="form-control form-control-sm"  type="file" accept="image/*" @change="onFileChange">
+                                                    <button class="btn btn-primary btn-sm ml-1">Change</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <div class="mt-4">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="mt-3">
+                                                        <h4>{{ userDetail.userDetail_accEnable == 1 ? 'Enabled' : 'Banned' }}</h4>
+                                                        <p class="mb-0 text-muted">Account Activation Status</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mt-3">
+                                                        <h4>{{ convertDBDateToString(user.created_at) }}</h4>
+                                                        <p class="mb-0 text-muted">Account Created At</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mt-3">
+                                                        <h4>{{ countJoinedGroup(userDetail.userDetail_joinedGroupID) }}</h4>
+                                                        <p class="mb-0 text-muted">Group(s) Joined</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </main>
 
@@ -35,10 +77,41 @@ export default {
     components: { UserSideNav, UserTopNav },
     data() {
         return {
+            user: null,
+            userDetail: null,
             fileData: '',
         }
     },
+    mounted() {
+        this.getUserDetails()
+    },
     methods: {
+        getUserDetails() {
+            Vue.axios({
+                url: '/users/'+  loggedInUserData.state.userData['user'].id,
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.user = response.data['user']
+                this.userDetail = response.data['userDetail']
+            })
+        },
+        convertDBDateToString(dbDate){
+            let dateStr = new Date(dbDate)
+            let dateToDisplay = dateStr.getFullYear() + '/' + dateStr.getMonth() + '/' + dateStr.getDate() + ' ' + dateStr.getHours() + ':' + dateStr.getMinutes()
+            return dateToDisplay
+        },
+        countJoinedGroup(joinedGroupID){
+            if(joinedGroupID.length != 0){
+                let joinedGroupIDArray = joinedGroupID.split(',')
+                return joinedGroupIDArray.length
+            }else{
+                return 0
+            }
+        },
         onFileChange(e){
             this.fileData = e.target.files[0]
             console.log(e.target.files[0])
@@ -76,6 +149,34 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.card-box {
+    padding: 20px;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background-color: #fff;
+}
 
+.thumb-lg {
+    height: 88px;
+    width: 88px;
+}
+
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.text-muted {
+    color: #98a6ad!important;
+}
+
+h4 {
+    line-height: 22px;
+    font-size: 18px;
+}
 </style>
