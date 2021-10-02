@@ -3,15 +3,17 @@ class UserDetail {
   String userDetailJoinedGroupID;
   String userDetailStatus;
   int userDetailAccEnable;
+  String userDetailProfilePictureDir;
 
   UserDetail(
-      {this.userDetailId, this.userDetailJoinedGroupID, this.userDetailStatus, this.userDetailAccEnable});
+      {this.userDetailId, this.userDetailJoinedGroupID, this.userDetailStatus, this.userDetailAccEnable, this.userDetailProfilePictureDir});
 
   UserDetail.fromJson(Map<String, dynamic> json) {
     userDetailId = json['id'];
     userDetailJoinedGroupID = json['userDetail_joinedGroupID'];
     userDetailStatus = json['userDetail_status'];
     userDetailAccEnable = json['userDetail_accEnable'];
+    userDetailProfilePictureDir = json['userDetail_profilePictureDir'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class UserDetail {
     data['userDetail_joinedGroupID'] = this.userDetailJoinedGroupID;
     data['userDetail_status'] = this.userDetailStatus;
     data['userDetail_accEnable'] = this.userDetailAccEnable;
+    data['userDetail_profilePictureDir'] = this.userDetailProfilePictureDir;
     return data;
   }
 }
