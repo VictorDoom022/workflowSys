@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/model/UserDetail.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 
 Future<UserReceiver> getAllUser(BuildContext context) async{
@@ -30,6 +31,33 @@ Future<UserReceiver> getAllUser(BuildContext context) async{
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ' + response.statusCode.toString())));
     return null;
   }
+}
+
+Future<UserReceiverForSingleUser> getUserDetailByID() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/users/' + userID.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+
+    UserReceiverForSingleUser userReceiverForSingleUser = UserReceiverForSingleUser.fromJson(jsonRes);
+
+    return userReceiverForSingleUser;
+  }else{
+    return null;
+  }
+
 }
 
 void setUserStatus(BuildContext context, int id, String statusMsg) async {

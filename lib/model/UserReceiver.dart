@@ -33,3 +33,28 @@ class UserReceiver {
     return data;
   }
 }
+
+class UserReceiverForSingleUser {
+  User user;
+  UserDetail userDetail;
+
+  UserReceiverForSingleUser({this.user, this.userDetail});
+
+  UserReceiverForSingleUser.fromJson(Map<String, dynamic> json) {
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    userDetail = json['userDetail'] != null
+        ? new UserDetail.fromJson(json['userDetail'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user.toJson();
+    }
+    if (this.userDetail != null) {
+      data['userDetail'] = this.userDetail.toJson();
+    }
+    return data;
+  }
+}
