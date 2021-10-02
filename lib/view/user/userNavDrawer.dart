@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/authController.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/profile/userProfile.dart';
 import 'package:workflow_sys/view/user/todos/todoHome.dart';
 import 'package:workflow_sys/view/user/userHome.dart';
 
@@ -78,6 +79,7 @@ class _userNavDrawerState extends State<userNavDrawer> {
           ),
           userGroupTile(0),
           userTodoTile(1),
+          userProfileTile(2),
           Divider(),
           logoutTile()
         ],
@@ -114,6 +116,24 @@ class _userNavDrawerState extends State<userNavDrawer> {
         Navigator.push(context, CupertinoPageRoute(
             builder:(context){
               return todoHome();
+            }
+        )
+        );
+      },
+    );
+  }
+
+  Widget userProfileTile(int pageNumber){
+    return ListTile(
+      leading: Icon(Icons.account_circle_rounded),
+      title: Text('Profile'),
+      selected: selectedPage == pageNumber,
+      onTap: (){
+        HapticFeedback.lightImpact();
+        selectPage(pageNumber);
+        Navigator.push(context, CupertinoPageRoute(
+            builder:(context){
+              return userProfile();
             }
         )
         );
