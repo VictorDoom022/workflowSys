@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserDetail.dart';
+import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class userProfile extends StatefulWidget {
@@ -18,6 +21,7 @@ class userProfile extends StatefulWidget {
 class _userProfileState extends State<userProfile> {
 
   GlobalKey<ScaffoldState> userProfileScaffoldKey = GlobalKey();
+  GlobalKey<ScaffoldState> userProfileScaffoldKeyForLoadingScreen = GlobalKey();
   User user;
   UserDetail userDetail;
   String username = '';
@@ -30,6 +34,10 @@ class _userProfileState extends State<userProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    setUserData();
+  }
+
+  void setUserData(){
     getUserDetailByID().then((value) {
       setState(() {
         username = value.user.name;
@@ -119,8 +127,18 @@ class _userProfileState extends State<userProfile> {
                                     child: IconButton(
                                       icon: Icon(Icons.camera_alt),
                                       color: Colors.white,
-                                      onPressed: (){
+                                      onPressed: () async {
+                                        FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                                          type: FileType.image
+                                        );
 
+                                        if(filePickerResult != null){
+                                          LoadingScreen.showLoadingScreen(context, userProfileScaffoldKeyForLoadingScreen);
+                                          File file = File(filePickerResult.files.single.path);
+                                          uploadProfilePicture(context, filePickerResult.paths.first).then((value) {
+                                            setUserData();
+                                          });
+                                        }
                                       },
                                     ),
                                   )

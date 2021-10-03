@@ -96,3 +96,34 @@ void toggleUserBan(BuildContext context, int id) async {
   String messageText = convertResponseMessage(response.body);
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
 }
+
+Future uploadProfilePicture(BuildContext context, String filePath) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/users/uploadProfilePicture';
+  Uri url = Uri.parse(stringUrl);
+
+  Map<String, String> headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer " + token
+  };
+
+  var request = http.MultipartRequest('Post', url);
+  request.headers.addAll(headers);
+  request.fields['userID'] = userID.toString();
+  request.files.add(
+      await http.MultipartFile.fromPath(
+        'profilePicture',
+        filePath
+      )
+  );
+
+  var response = await request.send();
+  response.stream.transform(utf8.decoder).listen((value) {
+    String messageText = convertResponseMessage(value);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
+  });
+}
