@@ -121,6 +121,7 @@ export default {
             this.fileData = e.target.files[0]
         },
         uploadProfilePicture(){
+            this.isLoading = true
             let formData = new FormData()
             formData.append('profilePicture', this.fileData)
             formData.append('userID', loggedInUserData.state.userData['user'].id)
