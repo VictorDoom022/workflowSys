@@ -67,6 +67,23 @@ class TaskController extends Controller
                 'task_priority' => $taskPriority,
             ]);
 
+            if($request->hasfile('taskFiles')){
+                $files = $request->file('taskFiles');
+                foreach($files as $file){
+                    //save the file into /public/upload/taskFiles/{taskID}
+                    $taskFiles = $file->getClientOriginalName();
+                    $filePath = 'upload/taskFiles/' . $task->id;
+                    $fullFilePath = $file->move(public_path($filePath), $taskFiles);
+                }
+            }else{
+                return [
+                    'message'=>'No file'
+                ];
+            }
+            
+            $task->task_filePath = $filePath;
+            $task->save();
+
             return [
                 'message'=>'Task created.'
             ];

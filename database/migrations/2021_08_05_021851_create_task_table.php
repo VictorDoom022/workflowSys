@@ -29,6 +29,7 @@ class CreateTaskTable extends Migration
             $table->integer('task_status');
             $table->integer('task_color');
             $table->integer('task_priority');
+            $table->string('task_filePath')->nullable();
             $table->timestamps();
         });
     }

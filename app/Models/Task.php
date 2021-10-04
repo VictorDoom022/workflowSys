@@ -31,5 +31,6 @@ class Task extends Model
         'task_status',
         'task_color',
         'task_priority',
+        'task_filePath',
     ];
 }
