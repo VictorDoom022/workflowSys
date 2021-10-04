@@ -81,6 +81,15 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="list-group mb-3">
+                                        <label>Attached Files</label>
+                                        <div v-for="(file, index) in taskFileInfo" :key="index">
+                                            <a @click="downloadFile(file.fileName)" class="list-group-item list-group-item-action" href="#">{{ file.fileName }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 mb-2 text-center">
                                     <h6 class="fw-bold mt-2">
                                         <span v-if="taskData.task_assignedMemberID.length">
@@ -176,6 +185,9 @@ export default {
             userListForModal: null,
             modalViewOnly: false,
             modalType: 0,
+            taskFiles: null,
+            taskFilePath: '',
+            taskFileInfo: null,
             editor: ClassicEditor,
         }
     },
@@ -220,7 +232,46 @@ export default {
             this.taskDueDate = this.taskData.task_dueDate
             this.taskUserCreateID = this.taskData.task_userCreateID
             this.taskAssignedUserID = this.taskData.task_assignedMemberID
+            this.taskFilePath = this.taskData.task_filePath
+            this.fetchFiles()
             this.checkAllowToEdit()
+        },
+        fetchFiles(){
+            Vue.axios({
+                url: '/task/getTaskFilesByPath',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    filePath : this.taskFilePath,
+                },
+            }).then((response) => {
+                this.taskFileInfo = response.data
+
+            })
+        },
+        downloadFile(fileName){
+            Vue.axios({
+                url: '/task/downloadFileByPath',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    fileName : fileName,
+                    filePath : this.taskFilePath,
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+            })
         },
         checkAllowToEdit(){
             var isTaskCreator = false
