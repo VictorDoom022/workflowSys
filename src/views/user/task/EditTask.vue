@@ -81,7 +81,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div v-if="taskFilePath" class="col-md-12">
                                     <div class="list-group mb-3">
                                         <label>Attached Files</label>
                                         <div v-for="(file, index) in taskFileInfo" :key="index">
@@ -91,7 +91,11 @@
                                                 </a>
                                                 <span @click="removeFile(file.fileName)" class="badge bg-danger rounded-pill"><b-icon icon="x" aria-hidden="true"></b-icon></span>
                                             </div>
-                                            
+                                        </div>
+                                        <div v-if="taskFileInfo.length ==0">
+                                            <div class="list-group-item list-group-item-action">
+                                                No files attached
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -239,7 +243,9 @@ export default {
             this.taskUserCreateID = this.taskData.task_userCreateID
             this.taskAssignedUserID = this.taskData.task_assignedMemberID
             this.taskFilePath = this.taskData.task_filePath
-            this.fetchFiles()
+            if(this.taskFilePath != null){
+                this.fetchFiles()
+            }
             this.checkAllowToEdit()
         },
         fetchFiles(){
