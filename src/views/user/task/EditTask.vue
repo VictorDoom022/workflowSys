@@ -81,6 +81,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label>Attach Files</label>
+                                        <input class="form-control form-control-sm"  type="file" @change="onFileChange" multiple>
+                                    </div>
+                                </div>
+
                                 <div v-if="taskFilePath" class="col-md-12">
                                     <div class="list-group mb-3">
                                         <label>Attached Files</label>
@@ -92,7 +99,7 @@
                                                 <span @click="removeFile(file.fileName)" class="badge bg-danger rounded-pill"><b-icon icon="x" aria-hidden="true"></b-icon></span>
                                             </div>
                                         </div>
-                                        <div v-if="taskFileInfo.length ==0">
+                                        <div v-if="taskFileInfo">
                                             <div class="list-group-item list-group-item-action">
                                                 No files attached
                                             </div>
@@ -102,10 +109,10 @@
 
                                 <div class="col-md-6 mb-2 text-center">
                                     <h6 class="fw-bold mt-2">
-                                        <span v-if="taskData.task_assignedMemberID.length">
+                                        <span v-if="taskData.task_assignedMemberID">
                                             Currently assigend to: {{ getLastAssigendUser(taskData.task_assignedMemberID) }}
                                         </span>
-                                        <span v-if="!taskData.task_assignedMemberID.length">
+                                        <span v-if="!taskData.task_assignedMemberID">
                                             Not assigend
                                         </span>
                                     </h6>
@@ -263,6 +270,9 @@ export default {
                 this.taskFileInfo = response.data
 
             })
+        },
+        onFileChange(e){
+            this.taskFiles = e.target.files
         },
         downloadFile(fileName){
             Vue.axios({
@@ -432,25 +442,33 @@ export default {
             })
         },
         editTask(){
-            Vue.axios({
-                url: '/task/updateTask',
-                method: 'POST',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                data: {
-                    taskID : this.taskID,
-                    taskName : this.taskName,
-                    taskDesc : this.taskDesc,
-                    taskDetailedDesc : this.taskDetailedDesc,
-                    taskStartDate : this.taskStartDate.length == 0 ? 'null' : this.taskStartDate,
-                    taskDueDate : this.taskDueDate.length == 0 ? 'null' : this.taskDueDate,
-                    taskStatusMsg : this.taskStatusMsg,
-                    taskColor : this.taskColor,
-                    taskPriority : this.taskPriority,
-                },
-            }).then((response) => {
+            let formData = new FormData()
+            formData.append('taskID', this.taskID)
+            formData.append('taskName', this.taskName)
+            formData.append('taskDesc', this.taskDesc)
+            formData.append('taskDetailedDesc', this.taskDetailedDesc)
+            formData.append('taskStartDate', this.taskStartDate.length == 0 ? 'null' : this.taskStartDate)
+            formData.append('taskDueDate', this.taskDueDate.length == 0 ? 'null' : this.taskDueDate)
+            formData.append('taskStatusMsg', this.taskStatusMsg)
+            formData.append('taskColor', this.taskColor)
+            formData.append('taskPriority', this.taskPriority)
+
+            if(this.taskFiles != null){
+                for(var i = 0; i < this.taskFiles.length; i++){
+                    formData.append('taskFiles[]', this.taskFiles[i])
+                }
+            }
+
+            Vue.axios.post(
+                '/task/updateTask', 
+                formData ,
+                {
+                    headers: {
+                        Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }
+            ).then((response) => {
                 this.toastMessage(response)
                 this.fetchTaskData()
             })
