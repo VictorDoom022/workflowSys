@@ -185,6 +185,21 @@ class TaskController extends Controller
         $task->task_statusMsg = $taskStatusMsg;
         $task->task_color = $taskColor;
         $task->task_priority = $taskPriority;
+
+        if($request->hasfile('taskFiles')){
+            $files = $request->file('taskFiles');
+            foreach($files as $file){
+                //save the file into /public/upload/taskFiles/{taskID}
+                $taskFiles = $file->getClientOriginalName();
+                $filePath = 'upload/taskFiles/' . $task->id;
+                $fullFilePath = $file->move(public_path($filePath), $taskFiles);
+
+                // save the task's file dir into task_filePath
+                $task->task_filePath = $filePath;
+                $task->save();
+            }
+        }
+
         $task->save();
 
         return [
