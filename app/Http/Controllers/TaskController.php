@@ -5,7 +5,7 @@ use App\Models\Task;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use File;
+use Illuminate\Support\Facades\File;
 
 class TaskController extends Controller
 {
@@ -130,10 +130,10 @@ class TaskController extends Controller
 
         $getFilePath = public_path() . "/" . $filePath . "/" . $fileName;
 
-        Storage::delete($getFilePath);
+        File::delete($getFilePath);
 
         return [
-            'message'=>$getFilePath
+            'message'=> 'File deleted successfully',
         ];
     }
 
@@ -269,8 +269,9 @@ class TaskController extends Controller
         $task = Task::where('id', $id)->first();
 
         $getFilePath = public_path() . "/" . $task->task_filePath;
-        Storage::deleteDirectory($getFilePath);
+        File::deleteDirectory($getFilePath);
         $task->delete();
+
         return [
             'message'=>'Task deleted.'
         ];
