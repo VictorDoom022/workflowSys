@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
+use App\Models\Files;
+use File;
 
 class TaskController extends Controller
 {
@@ -89,6 +91,25 @@ class TaskController extends Controller
                 'message'=>'Please create new task in your own task list.'
             ];
         }
+    }
+
+    public function getTaskFilesByPath(Request $request){
+
+        //variables that uses $request without validation
+        $filePath = $request->filePath;
+        $files = File::files(public_path(). '/' .$filePath);
+
+        $fileDataArray = [];
+        for($i=0; $i < count($files); $i++){
+            $fileData = array(
+                "fileName" => $files[$i]->getFileName(),
+                "fileSize" => $files[$i]->getSize(),
+                "filePath" => $files[$i]->getPath(),
+            );
+            $fileDataArray[$i] = $fileData;
+        }
+
+        return response($fileDataArray, 200);
     }
 
     public function getTaskByTaskListID(Request $request){
