@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('task/deleteTaskByTaskID/{id}', [App\Http\Controllers\TaskController::class, 'deleteTaskByTaskID']);
     Route::post('task/getTaskFilesByPath', [App\Http\Controllers\TaskController::class, 'getTaskFilesByPath']);
     Route::post('task/downloadFileByPath', [App\Http\Controllers\TaskController::class, 'downloadFileByPath']);
+    Route::post('task/deleteFileByPath', [App\Http\Controllers\TaskController::class, 'deleteFileByPath']);
     //Todo routes
     Route::post('todo/createTodo', [App\Http\Controllers\ToDoController::class, 'createTodo']);
     Route::post('todo/getTodoByID', [App\Http\Controllers\ToDoController::class, 'getTodoByID']);

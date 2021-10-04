@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
-use App\Models\Files;
+use Illuminate\Support\Facades\Storage;
 use File;
 
 class TaskController extends Controller
@@ -121,6 +121,20 @@ class TaskController extends Controller
         $getFilePath = public_path() . "/" . $filePath . "/" . $fileName;
 
         return response()->download($getFilePath, 200);
+    }
+
+    public function deleteFileByPath(Request $request){
+        //variables that uses $request without validation
+        $fileName = $request->fileName;
+        $filePath = $request->filePath;
+
+        $getFilePath = public_path() . "/" . $filePath . "/" . $fileName;
+
+        Storage::delete($getFilePath);
+
+        return [
+            'message'=>$getFilePath
+        ];
     }
 
     public function getTaskByTaskListID(Request $request){
@@ -252,8 +266,11 @@ class TaskController extends Controller
 
     public function deleteTaskByTaskID($id){
         
-        $task = Task::where('id', $id)->delete();
+        $task = Task::where('id', $id)->first();
 
+        $getFilePath = public_path() . "/" . $task->task_filePath;
+        Storage::deleteDirectory($getFilePath);
+        $task->delete();
         return [
             'message'=>'Task deleted.'
         ];
