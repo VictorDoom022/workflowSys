@@ -170,8 +170,10 @@ export default {
             formData.append('taskColor', this.taskColor)
             formData.append('taskPriority', this.taskPriority)
 
-            for(var i = 0; i < this.taskFiles.length; i++){
-                formData.append('taskFiles[]', this.taskFiles[i])
+            if(this.taskFiles != null){
+                for(var i = 0; i < this.taskFiles.length; i++){
+                    formData.append('taskFiles[]', this.taskFiles[i])
+                }
             }
 
             Vue.axios.post(
