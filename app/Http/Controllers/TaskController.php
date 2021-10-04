@@ -268,8 +268,10 @@ class TaskController extends Controller
         
         $task = Task::where('id', $id)->first();
 
-        $getFilePath = public_path() . "/" . $task->task_filePath;
-        File::deleteDirectory($getFilePath);
+        if($task->task_filePath != null){
+            $getFilePath = public_path() . "/" . $task->task_filePath;
+            File::deleteDirectory($getFilePath);
+        }
         $task->delete();
 
         return [
