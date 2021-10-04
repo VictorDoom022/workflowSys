@@ -72,6 +72,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label>Attach Files</label>
+                                        <input class="form-control form-control-sm"  type="file" @change="onFileChange" multiple>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12 mb-2 border-top"></div>
 
                                 <h1>Extras</h1>
@@ -126,6 +133,7 @@ export default {
             taskPriority: 2,
             taskStartDate: '',
             taskDueDate: '',
+            taskFiles: null,
             editor: ClassicEditor,
         }
     },
@@ -144,28 +152,38 @@ export default {
             }
             this.$router.push({ name: 'TaskList', params: { taskListPageData: JSON.stringify(jsonPageData) }})
         },
+        onFileChange(e){
+            this.taskFiles = e.target.files
+            console.log(this.taskFiles)
+        },
         createTask(){
-            Vue.axios({
-                url: '/task/createTask',
-                method: 'POST',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                data: {
-                    userID : loggedInUserData.state.userData['user'].id,
-                    taskListID : this.taskListID,
-                    taskTeamID : this.teamID,
-                    taskName : this.taskName,
-                    taskDesc : this.taskDesc,
-                    taskDetailedDesc : this.taskDetailedDesc,
-                    taskStartDate : this.taskStartDate.length == 0 ? 'null' : this.taskStartDate,
-                    taskDueDate : this.taskDueDate.length == 0 ? 'null' : this.taskDueDate,
-                    taskStatusMsg : this.taskStatusMsg,
-                    taskColor : this.taskColor,
-                    taskPriority : this.taskPriority,
-                },
-            }).then((response) => {
+            let formData = new FormData()
+            formData.append('userID', loggedInUserData.state.userData['user'].id)
+            formData.append('taskListID', this.taskListID)
+            formData.append('taskTeamID', this.teamID)
+            formData.append('taskName', this.taskName)
+            formData.append('taskDesc', this.taskDesc)
+            formData.append('taskDetailedDesc', this.taskDetailedDesc)
+            formData.append('taskStartDate', this.taskStartDate.length == 0 ? 'null' : this.taskStartDate)
+            formData.append('taskDueDate', this.taskDueDate.length == 0 ? 'null' : this.taskDueDate)
+            formData.append('taskStatusMsg', this.taskStatusMsg)
+            formData.append('taskColor', this.taskColor)
+            formData.append('taskPriority', this.taskPriority)
+
+            for(var i = 0; i < this.taskFiles.length; i++){
+                formData.append('taskFiles[]', this.taskFiles[i])
+            }
+
+            Vue.axios.post(
+                '/task/createTask', 
+                formData ,
+                {
+                    headers: {
+                        Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }
+            ).then((response) => {
                 this.toastMessage(response)
                 this.$router.push({ name: 'TaskList', params: { teamID: this.teamID, taskListID: this.taskListID }})
             })
