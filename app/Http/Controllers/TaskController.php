@@ -112,6 +112,17 @@ class TaskController extends Controller
         return response($fileDataArray, 200);
     }
 
+    public function downloadFileByPath(Request $request){
+
+        //variables that uses $request without validation
+        $fileName = $request->fileName;
+        $filePath = $request->filePath;
+        
+        $getFilePath = public_path() . "/" . $filePath . "/" . $fileName;
+
+        return response()->download($getFilePath, 200);
+    }
+
     public function getTaskByTaskListID(Request $request){
 
         //variables that uses $request without validation
