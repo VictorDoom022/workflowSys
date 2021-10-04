@@ -74,15 +74,12 @@ class TaskController extends Controller
                     $taskFiles = $file->getClientOriginalName();
                     $filePath = 'upload/taskFiles/' . $task->id;
                     $fullFilePath = $file->move(public_path($filePath), $taskFiles);
+
+                    // save the task's file dir into task_filePath
+                    $task->task_filePath = $filePath;
+                    $task->save();
                 }
-            }else{
-                return [
-                    'message'=>'No file'
-                ];
             }
-            
-            $task->task_filePath = $filePath;
-            $task->save();
 
             return [
                 'message'=>'Task created.'
