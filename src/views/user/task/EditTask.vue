@@ -85,7 +85,13 @@
                                     <div class="list-group mb-3">
                                         <label>Attached Files</label>
                                         <div v-for="(file, index) in taskFileInfo" :key="index">
-                                            <a @click="downloadFile(file.fileName)" class="list-group-item list-group-item-action" href="#">{{ file.fileName }}</a>
+                                            <div class="list-group-item list-group-item-action">
+                                                <a @click="downloadFile(file.fileName)" class="" href="#">
+                                                    {{ file.fileName }}
+                                                </a>
+                                                <span @click="removeFile(file.fileName)" class="badge bg-danger rounded-pill"><b-icon icon="x" aria-hidden="true"></b-icon></span>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -271,6 +277,23 @@ export default {
                 link.setAttribute('download', fileName);
                 document.body.appendChild(link);
                 link.click();
+            })
+        },
+        removeFile(fileName){
+            Vue.axios({
+                url: '/task/deleteFileByPath',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    fileName : fileName,
+                    filePath : this.taskFilePath,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.fetchTaskData()
             })
         },
         checkAllowToEdit(){
