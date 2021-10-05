@@ -17,6 +17,7 @@ import TodoList from '../views/user/todos/TodoList.vue'
 import CreateTodo from '../views/user/todos/CreateTodo.vue'
 import UserProfile from '../views/user/profile/UserProfile.vue'
 import EditTodo from '../views/user/todos/EditTodo.vue'
+import DownloadTaskFile from '../views/misc/DownloadTaskFile.vue'
 import Error404 from '../views/Error404.vue'
 
 Vue.use(VueRouter)
@@ -116,6 +117,12 @@ const routes = [
     path: '/userProfile',
     name: 'UserProfile',
     component: UserProfile,
+  },
+  {
+    path: '/downloadTaskFile/:fileName/:taskFilePath/:userToken',
+    name: 'DownloadTaskFile',
+    component: DownloadTaskFile,
+    props: true,
   },
   {
     path: '/:catchAll(.*)',
