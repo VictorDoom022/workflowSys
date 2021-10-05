@@ -9,36 +9,47 @@ import 'package:workflow_sys/model/Task.dart';
 
 import 'miscController.dart';
 
-Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority,String taskStartDate, String taskDueDate) async {
+Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority,String taskStartDate, String taskDueDate, List<String> attachedFilePaths) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/task/createTask';
   Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      body: {
-        'userID' : userID.toString(),
-        'taskListID' : taskListID.toString(),
-        'taskTeamID' : taskTeamID.toString(),
-        'taskName' : taskName,
-        'taskDesc' : taskDesc,
-        'taskDetailedDesc': '', // flutter does not support rich text editor
-        'taskStartDate': taskStartDate,
-        'taskDueDate' : taskDueDate,
-        'taskStatusMsg' : taskStatusMsg,
-        'taskColor' : taskColor.toString(),
-        'taskPriority' : taskPriority.toString(),
-      },
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
-      }
-  );
+  Map<String, String> headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer " + token
+  };
+
+  var request = http.MultipartRequest('Post', url);
+  request.headers.addAll(headers);
+  request.fields['userID'] = userID.toString();
+  request.fields['taskListID'] = taskListID.toString();
+  request.fields['taskTeamID'] = taskTeamID.toString();
+  request.fields['taskName'] = taskName;
+  request.fields['taskDesc'] = taskDesc;
+  request.fields['taskDetailedDesc'] = ''; // flutter does not support rich text editor
+  request.fields['taskStartDate'] = taskStartDate;
+  request.fields['taskDueDate'] = taskDueDate;
+  request.fields['taskStatusMsg'] = taskStatusMsg;
+  request.fields['taskColor'] = taskColor.toString();
+  request.fields['taskPriority'] = taskPriority.toString();
+  for(int i=0; i < attachedFilePaths.length; i++){
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'taskFiles[]',
+          attachedFilePaths[i]
+      )
+    );
+  }
+
+  var response = await request.send();
 
   if(response.statusCode == 200){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    response.stream.transform(utf8.decoder).listen((value) {
+      String messageText = convertResponseMessage(value);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
+    });
   }
 }
 

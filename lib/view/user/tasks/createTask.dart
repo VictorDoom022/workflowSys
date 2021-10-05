@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -32,6 +34,7 @@ class _createTaskState extends State<createTask> {
   DateTime taskStartDate, taskDueDate;
   List<String> colorList = ['Default', 'Blue', 'Red', 'Yellow', 'Green', 'Grey', 'Black'];
   List<String> priorityList = ['Very Low', 'Low', 'Medium (Default)', 'High', 'Very High'];
+  List<String> attachedFilePaths = [];
   String selectedColor = 'Default';
   String selectedPriority = 'Medium (Default)';
 
@@ -123,6 +126,27 @@ class _createTaskState extends State<createTask> {
                       decoration: textFieldInputDecoration,
                     ),
                   ),
+                  Divider(),
+                  TaskItem(
+                    itemTitle: 'Attach Files',
+                    itemWidget: TextButton(
+                      child: Text('Select File'),
+                      onPressed: () async {
+                        FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                            allowMultiple: true
+                        );
+
+                        if(filePickerResult != null){
+                          List<File> fileList = filePickerResult.paths.map((e) => File(e)).toList();
+                          for(int i=0; i<fileList.length; i++){
+                            setState(() {
+                              attachedFilePaths.add(fileList[i].path);
+                            });
+                          }
+                        }
+                      },
+                    ),
+                  )
                 ],
               ),
               TaskFormCard(
@@ -197,7 +221,7 @@ class _createTaskState extends State<createTask> {
                     int taskColor = colorList.indexOf(selectedColor);
                     int taskPriority = priorityList.indexOf(selectedPriority);
 
-                    createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, taskColor, taskPriority ,startDate, dueDate).then((value) {
+                    createNewTask(context, taskListID, teamID, taskNameController.text, taskDescController.text, taskStatusController.text, taskColor, taskPriority ,startDate, dueDate, attachedFilePaths).then((value) {
                       Navigator.of(context).pop();
                       taskNameController.clear();
                       taskDescController.clear();
