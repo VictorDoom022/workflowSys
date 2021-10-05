@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +48,7 @@ class _taskDetailState extends State<taskDetail> {
   String taskAssignedDate;
   List<String> taskAssignedUserIDList;
   bool allowUserEdit = true;
+  List<String> attachedFilePaths = [];
   List<FileReceiver> taskFileReceiver = [];
   String taskFilePath = '';
 
@@ -295,6 +298,42 @@ class _taskDetailState extends State<taskDetail> {
                       ),
                     ),
                     Divider(),
+                    TaskItem(
+                      itemTitle: 'Attach Files',
+                      itemWidget: Row(
+                        children: [
+                          Expanded(
+                            flex: 6,
+                            child: TextButton(
+                              child: Text('Select File'),
+                              onPressed: () async {
+                                FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                                    allowMultiple: true
+                                );
+
+                                if(filePickerResult != null){
+                                  List<File> fileList = filePickerResult.paths.map((e) => File(e)).toList();
+                                  for(int i=0; i<fileList.length; i++){
+                                    setState(() {
+                                      attachedFilePaths.add(fileList[i].path);
+                                    });
+                                  }
+                                }else{
+                                  setState(() {
+                                    attachedFilePaths = [];
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: Text('Attached Files (' + attachedFilePaths.length.toString() + ')'),
+                          )
+                        ],
+                      ),
+                    ),
+                    Divider(),
                     taskFilePath != null ? TaskItem(
                       itemTitle: 'Attached Files',
                       itemWidget: ConstrainedBox(
@@ -502,7 +541,7 @@ class _taskDetailState extends State<taskDetail> {
                       int taskColor = colorList.indexOf(selectedColor);
                       int taskPriority = priorityList.indexOf(selectedPriority);
 
-                      updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, taskColor, taskPriority, startDate, dueDate).then((value) {
+                      updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, taskColor, taskPriority, startDate, dueDate, attachedFilePaths).then((value) {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       });

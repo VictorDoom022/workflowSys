@@ -110,32 +110,43 @@ Future<Task> getTaskByID(BuildContext context, int taskID) async {
   }
 }
 
-Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority, String taskStartDate, String taskDueDate) async {
+Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority, String taskStartDate, String taskDueDate, List<String> attachedFilePaths) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/updateTask';
   Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      body: {
-        'taskID' : taskID.toString(),
-        'taskName' : taskName,
-        'taskDesc' : taskDesc,
-        'taskStartDate': taskStartDate,
-        'taskDueDate' : taskDueDate,
-        'taskStatusMsg' : taskStatusMsg,
-        'taskColor' : taskColor.toString(),
-        'taskPriority' : taskPriority.toString(),
-      },
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
-      }
-  );
+  Map<String, String> headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer " + token
+  };
+
+  var request = http.MultipartRequest('Post', url);
+  request.headers.addAll(headers);
+  request.fields['taskID'] = taskID.toString();
+  request.fields['taskName'] = taskName;
+  request.fields['taskDesc'] = taskDesc;
+  request.fields['taskStartDate'] = taskStartDate;
+  request.fields['taskDueDate'] = taskDueDate;
+  request.fields['taskStatusMsg'] = taskStatusMsg;
+  request.fields['taskColor'] = taskColor.toString();
+  request.fields['taskPriority'] = taskPriority.toString();
+  for(int i=0; i < attachedFilePaths.length; i++){
+    request.files.add(
+        await http.MultipartFile.fromPath(
+            'taskFiles[]',
+            attachedFilePaths[i]
+        )
+    );
+  }
+
+  var response = await request.send();
 
   if(response.statusCode == 200){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+    response.stream.transform(utf8.decoder).listen((value) {
+      String messageText = convertResponseMessage(value);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
+    });
   }
 }
 
