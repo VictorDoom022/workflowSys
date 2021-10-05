@@ -14,6 +14,7 @@ class Task {
   int taskStatus;
   int taskColor;
   int taskPriority;
+  String taskFilePath;
   String createdAt;
   String updatedAt;
 
@@ -33,6 +34,7 @@ class Task {
         this.taskStatus,
         this.taskColor,
         this.taskPriority,
+        this.taskFilePath,
         this.createdAt,
         this.updatedAt});
 
@@ -52,6 +54,7 @@ class Task {
     taskStatus = json['task_status'];
     taskColor = json['task_color'];
     taskPriority = json['task_priority'];
+    taskFilePath = json['task_filePath'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -73,6 +76,7 @@ class Task {
     data['task_status'] = this.taskStatus;
     data['task_color'] = this.taskColor;
     data['task_priority'] = this.taskPriority;
+    data['task_filePath'] = this.taskFilePath;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

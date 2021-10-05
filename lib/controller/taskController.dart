@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
+import 'package:workflow_sys/model/FileReceiver.dart';
 import 'package:workflow_sys/model/Task.dart';
 
 import 'miscController.dart';
@@ -259,5 +260,33 @@ Future<void> deleteTask(BuildContext context, int taskID) async {
 
   if(response.statusCode == 200){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
+
+Future<List<FileReceiver>> fetchTaskFiles(String filePath) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/task/getTaskFilesByPath';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'filePath' : filePath,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  List<FileReceiver> listFileReceiver = [];
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    listFileReceiver = (jsonRes as List).map((e) => FileReceiver.fromJson(e)).toList();
+
+    return listFileReceiver;
+  }else{
+    return listFileReceiver;
   }
 }

@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
+import 'package:workflow_sys/model/FileReceiver.dart';
 import 'package:workflow_sys/model/Task.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/view/misc/TaskForm.dart';
@@ -45,6 +46,8 @@ class _taskDetailState extends State<taskDetail> {
   String taskAssignedDate;
   List<String> taskAssignedUserIDList;
   bool allowUserEdit = true;
+  List<FileReceiver> taskFileReceiver = [];
+  String taskFilePath = '';
 
   List<String> colorList = ['Default', 'Blue', 'Red', 'Yellow', 'Green', 'Grey', 'Black'];
   List<String> priorityList = ['Very Low', 'Low', 'Medium (Default)', 'High', 'Very High'];
@@ -64,6 +67,11 @@ class _taskDetailState extends State<taskDetail> {
       taskDescController.text = value.taskDesc;
       taskStatusMsgController.text = value.taskStatusMsg;
       taskDetailedDesc = value.taskDetailedDesc;
+      taskFilePath = value.taskFilePath;
+
+      if(taskFilePath != null){
+        setTaskFileData();
+      }
 
       setState(() {
         selectedColor = colorList[value.taskColor];
@@ -88,6 +96,13 @@ class _taskDetailState extends State<taskDetail> {
 
       checkToAllowEdit(value);
       checkTaskStatus(value);
+    });
+  }
+
+  void setTaskFileData() async {
+    List<FileReceiver> fileReceiverList = await fetchTaskFiles(taskFilePath);
+    setState(() {
+      taskFileReceiver = fileReceiverList;
     });
   }
 
@@ -280,6 +295,29 @@ class _taskDetailState extends State<taskDetail> {
                       ),
                     ),
                     Divider(),
+                    taskFilePath != null ? TaskItem(
+                      itemTitle: 'Attached Files',
+                      itemWidget: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 10,
+                          maxHeight: 250,
+                          minWidth: double.infinity,
+                        ),
+                        child: taskFileReceiver.length !=0 ? SingleChildScrollView(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: taskFileReceiver.length,
+                            itemBuilder: (context, index){
+                              return TextButton(
+                                child: Text(taskFileReceiver[index].fileName),
+                              );
+                            },
+                          ),
+                        ) : Text('No Files Attached'),
+                      ),
+                    ) : Container(),
+                    taskFilePath != null ? Divider() : Container(),
                     TaskItem(
                       itemTitle: 'Assign Member',
                       itemWidget: Row(
