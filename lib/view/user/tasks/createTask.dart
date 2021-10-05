@@ -129,22 +129,37 @@ class _createTaskState extends State<createTask> {
                   Divider(),
                   TaskItem(
                     itemTitle: 'Attach Files',
-                    itemWidget: TextButton(
-                      child: Text('Select File'),
-                      onPressed: () async {
-                        FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
-                            allowMultiple: true
-                        );
+                    itemWidget: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: TextButton(
+                            child: Text('Select File'),
+                            onPressed: () async {
+                              FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                                  allowMultiple: true
+                              );
 
-                        if(filePickerResult != null){
-                          List<File> fileList = filePickerResult.paths.map((e) => File(e)).toList();
-                          for(int i=0; i<fileList.length; i++){
-                            setState(() {
-                              attachedFilePaths.add(fileList[i].path);
-                            });
-                          }
-                        }
-                      },
+                              if(filePickerResult != null){
+                                List<File> fileList = filePickerResult.paths.map((e) => File(e)).toList();
+                                for(int i=0; i<fileList.length; i++){
+                                  setState(() {
+                                    attachedFilePaths.add(fileList[i].path);
+                                  });
+                                }
+                              }else{
+                                setState(() {
+                                  attachedFilePaths = [];
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: Text('Attached Files (' + attachedFilePaths.length.toString() + ')'),
+                        )
+                      ],
                     ),
                   )
                 ],
