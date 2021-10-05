@@ -311,6 +311,9 @@ class _taskDetailState extends State<taskDetail> {
                             itemBuilder: (context, index){
                               return TextButton(
                                 child: Text(taskFileReceiver[index].fileName),
+                                onPressed: (){
+                                  downloadTaskFile(taskFileReceiver[index].fileName, taskFilePath);
+                                },
                               );
                             },
                           ),

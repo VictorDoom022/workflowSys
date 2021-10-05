@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -289,4 +289,20 @@ Future<List<FileReceiver>> fetchTaskFiles(String filePath) async {
   }else{
     return listFileReceiver;
   }
+}
+
+Future<void> downloadTaskFile(String fileName, String filePath) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String encodeFileName = Uri.encodeComponent(fileName);
+  String encodeFilePath = Uri.encodeComponent(filePath);
+  String fullLink = '"$encodeFileName"/"$encodeFilePath"/"$token"';
+  String newUrl = webServerURL + '/downloadTaskFile/$fullLink';
+
+  /*
+    since windows & macOS does not support flutter_downloader plugin
+    use web version to download file instead
+  */
+  await launch(newUrl);
 }

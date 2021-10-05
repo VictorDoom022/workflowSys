@@ -2,3 +2,4 @@
 String serverIP = "192.168.0.181";
 String apiURL = "http://$serverIP:8000/api";
 String serverURL = "http://$serverIP:8000";
+String webServerURL = "http://$serverIP:8080";
