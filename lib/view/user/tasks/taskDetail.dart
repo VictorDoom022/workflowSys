@@ -351,7 +351,7 @@ class _taskDetailState extends State<taskDetail> {
                               return TextButton(
                                 child: Text(taskFileReceiver[index].fileName),
                                 onPressed: (){
-                                  downloadTaskFile(taskFileReceiver[index].fileName, taskFilePath);
+                                  showFileOptionDialog(taskFileReceiver[index].fileName);
                                 },
                               );
                             },
@@ -556,4 +556,49 @@ class _taskDetailState extends State<taskDetail> {
         ),
     );
   }
+
+  void showFileOptionDialog(String fileName){
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_){
+          return CupertinoActionSheet(
+            title: Text('Choose an action'),
+            actions: [
+              CupertinoActionSheetAction(
+                child: Text('Download'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  downloadTaskFile(fileName, taskFilePath);
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text('Remove file'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
+                  removeAttachedTaskFile(context, fileName, taskFilePath).then((value) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    getTaskData();
+                  });
+                },
+              )
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.red
+                ),
+              ),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              },
+            ),
+          );
+        },
+    );
+  }
+
 }

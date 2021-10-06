@@ -317,3 +317,26 @@ Future<void> downloadTaskFile(String fileName, String filePath) async {
   */
   await launch(newUrl);
 }
+
+Future<void> removeAttachedTaskFile(BuildContext context, String fileName, String taskFilePath) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/task/deleteFileByPath';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'fileName' : fileName,
+        'filePath' : taskFilePath,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
