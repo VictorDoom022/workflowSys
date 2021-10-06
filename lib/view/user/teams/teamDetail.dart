@@ -168,6 +168,7 @@ class teamItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             onTap: (){
+              HapticFeedback.lightImpact();
               Navigator.push(
                   context,
                   CupertinoPageRoute(

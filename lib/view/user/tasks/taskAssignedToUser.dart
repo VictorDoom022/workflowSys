@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
@@ -123,6 +124,7 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
                                 priority: snapshot.data[index].taskPriority,
                               ),
                               onTap: (){
+                                HapticFeedback.lightImpact();
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
@@ -122,6 +123,7 @@ class _taskCompletedState extends State<taskCompleted> {
                                 priority: snapshot.data[index].taskPriority,
                               ),
                               onTap: (){
+                                HapticFeedback.lightImpact();
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
