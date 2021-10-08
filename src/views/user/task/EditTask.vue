@@ -153,6 +153,24 @@
                                 </div>
                             </div>
                         </form>
+
+                        <div class="row">
+                            <h1>Comments</h1>
+                            
+                            <div style="max-height: 500px; overflow-y:auto">
+                                <div v-for="comment in commentData" :key="comment.id" >
+                                    <CommentItem :commentData="comment" :userData="userData" :userDetailData="userDetailData" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 px-0 mb-2">
+                                <div class="input-group">
+                                    <input v-model="commentText" type="text" class="form-control">
+                                    <button @click="postComment()" class="input-group-text">Post</button>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </main>
             </div>
@@ -170,12 +188,13 @@ import UserSideNav from '../../../components/user/UserSideNav.vue'
 import UserTopNav from '../../../components/user/UserTopNav.vue'
 import Loading from '../../../components/Loading.vue'
 import SelectMember from '../../../components/user/SelectMember.vue'
+import CommentItem from '../../../components/user/CommentItem.vue'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default {
     // taskPageData contains - groupID, teamID, taskListID, taskID
     props: ['taskPageData'],
-    components: { UserSideNav, UserTopNav, Loading, SelectMember },
+    components: { UserSideNav, UserTopNav, Loading, SelectMember, CommentItem },
     data() {
         return {
             pageDataParsed: [],
@@ -206,6 +225,8 @@ export default {
             taskFilePath: '',
             taskFileInfo: null,
             editor: ClassicEditor,
+            commentData: [],
+            commentText: '',
         }
     },
     mounted() {
@@ -216,6 +237,7 @@ export default {
         this.taskID = this.pageDataParsed.taskID
         this.fetchTaskData()
         this.fetchUserData()
+        this.fetchCommentData()
     },
     methods: {
         fetchTaskData(){
@@ -254,6 +276,21 @@ export default {
                 this.fetchFiles()
             }
             this.checkAllowToEdit()
+        },
+        fetchCommentData(){
+            Vue.axios({
+                url: '/comment/getCommentByTaskID',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    taskID : this.taskID,
+                },
+            }).then((response) => {
+                this.commentData = response.data
+            })
         },
         fetchFiles(){
             Vue.axios({
@@ -472,6 +509,27 @@ export default {
                 this.toastMessage(response)
                 this.fetchTaskData()
             })
+        },
+        postComment(){
+            if(this.commentText != ''){
+                Vue.axios({
+                    url: '/comment/createComment',
+                    method: 'POST',
+                    headers: {
+                        Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                        'Content-Type': 'application/json',
+                    },
+                    data: {
+                        userID : loggedInUserData.state.userData['user'].id,
+                        taskID : this.taskID,
+                        commentDetails : this.commentText,
+                    }
+                }).then((response) => {
+                    this.toastMessage(response)
+                    this.fetchCommentData()
+                    this.commentText = ''
+                })
+            }
         },
         toastMessage(response) {
             Vue.swal.fire({
