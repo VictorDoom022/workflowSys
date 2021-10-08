@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\TaskList;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -288,6 +289,8 @@ class TaskController extends Controller
             File::deleteDirectory($getFilePath);
         }
         $task->delete();
+
+        $comment = Comment::where('comment_taskID', $id)->delete();
 
         return [
             'message'=>'Task deleted.'

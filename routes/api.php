@@ -78,4 +78,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('todo/deleteTodoById/{id}', [App\Http\Controllers\ToDoController::class, 'deleteTodoById']);
     Route::post('todo/changeTodoStatus', [App\Http\Controllers\ToDoController::class, 'changeTodoStatus']);
     Route::post('todo/getToDoArchivedByUserID', [App\Http\Controllers\ToDoController::class, 'getToDoArchivedByUserID']);
+    //Comment routes
+    Route::post('comment/createComment', [App\Http\Controllers\CommentController::class, 'createComment']);
+    Route::post('comment/getCommentByTaskID', [App\Http\Controllers\CommentController::class, 'getCommentByTaskID']);
 });

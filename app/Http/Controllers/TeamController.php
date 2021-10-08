@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\TaskList;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -208,7 +209,9 @@ class TeamController extends Controller
         // delete all task by taskListID
         // loop the stored taskListIDArr to delete task by id 
         for($i=0; $i<count($taskListIDArr); $i++){
-            $task = Task::where('task_taskListID', $taskListIDArr[$i])->delete();
+            $task = Task::where('task_taskListID', $taskListIDArr[$i])->first();
+            $comment = Comment::where('comment_taskID', $task->id)->delete();
+            $task->delete();
         }
         // delete the task list finally
         $taskList = TaskList::where('taskList_teamID', $teamID)->delete();
