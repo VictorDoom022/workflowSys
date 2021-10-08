@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
+import 'package:workflow_sys/model/Comment.dart';
 import 'package:workflow_sys/model/FileReceiver.dart';
 import 'package:workflow_sys/model/Task.dart';
 
@@ -338,5 +339,33 @@ Future<void> removeAttachedTaskFile(BuildContext context, String fileName, Strin
 
   if(response.statusCode == 200){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
+
+Future <List<Comment>> getTaskComments(int taskID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/comment/getCommentByTaskID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'taskID' : taskID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  List<Comment> commentList = [];
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    commentList = (jsonRes as List).map((e) => Comment.fromJson(e)).toList();
+
+    return commentList;
+  }else{
+    return commentList;
   }
 }
