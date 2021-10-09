@@ -534,4 +534,18 @@ class GroupController extends Controller
 
         $team->save();
     }
+
+    public function generateNewGroupJoinCode(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+
+        $group = Group::where('id', $groupID)->first();
+        $group->group_joinCode = str_random(10);
+        $group->save();
+
+        return [
+            'message'=>'New code generated.'
+        ];
+    }
 }
