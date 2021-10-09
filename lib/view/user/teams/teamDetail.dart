@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
+import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/Group.dart';
@@ -163,9 +164,27 @@ class teamItem extends StatelessWidget {
           elevation: 8.0,
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            title: Text(
-                convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List",
-              textAlign: TextAlign.center,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 45.0,
+                  width: 45.0,
+                  decoration: new BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: new BorderRadius.all(Radius.circular(50))),
+                  child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(serverURL + '/' + userReceiver.userDetail[index].userDetailProfilePictureDir)
+                  ),
+                ),
+                SizedBox(width: 5),
+                Text(
+                    convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List",
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
             onTap: (){
               HapticFeedback.lightImpact();
