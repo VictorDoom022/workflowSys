@@ -25,7 +25,7 @@
                             <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                                     <div class="card-body">
-                                        <h2 class="card-title align-middle text-center">{{ taskList.taskList_userID }}</h2>
+                                        <h2 class="card-title align-middle text-center">{{ taskList.taskList_userID.user.name }}</h2>
                                     </div>
                                 </div>
                             </b-col> 
@@ -61,7 +61,7 @@ export default {
             userDetailData: [],
             teamDetail: [],
             taskListList: [],
-            newTaskListList: [],
+            taskListListForSearch: [],
             isLoading: true,
             searchTerm: '',
         }
@@ -111,12 +111,16 @@ export default {
             for(var i = 0; i < this.taskListList.length; i++) {
                 for(var j = 0; j < this.userData.length; j++) {
                     if(this.taskListList[i].taskList_userID == this.userData[j].id){
-                        // replace userID with user name
-                        this.taskListList[i].taskList_userID = this.userData[j].name
+                        // replace taskList_userID with userObject
+                        var userObject = {
+                            'user' : this.userData[j],
+                            'userDetail' : this.userDetailData[j],
+                        }
+                        this.taskListList[i].taskList_userID = userObject
                     }
                 }
             }
-            this.newTaskListList = this.taskListList
+            this.taskListListForSearch = this.taskListList
         },
         navigateBack(){
             this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
@@ -142,11 +146,11 @@ export default {
     },
     computed: {
         searchTaskList(){
-            return this.newTaskListList.filter((task) => {
+            return this.taskListListForSearch.filter((task) => {
                 if(this.searchTerm == ''){
-                    return task.taskList_userID
+                    return task.taskList_userID.user.name
                 }else{
-                    return task.taskList_userID.toLowerCase().includes(this.searchTerm.toLowerCase());
+                    return task.taskList_userID.user.name.toLowerCase().includes(this.searchTerm.toLowerCase());
                 }
             })
             
