@@ -109,7 +109,7 @@ export default {
         },
         replaceTaskListListData(){
             for(var i = 0; i < this.taskListList.length; i++) {
-                for(var j = i; j < this.userData.length; j++) {
+                for(var j = 0; j < this.userData.length; j++) {
                     if(this.taskListList[i].taskList_userID == this.userData[j].id){
                         // replace userID with user name
                         this.taskListList[i].taskList_userID = this.userData[j].name
