@@ -85,6 +85,14 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
             title: 'Admin section',
             tiles: [
               SettingsTile(
+                title: 'Generate new join code',
+                enabled: isAdmin,
+                iosChevron: null,
+                onPressed: (_){
+                  generateNewJoinCode();
+                },
+              ),
+              SettingsTile(
                 title: 'Rename group',
                 enabled: isAdmin,
                 iosChevron: null,
@@ -170,6 +178,13 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
             return selectMember(type: 3, userList: value, teamID: groupID);
           })
       );
+    });
+  }
+
+  void generateNewJoinCode(){
+    LoadingScreen.showLoadingScreen(context, groupSettingsScaffoldKey);
+    generateNewGroupJoinCode(context, groupID).then((value){
+      Navigator.of(context).pop();
     });
   }
 
