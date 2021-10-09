@@ -25,7 +25,14 @@
                             <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                                     <div class="card-body">
-                                        <h2 class="card-title align-middle text-center">{{ taskList.taskList_userID.user.name }}</h2>
+                                        <div class="row">
+                                            <div class="col-md-4 align-items-center text-center">
+                                                <img :src="'http://192.168.0.181:8000/' + taskList.taskList_userID.userDetail.userDetail_profilePictureDir" class="rounded-circle img-thumbnail" style="height: 90px; width: 90px" alt="profile-image">
+                                            </div>
+                                            <div class="col-md-8 text-center align-middle">
+                                                <h2 class="card-title pt-4">{{ taskList.taskList_userID.user.name }}</h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </b-col> 
