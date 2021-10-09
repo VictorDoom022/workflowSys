@@ -66,6 +66,8 @@
                                                     <div class="custom-control custom-switch">
                                                         <input class="joinCodeInputText" id="joinCode" type="text" :value="groupDetail.group_joinCode" readonly>
                                                         <b-icon @click="copyJoinCode()" class="mr-1 copyIcon" icon="clipboard"></b-icon>
+                                                        <button @click="generateNewJoinCode()" class="btn btn-outline-primary btn-sm">Generate new code</button>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -478,6 +480,22 @@ export default {
             testingCodeToCopy.select()
             // copy the grouo code from the input field
             document.execCommand('copy')
+        },
+        generateNewJoinCode(){
+            Vue.axios({
+                url: '/group/generateNewGroupJoinCode',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    groupID : this.groupID,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.fetchGroupDetail()
+            })
         }
     }
 }
