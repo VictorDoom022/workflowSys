@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/controller/taskController.dart';
@@ -23,6 +24,7 @@ class _taskCommentState extends State<taskComment> {
 
   _taskCommentState(this.taskID);
 
+  TextEditingController commentTextEditController = new TextEditingController();
   Future<List<Comment>> futureCommentList;
   UserReceiver userReceiver;
 
@@ -87,6 +89,41 @@ class _taskCommentState extends State<taskComment> {
             return Center(child: CupertinoActivityIndicator(radius: 12));
           }
         }
+      ),
+      bottomNavigationBar: Container(
+          padding: MediaQuery.of(context).viewInsets,
+          color: Colors.grey[300],
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    child: TextField(
+                      controller: commentTextEditController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Type a message',
+                      ),
+                    )
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                    Icons.send,
+                  color: Colors.blueAccent,
+                ),
+                onPressed: (){
+                  print(commentTextEditController.text);
+                  if(commentTextEditController.text != ''){
+                    sendTaskComment(context, taskID, commentTextEditController.text).then((value) {
+                      getComment();
+                    });
+                  }
+                },
+              )
+            ],
+          )
       ),
     );
   }

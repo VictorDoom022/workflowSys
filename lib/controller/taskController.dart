@@ -369,3 +369,28 @@ Future <List<Comment>> getTaskComments(int taskID) async {
     return commentList;
   }
 }
+
+Future<void> sendTaskComment(BuildContext context, int taskID, String commentText) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/comment/createComment';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userID' : userID.toString(),
+        'taskID' : taskID.toString(),
+        'commentDetails' : commentText,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}
