@@ -30,7 +30,7 @@
                                                 <img :src="'http://192.168.0.181:8000/' + taskList.taskList_userID.userDetail.userDetail_profilePictureDir" class="rounded-circle img-thumbnail" style="height: 90px; width: 90px" alt="profile-image">
                                             </div>
                                             <div class="col-md-8 text-center align-middle">
-                                                <h2 class="card-title pt-4">{{ taskList.taskList_userID.user.name }}</h2>
+                                                <h3 class="card-title pt-4">{{ taskList.taskList_userID.user.name }} Task List</h3>
                                             </div>
                                         </div>
                                     </div>
