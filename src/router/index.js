@@ -16,6 +16,7 @@ import TaskAssignedHistory from '../views/user/task/TaskAssignedHistory.vue'
 import TodoList from '../views/user/todos/TodoList.vue'
 import CreateTodo from '../views/user/todos/CreateTodo.vue'
 import UserProfile from '../views/user/profile/UserProfile.vue'
+import VisitorUserProfile from '../views/user/profile/VisitorUserProfile.vue'
 import EditTodo from '../views/user/todos/EditTodo.vue'
 import DownloadTaskFile from '../views/misc/DownloadTaskFile.vue'
 import Error404 from '../views/Error404.vue'
@@ -117,6 +118,12 @@ const routes = [
     path: '/userProfile',
     name: 'UserProfile',
     component: UserProfile,
+  },
+  {
+    path: '/userInfo/:id',
+    name: 'UserInfo',
+    component: VisitorUserProfile,
+    props: true,
   },
   {
     path: '/downloadTaskFile/:fileName/:taskFilePath/:userToken',

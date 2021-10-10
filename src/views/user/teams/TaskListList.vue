@@ -27,7 +27,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-4 align-items-center text-center">
-                                                <img :src="'http://192.168.0.181:8000/' + taskList.taskList_userID.userDetail.userDetail_profilePictureDir" class="rounded-circle img-thumbnail" style="height: 90px; width: 90px" alt="profile-image">
+                                                <img :src="'http://192.168.0.181:8000/' + taskList.taskList_userID.userDetail.userDetail_profilePictureDir" :id="'taskListID-'+taskList.id" class="rounded-circle img-thumbnail" style="height: 90px; width: 90px" alt="profile-image">
                                             </div>
                                             <div class="col-md-8 text-center align-middle">
                                                 <h3 class="card-title pt-4">{{ taskList.taskList_userID.user.name }} Task List</h3>
@@ -35,6 +35,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <b-tooltip :target="'taskListID-'+taskList.id" triggers="hover">
+                                    <p @click="navigateToUserInfo(taskList.taskList_userID.user.id)" class="text-decoration-underline mb-0" style="cursor:pointer;">View User Info</p>
+                                </b-tooltip>
                             </b-col> 
                         </b-row>
                     </div>
@@ -128,6 +132,9 @@ export default {
                 }
             }
             this.taskListListForSearch = this.taskListList
+        },
+        navigateToUserInfo(userID){
+            this.$router.push({ name: 'UserInfo', params: { userID: userID }})
         },
         navigateBack(){
             this.$router.push({ name: 'TeamList', params: { groupID: this.groupID }})
