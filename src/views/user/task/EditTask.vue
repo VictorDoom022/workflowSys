@@ -23,7 +23,7 @@
                                 <h1>Basic Task Info</h1>
 
                                 <div class="d-flex justify-content-center">
-                                    <p class="text-muted mb-1 mx-3">Created by: {{ convertUserIDToName(taskUserCreateID) }}</p>
+                                    <p class="text-muted mb-1 mx-3">Created by: <a @click="navigateToUserInfo(taskUserCreateID)" class="userNavLink text-muted" style="cursor:pointer !important;">{{ convertUserIDToName(taskUserCreateID) }}</a></p>
                                     <p class="text-muted mb-1 mx-3">Created on: {{ convertDBDateToString(taskData.created_at) }}</p>
                                     <p class="text-muted mb-1 mx-3">Last updated on: {{ convertDBDateToString(taskData.updated_at) }}</p>
                                 </div>
@@ -110,7 +110,10 @@
                                 <div class="col-md-6 mb-2 text-center">
                                     <h6 class="fw-bold mt-2">
                                         <span v-if="taskData.task_assignedMemberID">
-                                            Currently assigend to: {{ getLastAssigendUser(taskData.task_assignedMemberID) }}
+                                            Currently assigend to: 
+                                            <a @click="navigateToUserInfo(lastAssigendUserID)" class="userNavLink fw-bold" style="cursor:pointer !important;color: #212529">
+                                                {{ getLastAssigendUser(taskData.task_assignedMemberID) }}
+                                            </a>
                                         </span>
                                         <span v-if="!taskData.task_assignedMemberID">
                                             Not assigend
@@ -157,7 +160,7 @@
                         <div class="row">
                             <h1>Comments</h1>
                             
-                            <div style="max-height: 500px; overflow-y:auto">
+                            <div style="max-height: 500px; overflow-y:auto; overflow-x: hidden;">
                                 <div v-for="comment in commentData" :key="comment.id" >
                                     <CommentItem :commentData="comment" :userData="userData" :userDetailData="userDetailData" />
                                 </div>
@@ -227,6 +230,7 @@ export default {
             editor: ClassicEditor,
             commentData: [],
             commentText: '',
+            lastAssigendUserID: '',
         }
     },
     mounted() {
@@ -421,6 +425,7 @@ export default {
         },
         getLastAssigendUser(taskAssignUserList){
             var taskAssignUserListArr = taskAssignUserList.split(',')
+            this.lastAssigendUserID = taskAssignUserListArr[taskAssignUserListArr.length-1]
             // get last element of array
             return this.convertUserIDToName(taskAssignUserListArr[taskAssignUserListArr.length-1])
         },
@@ -541,6 +546,9 @@ export default {
                 icon: response.status == 200 ? 'success' : 'error',
                 title: response.data['message']
             })
+        },
+        navigateToUserInfo(userID){
+            this.$router.push({ name: 'UserInfo', params: { userID: userID }})
         },
         navigateBack(){
             var jsonPageData = {
