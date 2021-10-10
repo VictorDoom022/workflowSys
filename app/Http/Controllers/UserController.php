@@ -94,4 +94,14 @@ class UserController extends Controller
            'message' => 'Uploaded successfully',
         ];
     }
+
+    public function getUserProfilePictureByUserID(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
+        $userDetail = UserDetail::where('id', $userID)->first();
+
+        return response($userDetail->userDetail_profilePictureDir, 200);
+    }
 }
