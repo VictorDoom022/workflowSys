@@ -4,11 +4,15 @@
         <input type="text" v-model="searchTerm" class="form-control" placeholder="Search member...">
 
         <div class="my-3" v-if="userList.length">
-            <div v-for="user in searchUser" :key="user.id" v-bind:class="{ shadow: selectedUserID.includes(user.id) }" @click="selectUser(user.id)" class="card my-1">
+            <div v-for="user in searchUser" :key="user.id" v-bind:class="{ shadow: selectedUserID.includes(user.id) }" @click="selectUser(user.id)" :id="'userID-'+user.id" class="card my-1">
                 <div class="card-body">
                     <h5 class="card-title">{{ user.name }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
                 </div>
+
+                <b-tooltip :target="'userID-'+user.id" triggers="hover">
+                    <p @click="navigateToUserInfo(user.id)" class="mb-0" style="cursor:pointer;">View User Info</p>
+                </b-tooltip>
             </div>
         </div>
 
@@ -180,7 +184,10 @@ export default {
                 icon: response.status == 200 ? 'success' : 'error',
                 title: response.data['message']
             })
-      },
+        },
+        navigateToUserInfo(userID){
+            this.$router.push({ name: 'UserInfo', params: { userID: userID }})
+        },
     },
     computed: {
       searchUser(){
