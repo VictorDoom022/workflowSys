@@ -33,7 +33,7 @@ Future<UserReceiver> getAllUser(BuildContext context) async{
   }
 }
 
-Future<UserReceiverForSingleUser> getUserDetailByID() async {
+Future<UserReceiverForSingleUser> getCurrentLogInUserDetail() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
   int userID = sharedPreferences.getInt("UserID");
