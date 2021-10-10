@@ -60,6 +60,32 @@ Future<UserReceiverForSingleUser> getCurrentLogInUserDetail() async {
 
 }
 
+Future<UserReceiverForSingleUser> getUserDetailByID(int userID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/users/' + userID.toString();
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+
+    UserReceiverForSingleUser userReceiverForSingleUser = UserReceiverForSingleUser.fromJson(jsonRes);
+
+    return userReceiverForSingleUser;
+  }else{
+    return null;
+  }
+
+}
+
 void setUserStatus(BuildContext context, int id, String statusMsg) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String token = sharedPreferences.getString("UserToken");
