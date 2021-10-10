@@ -13,7 +13,7 @@
                             <span @click="navigateBack()" style="cursor:pointer">
                                 <b-icon class="mr-1" icon="caret-left-fill"></b-icon>
                             </span>
-                            Profile
+                            {{ user.name }}'s Profile
                         </h1>
                     </div>
 
