@@ -4,7 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
 import 'package:workflow_sys/controller/teamController.dart';
+import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/view/user/profile/userInfo.dart';
+import 'package:workflow_sys/controller/setupDir.dart';
 
 class selectMember extends StatefulWidget {
 
@@ -143,7 +146,45 @@ class _selectMemberState extends State<selectMember> {
                   });
                 }
             ) : ListTile(
-              title: Text(userList[index].name),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 45.0,
+                    width: 45.0,
+                    decoration: new BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: new BorderRadius.all(Radius.circular(50))),
+                    child: FutureBuilder(
+                      initialData: 'upload/userProfilePictures/userProfilePic.jpg',
+                      future: getUserProfilePictureByUserID(userList[index].id),
+                      builder: (context, snapshot){
+                        return CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(serverURL + '/' + snapshot.data)
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    userList[index].name,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (_){
+                        return userInfo(userID: userList[index].id);
+                    }
+                  )
+                );
+              },
             );
           }
       ) : Center(child: Text('No members')),

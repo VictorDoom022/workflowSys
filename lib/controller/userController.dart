@@ -153,3 +153,23 @@ Future uploadProfilePicture(BuildContext context, String filePath) async {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(messageText)));
   });
 }
+
+Future<String> getUserProfilePictureByUserID(int userID) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+
+  String stringUrl = apiURL + '/users/getUserProfilePictureByUserID';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userID' : userID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  return response.body;
+}
