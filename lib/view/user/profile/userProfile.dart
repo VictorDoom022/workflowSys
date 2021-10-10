@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/controller/userController.dart';
-import 'package:workflow_sys/model/User.dart';
-import 'package:workflow_sys/model/UserDetail.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
@@ -22,8 +20,7 @@ class _userProfileState extends State<userProfile> {
 
   GlobalKey<ScaffoldState> userProfileScaffoldKey = GlobalKey();
   GlobalKey<ScaffoldState> userProfileScaffoldKeyForLoadingScreen = GlobalKey();
-  User user;
-  UserDetail userDetail;
+
   String username = '';
   String profilePictureDir = serverURL + '/upload/userProfilePictures/userProfilePic.jpg';
   int accountEnabled;
