@@ -152,7 +152,7 @@
                                 <div class="submit col-md-12 d-grid">
                                     <button :disabled="!allowEdit" class="btn btn-primary" type="submit">Edit</button>
                                     <input :disabled="!allowEdit" @click="showToggleTaskStatusDialog()" type="button" class="btn btn-info my-2" value="Mark/Unmark as complete"/>
-                                    <input :disabled="!allowEdit" @click="showDeleteTaskDialog()" type="button" class="btn btn-danger my-2" value="Delete"/>
+                                    <input :disabled="!allowEdit" @click="showDeleteTaskDialog()" type="button" class="btn btn-danger mb-2" value="Delete"/>
                                 </div>
                             </div>
                         </form>

@@ -97,7 +97,7 @@
                                 </div>
 
                                 <div class="submit col-md-12 d-grid">
-                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <button class="btn btn-primary mb-3" type="submit">Save</button>
                                 </div>
                             </div>
                         </form>
