@@ -22,7 +22,7 @@
 
                     <div v-if="taskListList.length !=0" class="container-fluid">
                         <b-row>
-                            <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id)">
+                            <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id, taskList.taskList_userID.user.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                                     <div class="card-body">
                                         <div class="row">
@@ -149,8 +149,9 @@ export default {
             }
             this.$router.push({ name: 'TeamSettings', params: { teamPageData: JSON.stringify(jsonPageData) }})
         },
-        navigateToTaskList(taskListID){
+        navigateToTaskList(taskListID, userID){
             var jsonPageData = {
+                userID: userID,
                 groupID: this.groupID,
                 teamID: this.teamID,
                 taskListID: taskListID,
