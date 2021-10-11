@@ -133,7 +133,34 @@ class _selectMemberState extends State<selectMember> {
           itemCount: userList.length,
           itemBuilder: (context, index){
             return type != 3 ? CheckboxListTile(
-                title: Text(userList[index].name),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 45.0,
+                      width: 45.0,
+                      decoration: new BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: new BorderRadius.all(Radius.circular(50))),
+                      child: FutureBuilder(
+                        initialData: 'upload/userProfilePictures/userProfilePic.jpg',
+                        future: getUserProfilePictureByUserID(userList[index].id),
+                        builder: (context, snapshot){
+                          return CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage(serverURL + '/' + snapshot.data)
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      userList[index].name,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
                 value: isChecked[index],
                 onChanged: (bool){
                   setState(() {
