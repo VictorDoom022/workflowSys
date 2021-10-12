@@ -83,4 +83,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //Comment routes
     Route::post('comment/createComment', [App\Http\Controllers\CommentController::class, 'createComment']);
     Route::post('comment/getCommentByTaskID', [App\Http\Controllers\CommentController::class, 'getCommentByTaskID']);
+    //Chat routes
+    Route::post('chat/sendMessage', [App\Http\Controllers\ChatController::class, 'sendMessage']);
+    Route::post('chat/getUserChat', [App\Http\Controllers\ChatController::class, 'getUserChat']);
 });
