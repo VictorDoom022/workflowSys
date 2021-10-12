@@ -31,6 +31,10 @@
                                         </div>
                                         
                                         <div class="mt-4">
+                                            <button @click="navigateToChatList()" class="btn btn-md btn-success">
+                                                Chat <b-icon class="mr-1" icon="chat"></b-icon>
+                                            </button>
+
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="mt-3">
@@ -111,6 +115,9 @@ export default {
             }else{
                 return 0
             }
+        },
+        navigateToChatList(){
+            this.$router.push({ name: 'ChatList', params: { senderUserID:  loggedInUserData.state.userData['user'].id, receiverUserID: this.userID }})
         },
         navigateBack(){
             this.$router.go(-1)
