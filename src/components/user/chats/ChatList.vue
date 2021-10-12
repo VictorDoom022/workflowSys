@@ -61,6 +61,11 @@ export default {
         this.getReceiverUserDetails()
         this.getChatData()
     },
+    watch: {
+      receiverUserID: function(newUserID, oldUserID) {
+        this.getChatData()
+      }
+    },
     methods: {
         getChatData(){
             Vue.axios({

@@ -20,6 +20,12 @@
             Profile 
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'Chat' }" class="nav-link">
+            <b-icon class="mr-1" icon="chat-fill"></b-icon>  
+            Chats 
+          </router-link>
+        </li>
       </ul>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center text-center px-3 mt-4 mb-1 text-muted">

@@ -20,6 +20,7 @@ import VisitorUserProfile from '../views/user/profile/VisitorUserProfile.vue'
 import EditTodo from '../views/user/todos/EditTodo.vue'
 import DownloadTaskFile from '../views/misc/DownloadTaskFile.vue'
 import ChatList from '../components/user/chats/ChatList.vue'
+import UserChat from '../views/user/UserChat.vue'
 import Error404 from '../views/Error404.vue'
 
 Vue.use(VueRouter)
@@ -137,6 +138,11 @@ const routes = [
     name: 'ChatList',
     component: ChatList,
     props: true,
+  },
+  {
+    path: '/chats',
+    name: 'Chat',
+    component: UserChat,
   },
   {
     path: '/:catchAll(.*)',
