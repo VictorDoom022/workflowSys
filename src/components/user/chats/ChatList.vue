@@ -1,58 +1,57 @@
 <template>
-    <div class="content">
-		<div class="contact-profile">
-			<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-			<p>Harvey Specter</p>
-			<div class="social-media">
-				<i class="fa fa-facebook" aria-hidden="true"></i>
-				<i class="fa fa-twitter" aria-hidden="true"></i>
-				 <i class="fa fa-instagram" aria-hidden="true"></i>
-			</div>
-		</div>
-		<div class="messages">
-			<ul>
-				<li class="sent">
-					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-					<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-				</li>
-				<li class="replies">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p>When you're backed against the wall, break the god damn thing down.</p>
-				</li>
-				<li class="replies">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p>Excuses don't win championships.</p>
-				</li>
-				<li class="sent">
-					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-					<p>Oh yeah, did Michael Jordan tell you that?</p>
-				</li>
-				<li class="replies">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p>No, I told him that.</p>
-				</li>
-				<li class="replies">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p>What are your choices when someone puts a gun to your head?</p>
-				</li>
-				<li class="sent">
-					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-					<p>What are you talking about? You do what they say or they shoot you.</p>
-				</li>
-				<li class="replies">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-				</li>
-			</ul>
-		</div>
-		<div class="message-input">
-			<div class="wrap">
-			<input type="text" placeholder="Write your message..." />
-			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-			</div>
-		</div>
-	</div>
+    <div>
+        <Loading v-if="isLoading" />
+
+        <div v-if="!isLoading" class="content">
+            <div class="contact-profile">
+                <img :src="'http://192.168.0.181:8000/' + receiverUserDetailData.userDetail_profilePictureDir" alt="" />
+                <p>{{ receiverUserData.name }}</p>
+            </div>
+            <div class="messages">
+                <ul>
+                    <li class="sent">
+                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
+                    </li>
+                    <li class="replies">
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <p>When you're backed against the wall, break the god damn thing down.</p>
+                    </li>
+                    <li class="replies">
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <p>Excuses don't win championships.</p>
+                    </li>
+                    <li class="sent">
+                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                        <p>Oh yeah, did Michael Jordan tell you that?</p>
+                    </li>
+                    <li class="replies">
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <p>No, I told him that.</p>
+                    </li>
+                    <li class="replies">
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <p>What are your choices when someone puts a gun to your head?</p>
+                    </li>
+                    <li class="sent">
+                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                        <p>What are you talking about? You do what they say or they shoot you.</p>
+                    </li>
+                    <li class="replies">
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="message-input">
+                <div class="wrap">
+                    <input v-model="chatMessage" type="text" placeholder="Write your message..." />
+                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                    <button @click="sendMessage()" class="submit"><b-icon class="mr-1" icon="play-fill"></b-icon></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -66,10 +65,18 @@ export default {
     components: { Loading },
     data() {
         return {
+            isLoading: true,
+            senderUserData: null,
+            senderUserDetailData: null,
+            receiverUserData: null,
+            receiverUserDetailData: null,
             chatData: null,
+            chatMessage: '',
         }
     },
     mounted() {
+        this.getSenderUserDetails()
+        this.getReceiverUserDetails()
         this.getChatData()
     },
     methods: {
@@ -86,9 +93,55 @@ export default {
                     receiverUserID  :  this.receiverUserID,
                 },
             }).then((response) => {
+                this.isLoading = false
                 this.chatData = response.data
             })
-        }
+        },
+        getSenderUserDetails() {
+            Vue.axios({
+                url: '/users/'+ this.senderUserID,
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.isLoading = false
+                this.senderUserData = response.data['user']
+                this.senderUserDetailData = response.data['userDetail']
+            })
+        },
+        getReceiverUserDetails() {
+            Vue.axios({
+                url: '/users/'+ this.receiverUserID,
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.isLoading = false
+                this.receiverUserData = response.data['user']
+                this.receiverUserDetailData = response.data['userDetail']
+            })
+        },
+        sendMessage(){
+            Vue.axios({
+                url: '/chat/sendMessage',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    senderUserID    : loggedInUserData.state.userData['user'].id,
+                    receiverUserID  : this.receiverUserID,
+                    chatMessage     : this.chatMessage,
+                },
+            }).then((response) => {
+                this.chatMessage = ''
+            })
+        },
     }
 }
 </script>
