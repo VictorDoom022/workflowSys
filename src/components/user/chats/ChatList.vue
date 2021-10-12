@@ -7,41 +7,21 @@
                 <img :src="'http://192.168.0.181:8000/' + receiverUserDetailData.userDetail_profilePictureDir" alt="" />
                 <p>{{ receiverUserData.name }}</p>
             </div>
-            <div class="messages">
-                <ul>
-                    <li class="sent">
-                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
+            <div v-if="chatData" class="messages">
+                <ul v-for="chat in chatData" :key="chat.id">
+                    <li v-if="chat.chat_receiverUserID != currentLoggedInUserID" class="replies">
+                        <img :src="'http://192.168.0.181:8000/' + senderUserDetailData.userDetail_profilePictureDir" alt="" />
+                        <p>{{ chat.chat_message }}</p>
                     </li>
-                    <li class="replies">
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>When you're backed against the wall, break the god damn thing down.</p>
-                    </li>
-                    <li class="replies">
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>Excuses don't win championships.</p>
-                    </li>
-                    <li class="sent">
-                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                        <p>Oh yeah, did Michael Jordan tell you that?</p>
-                    </li>
-                    <li class="replies">
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>No, I told him that.</p>
-                    </li>
-                    <li class="replies">
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>What are your choices when someone puts a gun to your head?</p>
-                    </li>
-                    <li class="sent">
-                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                        <p>What are you talking about? You do what they say or they shoot you.</p>
-                    </li>
-                    <li class="replies">
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                    <li v-if="chat.chat_receiverUserID == currentLoggedInUserID" class="sent">
+                        <img :src="'http://192.168.0.181:8000/' + receiverUserDetailData.userDetail_profilePictureDir" alt="" />
+                        <p>{{ chat.chat_message }}</p>
                     </li>
                 </ul>
+            </div>
+
+            <div v-if="!chatData.length">
+                <p>No chat history</p>
             </div>
             <div class="message-input">
                 <div class="wrap">
@@ -72,9 +52,11 @@ export default {
             receiverUserDetailData: null,
             chatData: null,
             chatMessage: '',
+            currentLoggedInUserID: '',
         }
     },
     mounted() {
+        this.currentLoggedInUserID = loggedInUserData.state.userData['user'].id
         this.getSenderUserDetails()
         this.getReceiverUserDetails()
         this.getChatData()
@@ -95,6 +77,7 @@ export default {
             }).then((response) => {
                 this.isLoading = false
                 this.chatData = response.data
+                console.log(this.chatData)
             })
         },
         getSenderUserDetails() {
@@ -140,8 +123,12 @@ export default {
                 },
             }).then((response) => {
                 this.chatMessage = ''
+                this.getChatData()
             })
         },
+        getUserProfilePicture(userID){
+
+        }
     }
 }
 </script>
@@ -152,7 +139,6 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  position: relative;
 }
 @media screen and (max-width: 735px) {
   .content {
@@ -173,6 +159,7 @@ export default {
 }
 .content .contact-profile img {
   width: 40px;
+  max-height: 40px;
   border-radius: 50%;
   float: left;
   margin: 9px 12px 0 9px;
