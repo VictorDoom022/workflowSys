@@ -120,7 +120,7 @@ const routes = [
     component: UserProfile,
   },
   {
-    path: '/userInfo/:id',
+    path: '/userInfo/:userID',
     name: 'UserInfo',
     component: VisitorUserProfile,
     props: true,
