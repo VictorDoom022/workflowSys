@@ -39,4 +39,18 @@ class ChatController extends Controller
 
         return response($chat, 200);
     }
+
+    public function getUserChatHistory(Request $request) {
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
+        $firstQuery = Chat::select('chat_senderUserID')->where('chat_receiverUserID', '=', $userID);
+
+        $chat = Chat::select('chat_receiverUserID')->where('chat_senderUserID', '=', $userID)
+                    ->union($firstQuery)
+                    ->get();
+
+        return response($chat, 200);
+    }
 }
