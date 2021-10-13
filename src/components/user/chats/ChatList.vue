@@ -46,11 +46,11 @@ export default {
     data() {
         return {
             isLoading: true,
-            senderUserData: null,
-            senderUserDetailData: null,
-            receiverUserData: null,
-            receiverUserDetailData: null,
-            chatData: null,
+            senderUserData: [],
+            senderUserDetailData: [],
+            receiverUserData: [],
+            receiverUserDetailData: [],
+            chatData: [],
             chatMessage: '',
             currentLoggedInUserID: '',
         }
@@ -58,10 +58,9 @@ export default {
     mounted() {
         this.currentLoggedInUserID = loggedInUserData.state.userData['user'].id
         this.getSenderUserDetails()
-        this.getReceiverUserDetails()
-        this.getChatData()
     },
     watch: {
+      immediate: true,
       receiverUserID: function(newUserID, oldUserID) {
         this.getChatData()
       }
@@ -97,6 +96,7 @@ export default {
                 this.isLoading = false
                 this.senderUserData = response.data['user']
                 this.senderUserDetailData = response.data['userDetail']
+                this.getReceiverUserDetails()
             })
         },
         getReceiverUserDetails() {
@@ -111,6 +111,7 @@ export default {
                 this.isLoading = false
                 this.receiverUserData = response.data['user']
                 this.receiverUserDetailData = response.data['userDetail']
+                this.getChatData()
             })
         },
         sendMessage(){

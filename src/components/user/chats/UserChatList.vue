@@ -1,62 +1,70 @@
 <template>
-    <div id="sidepanel">
-		<div id="profile">
-			<div class="wrap">
-				<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
-				<p>Mike Ross</p>
-				<i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-				<div id="status-options">
-					<ul>
-						<li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
-						<li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
-						<li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
-						<li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div id="search">
-			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-			<input type="text" placeholder="Search contacts..." />
-		</div>
-		<div id="contacts">
-			<ul v-for="chat in chatData" :key="chat.id" style="list-style: none;">
-				<li @click="selectUser(chat.chat_senderUserID == currentLoggedInUserID ? chat.chat_receiverUserID : chat.chat_senderUserID)" class="contact">
-					<div class="wrap">
-						<span class="contact-status online"></span>
-            <img :src="'http://192.168.0.181:8000/' + convertUserIDToUserProfilePicture(chat.chat_senderUserID == currentLoggedInUserID ? chat.chat_receiverUserID : chat.chat_senderUserID)" alt="" />
+    <div>
+        <Loading v-if="isLoading"/>
 
-						<div class="meta">
-							<p class="name">{{ convertUserIDToName(chat.chat_senderUserID == currentLoggedInUserID ? chat.chat_receiverUserID : chat.chat_senderUserID) }}</p>
-							<p class="preview">{{ chat.chat_message }}</p>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div id="bottom-bar">
-			<button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-			<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-		</div>
-	</div>
+        <div v-if="!isLoading" id="sidepanel">
+            <div id="profile">
+                <div class="wrap">
+                    <img id="profile-img" :src="'http://192.168.0.181:8000/' + currentLoggedInUserData['userDetail'].userDetail_profilePictureDir" class="online" alt="" />
+                    <p>{{ currentLoggedInUserData['user'].name }}</p>
+                    <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                    <div id="status-options">
+                        <ul>
+                            <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
+                            <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+                            <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
+                            <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="search">
+                <label class="mr-0"><b-icon icon="search"></b-icon> </label>
+                <input type="text" placeholder="Search contacts..." />
+            </div>
+            <div id="contacts">
+                <ul v-for="chat in chatData" :key="chat.id" style="list-style: none; padding-left: 0;">
+                    <li @click="selectUser(chat.chat_senderUserID == currentLoggedInUserData['user'].id ? chat.chat_receiverUserID : chat.chat_senderUserID)" class="contact">
+                        <div class="wrap">
+                            <span class="contact-status online"></span>
+                            <img :src="'http://192.168.0.181:8000/' + convertUserIDToUserProfilePicture(chat.chat_senderUserID == currentLoggedInUserData['user'].id ? chat.chat_receiverUserID : chat.chat_senderUserID)" alt="" />
+
+                            <div class="meta">
+                                <p class="name">{{ convertUserIDToName(chat.chat_senderUserID == currentLoggedInUserData['user'].id ? chat.chat_receiverUserID : chat.chat_senderUserID) }}</p>
+                                <p class="preview">{{ chat.chat_message }}</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="bottom-bar">
+                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+                <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+            </div>
+        </div>
+    </div>
+    
 </template>
 
 <script>
 // for displaying user's chat history
 import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
+import Loading from '../../Loading.vue'
 
 export default {
+    components: { Loading },
     data() {
         return {
+            isLoading: true,
             chatData: null,
             userData: [],
             userDetailData: [],
-            currentLoggedInUserID: '',
+            currentLoggedInUserData: '',
         }
     },
     mounted() {
-        this.currentLoggedInUserID = loggedInUserData.state.userData['user'].id
+        this.currentLoggedInUserData = loggedInUserData.state.userData
         this.fetchUserData()
     },
     methods: {
@@ -73,6 +81,7 @@ export default {
                 },
             }).then((response) => {
                 this.chatData = response.data
+                this.isLoading = false
             })
         },
         fetchUserData(){
@@ -115,6 +124,7 @@ export default {
 #sidepanel {
   float: left;
   min-width: 280px;
+  min-height: 500px;
   width: 100%;
   height: 100%;
   background: #2c3e50;
@@ -130,7 +140,7 @@ export default {
 }
 #sidepanel #profile {
   width: 80%;
-  margin: 25px auto;
+  margin: 10px auto;
 }
 @media screen and (max-width: 735px) {
   #sidepanel #profile {
@@ -171,6 +181,7 @@ export default {
 }
 #sidepanel #profile .wrap img {
   width: 50px;
+  max-height: 50px;
   border-radius: 50%;
   padding: 3px;
   border: 2px solid #e74c3c;
@@ -381,11 +392,11 @@ export default {
 }
 #sidepanel #search label {
   position: absolute;
-  margin: 10px 0 0 20px;
+  margin: 5px 0 0 15px;
 }
 #sidepanel #search input {
   font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
-  padding: 10px 0 10px 46px;
+  padding: 5px 0 5px 46px;
   width: calc(100% - 25px);
   border: none;
   background: #32465a;
@@ -480,6 +491,7 @@ export default {
 }
 #sidepanel #contacts ul li.contact .wrap img {
   width: 40px;
+  max-height: 40px;
   border-radius: 50%;
   float: left;
   margin-right: 10px;

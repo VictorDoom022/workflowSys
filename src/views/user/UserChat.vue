@@ -14,7 +14,7 @@
 
             <div class="row g-0" style="height: 100%">
                 <div class="col-md-4 px-0">
-                    <UserChatList @selectedUser="selectUserFromUserList" />
+                    <UserChatList @selectedUser="selectUserFromUserList" style="height: 100%"/>
                 </div>
                 <div v-if="currentSelectedUserID!=''" class="col-md-8 px-0">
                     <ChatList :senderUserID="currentLoggedInUserID" :receiverUserID="currentSelectedUserID"/>
