@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:http/http.dart' as http;
 import 'package:workflow_sys/model/Chat.dart';
+import 'package:workflow_sys/model/ChatHistory.dart';
 
 Future<List<Chat>> getChatData(int receiverUserID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -55,4 +56,33 @@ Future<void> sendChatMessage(int receiverUserID, String chatMessage) async {
         'Authorization' : 'Bearer ' + token
       }
   );
+}
+
+Future<List<ChatHistory>> getUserChatHistory() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/chat/getUserChatHistory';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userID' : userID.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+
+  List<ChatHistory> chatHistoryList = [];
+  if(response.statusCode == 200){
+    var jsonRes = jsonDecode(response.body);
+    chatHistoryList = (jsonRes as List).map((e) => ChatHistory.fromJson(e)).toList();
+
+    return chatHistoryList;
+  }else{
+    return chatHistoryList;
+  }
 }
