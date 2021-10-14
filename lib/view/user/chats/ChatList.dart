@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/chatController.dart';
 import 'package:workflow_sys/controller/miscController.dart';
+import 'package:workflow_sys/controller/setupDir.dart';
+import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/Chat.dart';
+import 'package:workflow_sys/model/UserReceiver.dart';
 
 class chatList extends StatefulWidget {
 
@@ -24,15 +27,28 @@ class _chatListState extends State<chatList> {
   _chatListState(this.senderUserID, this.receiverUserID);
 
   TextEditingController chatMessageTextEditController = TextEditingController();
+  String appTitleUserName = '';
   int currentLogInUserID;
   Future<List<Chat>> futureChatList;
+  UserReceiverForSingleUser receiverUserDetail;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCurrentLogInUser().then((value) {
-      getUserChatData();
+      getReceiverUserData().then((value) {
+        getUserChatData();
+      });
+    });
+  }
+
+  Future<void> getReceiverUserData() async {
+    getUserDetailByID(receiverUserID).then((value) {
+      setState(() {
+        receiverUserDetail = value;
+        appTitleUserName = value.user.name;
+      });
     });
   }
 
@@ -56,7 +72,7 @@ class _chatListState extends State<chatList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        middle: Text('Username'),
+        middle: Text(appTitleUserName),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -131,7 +147,7 @@ class _chatListState extends State<chatList> {
               if (!isCurrentUser)
                 CircleAvatar(
                   radius: 15,
-                  backgroundImage: NetworkImage('http://192.168.0.181:8000/upload/userProfilePictures/2/1634130151.png'),
+                  backgroundImage: NetworkImage(serverURL + '/' + receiverUserDetail.userDetail.userDetailProfilePictureDir),
                 ),
               SizedBox(
                 width: 10,
