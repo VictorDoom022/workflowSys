@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workflow_sys/controller/chatController.dart';
+import 'package:workflow_sys/controller/miscController.dart';
+import 'package:workflow_sys/model/Chat.dart';
 
 class chatList extends StatefulWidget {
 
@@ -20,7 +24,33 @@ class _chatListState extends State<chatList> {
   _chatListState(this.senderUserID, this.receiverUserID);
 
   TextEditingController chatMessageTextEditController = TextEditingController();
-  bool isMe = false;
+  int currentLogInUserID;
+  Future<List<Chat>> futureChatList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentLogInUser().then((value) {
+      getUserChatData();
+    });
+  }
+
+  Future<void> getCurrentLogInUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int userID = sharedPreferences.getInt("UserID");
+
+    setState(() {
+      currentLogInUserID = userID;
+    });
+  }
+
+  Future<void> getUserChatData() async {
+    List<Chat> chatList = await getChatData(receiverUserID);
+    setState(() {
+      futureChatList = Future.value(chatList);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +60,24 @@ class _chatListState extends State<chatList> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            chatItem(isMe, 'Chat msg')
-          ],
+        child: FutureBuilder<List<Chat>>(
+          future: futureChatList,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
+
+            if(snapshot.hasData){
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index){
+                  return chatItem(snapshot.data[index]);
+                },
+              );
+            }else{
+              return Center(child: CupertinoActivityIndicator(radius: 12));
+            }
+          },
         ),
       ),
         bottomNavigationBar: Container(
@@ -72,7 +116,9 @@ class _chatListState extends State<chatList> {
     );
   }
 
-  Widget chatItem(bool isCurrentUser, String chatMessage){
+  Widget chatItem(Chat chatData){
+    bool isCurrentUser = chatData.chatReceiverUserID != currentLogInUserID ? true : false;
+
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Column(
@@ -103,7 +149,7 @@ class _chatListState extends State<chatList> {
                       bottomRight: Radius.circular(isCurrentUser ? 0 : 12),
                     )),
                 child: Text(
-                  chatMessage,
+                  chatData.chatMessage,
                   style: TextStyle(
                       color: isCurrentUser ? Colors.white : Colors.grey[800]
                   ),
@@ -121,16 +167,11 @@ class _chatListState extends State<chatList> {
                   SizedBox(
                     width: 40,
                   ),
-                Icon(
-                  Icons.done_all,
-                  size: 20,
-                  color: Colors.blueAccent,
-                ),
                 SizedBox(
                   width: 8,
                 ),
                 Text(
-                  '2020/2/12',
+                  convertBackendDateTime(chatData.createdAt),
                 )
               ],
             ),
