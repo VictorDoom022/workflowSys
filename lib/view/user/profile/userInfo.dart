@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/controller/userController.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserDetail.dart';
+import 'package:workflow_sys/view/user/chats/ChatList.dart';
 
 class userInfo extends StatefulWidget {
 
@@ -135,7 +137,41 @@ class _userInfoState extends State<userInfo> {
                     Colors.orangeAccent
                 ),
               ],
-            )
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                width: double.infinity,
+                child: CupertinoButton(
+                    color: Colors.blueAccent,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Chat'),
+                        SizedBox(width: 5),
+                        Icon(Icons.messenger),
+                      ],
+                    ),
+                    onPressed: () async {
+                      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                      int currentLogInUserID = sharedPreferences.getInt("UserID");
+
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (_){
+                                return chatList(
+                                  receiverUserID: userID,
+                                  senderUserID: currentLogInUserID,
+                                );
+                              }
+                          )
+                      );
+                    }
+                ),
+              ),
+            ),
           ],
         ),
       ),
