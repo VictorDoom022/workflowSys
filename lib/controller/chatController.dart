@@ -35,3 +35,24 @@ Future<List<Chat>> getChatData(int receiverUserID) async {
     return chatList;
   }
 }
+
+Future<void> sendChatMessage(int receiverUserID, String chatMessage) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String token = sharedPreferences.getString("UserToken");
+  int userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/chat/sendMessage';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'senderUserID' : userID.toString(),
+        'receiverUserID': receiverUserID.toString(),
+        'chatMessage' : chatMessage,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token
+      }
+  );
+}

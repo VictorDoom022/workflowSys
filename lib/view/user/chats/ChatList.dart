@@ -120,9 +120,11 @@ class _chatListState extends State<chatList> {
                     color: Colors.blueAccent,
                   ),
                   onPressed: (){
-                    print(chatMessageTextEditController.text);
                     if(chatMessageTextEditController.text != ''){
-
+                      sendChatMessage(receiverUserID, chatMessageTextEditController.text).then((value) {
+                        getUserChatData();
+                        chatMessageTextEditController.text = '';
+                      });
                     }
                   },
                 )
