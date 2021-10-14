@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/authController.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/chats/UserChatList.dart';
 import 'package:workflow_sys/view/user/profile/userProfile.dart';
 import 'package:workflow_sys/view/user/todos/todoHome.dart';
 import 'package:workflow_sys/view/user/userHome.dart';
@@ -80,6 +81,7 @@ class _userNavDrawerState extends State<userNavDrawer> {
           userGroupTile(0),
           userTodoTile(1),
           userProfileTile(2),
+          userChatTile(3),
           Divider(),
           logoutTile()
         ],
@@ -136,6 +138,24 @@ class _userNavDrawerState extends State<userNavDrawer> {
               return userProfile();
             }
         )
+        );
+      },
+    );
+  }
+
+  Widget userChatTile(int pageNumber){
+    return ListTile(
+      leading: Icon(Icons.chat_sharp),
+      title: Text('Chats'),
+      selected: selectedPage == pageNumber,
+      onTap: (){
+        HapticFeedback.lightImpact();
+        selectPage(pageNumber);
+        Navigator.push(context, CupertinoPageRoute(
+            builder:(context){
+              return userChatList();
+            }
+          )
         );
       },
     );
