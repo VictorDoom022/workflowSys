@@ -25,7 +25,7 @@
             </div>
             <div class="message-input">
                 <div class="wrap">
-                    <input v-model="chatMessage" type="text" placeholder="Write your message..." />
+                    <input v-model="chatMessage" @keyup.enter="sendMessage()" type="text" placeholder="Write your message..." />
                     <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
                     <button @click="sendMessage()" class="submit"><b-icon class="mr-1" icon="play-fill"></b-icon></button>
                 </div>
@@ -81,7 +81,6 @@ export default {
             }).then((response) => {
                 this.isLoading = false
                 this.chatData = response.data
-                console.log(this.chatData)
             })
         },
         getSenderUserDetails() {

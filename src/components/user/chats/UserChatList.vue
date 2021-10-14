@@ -24,14 +24,14 @@
             </div>
             <div id="contacts">
                 <ul v-for="chat in chatData" :key="chat.id" style="list-style: none; padding-left: 0;">
-                    <li @click="selectUser(chat.chat_senderUserID == currentLoggedInUserData['user'].id ? chat.chat_receiverUserID : chat.chat_senderUserID)" class="contact">
+                    <li @click="selectUser(chat.chat_receiverUserID)" class="contact">
                         <div class="wrap">
                             <span class="contact-status online"></span>
-                            <img :src="'http://192.168.0.181:8000/' + convertUserIDToUserProfilePicture(chat.chat_senderUserID == currentLoggedInUserData['user'].id ? chat.chat_receiverUserID : chat.chat_senderUserID)" alt="" />
+                            <img :src="'http://192.168.0.181:8000/' + convertUserIDToUserDetailData(chat.chat_receiverUserID).userDetail_profilePictureDir" alt="" />
 
                             <div class="meta">
-                                <p class="name">{{ convertUserIDToName(chat.chat_senderUserID == currentLoggedInUserData['user'].id ? chat.chat_receiverUserID : chat.chat_senderUserID) }}</p>
-                                <p class="preview">{{ chat.chat_message }}</p>
+                                <p class="name">{{ convertUserIDToUserData(chat.chat_receiverUserID).name }}</p>
+                                <p class="preview">{{ convertUserIDToUserData(chat.chat_receiverUserID).email }}</p>
                             </div>
                         </div>
                     </li>
@@ -82,6 +82,8 @@ export default {
             }).then((response) => {
                 this.chatData = response.data
                 this.isLoading = false
+                // console.log(this.chatData)
+                this.processFetchedChatData()
             })
         },
         fetchUserData(){
@@ -98,17 +100,17 @@ export default {
                 this.getUserChat()
             })
         },
-        convertUserIDToName(userID){
+        convertUserIDToUserData(userID){
             for(var i=0; i < this.userData.length; i++){
                 if(userID == this.userData[i].id){
-                    return this.userData[i].name
+                    return this.userData[i]
                 }
             }
         },
-        convertUserIDToUserProfilePicture(userID){
+        convertUserIDToUserDetailData(userID){
             for(var i=0; i < this.userDetailData.length; i++){
                 if(userID == this.userDetailData[i].id){
-                    return this.userDetailData[i].userDetail_profilePictureDir
+                    return this.userDetailData[i]
                 }
             }
         },
@@ -511,6 +513,7 @@ export default {
 }
 #sidepanel #contacts ul li.contact .wrap .meta .name {
   font-weight: 600;
+  margin-bottom: 0px;
 }
 #sidepanel #contacts ul li.contact .wrap .meta .preview {
   margin: 5px 0 0 0;
