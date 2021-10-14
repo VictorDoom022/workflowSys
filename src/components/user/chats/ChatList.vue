@@ -131,14 +131,14 @@ export default {
                 this.getChatData()
             })
         },
-        getUserProfilePicture(userID){
-
-        }
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+$backgroundDark: #343a40;
+
 .content {
   float: right;
   width: 100%;
@@ -221,9 +221,8 @@ export default {
 }
 .content .messages ul li.sent p {
     float: left;
-
-  background: #435f7a;
-  color: #f5f5f5;
+    background: $backgroundDark;
+    color: #f5f5f5;
 }
 .content .messages ul li.replies img {
   float: right;
@@ -266,7 +265,7 @@ export default {
   width: calc(100% - 90px);
   padding: 11px 32px 10px 8px;
   font-size: 0.8em;
-  color: #32465a;
+  color: $backgroundDark;
 }
 @media screen and (max-width: 735px) {
   .content .message-input .wrap input {
@@ -301,7 +300,7 @@ export default {
   width: 50px;
   padding: 12px 0;
   cursor: pointer;
-  background: #32465a;
+  background: $backgroundDark;
   color: #f5f5f5;
 }
 @media screen and (max-width: 735px) {

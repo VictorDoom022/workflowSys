@@ -37,10 +37,6 @@
                     </li>
                 </ul>
             </div>
-            <div id="bottom-bar">
-                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-            </div>
         </div>
     </div>
     
@@ -122,14 +118,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+$backgroundDark: #343a40;
+$backgroundGrey: #6c757d;
+
 #sidepanel {
   float: left;
   min-width: 280px;
   min-height: 500px;
   width: 100%;
   height: 100%;
-  background: #2c3e50;
+  background: $backgroundDark;
   color: #f5f5f5;
   overflow: hidden;
   position: relative;
@@ -149,7 +149,7 @@ export default {
     width: 100%;
     margin: 0 auto;
     padding: 5px 0 0 0;
-    background: #32465a;
+    background: $backgroundDark;
   }
 }
 #sidepanel #profile.expanded .wrap {
@@ -372,7 +372,7 @@ export default {
 #sidepanel #profile .wrap #expanded input {
   border: none;
   margin-bottom: 6px;
-  background: #32465a;
+  background: $backgroundDark;
   border-radius: 3px;
   color: #f5f5f5;
   padding: 7px;
@@ -383,8 +383,8 @@ export default {
   background: #435f7a;
 }
 #sidepanel #search {
-  border-top: 1px solid #32465a;
-  border-bottom: 1px solid #32465a;
+  border-top: 1px solid $backgroundDark;
+  border-bottom: 1px solid $backgroundDark;
   font-weight: 300;
 }
 @media screen and (max-width: 735px) {
@@ -401,7 +401,7 @@ export default {
   padding: 5px 0 5px 46px;
   width: calc(100% - 25px);
   border: none;
-  background: #32465a;
+  background: $backgroundGrey;
   color: #f5f5f5;
 }
 #sidepanel #search input:focus {
@@ -453,7 +453,7 @@ export default {
 }
 
 #sidepanel #contacts ul li.contact:hover {
-  background: #32465a;
+  background: $backgroundGrey;
 }
 #sidepanel #contacts ul li.contact.active {
   background: #32465a;
