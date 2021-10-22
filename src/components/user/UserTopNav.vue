@@ -1,7 +1,7 @@
 <template>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <router-link :to="{ name: 'UserHome' }" class="navbar-brand col-md-3 col-lg-2 me-0 px-3">
-            Workflow Sys
+            TaskKit
         </router-link>
 
         <b-navbar-toggle target="navbar-toggle-collapse" class="position-absolute mt-1 d-md-none">
