@@ -47,32 +47,33 @@ export default {
 }
 </script>
 
-<style scoped>
-.card{
-  cursor: pointer;
-  transition: .5s ease;
+<style lang="scss" scoped>
+.card {
+	cursor: pointer;
+	transition: .5s ease;
+    
+	&:hover {
+		box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
+		transition: .3s ease;
+	}
 }
 
-.card:hover{
-  box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
-  transition: .3s ease;
-}
-
-/* breakpoint lg */
 @media screen and (max-width: 992px) {
-    .card h3{
-        margin: auto;
-        text-align: unset !important;
-    }
+	.card {
+		h3 {
+			margin: auto;
+			text-align: unset !important;
+		}
 
-    .card ul{
-        margin: auto;
-        text-align: unset !important;
-    }
+		ul {
+			margin: auto;
+			text-align: unset !important;
+		}
 
-    .card p{
-        margin: auto;
-        text-align: unset !important;
-    }
+		p {
+			margin: auto;
+			text-align: unset !important;
+		}
+	}
 }
 </style>

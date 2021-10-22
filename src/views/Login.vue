@@ -88,63 +88,67 @@ export default {
 }
 </script>
 
-<style scoped>
-html,
-body {
-  height: 100%;
+<style lang="scss" scoped>
+html {
+	height: 100%;
 }
 
 body {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #f5f5f5;
 }
 
 .title {
-    font-weight: bold;
-    font-size: 50px;
+	font-weight: bold;
+	font-size: 50px;
 }
 
-.title-orange{
-    color: #E46B10FF;
+.title-orange {
+	color: #E46B10FF;
 }
 
 .btn-primary {
-    background-image: linear-gradient(to right, #FBB448FF 0%, #F7892BFF 100%);
-    border-color: transparent !important;
+	background-image: linear-gradient(to right, #FBB448FF 0%, #F7892BFF 100%);
+	border-color: transparent !important;
 }
 
 .form-signin {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
+	width: 100%;
+	max-width: 330px;
+	padding: 15px;
+	margin: auto;
+
+	.checkbox {
+		font-weight: 400;
+	}
+
+	.form-floating {
+		&:focus-within {
+			z-index: 2;
+		}
+	}
+
+	input[type="email"] {
+		margin-bottom: -1px;
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+	input[type="password"] {
+		margin-bottom: 10px;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
 }
 
-.form-signin .checkbox {
-  font-weight: 400;
-}
-
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
-
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.register-btn :hover{
-    cursor: pointer;
-    background: rgba(250, 225, 225, 0.8) !important;
+.register-btn {
+	&:hover {
+		cursor: pointer;
+		background: rgba(250, 225, 225, 0.8) !important;
+	}
 }
 </style>

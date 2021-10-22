@@ -99,7 +99,7 @@
                                                 <span @click="removeFile(file.fileName)" class="badge bg-danger rounded-pill"><b-icon icon="x" aria-hidden="true"></b-icon></span>
                                             </div>
                                         </div>
-                                        <div v-if="taskFileInfo">
+                                        <div v-if="!taskFileInfo.length">
                                             <div class="list-group-item list-group-item-action">
                                                 No files attached
                                             </div>
@@ -226,7 +226,7 @@ export default {
             modalType: 0,
             taskFiles: null,
             taskFilePath: '',
-            taskFileInfo: null,
+            taskFileInfo: [],
             editor: ClassicEditor,
             commentData: [],
             commentText: '',
