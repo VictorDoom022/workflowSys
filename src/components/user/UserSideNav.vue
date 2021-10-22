@@ -1,5 +1,5 @@
 <template>
-  <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+  <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
     <div class="position-sticky pt-3">
       <ul class="nav flex-column">
         <li class="nav-item">
@@ -78,7 +78,7 @@ export default {
     
 	.nav-link {
 		font-weight: 500;
-		color: #333;
+		color: white;
 
 		.feather {
 			margin-right: 4px;

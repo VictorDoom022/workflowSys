@@ -43,7 +43,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3 d-flex">
                                         <label class="mt-2 mr-2">Color</label>
-                                        <select type="text" v-model="taskColor" class="form-select" autocomplete="off">
+                                        <select :disabled="!allowEdit" type="text" v-model="taskColor" class="form-select" autocomplete="off">
                                             <option value="0" :selected="taskColor">Default</option>
                                             <option value="1" :selected="taskColor">Blue</option>
                                             <option value="2" :selected="taskColor">Red</option>
@@ -57,7 +57,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3 d-flex">
                                         <label class="mt-2 mr-2">Priority</label>
-                                        <select type="text" v-model="taskPriority" class="form-select" autocomplete="off">
+                                        <select :disabled="!allowEdit" type="text" v-model="taskPriority" class="form-select" autocomplete="off">
                                             <option value="0" :selected="taskPriority">Very Low</option>
                                             <option value="1" :selected="taskPriority">Low</option>
                                             <option value="2" :selected="taskPriority">Medium (Default)</option>
@@ -84,7 +84,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label>Attach Files</label>
-                                        <input class="form-control form-control-sm"  type="file" @change="onFileChange" multiple>
+                                        <input :disabled="!allowEdit" class="form-control form-control-sm"  type="file" @change="onFileChange" multiple>
                                     </div>
                                 </div>
 
@@ -149,10 +149,18 @@
                                     </div>
                                 </div>
 
-                                <div class="submit col-md-12 d-grid">
-                                    <button :disabled="!allowEdit" class="btn btn-primary" type="submit">Edit</button>
-                                    <input :disabled="!allowEdit" @click="showToggleTaskStatusDialog()" type="button" class="btn btn-info my-2" value="Mark/Unmark as complete"/>
-                                    <input :disabled="!allowEdit" @click="showDeleteTaskDialog()" type="button" class="btn btn-danger mb-2" value="Delete"/>
+                                <div class="submit col-md-12">
+                                    <div class="row g-1">
+                                        <div class="col-md-4 px-1 d-grid">
+                                            <input :disabled="!allowEdit" @click="showDeleteTaskDialog()" type="button" class="btn btn-md mb-2 btn-danger" value="Delete"/>
+                                        </div>
+                                        <div class="col-md-4 px-1 d-grid">
+                                            <button :disabled="!allowEdit" class="btn btn-md mb-2 btn-primary" type="submit">Edit</button>
+                                        </div>
+                                        <div class="col-md-4 px-1 d-grid">
+                                            <input :disabled="!allowEdit" @click="showToggleTaskStatusDialog()" type="button" class="btn btn-md mb-2 btn-info" value="Mark/Unmark as complete"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>

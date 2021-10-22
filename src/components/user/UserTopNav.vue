@@ -1,6 +1,6 @@
 <template>
-    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <router-link :to="{ name: 'UserHome' }" class="navbar-brand col-md-3 col-lg-2 me-0 px-3">
+    <header class="navbar navbar-dark sticky-top bg-light flex-md-nowrap p-0 shadow">
+        <router-link :to="{ name: 'UserHome' }" class="navbar-brand bg-dark col-md-3 col-lg-2 me-0 px-3">
             TaskKit
         </router-link>
 
@@ -13,7 +13,7 @@
 
         <input class="form-control form-control-dark w-100" v-model="searchWord" @input="searchData()" type="text" placeholder="Search" aria-label="Search">
 
-        <b-collapse id="navbar-toggle-collapse" class="navbar-nav mobile" is-nav>
+        <b-collapse id="navbar-toggle-collapse" class="navbar-nav bg-dark mobile" is-nav>
             <div class="nav-item text-nowrap">
                 <router-link :to="{ name: 'UserHome' }" class="nav-link px-3" style="cursor:pointer;">Home</router-link>
                 <router-link :to="{ name: 'TodoList' }" class="nav-link px-3" style="cursor:pointer;">Todo</router-link>
@@ -24,7 +24,7 @@
 
         <div class="navbar-nav desktop">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" style="cursor:pointer;" @click="logout()">Sign out</a>
+                <a class="nav-link text-dark px-3" style="cursor:pointer;" @click="logout()">Sign out</a>
             </div>
         </div>
     </header>
