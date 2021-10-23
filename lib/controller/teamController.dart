@@ -104,13 +104,14 @@ Future<List<User>> getUserJoinedTeam(int teamID) async {
       }
   );
 
+  List<User> listUser = [];
   if(response.statusCode == 200){
     var jsonRes = jsonDecode(response.body);
-    List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+    listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
 
     return listUser;
   }else{
-    throw 'Error';
+    return listUser;
   }
 }
 
