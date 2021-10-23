@@ -55,11 +55,23 @@ class _userNavDrawerState extends State<userNavDrawer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'TaskKit',
-                        style: TextStyle(
-                            fontSize: 30
-                        ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Task',
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: Color(0xffe46b10),
+                            ),
+                          ),
+                          Text(
+                            'IT',
+                            style: TextStyle(
+                                fontSize: 30
+                            ),
+                          ),
+                        ],
                       ),
                       Image.asset(
                           'lib/assets/app_icon.png',

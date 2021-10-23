@@ -59,7 +59,7 @@ class _loginPageState extends State<loginPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        text: 'Workflow',
+        text: 'Task',
         style: TextStyle(
           fontSize: 30,
           fontWeight: FontWeight.w700,
@@ -67,7 +67,7 @@ class _loginPageState extends State<loginPage> {
         ),
         children: [
           TextSpan(
-            text: 'Sys',
+            text: 'IT',
             style: TextStyle(color: Colors.black, fontSize: 30),
           ),
         ]
