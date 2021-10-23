@@ -1,11 +1,11 @@
 class Team {
-  int id;
-  String teamName;
-  String teamGroupID;
-  String teamMemberID;
-  String teamTaskListID;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? teamName;
+  String? teamGroupID;
+  String? teamMemberID;
+  String? teamTaskListID;
+  String? createdAt;
+  String? updatedAt;
 
   Team(
       {this.id,

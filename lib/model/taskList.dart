@@ -1,9 +1,9 @@
 class TaskList {
-  int id;
-  String taskListTeamID;
-  String taskListUserID;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? taskListTeamID;
+  String? taskListUserID;
+  String? createdAt;
+  String? updatedAt;
 
   TaskList(
       {this.id,

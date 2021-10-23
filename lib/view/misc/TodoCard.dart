@@ -10,7 +10,7 @@ class TodoCard extends StatelessWidget {
   final String statusMsg;
   final String desc;
 
-  const TodoCard({Key key, this.todoDate, this.todoMonth, this.name, this.lastUpdatedTime, this.statusMsg, this.desc}) : super(key: key);
+  const TodoCard({Key? key, required this.todoDate, required this.todoMonth, required this.name, required this.lastUpdatedTime, required this.statusMsg, required this.desc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

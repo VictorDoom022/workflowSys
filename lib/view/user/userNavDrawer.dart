@@ -10,7 +10,7 @@ import 'package:workflow_sys/view/user/todos/todoHome.dart';
 import 'package:workflow_sys/view/user/userHome.dart';
 
 class userNavDrawer extends StatefulWidget {
-  const userNavDrawer({Key key}) : super(key: key);
+  const userNavDrawer({Key? key}) : super(key: key);
 
   @override
   _userNavDrawerState createState() => _userNavDrawerState();
@@ -29,9 +29,9 @@ class _userNavDrawerState extends State<userNavDrawer> {
 
   void getCurrentUserName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String userName = sharedPreferences.getString("UserName");
+    String? userName = sharedPreferences.getString("UserName");
     setState(() {
-      currentUserName = userName;
+      currentUserName = userName!;
     });
   }
 
@@ -56,15 +56,16 @@ class _userNavDrawerState extends State<userNavDrawer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'WorkflowSys',
+                        'TaskKit',
                         style: TextStyle(
                             fontSize: 30
                         ),
                       ),
-                      Icon(
-                        Icons.account_tree,
-                        size: 40,
-                      ),
+                      Image.asset(
+                          'lib/assets/app_icon.png',
+                          height: 40,
+                          width: 40
+                      )
                     ],
                   ),
                   SizedBox(height: 8),

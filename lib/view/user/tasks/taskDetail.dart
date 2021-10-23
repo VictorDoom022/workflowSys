@@ -23,7 +23,7 @@ class taskDetail extends StatefulWidget {
   final int teamID;
   final int taskID;
 
-  const taskDetail({Key key, this.teamID, this.taskID}) : super(key: key);
+  const taskDetail({Key? key, required this.teamID, required this.taskID}) : super(key: key);
 
   @override
   _taskDetailState createState() => _taskDetailState(teamID, taskID);
@@ -42,21 +42,21 @@ class _taskDetailState extends State<taskDetail> {
   TextEditingController taskDescController = TextEditingController();
   TextEditingController taskStatusMsgController = TextEditingController();
 
-  String taskDetailedDesc = '';
+  String? taskDetailedDesc = '';
   String lastAssignedUserName = "Not Assigned";
-  int taskStatus;
-  DateTime taskStartDate, taskDueDate;
-  String taskAssignedDate;
-  List<String> taskAssignedUserIDList;
+  int? taskStatus;
+  DateTime? taskStartDate, taskDueDate;
+  String? taskAssignedDate;
+  List<String>? taskAssignedUserIDList;
   bool allowUserEdit = true;
   List<String> attachedFilePaths = [];
   List<FileReceiver> taskFileReceiver = [];
-  String taskFilePath = '';
+  String? taskFilePath = '';
 
   List<String> colorList = ['Default', 'Blue', 'Red', 'Yellow', 'Green', 'Grey', 'Black'];
   List<String> priorityList = ['Very Low', 'Low', 'Medium (Default)', 'High', 'Very High'];
-  String selectedColor;
-  String selectedPriority;
+  String? selectedColor;
+  String? selectedPriority;
 
   @override
   void initState() {
@@ -67,9 +67,9 @@ class _taskDetailState extends State<taskDetail> {
 
   void getTaskData(){
     getTaskByID(context, taskID).then((value) {
-      taskNameController.text = value.taskName;
-      taskDescController.text = value.taskDesc;
-      taskStatusMsgController.text = value.taskStatusMsg;
+      taskNameController.text = value.taskName!;
+      taskDescController.text = value.taskDesc!;
+      taskStatusMsgController.text = value.taskStatusMsg!;
       taskDetailedDesc = value.taskDetailedDesc;
       taskFilePath = value.taskFilePath;
 
@@ -78,19 +78,19 @@ class _taskDetailState extends State<taskDetail> {
       }
 
       setState(() {
-        selectedColor = colorList[value.taskColor];
-        selectedPriority = priorityList[value.taskPriority];
+        selectedColor = colorList[value.taskColor!];
+        selectedPriority = priorityList[value.taskPriority!];
       });
 
       if(value.taskStartDate != "null"){
         setState(() {
-          taskStartDate = convertStringToDateTime(value.taskStartDate);
+          taskStartDate = convertStringToDateTime(value.taskStartDate!);
         });
       }
 
       if(value.taskDueDate != "null"){
         setState(() {
-          taskDueDate = convertStringToDateTime(value.taskDueDate);
+          taskDueDate = convertStringToDateTime(value.taskDueDate!);
         });
       }
 
@@ -104,7 +104,7 @@ class _taskDetailState extends State<taskDetail> {
   }
 
   void setTaskFileData() async {
-    List<FileReceiver> fileReceiverList = await fetchTaskFiles(taskFilePath);
+    List<FileReceiver> fileReceiverList = await fetchTaskFiles(taskFilePath!);
     setState(() {
       taskFileReceiver = fileReceiverList;
     });
@@ -112,8 +112,8 @@ class _taskDetailState extends State<taskDetail> {
 
   void checkToAllowEdit(Task task) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    int userID = sharedPreferences.getInt("UserID");
-    List<String> assignedUserID = task.taskAssignedMemberID.split(',');
+    int? userID = sharedPreferences.getInt("UserID");
+    List<String> assignedUserID = task.taskAssignedMemberID!.split(',');
 
     setState(() {
       taskAssignedUserIDList = assignedUserID;
@@ -165,7 +165,7 @@ class _taskDetailState extends State<taskDetail> {
     for(int i=0; i < userList.length; i++){
       if(assignedUserList.last == userList[i].id.toString()){
         setState(() {
-          lastAssignedUserName = userList[i].name;
+          lastAssignedUserName = userList[i].name!;
         });
       }
     }
@@ -308,12 +308,12 @@ class _taskDetailState extends State<taskDetail> {
                             child: TextButton(
                               child: Text('Select File'),
                               onPressed: () async {
-                                FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                                FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
                                     allowMultiple: true
                                 );
 
                                 if(filePickerResult != null){
-                                  List<File> fileList = filePickerResult.paths.map((e) => File(e)).toList();
+                                  List<File> fileList = filePickerResult.paths.map((e) => File(e!)).toList();
                                   for(int i=0; i<fileList.length; i++){
                                     setState(() {
                                       attachedFilePaths.add(fileList[i].path);
@@ -350,9 +350,9 @@ class _taskDetailState extends State<taskDetail> {
                             itemCount: taskFileReceiver.length,
                             itemBuilder: (context, index){
                               return TextButton(
-                                child: Text(taskFileReceiver[index].fileName),
+                                child: Text(taskFileReceiver[index].fileName!),
                                 onPressed: (){
-                                  showFileOptionDialog(taskFileReceiver[index].fileName);
+                                  showFileOptionDialog(taskFileReceiver[index].fileName!);
                                 },
                               );
                             },
@@ -391,11 +391,11 @@ class _taskDetailState extends State<taskDetail> {
                                 ),
                                 onPressed:  lastAssignedUserName!='Not Assigned' ? () {
                                   getUserJoinedTeamList().then((value) {
-                                    List<String> assignDateList = taskAssignedDate.split(',');
+                                    List<String> assignDateList = taskAssignedDate!.split(',');
                                     Navigator.push(
                                         context,
                                         CupertinoPageRoute(builder: (_){
-                                          return taskAssignedHistory(userList: value, assignedUserList: taskAssignedUserIDList, assignedDateList: assignDateList);
+                                          return taskAssignedHistory(userList: value, assignedUserList: taskAssignedUserIDList!, assignedDateList: assignDateList);
                                         })
                                     );
                                   });
@@ -426,7 +426,7 @@ class _taskDetailState extends State<taskDetail> {
                                     onSubmit: (date){
                                       Navigator.of(context).pop();
                                       setState(() {
-                                        taskStartDate = date;
+                                        taskStartDate = date as DateTime?;
                                       });
                                     },
                                     onCancel: (){
@@ -456,7 +456,7 @@ class _taskDetailState extends State<taskDetail> {
                                     onSubmit: (date){
                                       Navigator.of(context).pop();
                                       setState(() {
-                                        taskDueDate = date;
+                                        taskDueDate = date as DateTime?;
                                       });
                                     },
                                     onCancel: (){
@@ -492,7 +492,7 @@ class _taskDetailState extends State<taskDetail> {
                   buttonFunction: allowUserEdit == true ? () {
                     LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
 
-                    changeTaskStatus(context, taskID, taskStatus).then((value) {
+                    changeTaskStatus(context, taskID, taskStatus!).then((value) {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     });
@@ -554,8 +554,8 @@ class _taskDetailState extends State<taskDetail> {
 
                       String startDate = taskStartDate.toString();
                       String dueDate = taskDueDate.toString();
-                      int taskColor = colorList.indexOf(selectedColor);
-                      int taskPriority = priorityList.indexOf(selectedPriority);
+                      int taskColor = colorList.indexOf(selectedColor!);
+                      int taskPriority = priorityList.indexOf(selectedPriority!);
 
                       updateTask(context, taskID, taskNameController.text, taskDescController.text, taskStatusMsgController.text, taskColor, taskPriority, startDate, dueDate, attachedFilePaths).then((value) {
                         Navigator.of(context).pop();
@@ -584,7 +584,7 @@ class _taskDetailState extends State<taskDetail> {
                 child: Text('Download'),
                 onPressed: (){
                   HapticFeedback.lightImpact();
-                  downloadTaskFile(fileName, taskFilePath);
+                  downloadTaskFile(fileName, taskFilePath!);
                 },
               ),
               CupertinoActionSheetAction(
@@ -592,7 +592,7 @@ class _taskDetailState extends State<taskDetail> {
                 onPressed: (){
                   HapticFeedback.lightImpact();
                   LoadingScreen.showLoadingScreen(context, editTaskScaffoldKey);
-                  removeAttachedTaskFile(context, fileName, taskFilePath).then((value) {
+                  removeAttachedTaskFile(context, fileName, taskFilePath!).then((value) {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     getTaskData();

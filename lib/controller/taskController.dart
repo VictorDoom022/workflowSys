@@ -13,14 +13,14 @@ import 'miscController.dart';
 
 Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID ,String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority,String taskStartDate, String taskDueDate, List<String> attachedFilePaths) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/task/createTask';
   Uri url = Uri.parse(stringUrl);
   Map<String, String> headers = {
     "Accept": "application/json",
-    "Authorization": "Bearer " + token
+    "Authorization": "Bearer " + token!
   };
 
   var request = http.MultipartRequest('Post', url);
@@ -57,7 +57,7 @@ Future<void> createNewTask(BuildContext context, int taskListID, int taskTeamID 
 
 Future<List<Task>> getTaskByTaskListID(int taskListID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/getTaskByTaskListID';
   Uri url = Uri.parse(stringUrl);
@@ -68,7 +68,7 @@ Future<List<Task>> getTaskByTaskListID(int taskListID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -85,7 +85,7 @@ Future<List<Task>> getTaskByTaskListID(int taskListID) async {
 
 Future<Task> getTaskByID(BuildContext context, int taskID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/getTaskByID';
   Uri url = Uri.parse(stringUrl);
@@ -96,7 +96,7 @@ Future<Task> getTaskByID(BuildContext context, int taskID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -107,19 +107,22 @@ Future<Task> getTaskByID(BuildContext context, int taskID) async {
     }else{
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please pull to refresh and try again')));
+      throw 'Error';
     }
+  }else{
+    throw 'Error';
   }
 }
 
 Future<void> updateTask(BuildContext context, int taskID, String taskName, String taskDesc, String taskStatusMsg, int taskColor, int taskPriority, String taskStartDate, String taskDueDate, List<String> attachedFilePaths) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/updateTask';
   Uri url = Uri.parse(stringUrl);
   Map<String, String> headers = {
     "Accept": "application/json",
-    "Authorization": "Bearer " + token
+    "Authorization": "Bearer " + token!
   };
 
   var request = http.MultipartRequest('Post', url);
@@ -153,7 +156,7 @@ Future<void> updateTask(BuildContext context, int taskID, String taskName, Strin
 
 Future<void> assignTask(BuildContext context, int taskID, int assignedUserID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/assignTask';
   Uri url = Uri.parse(stringUrl);
@@ -166,7 +169,7 @@ Future<void> assignTask(BuildContext context, int taskID, int assignedUserID) as
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -177,8 +180,8 @@ Future<void> assignTask(BuildContext context, int taskID, int assignedUserID) as
 
 Future<List<Task>> getTaskAssignedToUser(int taskListID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/task/taskAssignedToUser';
   Uri url = Uri.parse(stringUrl);
@@ -190,7 +193,7 @@ Future<List<Task>> getTaskAssignedToUser(int taskListID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -207,7 +210,7 @@ Future<List<Task>> getTaskAssignedToUser(int taskListID) async {
 
 Future<void> changeTaskStatus(BuildContext context, int taskID, int taskStatus) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/changeTaskStatus';
   Uri url = Uri.parse(stringUrl);
@@ -219,7 +222,7 @@ Future<void> changeTaskStatus(BuildContext context, int taskID, int taskStatus) 
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -230,7 +233,7 @@ Future<void> changeTaskStatus(BuildContext context, int taskID, int taskStatus) 
 
 Future<List<Task>> getCompletedTaskByTaskListID(int taskListID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/getCompletedTaskByTaskListID';
   Uri url = Uri.parse(stringUrl);
@@ -241,7 +244,7 @@ Future<List<Task>> getCompletedTaskByTaskListID(int taskListID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -258,7 +261,7 @@ Future<List<Task>> getCompletedTaskByTaskListID(int taskListID) async {
 
 Future<void> deleteTask(BuildContext context, int taskID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/deleteTaskByTaskID/' + taskID.toString();
   Uri url = Uri.parse(stringUrl);
@@ -266,7 +269,7 @@ Future<void> deleteTask(BuildContext context, int taskID) async {
       url,
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -277,7 +280,7 @@ Future<void> deleteTask(BuildContext context, int taskID) async {
 
 Future<List<FileReceiver>> fetchTaskFiles(String filePath) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/getTaskFilesByPath';
   Uri url = Uri.parse(stringUrl);
@@ -288,7 +291,7 @@ Future<List<FileReceiver>> fetchTaskFiles(String filePath) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -305,7 +308,7 @@ Future<List<FileReceiver>> fetchTaskFiles(String filePath) async {
 
 Future<void> downloadTaskFile(String fileName, String filePath) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String encodeFileName = Uri.encodeComponent(fileName);
   String encodeFilePath = Uri.encodeComponent(filePath);
@@ -321,7 +324,7 @@ Future<void> downloadTaskFile(String fileName, String filePath) async {
 
 Future<void> removeAttachedTaskFile(BuildContext context, String fileName, String taskFilePath) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/task/deleteFileByPath';
   Uri url = Uri.parse(stringUrl);
@@ -333,7 +336,7 @@ Future<void> removeAttachedTaskFile(BuildContext context, String fileName, Strin
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -344,7 +347,7 @@ Future<void> removeAttachedTaskFile(BuildContext context, String fileName, Strin
 
 Future <List<Comment>> getTaskComments(int taskID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/comment/getCommentByTaskID';
   Uri url = Uri.parse(stringUrl);
@@ -355,7 +358,7 @@ Future <List<Comment>> getTaskComments(int taskID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -372,8 +375,8 @@ Future <List<Comment>> getTaskComments(int taskID) async {
 
 Future<void> sendTaskComment(BuildContext context, int taskID, String commentText) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/comment/createComment';
   Uri url = Uri.parse(stringUrl);
@@ -386,7 +389,7 @@ Future<void> sendTaskComment(BuildContext context, int taskID, String commentTex
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 

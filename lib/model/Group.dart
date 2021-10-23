@@ -1,13 +1,13 @@
 class Group {
-  int id;
-  String groupName;
-  String groupAdminList;
-  String groupMemberList;
-  String groupBlockListID;
-  String groupTeamListID;
-  String groupJoinCode;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? groupName;
+  String? groupAdminList;
+  String? groupMemberList;
+  String? groupBlockListID;
+  String? groupTeamListID;
+  String? groupJoinCode;
+  String? createdAt;
+  String? updatedAt;
 
   Group(
       {this.id,

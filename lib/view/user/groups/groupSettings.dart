@@ -15,7 +15,7 @@ class groupSettingsPage extends StatefulWidget {
   final int groupID;
   final bool isAdmin;
 
-  const groupSettingsPage({Key key, this.groupID, this.isAdmin}) : super(key: key);
+  const groupSettingsPage({Key? key, required this.groupID, required this.isAdmin}) : super(key: key);
 
   @override
   _groupSettingsPageState createState() => _groupSettingsPageState(groupID, isAdmin);
@@ -356,8 +356,8 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
                   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   List<int> userList = [];
 
-                  int userID = sharedPreferences.getInt("UserID");
-                  userList.add(userID);
+                  int? userID = sharedPreferences.getInt("UserID");
+                  userList.add(userID!);
 
                   removeMemberFromGroup(context, groupID, userList).then((value){
                     Navigator.popAndPushNamed(context, '/userHome');

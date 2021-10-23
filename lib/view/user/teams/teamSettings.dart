@@ -15,7 +15,7 @@ class teamSettingsPage extends StatefulWidget {
   final int teamID;
   final bool isAdmin;
 
-  const teamSettingsPage({Key key, this.teamID, this.isAdmin}) : super(key: key);
+  const teamSettingsPage({Key? key, required this.teamID, required this.isAdmin}) : super(key: key);
 
   @override
   _teamSettingsPageState createState() => _teamSettingsPageState(teamID, isAdmin);
@@ -31,7 +31,7 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
   GlobalKey<ScaffoldState> teamSettingsScaffoldKey = GlobalKey();
   TextEditingController renameTeamController = TextEditingController();
 
-  Future<TeamDetailReceiver> futureTeamDetailReceiver;
+  Future<TeamDetailReceiver>? futureTeamDetailReceiver;
 
   Future<List<User>> getUserJoinedTeamList() async {
     List<User> userList = await getUserJoinedTeam(teamID);
@@ -41,7 +41,7 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
 
   Future<List<User>> getUserNotJoinedTeamList() async {
     TeamDetailReceiver teamDetailReceiver = await getTeamDetail(teamID);
-    List<User> userList = await getUserNotJoinedTeam(int.parse(teamDetailReceiver.team.teamGroupID), teamID);
+    List<User>? userList = await getUserNotJoinedTeam(int.parse(teamDetailReceiver.team!.teamGroupID!), teamID);
 
     return userList;
   }
@@ -289,8 +289,8 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
                   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   List<int> userList = [];
 
-                  int userID = sharedPreferences.getInt("UserID");
-                  userList.add(userID);
+                  int? userID = sharedPreferences.getInt("UserID");
+                  userList.add(userID!);
 
                   removeMemberFromTeam(context, teamID, userList).then((value) {
                     Navigator.of(context).pop();

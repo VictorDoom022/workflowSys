@@ -7,7 +7,7 @@ import 'package:workflow_sys/view/registerPage.dart';
 import 'misc/loadingScreen.dart';
 
 class loginPage extends StatefulWidget {
-  const loginPage({Key key}) : super(key: key);
+  const loginPage({Key? key}) : super(key: key);
 
   @override
   _loginPageState createState() => _loginPageState();

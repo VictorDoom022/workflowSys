@@ -8,7 +8,7 @@ import 'package:workflow_sys/view/user/groups/groupDetail.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class userHome extends StatefulWidget {
-  const userHome({Key key}) : super(key: key);
+  const userHome({Key? key}) : super(key: key);
 
   @override
   _userHomeState createState() => _userHomeState();
@@ -32,7 +32,7 @@ class _userHomeState extends State<userHome> {
       )
   );
 
-  Future<List<Group>> futureGroupList;
+  Future<List<Group>>? futureGroupList;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _userHomeState extends State<userHome> {
           ),
           onPressed: (){
             HapticFeedback.lightImpact();
-            userHomeScaffoldKey.currentState.openDrawer();
+            userHomeScaffoldKey.currentState!.openDrawer();
           },
         ),
         title: Text(
@@ -134,7 +134,7 @@ class _userHomeState extends State<userHome> {
                         physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: snapshot.data.length,
+                        itemCount: snapshot.data!.length,
                         itemBuilder: (context, index){
                           return Card(
                             elevation: 8.0,
@@ -142,7 +142,7 @@ class _userHomeState extends State<userHome> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                                 title: Text(
-                                  snapshot.data[index].groupName,
+                                  snapshot.data![index].groupName!,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 25,
@@ -155,7 +155,7 @@ class _userHomeState extends State<userHome> {
                                       context,
                                       CupertinoPageRoute(
                                           builder:(context){
-                                            return groupDetail(groupID: snapshot.data[index].id, groupName: snapshot.data[index].groupName);
+                                            return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
                                           }
                                       )
                                   ).then((value) {

@@ -7,7 +7,7 @@ import 'loginPage.dart';
 import 'misc/loadingScreen.dart';
 
 class registerPage extends StatefulWidget {
-  const registerPage({Key key}) : super(key: key);
+  const registerPage({Key? key}) : super(key: key);
 
   @override
   _registerPageState createState() => _registerPageState();

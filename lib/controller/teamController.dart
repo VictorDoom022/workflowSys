@@ -10,7 +10,7 @@ import 'package:workflow_sys/model/User.dart';
 
 Future<TeamDetailReceiver> getTeamDetail(int teamID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/team/getTeamID';
   Uri url = Uri.parse(stringUrl);
@@ -21,7 +21,7 @@ Future<TeamDetailReceiver> getTeamDetail(int teamID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -30,13 +30,15 @@ Future<TeamDetailReceiver> getTeamDetail(int teamID) async {
     TeamDetailReceiver teamDetailReceiver = TeamDetailReceiver.fromJson(jsonRes);
 
     return teamDetailReceiver;
+  }else{
+    throw 'Error';
   }
 }
 
 void createTeam(BuildContext context, int groupID, String teamName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/team/createTeam';
   Uri url = Uri.parse(stringUrl);
@@ -49,7 +51,7 @@ void createTeam(BuildContext context, int groupID, String teamName) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -62,7 +64,7 @@ void createTeam(BuildContext context, int groupID, String teamName) async {
 
 Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberIDList) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   if(memberIDList.length != 0){
     String stringUrl = apiURL + '/team/addMemberToTeam';
@@ -75,7 +77,7 @@ Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberI
         },
         headers: {
           'Accept': 'application/json',
-          'Authorization' : 'Bearer ' + token
+          'Authorization' : 'Bearer ' + token!
         }
     );
 
@@ -87,7 +89,7 @@ Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberI
 
 Future<List<User>> getUserJoinedTeam(int teamID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/team/getTeamUser';
   Uri url = Uri.parse(stringUrl);
@@ -98,21 +100,24 @@ Future<List<User>> getUserJoinedTeam(int teamID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
+  List<User> listUser = [];
   if(response.statusCode == 200){
     var jsonRes = jsonDecode(response.body);
-    List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
+    listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
 
+    return listUser;
+  }else{
     return listUser;
   }
 }
 
 Future<void> removeMemberFromTeam(BuildContext context, int teamID, List<int> memberIDList) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   if(memberIDList.length != 0){
     String stringUrl = apiURL + '/team/removeMemberFromTeam';
@@ -125,7 +130,7 @@ Future<void> removeMemberFromTeam(BuildContext context, int teamID, List<int> me
         },
         headers: {
           'Accept': 'application/json',
-          'Authorization' : 'Bearer ' + token
+          'Authorization' : 'Bearer ' + token!
         }
     );
 
@@ -137,7 +142,7 @@ Future<void> removeMemberFromTeam(BuildContext context, int teamID, List<int> me
 
 Future<void> deleteTeam(BuildContext context, int teamID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/team/deleteTeam';
   Uri url = Uri.parse(stringUrl);
@@ -148,7 +153,7 @@ Future<void> deleteTeam(BuildContext context, int teamID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -159,7 +164,7 @@ Future<void> deleteTeam(BuildContext context, int teamID) async {
 
 Future<void> renameTeam(BuildContext context, int teamID, String teamName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/team/renameTeam';
   Uri url = Uri.parse(stringUrl);
@@ -171,7 +176,7 @@ Future<void> renameTeam(BuildContext context, int teamID, String teamName) async
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 

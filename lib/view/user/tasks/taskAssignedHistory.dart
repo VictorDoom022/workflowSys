@@ -9,7 +9,7 @@ class taskAssignedHistory extends StatefulWidget {
   final List<String> assignedUserList;
   final List<String> assignedDateList;
 
-  const taskAssignedHistory({Key key, this.userList, this.assignedUserList, this.assignedDateList}) : super(key: key);
+  const taskAssignedHistory({Key? key, required this.userList, required this.assignedUserList, required this.assignedDateList}) : super(key: key);
 
   @override
   _taskAssignedHistoryState createState() => _taskAssignedHistoryState(userList, assignedUserList, assignedDateList);
@@ -52,7 +52,7 @@ class _taskAssignedHistoryState extends State<taskAssignedHistory> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      convertUserIDtoName(assignedUserList[index]),
+                      convertUserIDtoName(assignedUserList[index])!,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 18,
@@ -68,7 +68,7 @@ class _taskAssignedHistoryState extends State<taskAssignedHistory> {
     );
   }
 
-  String convertUserIDtoName(String userID){
+  String? convertUserIDtoName(String userID){
     for(int i=0; i < userList.length; i++){
       if(userID == userList[i].id.toString()){
         return userList[i].name;

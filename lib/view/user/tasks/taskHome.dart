@@ -15,7 +15,7 @@ class taskHome extends StatefulWidget {
   final int taskListID;
   final String taskListUserName;
 
-  const taskHome({Key key, this.userReceiver, this.teamID, this.taskListID, this.taskListUserName}) : super(key: key);
+  const taskHome({Key? key, required this.userReceiver, required this.teamID, required this.taskListID, required this.taskListUserName}) : super(key: key);
 
   @override
   _taskHomeState createState() => _taskHomeState(userReceiver, teamID, taskListID, taskListUserName);
@@ -30,7 +30,7 @@ class _taskHomeState extends State<taskHome> {
 
   _taskHomeState(this.userReceiver, this.teamID, this.taskListID, this.taskListUserName);
 
-  Widget currentWidget;
+  Widget? currentWidget;
   int _currentIndex = 0;
 
   @override
@@ -60,19 +60,19 @@ class _taskHomeState extends State<taskHome> {
 
   List<TitledNavigationBarItem> itemList = [
       TitledNavigationBarItem(
-        icon: CupertinoIcons.square_list,
+        icon: Icon(CupertinoIcons.square_list),
         title: Text('Task Created'),
       ),
       TitledNavigationBarItem(
-        icon: CupertinoIcons.person_crop_circle_fill_badge_exclam,
+        icon: Icon(CupertinoIcons.person_crop_circle_fill_badge_exclam),
         title: Text('Assigned To You'),
       ),
       TitledNavigationBarItem(
-        icon: CupertinoIcons.text_badge_plus,
+        icon: Icon(Icons.playlist_add),
         title: Text('Create Task'),
       ),
       TitledNavigationBarItem(
-        icon: CupertinoIcons.checkmark_circle,
+        icon: Icon(CupertinoIcons.checkmark_circle),
         title: Text('Completed Task'),
       ),
     ];

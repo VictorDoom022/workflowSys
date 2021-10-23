@@ -7,7 +7,7 @@ import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class createTodo extends StatefulWidget {
-  const createTodo({Key key}) : super(key: key);
+  const createTodo({Key? key}) : super(key: key);
 
   @override
   _createTodoState createState() => _createTodoState();
@@ -22,7 +22,7 @@ class _createTodoState extends State<createTodo> {
   TextEditingController todoDescController = TextEditingController();
   TextEditingController todoStatusMsgController = TextEditingController();
 
-  DateTime todoStartDate, todoDueDate;
+  DateTime? todoStartDate, todoDueDate;
 
   InputDecoration textFieldInputDecoration = InputDecoration(
     border: InputBorder.none,
@@ -41,7 +41,7 @@ class _createTodoState extends State<createTodo> {
           padding: EdgeInsets.all(0.0),
           child: Icon(Icons.list),
           onPressed: (){
-            userCreateTodoScaffoldKey.currentState.openDrawer();
+            userCreateTodoScaffoldKey.currentState!.openDrawer();
           },
         ),
         middle: Text('New Todo'),
@@ -103,7 +103,7 @@ class _createTodoState extends State<createTodo> {
                                   onSubmit: (date){
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      todoStartDate = date;
+                                      todoStartDate = date as DateTime?;
                                     });
                                   },
                                   onCancel: (){
@@ -131,7 +131,7 @@ class _createTodoState extends State<createTodo> {
                                   onSubmit: (date){
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      todoDueDate = date;
+                                      todoDueDate = date as DateTime?;
                                     });
                                   },
                                   onCancel: (){

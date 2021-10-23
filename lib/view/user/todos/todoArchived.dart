@@ -11,7 +11,7 @@ import 'package:workflow_sys/view/user/todos/todoList.dart';
 import '../userNavDrawer.dart';
 
 class todoArchived extends StatefulWidget {
-  const todoArchived({Key key}) : super(key: key);
+  const todoArchived({Key? key}) : super(key: key);
 
   @override
   _todoArchivedState createState() => _todoArchivedState();
@@ -23,7 +23,7 @@ class _todoArchivedState extends State<todoArchived> {
 
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  Future<List<ToDo>> futureTodoArchiveList;
+  Future<List<ToDo>>? futureTodoArchiveList;
   String searchKeyWord="";
 
   @override
@@ -42,14 +42,14 @@ class _todoArchivedState extends State<todoArchived> {
   }
 
   Future<List<ToDo>> searchList() async {
-    List<ToDo> listTodo = await futureTodoArchiveList;
+    List<ToDo>? listTodo = await futureTodoArchiveList;
     List<ToDo> searchList = [];
 
     if(searchKeyWord == ""){
-      searchList = listTodo;
+      searchList = listTodo!;
     }else {
-      for(int i=0; i < listTodo.length; i++){
-        if(listTodo[i].todoName.toLowerCase().contains(searchKeyWord.toLowerCase()) == true){
+      for(int i=0; i < listTodo!.length; i++){
+        if(listTodo[i].todoName!.toLowerCase().contains(searchKeyWord.toLowerCase()) == true){
           searchList.add(listTodo[i]);
         }
       }
@@ -67,7 +67,7 @@ class _todoArchivedState extends State<todoArchived> {
           padding: EdgeInsets.all(0.0),
           child: Icon(Icons.list),
           onPressed: (){
-            userTodoArchiveListScaffoldKey.currentState.openDrawer();
+            userTodoArchiveListScaffoldKey.currentState!.openDrawer();
           },
         ),
         middle: Text('Todo List'),
@@ -100,7 +100,7 @@ class _todoArchivedState extends State<todoArchived> {
 
                   if(snapshot.hasData){
                     if(snapshot.data.toString() != "[]"){
-                      List<ToDo> todoList = snapshot.data;
+                      List<ToDo> todoList = snapshot.data!;
                       return ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
@@ -110,19 +110,19 @@ class _todoArchivedState extends State<todoArchived> {
                             padding: const EdgeInsets.all(1.0),
                             child: GestureDetector(
                               child: TodoCard(
-                                todoDate: convertBackendDateTimeToDate(todoList[index].createdAt),
-                                todoMonth: convertBackendDateTimeToMonth(todoList[index].createdAt),
-                                name: todoList[index].todoName,
+                                todoDate: convertBackendDateTimeToDate(todoList[index].createdAt!),
+                                todoMonth: convertBackendDateTimeToMonth(todoList[index].createdAt!),
+                                name: todoList[index].todoName!,
                                 lastUpdatedTime: convertBackendDateTime(todoList[index].updatedAt),
-                                statusMsg: todoList[index].todoStatusMsg,
-                                desc: todoList[index].todoDesc,
+                                statusMsg: todoList[index].todoStatusMsg!,
+                                desc: todoList[index].todoDesc!,
                               ),
                               onTap: (){
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
                                         builder: (_){
-                                          return todoDetail(todoID: todoList[index].id);
+                                          return todoDetail(todoID: todoList[index].id!);
                                         }
                                     )
                                 ).then((value) {

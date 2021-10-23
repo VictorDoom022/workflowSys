@@ -5,7 +5,7 @@ import 'package:workflow_sys/controller/authController.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 
 class adminNavDrawer extends StatefulWidget {
-  const adminNavDrawer({Key key}) : super(key: key);
+  const adminNavDrawer({Key? key}) : super(key: key);
 
   @override
   _adminNavDrawerState createState() => _adminNavDrawerState();
@@ -26,9 +26,9 @@ class _adminNavDrawerState extends State<adminNavDrawer> {
 
   void getCurrentUserName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String userName = sharedPreferences.getString("UserName");
+    String? userName = sharedPreferences.getString("UserName");
     setState(() {
-      currentUserName = userName;
+      currentUserName = userName!;
     });
   }
 

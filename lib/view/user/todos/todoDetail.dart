@@ -11,7 +11,7 @@ class todoDetail extends StatefulWidget {
 
   final int todoID;
 
-  const todoDetail({Key key, this.todoID}) : super(key: key);
+  const todoDetail({Key? key, required this.todoID}) : super(key: key);
 
   @override
   _todoDetailState createState() => _todoDetailState(todoID);
@@ -29,17 +29,17 @@ class _todoDetailState extends State<todoDetail> {
   TextEditingController todoDescController = TextEditingController();
   TextEditingController todoStatusMsgController = TextEditingController();
 
-  DateTime todoStartDate, todoDueDate;
-  int todoStatus;
+  DateTime? todoStartDate, todoDueDate;
+  int? todoStatus;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getTodoByID(context, todoID).then((value) {
-      todoNameController.text = value.todoName;
-      todoDescController.text = value.todoDesc;
-      todoStatusMsgController.text = value.todoStatusMsg;
+      todoNameController.text = value.todoName!;
+      todoDescController.text = value.todoDesc!;
+      todoStatusMsgController.text = value.todoStatusMsg!;
 
       setState(() {
         todoStatus = value.todoStatus;
@@ -47,13 +47,13 @@ class _todoDetailState extends State<todoDetail> {
 
       if(value.todoStartDate != "null"){
         setState(() {
-          todoStartDate = convertStringToDateTime(value.todoStartDate);
+          todoStartDate = convertStringToDateTime(value.todoStartDate!);
         });
       }
 
       if(value.todoDueDate != "null"){
         setState(() {
-          todoDueDate = convertStringToDateTime(value.todoDueDate);
+          todoDueDate = convertStringToDateTime(value.todoDueDate!);
         });
       }
     });
@@ -130,7 +130,7 @@ class _todoDetailState extends State<todoDetail> {
                                   onSubmit: (date){
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      todoStartDate = date;
+                                      todoStartDate = date as DateTime?;
                                     });
                                   },
                                   onCancel: (){
@@ -160,7 +160,7 @@ class _todoDetailState extends State<todoDetail> {
                                   onSubmit: (date){
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      todoDueDate = date;
+                                      todoDueDate = date as DateTime?;
                                     });
                                   },
                                   onCancel: (){
@@ -181,7 +181,7 @@ class _todoDetailState extends State<todoDetail> {
                 buttonFunction: () {
                   LoadingScreen.showLoadingScreen(context, toDoDetailScaffoldKey);
 
-                  changeTodoStatus(context, todoID, todoStatus).then((value) {
+                  changeTodoStatus(context, todoID, todoStatus!).then((value) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   });

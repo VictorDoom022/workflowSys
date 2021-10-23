@@ -13,7 +13,7 @@ import 'package:workflow_sys/model/UserReceiver.dart';
 import 'ChatList.dart';
 
 class userChatList extends StatefulWidget {
-  const userChatList({Key key}) : super(key: key);
+  const userChatList({Key? key}) : super(key: key);
 
   @override
   _userChatListState createState() => _userChatListState();
@@ -21,8 +21,8 @@ class userChatList extends StatefulWidget {
 
 class _userChatListState extends State<userChatList> {
 
-  Future<List<ChatHistory>> futureChatHistory;
-  UserReceiver allUserData;
+  Future<List<ChatHistory>>? futureChatHistory;
+  UserReceiver? allUserData;
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class _userChatListState extends State<userChatList> {
   }
 
   Future<void> fetchUserData() async {
-    UserReceiver userReceiver = await getAllUser(context);
+    UserReceiver? userReceiver = await getAllUser(context);
     setState(() {
       allUserData = userReceiver;
     });
@@ -62,9 +62,9 @@ class _userChatListState extends State<userChatList> {
             return ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index){
-                return chatHistoryItem(snapshot.data[index].chatReceiverUserID);
+                return chatHistoryItem(snapshot.data![index].chatReceiverUserID!);
               },
             );
           }else{
@@ -83,26 +83,26 @@ class _userChatListState extends State<userChatList> {
         child: CircleAvatar(
           radius: 23,
           backgroundImage: NetworkImage(
-              serverURL + '/' + convertUserIDToUserDetail(userID).userDetailProfilePictureDir
+              serverURL + '/' + convertUserIDToUserDetail(userID)!.userDetailProfilePictureDir!
           ),
         ),
       ),
       title: Text(
-          convertUserIDToUser(userID).name,
+          convertUserIDToUser(userID)!.name!,
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold
           ),
       ),
       subtitle: Text(
-        convertUserIDToUser(userID).email,
+        convertUserIDToUser(userID)!.email!,
         style: TextStyle(
           fontSize: 13,
         ),
       ),
       onTap: () async {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        int currentLogInUserID = sharedPreferences.getInt("UserID");
+        int? currentLogInUserID = sharedPreferences.getInt("UserID");
 
         Navigator.push(
             context,
@@ -119,18 +119,18 @@ class _userChatListState extends State<userChatList> {
     );
   }
 
-  UserDetail convertUserIDToUserDetail(int userID){
-    for(int i=0; i < allUserData.user.length; i++){
-      if(allUserData.user[i].id == userID){
-        return allUserData.userDetail[i];
+  UserDetail? convertUserIDToUserDetail(int userID){
+    for(int i=0; i < allUserData!.user!.length; i++){
+      if(allUserData!.user![i]!.id! == userID){
+        return allUserData!.userDetail![i];
       }
     }
   }
 
-  User convertUserIDToUser(int userID){
-    for(int i=0; i < allUserData.user.length; i++){
-      if(allUserData.user[i].id == userID){
-        return allUserData.user[i];
+  User? convertUserIDToUser(int? userID){
+    for(int i=0; i < allUserData!.user!.length; i++){
+      if(allUserData!.user![i]!.id == userID){
+        return allUserData!.user![i];
       }
     }
   }

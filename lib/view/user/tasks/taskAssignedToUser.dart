@@ -18,7 +18,7 @@ class taskAssigendToUser extends StatefulWidget {
   final int teamID;
   final int taskListID;
 
-  const taskAssigendToUser({Key key, this.userReceiver, this.teamID, this.taskListID}) : super(key: key);
+  const taskAssigendToUser({Key? key, required this.userReceiver, required this.teamID, required this.taskListID}) : super(key: key);
 
   @override
   _taskAssigendToUserState createState() => _taskAssigendToUserState(userReceiver, teamID, taskListID);
@@ -34,7 +34,7 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
 
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  Future<List<Task>> futureTaskAssignedList;
+  Future<List<Task>>? futureTaskAssignedList;
   String searchKeyWord="";
 
   @override
@@ -53,14 +53,14 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
   }
 
   Future<List<Task>> searchList() async {
-    List<Task> listTask = await futureTaskAssignedList;
+    List<Task>? listTask = await futureTaskAssignedList;
     List<Task> searchList = [];
 
     if(searchKeyWord == ""){
-      searchList = listTask;
+      searchList = listTask!;
     }else {
-      for(int i=0; i < listTask.length; i++){
-        if(listTask[i].taskName.toLowerCase().contains(searchKeyWord.toLowerCase()) == true){
+      for(int i=0; i < listTask!.length; i++){
+        if(listTask[i].taskName!.toLowerCase().contains(searchKeyWord.toLowerCase()) == true){
           searchList.add(listTask[i]);
         }
       }
@@ -105,23 +105,23 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
                       return ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: snapshot.data.length,
+                        itemCount: snapshot.data!.length,
                         itemBuilder: (context, index){
                           return Padding(
                             padding: const EdgeInsets.all(1.0),
                             child: GestureDetector(
                               child:
                               TaskCard(
-                                taskDate: convertBackendDateTimeToDate(snapshot.data[index].createdAt),
-                                taskMonth: convertBackendDateTimeToMonth(snapshot.data[index].createdAt),
-                                title: snapshot.data[index].taskName,
-                                taskCreateUserName: checkLastAssignedUser(snapshot.data[index].taskUserCreateID),
-                                lastUpdatedTime: convertBackendDateTime(snapshot.data[index].updatedAt),
-                                lastAssignedUserName: checkLastAssignedUser(snapshot.data[index].taskAssignedMemberID),
-                                statusMsg: snapshot.data[index].taskStatusMsg,
-                                desc: snapshot.data[index].taskDesc,
-                                color: snapshot.data[index].taskColor,
-                                priority: snapshot.data[index].taskPriority,
+                                taskDate: convertBackendDateTimeToDate(snapshot.data![index].createdAt!),
+                                taskMonth: convertBackendDateTimeToMonth(snapshot.data![index].createdAt!),
+                                title: snapshot.data![index].taskName!,
+                                taskCreateUserName: checkLastAssignedUser(snapshot.data![index].taskUserCreateID!)!,
+                                lastUpdatedTime: convertBackendDateTime(snapshot.data![index].updatedAt),
+                                lastAssignedUserName: checkLastAssignedUser(snapshot.data![index].taskAssignedMemberID!)!,
+                                statusMsg: snapshot.data![index].taskStatusMsg!,
+                                desc: snapshot.data![index].taskDesc!,
+                                color: snapshot.data![index].taskColor!,
+                                priority: snapshot.data![index].taskPriority!,
                               ),
                               onTap: (){
                                 HapticFeedback.lightImpact();
@@ -129,7 +129,7 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
                                     context,
                                     CupertinoPageRoute(
                                         builder:(context){
-                                          return taskDetail(teamID: teamID, taskID: snapshot.data[index].id);
+                                          return taskDetail(teamID: teamID, taskID: snapshot.data![index].id!);
                                         }
                                     )
                                 ).then((value) {
@@ -155,14 +155,14 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
     );
   }
 
-  String checkLastAssignedUser(String taskAssignedMemberList) {
-    List<User> userList = userReceiver.user;
+  String? checkLastAssignedUser(String taskAssignedMemberList) {
+    List<User?>? userList = userReceiver.user;
     List<String> assignedMemberList = taskAssignedMemberList.split(',');
 
     if(taskAssignedMemberList.length !=0){
-      for(int i=0; i < userList.length; i++){
-        if(assignedMemberList.last == userList[i].id.toString()){
-          return userList[i].name;
+      for(int i=0; i < userList!.length; i++){
+        if(assignedMemberList.last == userList[i]!.id.toString()){
+          return userList[i]!.name;
         }
       }
     }else{

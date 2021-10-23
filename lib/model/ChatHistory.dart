@@ -1,5 +1,5 @@
 class ChatHistory {
-  int chatReceiverUserID;
+  int? chatReceiverUserID;
 
   ChatHistory({this.chatReceiverUserID});
 

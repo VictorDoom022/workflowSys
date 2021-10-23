@@ -10,7 +10,7 @@ import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
 class userProfile extends StatefulWidget {
-  const userProfile({Key key}) : super(key: key);
+  const userProfile({Key? key}) : super(key: key);
 
   @override
   _userProfileState createState() => _userProfileState();
@@ -23,7 +23,7 @@ class _userProfileState extends State<userProfile> {
 
   String username = '';
   String profilePictureDir = serverURL + '/upload/userProfilePictures/userProfilePic.jpg';
-  int accountEnabled;
+  int? accountEnabled;
   String accountCreateDate = '';
   String userJoinedGroupCount = '';
 
@@ -37,11 +37,11 @@ class _userProfileState extends State<userProfile> {
   void setUserData(){
     getCurrentLogInUserDetail().then((value) {
       setState(() {
-        username = value.user.name;
-        profilePictureDir = serverURL + '/' + value.userDetail.userDetailProfilePictureDir;
-        accountEnabled = value.userDetail.userDetailAccEnable;
-        accountCreateDate = convertBackendDateTime(value.user.createdAt);
-        userJoinedGroupCount = calcUserJoinedGroup(value.userDetail.userDetailJoinedGroupID);
+        username = value!.user!.name!;
+        profilePictureDir = serverURL + '/' + value.userDetail!.userDetailProfilePictureDir!;
+        accountEnabled = value.userDetail!.userDetailAccEnable;
+        accountCreateDate = convertBackendDateTime(value.user!.createdAt);
+        userJoinedGroupCount = calcUserJoinedGroup(value.userDetail!.userDetailJoinedGroupID!);
       });
     });
   }
@@ -75,7 +75,7 @@ class _userProfileState extends State<userProfile> {
           padding: EdgeInsets.all(0.0),
           child: Icon(Icons.list),
           onPressed: (){
-            userProfileScaffoldKey.currentState.openDrawer();
+            userProfileScaffoldKey.currentState!.openDrawer();
           },
         ),
       ),
@@ -125,14 +125,14 @@ class _userProfileState extends State<userProfile> {
                                       icon: Icon(Icons.camera_alt),
                                       color: Colors.white,
                                       onPressed: () async {
-                                        FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                                        FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
                                           type: FileType.image
                                         );
 
                                         if(filePickerResult != null){
                                           LoadingScreen.showLoadingScreen(context, userProfileScaffoldKeyForLoadingScreen);
-                                          File file = File(filePickerResult.files.single.path);
-                                          uploadProfilePicture(context, filePickerResult.paths.first).then((value) {
+                                          File file = File(filePickerResult.files.single.path!);
+                                          uploadProfilePicture(context, filePickerResult.paths.first!).then((value) {
                                             setUserData();
                                           });
                                         }

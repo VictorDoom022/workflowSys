@@ -1,10 +1,10 @@
 class Chat {
-  int id;
-  int chatSenderUserID;
-  int chatReceiverUserID;
-  String chatMessage;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  int? chatSenderUserID;
+  int? chatReceiverUserID;
+  String? chatMessage;
+  String? createdAt;
+  String? updatedAt;
 
   Chat(
       {this.id,

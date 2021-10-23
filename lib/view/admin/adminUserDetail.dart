@@ -7,10 +7,10 @@ import 'package:workflow_sys/model/UserReceiver.dart';
 
 class adminUserDetail extends StatefulWidget {
 
-  final User user;
-  final UserDetail userDetail;
+  final User? user;
+  final UserDetail? userDetail;
 
-  const adminUserDetail({Key key, this.user, this.userDetail}) : super(key: key);
+  const adminUserDetail({Key? key, this.user, this.userDetail}) : super(key: key);
 
   @override
   _adminUserDetailState createState() => _adminUserDetailState(user, userDetail);
@@ -18,8 +18,8 @@ class adminUserDetail extends StatefulWidget {
 
 class _adminUserDetailState extends State<adminUserDetail> {
 
-  final User user;
-  final UserDetail userDetail;
+  final User? user;
+  final UserDetail? userDetail;
 
   _adminUserDetailState(this.user, this.userDetail);
 
@@ -55,31 +55,31 @@ class _adminUserDetailState extends State<adminUserDetail> {
                     children: [
                       CardRowItem(
                         title: 'Account ID',
-                        content: user.id.toString(),
+                        content: user?.id.toString(),
                       ),
                       CardRowItem(
                         title: 'Name',
-                        content: user.name,
+                        content: user?.name,
                       ),
                       CardRowItem(
                         title: 'Email',
-                        content: user.email,
+                        content: user?.email,
                       ),
                       CardRowItem(
                         title: 'Create At',
-                        content: convertBackendDateTime(user.createdAt),
+                        content: convertBackendDateTime(user?.createdAt),
                       ),
                       CardRowItem(
                         title: 'Account Status',
-                        content: userDetail.userDetailStatus,
+                        content: userDetail?.userDetailStatus,
                       ),
                       CardRowItem(
                         title: 'Account Enabled',
-                        content: userDetail.userDetailAccEnable==1 ? 'true' : 'false',
+                        content: userDetail?.userDetailAccEnable==1 ? 'true' : 'false',
                       ),
                       CardRowItem(
                         title: 'Account Type',
-                        content: user.position,
+                        content: user?.position,
                       ),
                     ],
                   ),
@@ -95,10 +95,10 @@ class _adminUserDetailState extends State<adminUserDetail> {
 
 class CardRowItem extends StatelessWidget {
 
-  final String title;
-  final String content;
+  final String? title;
+  final String? content;
 
-  const CardRowItem({Key key, this.title, this.content}) : super(key: key);
+  const CardRowItem({Key? key, this.title, this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,13 +112,13 @@ class CardRowItem extends StatelessWidget {
         Expanded(
           flex: 3,
           child: Text(
-              title,
+              title!,
             style: titleTextStyle,
           ),
         ),
         Expanded(
           flex: 3,
-          child: Text(content),
+          child: Text(content!),
         )
       ],
     );

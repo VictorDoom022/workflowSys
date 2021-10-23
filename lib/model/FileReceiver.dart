@@ -1,7 +1,7 @@
 class FileReceiver {
-  String fileName;
-  int fileSize;
-  String filePath;
+  String? fileName;
+  int? fileSize;
+  String? filePath;
 
   FileReceiver({this.fileName, this.fileSize, this.filePath});
 

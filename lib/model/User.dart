@@ -1,11 +1,11 @@
 class User {
-  int id;
-  String name;
-  String email;
+  int? id;
+  String? name;
+  String? email;
   Null emailVerifiedAt;
-  String position;
-  String createdAt;
-  String updatedAt;
+  String? position;
+  String? createdAt;
+  String? updatedAt;
 
   User(
       {this.id,

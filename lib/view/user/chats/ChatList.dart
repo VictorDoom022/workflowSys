@@ -10,13 +10,13 @@ import 'package:workflow_sys/model/UserReceiver.dart';
 
 class chatList extends StatefulWidget {
 
-  final int senderUserID;
-  final int receiverUserID;
+  final int? senderUserID;
+  final int? receiverUserID;
 
-  const chatList({Key key, this.senderUserID, this.receiverUserID}) : super(key: key);
+  const chatList({Key? key, this.senderUserID, this.receiverUserID}) : super(key: key);
 
   @override
-  _chatListState createState() => _chatListState(senderUserID, receiverUserID);
+  _chatListState createState() => _chatListState(senderUserID!, receiverUserID!);
 }
 
 class _chatListState extends State<chatList> {
@@ -28,9 +28,9 @@ class _chatListState extends State<chatList> {
 
   TextEditingController chatMessageTextEditController = TextEditingController();
   String appTitleUserName = '';
-  int currentLogInUserID;
-  Future<List<Chat>> futureChatList;
-  UserReceiverForSingleUser receiverUserDetail;
+  int? currentLogInUserID;
+  Future<List<Chat>>? futureChatList;
+  UserReceiverForSingleUser? receiverUserDetail;
 
   @override
   void initState() {
@@ -47,17 +47,17 @@ class _chatListState extends State<chatList> {
     getUserDetailByID(receiverUserID).then((value) {
       setState(() {
         receiverUserDetail = value;
-        appTitleUserName = value.user.name;
+        appTitleUserName = value!.user!.name!;
       });
     });
   }
 
   Future<void> getCurrentLogInUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    int userID = sharedPreferences.getInt("UserID");
+    int? userID = sharedPreferences.getInt("UserID");
 
     setState(() {
-      currentLogInUserID = userID;
+      currentLogInUserID = userID!;
     });
   }
 
@@ -85,9 +85,9 @@ class _chatListState extends State<chatList> {
               return ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index){
-                  return chatItem(snapshot.data[index]);
+                  return chatItem(snapshot.data![index]);
                 },
               );
             }else{
@@ -149,7 +149,7 @@ class _chatListState extends State<chatList> {
               if (!isCurrentUser)
                 CircleAvatar(
                   radius: 15,
-                  backgroundImage: NetworkImage(serverURL + '/' + receiverUserDetail.userDetail.userDetailProfilePictureDir),
+                  backgroundImage: NetworkImage(serverURL + '/' + receiverUserDetail!.userDetail!.userDetailProfilePictureDir!),
                 ),
               SizedBox(
                 width: 10,
@@ -167,7 +167,7 @@ class _chatListState extends State<chatList> {
                       bottomRight: Radius.circular(isCurrentUser ? 0 : 12),
                     )),
                 child: Text(
-                  chatData.chatMessage,
+                  chatData.chatMessage!,
                   style: TextStyle(
                       color: isCurrentUser ? Colors.white : Colors.grey[800]
                   ),

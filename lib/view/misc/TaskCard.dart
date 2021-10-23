@@ -15,7 +15,7 @@ class TaskCard extends StatelessWidget {
   final int color;
   final int priority;
 
-  TaskCard({Key key, this.taskDate, this.taskMonth, this.title, this.taskCreateUserName, this.lastUpdatedTime, this.lastAssignedUserName, this.statusMsg, this.desc, this.color, this.priority}) : super(key: key);
+  TaskCard({Key? key, required this.taskDate, required this.taskMonth, required this.title, required this.taskCreateUserName, required this.lastUpdatedTime, required this.lastAssignedUserName, required this.statusMsg, required this.desc, required this.color, required this.priority}) : super(key: key);
 
   Color setCardBackgroundColor(colorID){
     // taskColor docs
