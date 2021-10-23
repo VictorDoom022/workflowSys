@@ -4,7 +4,7 @@
             <form @submit.prevent="login">
                 <h1 class="title my-4">
                     <span class="title-orange">Task</span>
-                    <span class="title-black">Kit</span>
+                    <span class="title-black">IT</span>
                 </h1>
                 
                 <h1 class="h3 mb-3 fw-normal">Welcome</h1>
