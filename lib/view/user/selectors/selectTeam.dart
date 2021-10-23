@@ -13,7 +13,7 @@ class selectTeam extends StatefulWidget {
   final int type;
   final List<Team> teamList;
 
-  const selectTeam({Key key, this.type, this.teamList}) : super(key: key);
+  const selectTeam({Key? key, required this.type, required this.teamList}) : super(key: key);
 
   @override
   _selectTeamState createState() => _selectTeamState(type, teamList);
@@ -49,13 +49,13 @@ class _selectTeamState extends State<selectTeam> {
           itemCount: teamList.length,
           itemBuilder: (context, index){
             return ListTile(
-              title: Text(teamList[index].teamName),
+              title: Text(teamList[index].teamName!),
               onTap: (){
                 HapticFeedback.lightImpact();
                 Navigator.push(
                     context,
                     CupertinoPageRoute(builder: (context){
-                      return teamDetail(isAdmin: true, teamName: teamList[index].teamName, teamID: teamList[index].id);
+                      return teamDetail(isAdmin: true, teamName: teamList[index].teamName!, teamID: teamList[index].id!);
                     })
                 );
               },
@@ -100,7 +100,7 @@ class _selectTeamState extends State<selectTeam> {
                                           onPressed: () async {
                                             HapticFeedback.lightImpact();
                                             LoadingScreen.showLoadingScreen(context, selectTeamScaffoldKey);
-                                            deleteTeam(context, teamList[index].id).then((value) {
+                                            deleteTeam(context, teamList[index].id!).then((value) {
                                               Navigator.of(context).pop();
                                               Navigator.of(context).pop();
                                               Navigator.of(context).pop();

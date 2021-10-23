@@ -1,10 +1,10 @@
 class Comment {
-  int id;
-  int commentTaskID;
-  int commentUserID;
-  String commentDetails;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  int? commentTaskID;
+  int? commentUserID;
+  String? commentDetails;
+  String? createdAt;
+  String? updatedAt;
 
   Comment(
       {this.id,

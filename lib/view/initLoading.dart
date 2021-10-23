@@ -6,7 +6,7 @@ import 'package:workflow_sys/view/admin/adminHome.dart';
 import 'package:workflow_sys/view/loginPage.dart';
 
 class initLoading extends StatefulWidget {
-  const initLoading({Key key}) : super(key: key);
+  const initLoading({Key? key}) : super(key: key);
 
   @override
   _initLoadingState createState() => _initLoadingState();
@@ -14,9 +14,9 @@ class initLoading extends StatefulWidget {
 
 class _initLoadingState extends State<initLoading> {
 
-  int userID;
-  String userPosition;
-  String userToken;
+  int? userID;
+  String? userPosition;
+  String? userToken;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _initLoadingState extends State<initLoading> {
           }
         })
       }else{
-        SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
           Navigator.pushReplacementNamed(
               context,
               '/login'
@@ -48,12 +48,12 @@ class _initLoadingState extends State<initLoading> {
     });
   }
 
-  Future<String> getUserToken() async {
+  Future<String?> getUserToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString("UserToken");
   }
 
-  Future<String> getUserPosition() async {
+  Future<String?> getUserPosition() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString("UserPosition");
   }

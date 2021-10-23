@@ -1,14 +1,14 @@
 class ToDo {
-  int id;
-  int todoUserID;
-  String todoName;
-  String todoDesc;
-  String todoStartDate;
-  String todoDueDate;
-  String todoStatusMsg;
-  int todoStatus;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  int? todoUserID;
+  String? todoName;
+  String? todoDesc;
+  String? todoStartDate;
+  String? todoDueDate;
+  String? todoStatusMsg;
+  int? todoStatus;
+  String? createdAt;
+  String? updatedAt;
 
   ToDo(
       {this.id,

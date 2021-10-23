@@ -12,7 +12,7 @@ class createTask extends StatefulWidget {
   final int taskListID;
   final int teamID;
 
-  const createTask({Key key, this.taskListID, this.teamID}) : super(key: key);
+  const createTask({Key? key, required this.taskListID, required this.teamID}) : super(key: key);
 
   @override
   _createTaskState createState() => _createTaskState(taskListID, teamID);
@@ -31,7 +31,7 @@ class _createTaskState extends State<createTask> {
   TextEditingController taskDescController = TextEditingController();
   TextEditingController taskStatusController = TextEditingController();
 
-  DateTime taskStartDate, taskDueDate;
+  DateTime? taskStartDate, taskDueDate;
   List<String> colorList = ['Default', 'Blue', 'Red', 'Yellow', 'Green', 'Grey', 'Black'];
   List<String> priorityList = ['Very Low', 'Low', 'Medium (Default)', 'High', 'Very High'];
   List<String> attachedFilePaths = [];
@@ -83,7 +83,7 @@ class _createTaskState extends State<createTask> {
                       }).toList(),
                       onChanged: (selectedItem){
                         setState(() {
-                          selectedColor = selectedItem;
+                          selectedColor = selectedItem!;
                         });
                       },
                     ),
@@ -102,7 +102,7 @@ class _createTaskState extends State<createTask> {
                       }).toList(),
                       onChanged: (selectedItem){
                         setState(() {
-                          selectedPriority = selectedItem;
+                          selectedPriority = selectedItem!;
                         });
                       },
                     ),
@@ -136,12 +136,12 @@ class _createTaskState extends State<createTask> {
                           child: TextButton(
                             child: Text('Select File'),
                             onPressed: () async {
-                              FilePickerResult filePickerResult = await FilePicker.platform.pickFiles(
+                              FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
                                   allowMultiple: true
                               );
 
                               if(filePickerResult != null){
-                                List<File> fileList = filePickerResult.paths.map((e) => File(e)).toList();
+                                List<File> fileList = filePickerResult.paths.map((e) => File(e!)).toList();
                                 for(int i=0; i<fileList.length; i++){
                                   setState(() {
                                     attachedFilePaths.add(fileList[i].path);
@@ -182,7 +182,7 @@ class _createTaskState extends State<createTask> {
                                   onSubmit: (date){
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      taskStartDate = date;
+                                      taskStartDate = date as DateTime?;
                                     });
                                   },
                                   onCancel: (){
@@ -210,7 +210,7 @@ class _createTaskState extends State<createTask> {
                                   onSubmit: (date){
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      taskDueDate = date;
+                                      taskDueDate = date as DateTime?;
                                     });
                                   },
                                   onCancel: (){

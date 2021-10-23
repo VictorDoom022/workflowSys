@@ -12,7 +12,7 @@ class userInfo extends StatefulWidget {
 
   final int userID;
 
-  const userInfo({Key key, this.userID}) : super(key: key);
+  const userInfo({Key? key, required this.userID}) : super(key: key);
 
   @override
   _userInfoState createState() => _userInfoState(userID);
@@ -26,7 +26,7 @@ class _userInfoState extends State<userInfo> {
 
   String username = '';
   String profilePictureDir = serverURL + '/upload/userProfilePictures/userProfilePic.jpg';
-  int accountEnabled;
+  int? accountEnabled;
   String accountCreateDate = '';
   String userJoinedGroupCount = '';
 
@@ -40,11 +40,11 @@ class _userInfoState extends State<userInfo> {
   void setUserData(){
     getUserDetailByID(userID).then((value) {
       setState(() {
-        username = value.user.name;
-        profilePictureDir = serverURL + '/' + value.userDetail.userDetailProfilePictureDir;
-        accountEnabled = value.userDetail.userDetailAccEnable;
-        accountCreateDate = convertBackendDateTime(value.user.createdAt);
-        userJoinedGroupCount = calcUserJoinedGroup(value.userDetail.userDetailJoinedGroupID);
+        username = value!.user!.name!;
+        profilePictureDir = serverURL + '/' + value.userDetail!.userDetailProfilePictureDir!;
+        accountEnabled = value.userDetail!.userDetailAccEnable;
+        accountCreateDate = convertBackendDateTime(value.user!.createdAt);
+        userJoinedGroupCount = calcUserJoinedGroup(value.userDetail!.userDetailJoinedGroupID!);
       });
     });
   }
@@ -155,7 +155,7 @@ class _userInfoState extends State<userInfo> {
                     ),
                     onPressed: () async {
                       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                      int currentLogInUserID = sharedPreferences.getInt("UserID");
+                      int? currentLogInUserID = sharedPreferences.getInt("UserID");
 
                       Navigator.push(
                           context,

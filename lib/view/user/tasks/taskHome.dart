@@ -15,7 +15,7 @@ class taskHome extends StatefulWidget {
   final int taskListID;
   final String taskListUserName;
 
-  const taskHome({Key key, this.userReceiver, this.teamID, this.taskListID, this.taskListUserName}) : super(key: key);
+  const taskHome({Key? key, required this.userReceiver, required this.teamID, required this.taskListID, required this.taskListUserName}) : super(key: key);
 
   @override
   _taskHomeState createState() => _taskHomeState(userReceiver, teamID, taskListID, taskListUserName);
@@ -30,7 +30,7 @@ class _taskHomeState extends State<taskHome> {
 
   _taskHomeState(this.userReceiver, this.teamID, this.taskListID, this.taskListUserName);
 
-  Widget currentWidget;
+  Widget? currentWidget;
   int _currentIndex = 0;
 
   @override

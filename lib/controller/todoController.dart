@@ -10,8 +10,8 @@ import 'miscController.dart';
 
 Future<List<ToDo>> getTodoList() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/todo/getToDoByUserID';
   Uri url = Uri.parse(stringUrl);
@@ -22,7 +22,7 @@ Future<List<ToDo>> getTodoList() async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -31,13 +31,15 @@ Future<List<ToDo>> getTodoList() async {
     List<ToDo> listToDo = (jsonRes as List).map((e) => ToDo.fromJson(e)).toList();
 
     return listToDo;
+  }else{
+    throw 'Error';
   }
 }
 
 Future<void> createNewTodo(BuildContext context, String todoName, String todoDesc, String todoStatusMsg, String todoStartDate, String todoDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/todo/createTodo';
   Uri url = Uri.parse(stringUrl);
@@ -53,7 +55,7 @@ Future<void> createNewTodo(BuildContext context, String todoName, String todoDes
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -64,7 +66,7 @@ Future<void> createNewTodo(BuildContext context, String todoName, String todoDes
 
 Future<ToDo> getTodoByID(BuildContext context, int todoID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/todo/getTodoByID';
   Uri url = Uri.parse(stringUrl);
@@ -75,7 +77,7 @@ Future<ToDo> getTodoByID(BuildContext context, int todoID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -86,13 +88,16 @@ Future<ToDo> getTodoByID(BuildContext context, int todoID) async {
     }else{
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please pull to refresh and try again')));
+      throw 'null';
     }
+  }else{
+    throw 'Error';
   }
 }
 
 Future<void> updateTodo(BuildContext context, int todoID, String todoName, String todoDesc, String todoStatusMsg, String todoStartDate, String todoDueDate) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/todo/updateTodo';
   Uri url = Uri.parse(stringUrl);
@@ -108,7 +113,7 @@ Future<void> updateTodo(BuildContext context, int todoID, String todoName, Strin
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -119,7 +124,7 @@ Future<void> updateTodo(BuildContext context, int todoID, String todoName, Strin
 
 Future<void> deleteTodo(BuildContext context, int todoID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/todo/deleteTodoById/' + todoID.toString();
   Uri url = Uri.parse(stringUrl);
@@ -127,7 +132,7 @@ Future<void> deleteTodo(BuildContext context, int todoID) async {
       url,
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -138,7 +143,7 @@ Future<void> deleteTodo(BuildContext context, int todoID) async {
 
 Future<void> changeTodoStatus(BuildContext context, int todoID, int todoStatus) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/todo/changeTodoStatus';
   Uri url = Uri.parse(stringUrl);
@@ -150,7 +155,7 @@ Future<void> changeTodoStatus(BuildContext context, int todoID, int todoStatus) 
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -161,8 +166,8 @@ Future<void> changeTodoStatus(BuildContext context, int todoID, int todoStatus) 
 
 Future<List<ToDo>> getToDoArchivedList() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/todo/getToDoArchivedByUserID';
   Uri url = Uri.parse(stringUrl);
@@ -173,7 +178,7 @@ Future<List<ToDo>> getToDoArchivedList() async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -182,5 +187,7 @@ Future<List<ToDo>> getToDoArchivedList() async {
     List<ToDo> listToDo = (jsonRes as List).map((e) => ToDo.fromJson(e)).toList();
 
     return listToDo;
+  }else{
+    throw 'Error';
   }
 }

@@ -8,9 +8,9 @@ import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserDetail.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 
-Future<UserReceiver> getAllUser(BuildContext context) async{
+Future<UserReceiver?> getAllUser(BuildContext context) async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/users';
   Uri url = Uri.parse(stringUrl);
@@ -18,7 +18,7 @@ Future<UserReceiver> getAllUser(BuildContext context) async{
       url,
     headers: {
       'Accept': 'application/json',
-      'Authorization' : 'Bearer ' + token
+      'Authorization' : 'Bearer ' + token!
     }
   );
 
@@ -33,10 +33,10 @@ Future<UserReceiver> getAllUser(BuildContext context) async{
   }
 }
 
-Future<UserReceiverForSingleUser> getCurrentLogInUserDetail() async {
+Future<UserReceiverForSingleUser?> getCurrentLogInUserDetail() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/users/' + userID.toString();
   Uri url = Uri.parse(stringUrl);
@@ -44,7 +44,7 @@ Future<UserReceiverForSingleUser> getCurrentLogInUserDetail() async {
       url,
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -60,9 +60,9 @@ Future<UserReceiverForSingleUser> getCurrentLogInUserDetail() async {
 
 }
 
-Future<UserReceiverForSingleUser> getUserDetailByID(int userID) async {
+Future<UserReceiverForSingleUser?> getUserDetailByID(int userID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/users/' + userID.toString();
   Uri url = Uri.parse(stringUrl);
@@ -70,7 +70,7 @@ Future<UserReceiverForSingleUser> getUserDetailByID(int userID) async {
       url,
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -88,7 +88,7 @@ Future<UserReceiverForSingleUser> getUserDetailByID(int userID) async {
 
 void setUserStatus(BuildContext context, int id, String statusMsg) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/users/setUserStatus';
   Uri url = Uri.parse(stringUrl);
@@ -97,7 +97,7 @@ void setUserStatus(BuildContext context, int id, String statusMsg) async {
       body: {'userDetail_id' : id.toString(), 'statusMsg' : statusMsg},
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -107,7 +107,7 @@ void setUserStatus(BuildContext context, int id, String statusMsg) async {
 
 void toggleUserBan(BuildContext context, int id) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/users/toggleUserBan/' + id.toString();
   Uri url = Uri.parse(stringUrl);
@@ -115,7 +115,7 @@ void toggleUserBan(BuildContext context, int id) async {
     url,
     headers: {
       'Accept': 'application/json',
-      'Authorization' : 'Bearer ' + token
+      'Authorization' : 'Bearer ' + token!
     }
   );
 
@@ -125,15 +125,15 @@ void toggleUserBan(BuildContext context, int id) async {
 
 Future uploadProfilePicture(BuildContext context, String filePath) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/users/uploadProfilePicture';
   Uri url = Uri.parse(stringUrl);
 
   Map<String, String> headers = {
     "Accept": "application/json",
-    "Authorization": "Bearer " + token
+    "Authorization": "Bearer " + token!
   };
 
   var request = http.MultipartRequest('Post', url);
@@ -156,7 +156,7 @@ Future uploadProfilePicture(BuildContext context, String filePath) async {
 
 Future<String> getUserProfilePictureByUserID(int userID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/users/getUserProfilePictureByUserID';
   Uri url = Uri.parse(stringUrl);
@@ -167,7 +167,7 @@ Future<String> getUserProfilePictureByUserID(int userID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 

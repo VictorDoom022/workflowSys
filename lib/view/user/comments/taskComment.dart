@@ -12,7 +12,7 @@ class taskComment extends StatefulWidget {
 
   final int taskID;
 
-  const taskComment({Key key, this.taskID}) : super(key: key);
+  const taskComment({Key? key, required this.taskID}) : super(key: key);
 
   @override
   _taskCommentState createState() => _taskCommentState(taskID);
@@ -25,8 +25,8 @@ class _taskCommentState extends State<taskComment> {
   _taskCommentState(this.taskID);
 
   TextEditingController commentTextEditController = new TextEditingController();
-  Future<List<Comment>> futureCommentList;
-  UserReceiver userReceiver;
+  Future<List<Comment>>? futureCommentList;
+  UserReceiver? userReceiver;
 
   @override
   void initState() {
@@ -45,9 +45,9 @@ class _taskCommentState extends State<taskComment> {
   }
 
   Future<void> getUserData() async {
-    UserReceiver userReceiverData = await getAllUser(context);
+    UserReceiver? userReceiverData = await getAllUser(context);
     setState(() {
-      userReceiver = userReceiverData;
+      userReceiver = userReceiverData!;
     });
   }
 
@@ -66,7 +66,7 @@ class _taskCommentState extends State<taskComment> {
             return ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index){
                 return ListTile(
                   leading: Container(
@@ -76,12 +76,12 @@ class _taskCommentState extends State<taskComment> {
                         color: Colors.blue,
                         borderRadius: new BorderRadius.all(Radius.circular(50))),
                     child: CircleAvatar(
-                        radius: 50, backgroundImage: NetworkImage(getUserProilePictureByUserID(snapshot.data[index].commentUserID))
+                        radius: 50, backgroundImage: NetworkImage(getUserProilePictureByUserID(snapshot.data![index].commentUserID!)!)
                     ),
                   ),
-                  title: Text(convertUserIDtoName(snapshot.data[index].commentUserID)),
-                  trailing: Text(convertBackendDateTime(snapshot.data[index].createdAt)),
-                  subtitle: Text(snapshot.data[index].commentDetails),
+                  title: Text(convertUserIDtoName(snapshot.data![index].commentUserID!)!),
+                  trailing: Text(convertBackendDateTime(snapshot.data![index].createdAt)),
+                  subtitle: Text(snapshot.data![index].commentDetails!),
                 );
               },
             );
@@ -128,18 +128,18 @@ class _taskCommentState extends State<taskComment> {
     );
   }
 
-  String convertUserIDtoName(int userID){
-    for(int i=0; i < userReceiver.user.length; i++){
-      if(userID == userReceiver.user[i].id){
-        return userReceiver.user[i].name;
+  String? convertUserIDtoName(int userID){
+    for(int i=0; i < userReceiver!.user!.length; i++){
+      if(userID == userReceiver!.user![i]!.id){
+        return userReceiver!.user![i]!.name!;
       }
     }
   }
 
-  String getUserProilePictureByUserID(int userID){
-    for(int i=0; i < userReceiver.user.length; i++){
-      if(userID == userReceiver.user[i].id){
-        return serverURL + '/' + userReceiver.userDetail[i].userDetailProfilePictureDir;
+  String? getUserProilePictureByUserID(int userID){
+    for(int i=0; i < userReceiver!.user!.length; i++){
+      if(userID == userReceiver!.user![i]!.id){
+        return serverURL + '/' + userReceiver!.userDetail![i]!.userDetailProfilePictureDir!;
       }
     }
   }

@@ -1,22 +1,22 @@
 class Task {
-  int id;
-  String taskTaskListID;
-  String taskTeamID;
-  String taskName;
-  String taskDesc;
-  String taskDetailedDesc;
-  String taskUserCreateID;
-  String taskAssignedMemberID;
-  String taskAssignedDate;
-  String taskStartDate;
-  String taskDueDate;
-  String taskStatusMsg;
-  int taskStatus;
-  int taskColor;
-  int taskPriority;
-  String taskFilePath;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? taskTaskListID;
+  String? taskTeamID;
+  String? taskName;
+  String? taskDesc;
+  String? taskDetailedDesc;
+  String? taskUserCreateID;
+  String? taskAssignedMemberID;
+  String? taskAssignedDate;
+  String? taskStartDate;
+  String? taskDueDate;
+  String? taskStatusMsg;
+  int? taskStatus;
+  int? taskColor;
+  int? taskPriority;
+  String? taskFilePath;
+  String? createdAt;
+  String? updatedAt;
 
   Task(
       {this.id,

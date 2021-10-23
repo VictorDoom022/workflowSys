@@ -1,9 +1,9 @@
 class UserDetail {
-  int userDetailId;
-  String userDetailJoinedGroupID;
-  String userDetailStatus;
-  int userDetailAccEnable;
-  String userDetailProfilePictureDir;
+  int? userDetailId;
+  String? userDetailJoinedGroupID;
+  String? userDetailStatus;
+  int? userDetailAccEnable;
+  String? userDetailProfilePictureDir;
 
   UserDetail(
       {this.userDetailId, this.userDetailJoinedGroupID, this.userDetailStatus, this.userDetailAccEnable, this.userDetailProfilePictureDir});

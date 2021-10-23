@@ -17,13 +17,13 @@ import 'package:workflow_sys/view/user/teams/teamDetail.dart';
 
 class groupDetail extends StatefulWidget {
 
-  final int groupID;
-  final String groupName;
+  final int? groupID;
+  final String? groupName;
 
-  const groupDetail({Key key, this.groupID, this.groupName}) : super(key: key);
+  const groupDetail({Key? key, this.groupID, this.groupName}) : super(key: key);
 
   @override
-  _groupDetailState createState() => _groupDetailState(groupID, groupName);
+  _groupDetailState createState() => _groupDetailState(groupID!, groupName!);
 }
 
 class _groupDetailState extends State<groupDetail> {
@@ -37,7 +37,7 @@ class _groupDetailState extends State<groupDetail> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
   TextEditingController teamNameController = TextEditingController();
 
-  Future<GroupDetailReceiver> futureGroupDetailReceiver;
+  Future<GroupDetailReceiver>? futureGroupDetailReceiver;
   bool userAdmin = false;
   String groupJoinCode = "";
 
@@ -53,19 +53,19 @@ class _groupDetailState extends State<groupDetail> {
     checkUserAdmin(groupDetailReceiver);
     setState(() {
       futureGroupDetailReceiver = Future.value(groupDetailReceiver);
-      groupJoinCode = groupDetailReceiver.group.groupJoinCode;
-      groupName = groupDetailReceiver.group.groupName;
+      groupJoinCode = groupDetailReceiver.group!.groupJoinCode!;
+      groupName = groupDetailReceiver.group!.groupName!;
     });
     refreshController.refreshCompleted();
   }
 
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
-    String adminList = groupDetailReceiver.group.groupAdminList;
+    String? adminList = groupDetailReceiver.group!.groupAdminList;
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    int userID = sharedPreferences.getInt("UserID");
+    int? userID = sharedPreferences.getInt("UserID");
 
-    List<String> adminArrList = adminList.split(',');
+    List<String> adminArrList = adminList!.split(',');
 
     for(int i=0; i < adminArrList.length; i++){
       if(adminArrList[i] == userID.toString()){
@@ -181,7 +181,7 @@ class _groupDetailState extends State<groupDetail> {
             if(snapshot.hasError) print(snapshot.error);
 
             if(snapshot.hasData){
-              return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data);
+              return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data!);
             }else{
               return Center(child: CupertinoActivityIndicator(radius: 12));
             }
@@ -250,7 +250,7 @@ class groupItem extends StatelessWidget {
   final GroupDetailReceiver groupDetailReceiver;
   final bool isAdmin;
 
-  const groupItem({Key key, this.groupDetailReceiver, this.isAdmin}) : super(key: key);
+  const groupItem({Key? key, required this.groupDetailReceiver, required this.isAdmin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -260,14 +260,14 @@ class groupItem extends StatelessWidget {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: groupDetailReceiver.team.length,
+      itemCount: groupDetailReceiver.team!.length,
       itemBuilder: (context, index){
         return Card(
           elevation: 8.0,
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
-                groupDetailReceiver.team[index].teamName,
+                groupDetailReceiver.team![index]!.teamName!,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25,
@@ -280,7 +280,7 @@ class groupItem extends StatelessWidget {
                   context,
                   CupertinoPageRoute(
                       builder:(context){
-                        return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team[index].id, teamName: groupDetailReceiver.team[index].teamName);
+                        return teamDetail(isAdmin: isAdmin, teamID: groupDetailReceiver.team![index]!.id!, teamName: groupDetailReceiver.team![index]!.teamName!);
                       }
                   )
               );

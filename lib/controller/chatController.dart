@@ -9,8 +9,8 @@ import 'package:workflow_sys/model/ChatHistory.dart';
 
 Future<List<Chat>> getChatData(int receiverUserID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/chat/getUserChat';
   Uri url = Uri.parse(stringUrl);
@@ -22,7 +22,7 @@ Future<List<Chat>> getChatData(int receiverUserID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -39,8 +39,8 @@ Future<List<Chat>> getChatData(int receiverUserID) async {
 
 Future<void> sendChatMessage(int receiverUserID, String chatMessage) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/chat/sendMessage';
   Uri url = Uri.parse(stringUrl);
@@ -53,15 +53,15 @@ Future<void> sendChatMessage(int receiverUserID, String chatMessage) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 }
 
 Future<List<ChatHistory>> getUserChatHistory() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/chat/getUserChatHistory';
   Uri url = Uri.parse(stringUrl);
@@ -72,7 +72,7 @@ Future<List<ChatHistory>> getUserChatHistory() async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 

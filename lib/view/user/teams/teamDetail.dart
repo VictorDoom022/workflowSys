@@ -23,7 +23,7 @@ class teamDetail extends StatefulWidget {
   final String teamName;
   final bool isAdmin;
 
-  const teamDetail({Key key, this.teamID, this.teamName, this.isAdmin}) : super(key: key);
+  const teamDetail({Key? key, required this.teamID, required this.teamName, required this.isAdmin}) : super(key: key);
 
   @override
   _teamDetailState createState() => _teamDetailState(teamID, teamName, isAdmin);
@@ -40,9 +40,9 @@ class _teamDetailState extends State<teamDetail> {
   GlobalKey<ScaffoldState> teamDetailScaffoldKey = GlobalKey();
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  Future<TeamDetailReceiver> futureTeamDetailReceiver;
-  UserReceiver userReceiver;
-  String searchKeyword;
+  Future<TeamDetailReceiver>? futureTeamDetailReceiver;
+  UserReceiver? userReceiver;
+  String? searchKeyword;
 
   @override
   void initState() {
@@ -57,13 +57,13 @@ class _teamDetailState extends State<teamDetail> {
     TeamDetailReceiver teamDetailReceiver = await getTeamDetail(teamID);
     setState(() {
       futureTeamDetailReceiver = Future.value(teamDetailReceiver);
-      teamName = teamDetailReceiver.team.teamName;
+      teamName = teamDetailReceiver.team!.teamName!;
     });
     refreshController.refreshCompleted();
   }
 
   Future<void> getUserData() async {
-    UserReceiver userReceiverData = await getAllUser(context);
+    UserReceiver? userReceiverData = await getAllUser(context);
     setState(() {
       userReceiver = userReceiverData;
     });
@@ -94,7 +94,7 @@ class _teamDetailState extends State<teamDetail> {
             if(snapshot.hasError) print(snapshot.error);
 
             if(snapshot.hasData){
-              return teamItem(teamDetailReceiver: snapshot.data, userReceiver: userReceiver);
+              return teamItem(teamDetailReceiver: snapshot.data!, userReceiver: userReceiver!);
             }else{
               return Center(child: CupertinoActivityIndicator(radius: 12));
             }
@@ -151,14 +151,14 @@ class teamItem extends StatelessWidget {
   final TeamDetailReceiver teamDetailReceiver;
   final UserReceiver userReceiver;
 
-  const teamItem({Key key, this.teamDetailReceiver, this.userReceiver}) : super(key: key);
+  const teamItem({Key? key, required this.teamDetailReceiver, required this.userReceiver}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: teamDetailReceiver.taskList.length,
+      itemCount: teamDetailReceiver.taskList!.length,
       itemBuilder: (context, index){
         return Card(
           elevation: 8.0,
@@ -176,12 +176,12 @@ class teamItem extends StatelessWidget {
                       borderRadius: new BorderRadius.all(Radius.circular(50))),
                   child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(serverURL + '/' + userReceiver.userDetail[index].userDetailProfilePictureDir)
+                      backgroundImage: NetworkImage(serverURL + '/' + userReceiver.userDetail![index]!.userDetailProfilePictureDir!)
                   ),
                 ),
                 SizedBox(width: 5),
                 Text(
-                    convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID) + "'s Task List",
+                    convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)! + "'s Task List",
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -192,7 +192,7 @@ class teamItem extends StatelessWidget {
                   context,
                   CupertinoPageRoute(
                       builder: (_){
-                        return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team.id, taskListID: teamDetailReceiver.taskList[index].id, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList[index].taskListUserID));
+                        return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team!.id!, taskListID: teamDetailReceiver.taskList![index]!.id!, taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)!);
                       }
                   )
               );
@@ -203,10 +203,10 @@ class teamItem extends StatelessWidget {
     );
   }
 
-  String convertUserIDtoName(String userID){
-    for(int i=0; i < userReceiver.user.length; i++){
-      if(userID == userReceiver.user[i].id.toString()){
-        return userReceiver.user[i].name;
+  String? convertUserIDtoName(String userID){
+    for(int i=0; i < userReceiver.user!.length; i++){
+      if(userID == userReceiver.user![i]!.id.toString()){
+        return userReceiver.user![i]!.name!;
       }
     }
   }

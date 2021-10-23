@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import 'miscController.dart';
 
-void login(BuildContext context, String email, String password) async {
+void login(BuildContext? context, String? email, String? password) async {
 
   String stringUrl = apiURL + '/login';
   Uri url = Uri.parse(stringUrl);
@@ -21,35 +21,35 @@ void login(BuildContext context, String email, String password) async {
   );
 
   if(response.statusCode == 200){
-    AuthReceiver authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
+    AuthReceiver? authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
 
-    if(authReceiver.userDetail.userDetailAccEnable == 1){
+    if(authReceiver.userDetail!.userDetailAccEnable == 1){
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString("UserToken", authReceiver.token);
-      sharedPreferences.setInt("UserID", authReceiver.user.id);
-      sharedPreferences.setString("UserEmail", authReceiver.user.email);
-      sharedPreferences.setString("UserName", authReceiver.user.name);
-      sharedPreferences.setString("UserPosition", authReceiver.user.position);
+      sharedPreferences.setString("UserToken", authReceiver.token!);
+      sharedPreferences.setInt("UserID", authReceiver.user!.id!);
+      sharedPreferences.setString("UserEmail", authReceiver.user!.email!);
+      sharedPreferences.setString("UserName", authReceiver.user!.name!);
+      sharedPreferences.setString("UserPosition", authReceiver.user!.position!);
 
-      if(authReceiver.user.position == "admin"){
-        Navigator.pushReplacementNamed(context, '/adminHome');
+      if(authReceiver.user?.position == "admin"){
+        Navigator.pushReplacementNamed(context!, '/adminHome');
       }else{
-        Navigator.pushReplacementNamed(context, '/userHome');
+        Navigator.pushReplacementNamed(context!, '/userHome');
       }
 
     }else{
-      Navigator.of(context).pop();
+      Navigator.of(context!).pop();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Your account has been disabled.')));
     }
 
   }else if(response.statusCode == 201){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
+    ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
     Navigator.of(context).pop();
   }else if(response.statusCode == 422){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid input/credentials')));
+    ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('Invalid input/credentials')));
     Navigator.of(context).pop();
   }else{
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code:' + response.statusCode.toString())));
+    ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code:' + response.statusCode.toString())));
     Navigator.of(context).pop();
   }
 }
@@ -67,14 +67,14 @@ void register(BuildContext context, String name, String email, String password, 
   );
 
   if(response.statusCode == 200){
-    AuthReceiver authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
+    AuthReceiver? authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("UserToken", authReceiver.token);
-    sharedPreferences.setInt("UserID", authReceiver.user.id);
-    sharedPreferences.setString("UserEmail", authReceiver.user.email);
-    sharedPreferences.setString("UserName", authReceiver.user.name);
-    sharedPreferences.setString("UserPosition", authReceiver.user.position);
+    sharedPreferences.setString("UserToken", authReceiver.token!);
+    sharedPreferences.setInt("UserID", authReceiver.user!.id!);
+    sharedPreferences.setString("UserEmail", authReceiver.user!.email!);
+    sharedPreferences.setString("UserName", authReceiver.user!.name!);
+    sharedPreferences.setString("UserPosition", authReceiver.user!.position!);
 
     Navigator.pushReplacementNamed(context, '/userHome');
 
@@ -92,7 +92,7 @@ void register(BuildContext context, String name, String email, String password, 
 
 void logout(BuildContext context) async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/logout';
   Uri url = Uri.parse(stringUrl);
@@ -100,7 +100,7 @@ void logout(BuildContext context) async{
     url,
     headers: {
       'Accept': 'application/json',
-      'Authorization' : 'Bearer ' + token
+      'Authorization' : 'Bearer ' + token!
     }
   );
 

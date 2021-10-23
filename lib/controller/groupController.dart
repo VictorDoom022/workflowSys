@@ -15,8 +15,8 @@ import 'package:workflow_sys/view/user/userHome.dart';
 
 void createGroup(BuildContext context, String groupName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/createGroup';
   Uri url = Uri.parse(stringUrl);
@@ -25,7 +25,7 @@ void createGroup(BuildContext context, String groupName) async {
       body: {'groupName' : groupName, 'userID' : userID.toString()},
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -39,9 +39,9 @@ void createGroup(BuildContext context, String groupName) async {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Here's your join code for " + group.groupName),
+                Text("Here's your join code for " + group.groupName!),
                 Text(
-                    group.groupJoinCode,
+                    group.groupJoinCode!,
                     style: TextStyle(
                       fontSize: 17
                     ),
@@ -73,8 +73,8 @@ void createGroup(BuildContext context, String groupName) async {
 
 Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/group/userID/' + userID.toString();
   Uri url = Uri.parse(stringUrl);
@@ -82,7 +82,7 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
       url,
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -97,13 +97,14 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
     }
   }catch(e){
     Navigator.of(context).pushReplacementNamed('/login');
+    throw 'Null';
   }
 }
 
 Future<GroupDetailReceiver> getGroupDetailByGroupUserID(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/group/getGroupDetailByGroupUserID';
   Uri url = Uri.parse(stringUrl);
@@ -115,7 +116,7 @@ Future<GroupDetailReceiver> getGroupDetailByGroupUserID(int groupID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -124,12 +125,14 @@ Future<GroupDetailReceiver> getGroupDetailByGroupUserID(int groupID) async {
     GroupDetailReceiver groupDetailReceiver = GroupDetailReceiver.fromJson(jsonRes);
 
     return groupDetailReceiver;
+  }else{
+     throw 'Error';
   }
 }
 
 Future<List<Team>> getGroupTeamByGroupID(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/getGroupTeamByGroupID';
   Uri url = Uri.parse(stringUrl);
@@ -140,7 +143,7 @@ Future<List<Team>> getGroupTeamByGroupID(int groupID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -149,13 +152,15 @@ Future<List<Team>> getGroupTeamByGroupID(int groupID) async {
     List<Team> teamList = (jsonRes as List).map((e) => Team.fromJson(e)).toList();
 
     return teamList;
+  }else{
+    throw 'Error';
   }
 }
 
 Future<void> joinGroup(BuildContext context, String joinCode) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/group/joinGroup';
   Uri url = Uri.parse(stringUrl);
@@ -167,7 +172,7 @@ Future<void> joinGroup(BuildContext context, String joinCode) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -179,7 +184,7 @@ Future<void> joinGroup(BuildContext context, String joinCode) async {
 
 Future<List<User>> getUserNotJoinedTeam(int groupID, int teamID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/team/getTeamUserDiff';
   Uri url = Uri.parse(stringUrl);
@@ -191,7 +196,7 @@ Future<List<User>> getUserNotJoinedTeam(int groupID, int teamID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -200,12 +205,14 @@ Future<List<User>> getUserNotJoinedTeam(int groupID, int teamID) async {
     List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
 
     return listUser;
+  }else{
+    throw 'Error';
   }
 }
 
 Future<List<User>> getGroupUserByGroupID(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/getGroupUserByGroupID';
   Uri url = Uri.parse(stringUrl);
@@ -216,7 +223,7 @@ Future<List<User>> getGroupUserByGroupID(int groupID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -225,12 +232,14 @@ Future<List<User>> getGroupUserByGroupID(int groupID) async {
     List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
 
     return listUser;
+  }else{
+    throw 'Error';
   }
 }
 
 Future<List<User>> getGroupNonAdminUserList(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/getGroupNonAdminUser';
   Uri url = Uri.parse(stringUrl);
@@ -241,7 +250,7 @@ Future<List<User>> getGroupNonAdminUserList(int groupID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -250,12 +259,14 @@ Future<List<User>> getGroupNonAdminUserList(int groupID) async {
     List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
 
     return listUser;
+  }else{
+    throw 'Error';
   }
 }
 
 Future<List<User>> getGroupAdminUserList(int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/getGroupAdminUser';
   Uri url = Uri.parse(stringUrl);
@@ -266,7 +277,7 @@ Future<List<User>> getGroupAdminUserList(int groupID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -275,12 +286,14 @@ Future<List<User>> getGroupAdminUserList(int groupID) async {
     List<User> listUser = (jsonRes as List).map((e) => User.fromJson(e)).toList();
 
     return listUser;
+  }else{
+    throw 'Error';
   }
 }
 
 Future<void> setMemberAsAdmin(BuildContext context, int groupID, List<int> memberList) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/setMemberAsAdmin';
   Uri url = Uri.parse(stringUrl);
@@ -292,7 +305,7 @@ Future<void> setMemberAsAdmin(BuildContext context, int groupID, List<int> membe
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -303,7 +316,7 @@ Future<void> setMemberAsAdmin(BuildContext context, int groupID, List<int> membe
 
 Future<void> removeMemberFromGroupAdmin(BuildContext context, int groupID, List<int> memberList) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/removeMemberFromGroupAdmin';
   Uri url = Uri.parse(stringUrl);
@@ -315,7 +328,7 @@ Future<void> removeMemberFromGroupAdmin(BuildContext context, int groupID, List<
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -326,7 +339,7 @@ Future<void> removeMemberFromGroupAdmin(BuildContext context, int groupID, List<
 
 Future<void> deleteGroup(BuildContext context, int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/deleteGroup/' + groupID.toString();
   Uri url = Uri.parse(stringUrl);
@@ -334,7 +347,7 @@ Future<void> deleteGroup(BuildContext context, int groupID) async {
       url,
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -350,7 +363,7 @@ Future<void> deleteGroup(BuildContext context, int groupID) async {
 
 Future<void> renameGroup(BuildContext context, int groupID, String groupName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/renameGroup';
   Uri url = Uri.parse(stringUrl);
@@ -362,7 +375,7 @@ Future<void> renameGroup(BuildContext context, int groupID, String groupName) as
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -373,8 +386,7 @@ Future<void> renameGroup(BuildContext context, int groupID, String groupName) as
 
 Future<void> removeMemberFromGroup(BuildContext context, int groupID, List<int> memberIDList) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
-  int userID = sharedPreferences.getInt("UserID");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/removeMemberFromGroup';
   Uri url = Uri.parse(stringUrl);
@@ -386,7 +398,7 @@ Future<void> removeMemberFromGroup(BuildContext context, int groupID, List<int> 
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 
@@ -397,7 +409,7 @@ Future<void> removeMemberFromGroup(BuildContext context, int groupID, List<int> 
 
 Future<void> generateNewGroupJoinCode(BuildContext context, int groupID) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  String token = sharedPreferences.getString("UserToken");
+  String? token = sharedPreferences.getString("UserToken");
 
   String stringUrl = apiURL + '/group/generateNewGroupJoinCode';
   Uri url = Uri.parse(stringUrl);
@@ -408,7 +420,7 @@ Future<void> generateNewGroupJoinCode(BuildContext context, int groupID) async {
       },
       headers: {
         'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token
+        'Authorization' : 'Bearer ' + token!
       }
   );
 

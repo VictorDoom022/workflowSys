@@ -9,7 +9,7 @@ import 'package:workflow_sys/view/admin/adminUserDetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class adminHome extends StatefulWidget {
-  const adminHome({Key key}) : super(key: key);
+  const adminHome({Key? key}) : super(key: key);
 
   @override
   _adminHomeState createState() => _adminHomeState();
@@ -19,7 +19,7 @@ class _adminHomeState extends State<adminHome> {
 
   GlobalKey<ScaffoldState> adminHomeScaffoldKey = GlobalKey();
 
-  Future<UserReceiver> futureUserReceiver;
+  Future<UserReceiver>? futureUserReceiver;
 
   void initState(){
     super.initState();
@@ -29,7 +29,7 @@ class _adminHomeState extends State<adminHome> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   Future<void> getUserData() async{
-    UserReceiver userReceiver = await getAllUser(context);
+    UserReceiver? userReceiver = await getAllUser(context);
     setState(() {
       futureUserReceiver = Future.value(userReceiver);
     });
@@ -46,7 +46,7 @@ class _adminHomeState extends State<adminHome> {
           child: Icon(Icons.list),
           onPressed: (){
             HapticFeedback.lightImpact();
-            adminHomeScaffoldKey.currentState.openDrawer();
+            adminHomeScaffoldKey.currentState?.openDrawer();
           },
         ),
         middle: Text('Home'),
@@ -76,9 +76,9 @@ class _adminHomeState extends State<adminHome> {
 
 class userItem extends StatelessWidget {
 
-  final UserReceiver users;
+  final UserReceiver? users;
 
-  const userItem({Key key, this.users}) : super(key: key);
+  const userItem({Key? key, this.users}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,22 +88,22 @@ class userItem extends StatelessWidget {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: users.user.length,
+        itemCount: users?.user?.length,
         itemBuilder: (context, index){
           return GestureDetector(
             onLongPress: (){
-              userActionOptionPopup(context, userDetailController, users.user[index].id, users.userDetail[index].userDetailStatus, users.userDetail[index].userDetailAccEnable);
+              userActionOptionPopup(context, userDetailController, users!.user![index]!.id!, users!.userDetail![index]!.userDetailStatus!, users!.userDetail![index]!.userDetailAccEnable!);
             },
             child: ListTile(
-              title: Text(users.user[index].name),
-              subtitle: Text(users.user[index].email),
+              title: Text(users!.user![index]!.name!),
+              subtitle: Text(users!.user![index]!.email!),
               onTap: () {
                 HapticFeedback.lightImpact();
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
                       builder:(context){
-                        return adminUserDetail(user: users.user[index], userDetail: users.userDetail[index]);
+                        return adminUserDetail(user: users!.user![index], userDetail: users!.userDetail![index]);
                       }
                     )
                 );

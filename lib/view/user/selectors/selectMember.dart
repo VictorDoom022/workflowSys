@@ -20,10 +20,10 @@ class selectMember extends StatefulWidget {
   // type 7 = remove member from group (teamID = groupID since serve the same purpose)
 
   final int type;
-  final int teamID;
+  final int? teamID;
   final List<User> userList;
 
-  const selectMember({Key key, this.type, this.teamID, this.userList}) : super(key: key);
+  const selectMember({Key? key, required this.type, this.teamID, required this.userList}) : super(key: key);
 
   @override
   _selectMemberState createState() => _selectMemberState(type, teamID, userList);
@@ -32,13 +32,13 @@ class selectMember extends StatefulWidget {
 class _selectMemberState extends State<selectMember> {
 
   final int type;
-  final int teamID;
+  final int? teamID;
   final List<User> userList;
 
   _selectMemberState(this.type, this.teamID, this.userList);
 
   String appTitle = "Select member";
-  int userListLength;
+  int? userListLength;
   List<bool> isChecked = [];
   List<int> selectedUserListID = [];
 
@@ -49,12 +49,12 @@ class _selectMemberState extends State<selectMember> {
     setAppTitle();
     setState(() {
       userListLength = userList.length;
-      isChecked = List<bool>.generate(userListLength, (index) => false);
+      isChecked = List<bool>.generate(userListLength!, (index) => false);
     });
   }
 
   void setAppTitle(){
-    String appTitleSet;
+    String? appTitleSet;
     switch (type) {
       case 1:
         appTitleSet = 'Select a member to add';
@@ -80,7 +80,7 @@ class _selectMemberState extends State<selectMember> {
     }
 
     setState(() {
-      appTitle = appTitleSet;
+      appTitle = appTitleSet!;
     });
   }
 
@@ -94,33 +94,33 @@ class _selectMemberState extends State<selectMember> {
           child: Text('Done'),
           onPressed: () async {
             if(type == 1){
-              addMemberToTeam(context, teamID, selectedUserListID).then((value) {
+              addMemberToTeam(context, teamID!, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
             }else if(type == 2){
-              removeMemberFromTeam(context, teamID, selectedUserListID).then((value) {
+              removeMemberFromTeam(context, teamID!, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
             }else if(type == 3){
               Navigator.of(context).pop();
             }else if(type == 4){
-              setMemberAsAdmin(context, teamID, selectedUserListID).then((value){
+              setMemberAsAdmin(context, teamID!, selectedUserListID).then((value){
                 Navigator.of(context).pop();
               });
             }else if(type == 5){
-              removeMemberFromGroupAdmin(context, teamID, selectedUserListID).then((value) {
+              removeMemberFromGroupAdmin(context, teamID!, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
             }else if(type == 6){
               if(selectedUserListID.length == 1){
-                assignTask(context, teamID, selectedUserListID[0]).then((value) {
+                assignTask(context, teamID!, selectedUserListID[0]).then((value) {
                   Navigator.of(context).pop();
                 });
               }else{
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You can only select one member')));
               }
             }else if(type == 7){
-              removeMemberFromGroup(context, teamID, selectedUserListID).then((value) {
+              removeMemberFromGroup(context, teamID!, selectedUserListID).then((value) {
                 Navigator.of(context).pop();
               });
             }
@@ -145,18 +145,18 @@ class _selectMemberState extends State<selectMember> {
                           borderRadius: new BorderRadius.all(Radius.circular(50))),
                       child: FutureBuilder(
                         initialData: 'upload/userProfilePictures/userProfilePic.jpg',
-                        future: getUserProfilePictureByUserID(userList[index].id),
+                        future: getUserProfilePictureByUserID(userList[index].id!),
                         builder: (context, snapshot){
                           return CircleAvatar(
                               radius: 50,
-                              backgroundImage: NetworkImage(serverURL + '/' + snapshot.data)
+                              backgroundImage: NetworkImage(serverURL + '/' + snapshot.data.toString())
                           );
                         },
                       ),
                     ),
                     SizedBox(width: 5),
                     Text(
-                      userList[index].name,
+                      userList[index].name!,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -164,9 +164,9 @@ class _selectMemberState extends State<selectMember> {
                 value: isChecked[index],
                 onChanged: (bool){
                   setState(() {
-                    isChecked[index] = bool;
+                    isChecked[index] = bool!;
                     if(isChecked[index] == true){
-                      selectedUserListID.add(userList[index].id);
+                      selectedUserListID.add(userList[index].id!);
                     }else{
                       selectedUserListID.remove(userList[index].id);
                     }
@@ -186,18 +186,18 @@ class _selectMemberState extends State<selectMember> {
                         borderRadius: new BorderRadius.all(Radius.circular(50))),
                     child: FutureBuilder(
                       initialData: 'upload/userProfilePictures/userProfilePic.jpg',
-                      future: getUserProfilePictureByUserID(userList[index].id),
+                      future: getUserProfilePictureByUserID(userList[index].id!),
                       builder: (context, snapshot){
                         return CircleAvatar(
                             radius: 50,
-                            backgroundImage: NetworkImage(serverURL + '/' + snapshot.data)
+                            backgroundImage: NetworkImage(serverURL + '/' + snapshot.data.toString())
                         );
                       },
                     ),
                   ),
                   SizedBox(width: 5),
                   Text(
-                    userList[index].name,
+                    userList[index].name!,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -207,7 +207,7 @@ class _selectMemberState extends State<selectMember> {
                   context,
                   CupertinoPageRoute(
                       builder: (_){
-                        return userInfo(userID: userList[index].id);
+                        return userInfo(userID: userList[index].id!);
                     }
                   )
                 );

@@ -6,7 +6,7 @@ import 'package:workflow_sys/view/user/todos/todoArchived.dart';
 import 'package:workflow_sys/view/user/todos/todoList.dart';
 
 class todoHome extends StatefulWidget {
-  const todoHome({Key key}) : super(key: key);
+  const todoHome({Key? key}) : super(key: key);
 
   @override
   _todoHomeState createState() => _todoHomeState();
@@ -14,7 +14,7 @@ class todoHome extends StatefulWidget {
 
 class _todoHomeState extends State<todoHome> {
 
-  Widget currentWidget;
+  Widget? currentWidget;
   int _currentIndex = 0;
 
   @override
