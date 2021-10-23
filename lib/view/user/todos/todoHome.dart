@@ -44,15 +44,15 @@ class _todoHomeState extends State<todoHome> {
 
   List<TitledNavigationBarItem> itemList = [
     TitledNavigationBarItem(
-        icon: Icons.list_alt,
+        icon: Icon(Icons.list_alt),
         title: Text('Todo List')
     ),
     TitledNavigationBarItem(
-        icon: Icons.playlist_add,
+        icon: Icon(Icons.playlist_add),
         title: Text('Create Todo')
     ),
     TitledNavigationBarItem(
-        icon: Icons.archive_outlined,
+        icon: Icon(Icons.archive_outlined),
         title: Text('Archived')
     ),
   ];

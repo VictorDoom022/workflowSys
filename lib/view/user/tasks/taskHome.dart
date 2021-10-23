@@ -60,19 +60,19 @@ class _taskHomeState extends State<taskHome> {
 
   List<TitledNavigationBarItem> itemList = [
       TitledNavigationBarItem(
-        icon: CupertinoIcons.square_list,
+        icon: Icon(CupertinoIcons.square_list),
         title: Text('Task Created'),
       ),
       TitledNavigationBarItem(
-        icon: CupertinoIcons.person_crop_circle_fill_badge_exclam,
+        icon: Icon(CupertinoIcons.person_crop_circle_fill_badge_exclam),
         title: Text('Assigned To You'),
       ),
       TitledNavigationBarItem(
-        icon: CupertinoIcons.text_badge_plus,
+        icon: Icon(Icons.playlist_add),
         title: Text('Create Task'),
       ),
       TitledNavigationBarItem(
-        icon: CupertinoIcons.checkmark_circle,
+        icon: Icon(CupertinoIcons.checkmark_circle),
         title: Text('Completed Task'),
       ),
     ];
