@@ -95,7 +95,7 @@ class _taskListDetailState extends State<taskListDetail> {
             child: SmartRefresher(
               controller: refreshController,
               enablePullDown: true,
-              header: BezierCircleHeader(),
+              header: ClassicHeader(),
               onRefresh: getTaskData,
               child: FutureBuilder<List<Task>>(
                 future: searchKeyWord=="" ? futureTaskList : searchList(),

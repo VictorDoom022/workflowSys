@@ -91,7 +91,7 @@ class _todoArchivedState extends State<todoArchived> {
             child: SmartRefresher(
               controller: refreshController,
               enablePullDown: true,
-              header: BezierCircleHeader(),
+              header: ClassicHeader(),
               onRefresh: getTodoArchiveListData,
               child: FutureBuilder<List<ToDo>>(
                 future: searchKeyWord=="" ? futureTodoArchiveList : searchList(),

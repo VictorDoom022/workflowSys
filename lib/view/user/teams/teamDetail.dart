@@ -86,7 +86,7 @@ class _teamDetailState extends State<teamDetail> {
       body: SmartRefresher(
         controller: refreshController,
         enablePullDown: true,
-        header: BezierCircleHeader(),
+        header: ClassicHeader(),
         onRefresh: getTeamDetailData,
         child: FutureBuilder<TeamDetailReceiver>(
           future: futureTeamDetailReceiver,

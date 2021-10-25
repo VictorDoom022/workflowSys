@@ -90,7 +90,7 @@ class _todoListState extends State<todoList> {
             child: SmartRefresher(
               controller: refreshController,
               enablePullDown: true,
-              header: BezierCircleHeader(),
+              header: ClassicHeader(),
               onRefresh: getTodoListData,
               child: FutureBuilder<List<ToDo>>(
                 future: searchKeyWord=="" ? futureTodoList : searchList(),

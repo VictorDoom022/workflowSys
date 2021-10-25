@@ -92,7 +92,7 @@ class _taskCompletedState extends State<taskCompleted> {
             child: SmartRefresher(
               controller: refreshController,
               enablePullDown: true,
-              header: BezierCircleHeader(),
+              header: ClassicHeader(),
               onRefresh: getTaskCompletedData,
               child: FutureBuilder<List<Task>>(
                 future: searchKeyWord=="" ? futureTaskAssignedList : searchList(),

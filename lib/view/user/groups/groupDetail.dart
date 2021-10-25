@@ -173,7 +173,7 @@ class _groupDetailState extends State<groupDetail> {
       body: SmartRefresher(
         controller: refreshController,
         enablePullDown: true,
-        header: BezierCircleHeader(),
+        header: ClassicHeader(),
         onRefresh: getGroupDetailData,
         child: FutureBuilder<GroupDetailReceiver>(
           future: futureGroupDetailReceiver,

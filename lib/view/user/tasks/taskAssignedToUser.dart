@@ -93,7 +93,7 @@ class _taskAssigendToUserState extends State<taskAssigendToUser> {
             child: SmartRefresher(
               controller: refreshController,
               enablePullDown: true,
-              header: BezierCircleHeader(),
+              header: ClassicHeader(),
               onRefresh: getTaskAssignedData,
               child: FutureBuilder<List<Task>>(
                 future: searchKeyWord=="" ? futureTaskAssignedList : searchList(),
