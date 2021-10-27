@@ -28,14 +28,29 @@ export default {
     components: { UserSideNav, UserTopNav },
     data() {
         return {
-
+            userActiveTask: [],
         }
     },
     mounted() {
-
+        this.fetchUserActiveTask()
     },
     methods: {
-        
+        fetchUserActiveTask(){
+            Vue.axios({
+                url: '/data/getUserActiveTask',
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                params: {
+                    userID: loggedInUserData.state.userData['user'].id,
+                },
+            }
+            ).then((response) => {
+                this.userActiveTask = response.data
+            })
+        }
     }
 }
 </script>
