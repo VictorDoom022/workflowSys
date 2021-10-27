@@ -4,7 +4,8 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import AdminHome from '../views/admin/AdminHome.vue'
 import UserDetails from '../views/admin/UserDetails.vue'
-import UserHome from '../views/user/UserHome.vue'
+import UserDashboard from '../views/user/UserDashboard.vue'
+import UserGroup from '../views/user/UserGroup.vue'
 import TeamList from '../views/user/groups/TeamList.vue'
 import GroupSettings from '../views/user/groups/GroupSettings.vue'
 import TaskListList from '../views/user/teams/TaskListList.vue'
@@ -50,7 +51,12 @@ const routes = [
   {
     path: '/userHome',
     name: 'UserHome',
-    component: UserHome
+    component: UserDashboard,
+  },
+  {
+    path: '/userGroup',
+    name: 'UserGroup',
+    component: UserGroup
   },
   {
     path: '/groupDetail/:groupID',

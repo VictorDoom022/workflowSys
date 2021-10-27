@@ -9,6 +9,12 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link :to="{ name: 'UserGroup' }" class="nav-link">
+            <b-icon class="mr-1" icon="people-fill"></b-icon>
+            Groups
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link :to="{ name: 'TodoList' }" class="nav-link">
             <b-icon class="mr-1" icon="list-check"></b-icon>  
             Todo
