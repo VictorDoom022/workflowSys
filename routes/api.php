@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
     //Dashboard routes
     Route::get('data/getUserActiveTask', [App\Http\Controllers\DashboardController::class, 'getUserActiveTask']);
+    Route::get('data/getHighPriorityTask', [App\Http\Controllers\DashboardController::class, 'getHighPriorityTask']);
 
     //User routes
     Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);

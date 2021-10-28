@@ -21,6 +21,20 @@ class DashboardController extends Controller
     }
 
     //show user task with high priority count
+    public function getHighPriorityTask(Request $request){
+
+        //variables that uses $request without validation
+        $groupID = $request->groupID;
+        $userID = $request->userID;
+
+        $task = Task::where('task_userCreateID', $userID)
+                    ->where('task_status', 1)
+                    ->where('task_priority', 3)
+                    ->orWhere('task_priority',4)
+                    ->get();
+
+        return response($task, 200);
+    }
 
     //show user completed task count
 
