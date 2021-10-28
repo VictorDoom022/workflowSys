@@ -23,6 +23,7 @@ Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
     //Dashboard routes
+    Route::get('data/getUserTaskOverview', [App\Http\Controllers\DashboardController::class, 'getUserTaskOverview']);
     Route::get('data/getUserActiveTask', [App\Http\Controllers\DashboardController::class, 'getUserActiveTask']);
     Route::get('data/getHighPriorityTask', [App\Http\Controllers\DashboardController::class, 'getHighPriorityTask']);
     Route::get('data/getAssigendToUserTask', [App\Http\Controllers\DashboardController::class, 'getAssigendToUserTask']);
