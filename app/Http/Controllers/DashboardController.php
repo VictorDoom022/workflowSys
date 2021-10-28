@@ -10,7 +10,6 @@ class DashboardController extends Controller
     public function getUserActiveTask(Request $request){
 
         //variables that uses $request without validation
-        $groupID = $request->groupID;
         $userID = $request->userID;
 
         $task = Task::where('task_userCreateID', $userID)
@@ -24,7 +23,6 @@ class DashboardController extends Controller
     public function getHighPriorityTask(Request $request){
 
         //variables that uses $request without validation
-        $groupID = $request->groupID;
         $userID = $request->userID;
 
         $task = Task::where('task_userCreateID', $userID)
@@ -44,7 +42,6 @@ class DashboardController extends Controller
     public function getAssigendToUserTask(Request $request){
 
         //variables that uses $request without validation
-        $groupID = $request->groupID;
         $userID = $request->userID;
 
         $task = Task::where('task_assignedMemberID', 'like', '%'.$userID.'%')
