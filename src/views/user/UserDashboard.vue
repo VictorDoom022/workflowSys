@@ -24,7 +24,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-success">Active Tasks</h5>
-                                <p class="card-text fs-3">{{ userActiveTask.length }}</p>
+                                <p class="card-text fs-3">{{ activeTaskCount }}</p>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-danger">High Priority Tasks</h5>
-                                <p class="card-text fs-3">{{ userHighPriorityTask.length }}</p>
+                                <p class="card-text fs-3">{{ highPriorityTaskCount }}</p>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-primary">Assigend To You</h5>
-                                <p class="card-text fs-3">{{ taskAssignUser.length }}</p>
+                                <p class="card-text fs-3">{{ assigendToUserTaskCount }}</p>
                             </div>
                         </div>
                     </div>
@@ -65,18 +65,19 @@ export default {
     data() {
         return {
             isLoading: true,
-            userActiveTask: [],
-            userHighPriorityTask: [],
-            taskAssignUser: [],
+            taskOverViewData: [],
+            activeTaskCount: 0,
+            highPriorityTaskCount: 0,
+            assigendToUserTaskCount: 0,
         }
     },
     mounted() {
-        this.fetchUserActiveTask()
+        this.fetchTaskOverviewData()
     },
     methods: {
-        fetchUserActiveTask(){
+        fetchTaskOverviewData(){
             Vue.axios({
-                url: '/data/getUserActiveTask',
+                url: '/data/getUserTaskOverview',
                 method: 'GET',
                 headers: {
                     Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
@@ -87,43 +88,15 @@ export default {
                 },
             }
             ).then((response) => {
-                this.userActiveTask = response.data
-                this.fetchUserHighPriorityTask()
+                this.taskOverViewData = response.data
+                this.setOverViewData()
             })
         },
-        fetchUserHighPriorityTask(){
-            Vue.axios({
-                url: '/data/getHighPriorityTask',
-                method: 'GET',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                params: {
-                    userID: loggedInUserData.state.userData['user'].id,
-                },
-            }
-            ).then((response) => {
-                this.userHighPriorityTask = response.data
-                this.fetchTaskAssigendToUser()
-            })
-        },
-        fetchTaskAssigendToUser(){
-            Vue.axios({
-                url: '/data/getAssigendToUserTask',
-                method: 'GET',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                params: {
-                    userID: loggedInUserData.state.userData['user'].id,
-                },
-            }
-            ).then((response) => {
-                this.taskAssignUser = response.data
-                this.isLoading = false
-            })
+        setOverViewData(){
+            this.activeTaskCount = this.taskOverViewData['activeTaskCount']
+            this.highPriorityTaskCount = this.taskOverViewData['highPriorityTaskCount']
+            this.assigendToUserTaskCount = this.taskOverViewData['assigendToUserTaskCount']
+            this.isLoading = false;
         }
     }
 }
