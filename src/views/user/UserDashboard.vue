@@ -20,7 +20,16 @@
 
             <div v-if="!isLoading" class="contaier-fluid">
                 <div class="row g-1">
-                    <div class="col-lg-4 px-1">
+                    <div class="col-lg-12 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-info">Total Tasks</h5>
+                                <p class="card-text fs-3">{{ totalTaskCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 px-1">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-success">Active Tasks</h5>
@@ -29,7 +38,16 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 px-1">
+                    <div class="col-lg-3 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-secondary">Tasks Assigned To You</h5>
+                                <p class="card-text fs-3">{{ assigendToUserTaskCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 px-1">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-danger">High Priority Tasks</h5>
@@ -38,11 +56,23 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 px-1">
+                    <div class="col-lg-3 px-1">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title fw-bold text-primary">Assigend To You</h5>
-                                <p class="card-text fs-3">{{ assigendToUserTaskCount }}</p>
+                                <h5 class="card-title fw-bold text-primary">Completed Task</h5>
+                                <p class="card-text fs-3">{{ completedTaskCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Active Task / Completed Task</h5>
+                                <b-progress :max="totalTaskCount">
+                                    <b-progress-bar variant="success" :value="activeTaskCount" :label="`${((activeTaskCount / totalTaskCount) * 100).toFixed(2)}%`" animated show-progress></b-progress-bar>
+                                    <b-progress-bar variant="primary" :value="completedTaskCount" :label="`${((completedTaskCount / totalTaskCount) * 100).toFixed(2)}%`"  show-progress></b-progress-bar>
+                                </b-progress>
                             </div>
                         </div>
                     </div>
@@ -66,7 +96,9 @@ export default {
         return {
             isLoading: true,
             taskOverViewData: [],
+            totalTaskCount: 0,
             activeTaskCount: 0,
+            completedTaskCount: 0,
             highPriorityTaskCount: 0,
             assigendToUserTaskCount: 0,
         }
@@ -93,7 +125,9 @@ export default {
             })
         },
         setOverViewData(){
+            this.totalTaskCount = this.taskOverViewData['totalTask']
             this.activeTaskCount = this.taskOverViewData['activeTaskCount']
+            this.completedTaskCount = this.taskOverViewData['completedTaskCount']
             this.highPriorityTaskCount = this.taskOverViewData['highPriorityTaskCount']
             this.assigendToUserTaskCount = this.taskOverViewData['assigendToUserTaskCount']
             this.isLoading = false;

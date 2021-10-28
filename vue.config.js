@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
     devServer: {
-        proxy: 'http://192.168.1.132:8000/api'
+        proxy: 'http://192.168.0.181:8000/api'
     },
     chainWebpack: config => {
         const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
