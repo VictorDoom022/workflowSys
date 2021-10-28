@@ -12,9 +12,18 @@ class DashboardController extends Controller
         //variables that uses $request without validation
         $userID = $request->userID;
 
+        //total task from user
+        $totalTask = Task::where('task_userCreateID', $userID)
+                    ->count();
+
         //current user active task count
         $activeTaskCount = Task::where('task_userCreateID', $userID)
                     ->where('task_status', 1)
+                    ->count();
+
+        //current user active task count
+        $completedTaskCount = Task::where('task_userCreateID', $userID)
+                    ->where('task_status', 0)
                     ->count();
 
         //user task with high priority count
@@ -32,7 +41,9 @@ class DashboardController extends Controller
                     ->count();
 
         $response = [
+            'totalTask' => $totalTask,
             'activeTaskCount' => $activeTaskCount,
+            'completedTaskCount' => $completedTaskCount,
             'highPriorityTaskCount' => $highPriorityTaskCount,
             'assigendToUserTaskCount' => $assigendToUserTaskCount,
         ];
@@ -84,4 +95,6 @@ class DashboardController extends Controller
 
         return response($task, 200);
     }
+
+    //show total task / total task completed
 }
