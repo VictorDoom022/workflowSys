@@ -29,8 +29,10 @@ class DashboardController extends Controller
 
         $task = Task::where('task_userCreateID', $userID)
                     ->where('task_status', 1)
-                    ->where('task_priority', 3)
-                    ->orWhere('task_priority',4)
+                    ->where(function ($query){
+                        $query->orWhere('task_priority', '=', 3)
+                            ->orWhere('task_priority', '=', 4);
+                    })
                     ->get();
 
         return response($task, 200);
