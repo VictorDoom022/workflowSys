@@ -136,23 +136,6 @@ export default {
             }
             ).then((response) => {
                 this.taskOverViewData = response.data
-                this.fetchTaskLastActivityChartData()
-            })
-        },
-        fetchTaskLastActivityChartData(){
-            Vue.axios({
-                url: '/data/getTaskLastActivityGraphData',
-                method: 'GET',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                params: {
-                    userID: loggedInUserData.state.userData['user'].id,
-                },
-            }
-            ).then((response) => {
-                this.taskRecentActivityData = response.data
                 this.setOverViewData()
                 this.setRecentTaskChartData()
             })
@@ -163,6 +146,7 @@ export default {
             this.completedTaskCount = this.taskOverViewData['completedTaskCount']
             this.highPriorityTaskCount = this.taskOverViewData['highPriorityTaskCount']
             this.assigendToUserTaskCount = this.taskOverViewData['assigendToUserTaskCount']
+            this.taskRecentActivityData = this.taskOverViewData['recentTaskActivityData']
             this.isLoading = false
         },
         setRecentTaskChartData(){
