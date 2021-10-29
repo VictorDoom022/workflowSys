@@ -88,6 +88,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-lg-6 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Completed Task History</h5>
+                                <DrawBarChart
+                                    v-if="!isLoading"
+                                    :chartdata="completedTaskHistoryChartData"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -115,7 +127,9 @@ export default {
             highPriorityTaskCount: 0,
             assigendToUserTaskCount: 0,
             taskRecentActivityData: [],
+            completedTaskHistoryData: [],
             recentTaskActivityChartData: null,
+            completedTaskHistoryChartData: null,
         }
     },
     mounted() {
@@ -138,6 +152,7 @@ export default {
                 this.taskOverViewData = response.data
                 this.setOverViewData()
                 this.setRecentTaskChartData()
+                this.setTaskHistoryChartData()
             })
         },
         setOverViewData(){
@@ -147,6 +162,7 @@ export default {
             this.highPriorityTaskCount = this.taskOverViewData['highPriorityTaskCount']
             this.assigendToUserTaskCount = this.taskOverViewData['assigendToUserTaskCount']
             this.taskRecentActivityData = this.taskOverViewData['recentTaskActivityData']
+            this.completedTaskHistoryData = this.taskOverViewData['completedTaskHistoryData']
             this.isLoading = false
         },
         setRecentTaskChartData(){
@@ -159,6 +175,41 @@ export default {
             }
 
             this.recentTaskActivityChartData = {
+                labels: labelArray,
+                datasets: [
+                    {
+                        label: ['Task Count'],
+                        data: dataArray,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                    }
+                ]
+            };
+        },
+        setTaskHistoryChartData(){
+            var labelArray = []
+            var dataArray = []
+
+            for(var i = 0;i < this.completedTaskHistoryData.length; i++){
+                labelArray.push(this.completedTaskHistoryData[i].date)
+                dataArray.push(this.completedTaskHistoryData[i].taskCount)
+            }
+
+            this.completedTaskHistoryChartData = {
                 labels: labelArray,
                 datasets: [
                     {
