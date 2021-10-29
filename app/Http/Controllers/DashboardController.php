@@ -107,7 +107,7 @@ class DashboardController extends Controller
                     ->orderBy('updated_at')
                     ->get()
                     ->groupBy(function($item){
-                        return $item->created_at->format('Y-m-d');
+                        return $item->updated_at->format('Y-m-d');
                     });
 
         $chartDataArray =  array();
