@@ -76,6 +76,18 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="col-lg-6 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Recent Task Activity</h5>
+                                <DrawBarChart
+                                    v-if="!isLoading"
+                                    :chartdata="recentTaskActivityChartData"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -89,9 +101,10 @@ import Vue from 'vue'
 import UserSideNav from '../../components/user/UserSideNav.vue'
 import UserTopNav from '../../components/user/UserTopNav.vue'
 import loggedInUserData from '../../functions/loggedInUserData'
+import DrawBarChart from './DrawBarChart.vue'
 
 export default {
-    components: { UserSideNav, UserTopNav },
+    components: { UserSideNav, UserTopNav, DrawBarChart },
     data() {
         return {
             isLoading: true,
@@ -101,6 +114,8 @@ export default {
             completedTaskCount: 0,
             highPriorityTaskCount: 0,
             assigendToUserTaskCount: 0,
+            taskRecentActivityData: [],
+            recentTaskActivityChartData: null,
         }
     },
     mounted() {
@@ -121,7 +136,25 @@ export default {
             }
             ).then((response) => {
                 this.taskOverViewData = response.data
+                this.fetchTaskLastActivityChartData()
+            })
+        },
+        fetchTaskLastActivityChartData(){
+            Vue.axios({
+                url: '/data/getTaskLastActivityGraphData',
+                method: 'GET',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+                params: {
+                    userID: loggedInUserData.state.userData['user'].id,
+                },
+            }
+            ).then((response) => {
+                this.taskRecentActivityData = response.data
                 this.setOverViewData()
+                this.setRecentTaskChartData()
             })
         },
         setOverViewData(){
@@ -130,7 +163,42 @@ export default {
             this.completedTaskCount = this.taskOverViewData['completedTaskCount']
             this.highPriorityTaskCount = this.taskOverViewData['highPriorityTaskCount']
             this.assigendToUserTaskCount = this.taskOverViewData['assigendToUserTaskCount']
-            this.isLoading = false;
+            this.isLoading = false
+        },
+        setRecentTaskChartData(){
+            var labelArray = []
+            var dataArray = []
+
+            for(var i = 0;i < this.taskRecentActivityData.length; i++){
+                labelArray.push(this.taskRecentActivityData[i].date)
+                dataArray.push(this.taskRecentActivityData[i].taskCount)
+            }
+
+            this.recentTaskActivityChartData = {
+                labels: labelArray,
+                datasets: [
+                    {
+                        label: ['Task Count'],
+                        data: dataArray,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                    }
+                ]
+            };
         }
     }
 }
