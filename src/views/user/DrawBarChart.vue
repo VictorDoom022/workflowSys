@@ -13,6 +13,7 @@ export default {
         return {
             options: {
                 responsive : true,
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
