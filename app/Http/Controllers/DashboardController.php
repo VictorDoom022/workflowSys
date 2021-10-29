@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -96,5 +98,30 @@ class DashboardController extends Controller
         return response($task, 200);
     }
 
-    //show total task / total task completed
+    public function getTaskLastActivityGraphData(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
+        $task = Task::where('task_userCreateID', $userID)
+                    ->orderBy('updated_at')
+                    ->get()
+                    ->groupBy(function($item){
+                        return $item->created_at->format('Y-m-d');
+                    });
+
+        $chartDataArray =  array();
+        foreach ($task as $key => $tasks){
+            $day = $key;
+            $totalCount = $tasks->count();
+
+            $dataArray = array(
+                'date' => $day,
+                'taskCount' => $totalCount,
+            );
+            array_push($chartDataArray, $dataArray);
+        }
+
+        return response($chartDataArray, 200);
+    }
 }
