@@ -42,12 +42,34 @@ class DashboardController extends Controller
                     ->where('task_status', 1)
                     ->count();
 
+        //start of user last activity graph data
+        $taskRecentActivity = Task::where('task_userCreateID', $userID)
+                    ->orderBy('updated_at')
+                    ->get()
+                    ->groupBy(function($item){
+                        return $item->updated_at->format('Y-m-d');
+                    });
+
+        $recentTaskActivityArray =  array();
+        foreach ($taskRecentActivity as $key => $tasks){
+            $day = $key;
+            $totalCount = $tasks->count();
+
+            $dataArray = array(
+                'date' => $day,
+                'taskCount' => $totalCount,
+            );
+            array_push($recentTaskActivityArray, $dataArray);
+        }
+        //end of user last activity graph data
+
         $response = [
             'totalTask' => $totalTask,
             'activeTaskCount' => $activeTaskCount,
             'completedTaskCount' => $completedTaskCount,
             'highPriorityTaskCount' => $highPriorityTaskCount,
             'assigendToUserTaskCount' => $assigendToUserTaskCount,
+            'recentTaskActivityData' => $recentTaskActivityArray,
         ];
 
         return response($response, 200);
