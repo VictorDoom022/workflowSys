@@ -16,6 +16,7 @@
         <b-collapse id="navbar-toggle-collapse" class="navbar-nav bg-dark mobile" is-nav>
             <div class="nav-item text-nowrap">
                 <router-link :to="{ name: 'UserHome' }" class="nav-link px-3" style="cursor:pointer;">Home</router-link>
+                <router-link :to="{ name: 'UserGroup' }" class="nav-link px-3" style="cursor:pointer;">Groups</router-link>
                 <router-link :to="{ name: 'TodoList' }" class="nav-link px-3" style="cursor:pointer;">Todo</router-link>
                 <router-link :to="{ name: 'UserProfile' }" class="nav-link px-3" style="cursor:pointer;">Profile</router-link>
                 <a class="nav-link px-3" style="cursor:pointer;" @click="logout()">Sign out</a>
