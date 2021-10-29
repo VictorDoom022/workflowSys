@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('data/getHighPriorityTask', [App\Http\Controllers\DashboardController::class, 'getHighPriorityTask']);
     Route::get('data/getAssigendToUserTask', [App\Http\Controllers\DashboardController::class, 'getAssigendToUserTask']);
     Route::get('data/getTaskLastActivityGraphData', [App\Http\Controllers\DashboardController::class, 'getTaskLastActivityGraphData']);
+    Route::get('data/getCompletedTaskGraphData', [App\Http\Controllers\DashboardController::class, 'getCompletedTaskGraphData']);
 
     //User routes
     Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);

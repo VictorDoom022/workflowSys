@@ -63,6 +63,28 @@ class DashboardController extends Controller
         }
         //end of user last activity graph data
 
+        //start of user completed task history graph data
+        $completedTaskHistory = Task::where('task_userCreateID', $userID)
+                    ->where('task_status', 0)
+                    ->orderBy('updated_at')
+                    ->get()
+                    ->groupBy(function($item){
+                        return $item->updated_at->format('Y-m-d');
+                    });
+
+        $completedTaskHistoryArray =  array();
+        foreach ($completedTaskHistory as $key => $tasks){
+            $day = $key;
+            $totalCount = $tasks->count();
+
+            $dataArray = array(
+                'date' => $day,
+                'taskCount' => $totalCount,
+            );
+            array_push($completedTaskHistoryArray, $dataArray);
+        }
+        //end of user completed task history graph data
+
         $response = [
             'totalTask' => $totalTask,
             'activeTaskCount' => $activeTaskCount,
@@ -70,6 +92,7 @@ class DashboardController extends Controller
             'highPriorityTaskCount' => $highPriorityTaskCount,
             'assigendToUserTaskCount' => $assigendToUserTaskCount,
             'recentTaskActivityData' => $recentTaskActivityArray,
+            'completedTaskHistoryData' => $completedTaskHistoryArray,
         ];
 
         return response($response, 200);
@@ -126,6 +149,34 @@ class DashboardController extends Controller
         $userID = $request->userID;
 
         $task = Task::where('task_userCreateID', $userID)
+                    ->orderBy('updated_at')
+                    ->get()
+                    ->groupBy(function($item){
+                        return $item->updated_at->format('Y-m-d');
+                    });
+
+        $chartDataArray =  array();
+        foreach ($task as $key => $tasks){
+            $day = $key;
+            $totalCount = $tasks->count();
+
+            $dataArray = array(
+                'date' => $day,
+                'taskCount' => $totalCount,
+            );
+            array_push($chartDataArray, $dataArray);
+        }
+
+        return response($chartDataArray, 200);
+    }
+
+    public function getCompletedTaskGraphData(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
+        $task = Task::where('task_userCreateID', $userID)
+                    ->where('task_status', 0)
                     ->orderBy('updated_at')
                     ->get()
                     ->groupBy(function($item){
