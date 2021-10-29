@@ -78,8 +78,6 @@ export default {
             }).then((response) => {
                 this.chatData = response.data
                 this.isLoading = false
-                // console.log(this.chatData)
-                this.processFetchedChatData()
             })
         },
         fetchUserData(){

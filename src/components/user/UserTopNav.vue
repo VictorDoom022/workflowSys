@@ -11,7 +11,7 @@
             </template>
         </b-navbar-toggle>
 
-        <input class="form-control form-control-dark w-100" v-model="searchWord" @input="searchData()" type="text" placeholder="Search" aria-label="Search">
+        <input v-if="showSearchBar" class="form-control form-control-dark w-100" v-model="searchWord" @input="searchData()" type="text" placeholder="Search" aria-label="Search">
 
         <b-collapse id="navbar-toggle-collapse" class="navbar-nav bg-dark mobile" is-nav>
             <div class="nav-item text-nowrap">
@@ -35,6 +35,11 @@ import Vue from 'vue'
 import loggedInUserData from '../../functions/loggedInUserData'
 
 export default {
+    props: {
+        showSearchBar: {
+            default: false
+        },
+    },
     data() {
         return {
             searchWord : '',

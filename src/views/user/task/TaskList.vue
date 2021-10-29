@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserTopNav @searchWord="searchFromNavBar" />
+        <UserTopNav showSearchBar="true" @searchWord="searchFromNavBar" />
         <div class="container-fluid">
             <div class="row">
                 <UserSideNav />
