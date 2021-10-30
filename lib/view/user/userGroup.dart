@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/Group.dart';
+import 'package:workflow_sys/view/misc/CustomDraggableHome.dart';
 import 'package:workflow_sys/view/user/groups/groupDetail.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
@@ -16,7 +17,7 @@ class userGroup extends StatefulWidget {
 
 class _userGroupState extends State<userGroup> {
 
-  GlobalKey<ScaffoldState> userHomeScaffoldKey = GlobalKey();
+  GlobalKey<ScaffoldState> userGroupScaffoldKey = GlobalKey();
   TextEditingController createGroupNameController = TextEditingController();
   TextEditingController joinGroupCodeController = TextEditingController();
   ButtonStyle createGroupButtonStyle = ButtonStyle(
@@ -51,9 +52,9 @@ class _userGroupState extends State<userGroup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: userHomeScaffoldKey,
+      key: userGroupScaffoldKey,
       drawer: userNavDrawer(),
-      body: DraggableHome(
+      body: CustomDraggableHome(
         alwaysShowLeadingAndAction: true,
         curvedBodyRadius: 5.0,
         leading: IconButton(
@@ -63,7 +64,7 @@ class _userGroupState extends State<userGroup> {
           ),
           onPressed: (){
             HapticFeedback.lightImpact();
-            userHomeScaffoldKey.currentState!.openDrawer();
+            userGroupScaffoldKey.currentState!.openDrawer();
           },
         ),
         title: Text(
@@ -110,6 +111,7 @@ class _userGroupState extends State<userGroup> {
             },
           ),
         ],
+        headerBackgroundColor: Color(0xfffbb448),
         headerWidget: Container(
           child: Center(
             child: Text(
