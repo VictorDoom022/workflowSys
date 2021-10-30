@@ -7,14 +7,14 @@ import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/view/user/groups/groupDetail.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
-class userHome extends StatefulWidget {
-  const userHome({Key? key}) : super(key: key);
+class userGroup extends StatefulWidget {
+  const userGroup({Key? key}) : super(key: key);
 
   @override
-  _userHomeState createState() => _userHomeState();
+  _userGroupState createState() => _userGroupState();
 }
 
-class _userHomeState extends State<userHome> {
+class _userGroupState extends State<userGroup> {
 
   GlobalKey<ScaffoldState> userHomeScaffoldKey = GlobalKey();
   TextEditingController createGroupNameController = TextEditingController();

@@ -11,7 +11,7 @@ import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
-import 'package:workflow_sys/view/user/userHome.dart';
+import 'package:workflow_sys/view/user/userGroup.dart';
 
 void createGroup(BuildContext context, String groupName) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -355,7 +355,7 @@ Future<void> deleteGroup(BuildContext context, int groupID) async {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
     Navigator.of(context).push(
       CupertinoPageRoute(builder: (_){
-        return userHome();
+        return userGroup();
       })
     );
   }

@@ -7,7 +7,7 @@ import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/chats/UserChatList.dart';
 import 'package:workflow_sys/view/user/profile/userProfile.dart';
 import 'package:workflow_sys/view/user/todos/todoHome.dart';
-import 'package:workflow_sys/view/user/userHome.dart';
+import 'package:workflow_sys/view/user/userGroup.dart';
 
 class userNavDrawer extends StatefulWidget {
   const userNavDrawer({Key? key}) : super(key: key);
@@ -112,7 +112,7 @@ class _userNavDrawerState extends State<userNavDrawer> {
         selectPage(pageNumber);
         Navigator.push(context, CupertinoPageRoute(
             builder:(context){
-              return userHome();
+              return userGroup();
             }
           )
         );
