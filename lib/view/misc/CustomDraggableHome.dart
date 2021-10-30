@@ -32,6 +32,8 @@ class CustomDraggableHome extends StatefulWidget {
   /// Header Widget: A widget to display Header above body.
   final Widget headerWidget;
 
+  final Color headerBackgroundColor;
+
   /// headerBottomBar: AppBar or toolBar like widget just above the body.
 
   final Widget? headerBottomBar;
@@ -86,6 +88,7 @@ class CustomDraggableHome extends StatefulWidget {
     this.alwaysShowLeadingAndAction = false,
     this.headerExpandedHeight = 0.35,
     required this.headerWidget,
+    required this.headerBackgroundColor,
     this.headerBottomBar,
     this.backgroundColor,
     this.curvedBodyRadius = 20,
@@ -215,6 +218,7 @@ class _CustomDraggableHomeState extends State<CustomDraggableHome> {
                 children: [
                   FlexibleSpaceBar(
                     background: Container(
+                        color: widget.headerBackgroundColor,
                         child: streams[1]
                             ? (widget.expandedBody == null
                             ? Container()
