@@ -8,6 +8,7 @@ import 'package:workflow_sys/view/user/chats/UserChatList.dart';
 import 'package:workflow_sys/view/user/profile/userProfile.dart';
 import 'package:workflow_sys/view/user/todos/todoHome.dart';
 import 'package:workflow_sys/view/user/userGroup.dart';
+import 'package:workflow_sys/view/user/userHome.dart';
 
 class userNavDrawer extends StatefulWidget {
   const userNavDrawer({Key? key}) : super(key: key);
@@ -91,10 +92,11 @@ class _userNavDrawerState extends State<userNavDrawer> {
               ),
             ),
           ),
-          userGroupTile(0),
-          userTodoTile(1),
-          userProfileTile(2),
-          userChatTile(3),
+          userHomeTile(0),
+          userGroupTile(1),
+          userTodoTile(2),
+          userProfileTile(3),
+          userChatTile(4),
           Divider(),
           logoutTile()
         ],
@@ -102,10 +104,28 @@ class _userNavDrawerState extends State<userNavDrawer> {
     );
   }
 
-  Widget userGroupTile(int pageNumber){
+  Widget userHomeTile(int pageNumber){
     return ListTile(
       leading: Icon(Icons.home),
       title: Text('Home'),
+      selected: selectedPage == pageNumber,
+      onTap: (){
+        HapticFeedback.lightImpact();
+        selectPage(pageNumber);
+        Navigator.push(context, CupertinoPageRoute(
+            builder:(context){
+              return userHome();
+            }
+        )
+        );
+      },
+    );
+  }
+
+  Widget userGroupTile(int pageNumber){
+    return ListTile(
+      leading: Icon(Icons.people_sharp),
+      title: Text('Groups'),
       selected: selectedPage == pageNumber,
       onTap: (){
         HapticFeedback.lightImpact();
