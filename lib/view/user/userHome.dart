@@ -169,30 +169,95 @@ class _userHomeState extends State<userHome> {
                       minHeight: 8,
                     ),
                     Text((calcTaskProgress() *100).toString() + '% / ' + (100 - (calcTaskProgress() *100)).toString() + '%'),
-                    SfCartesianChart(
-                      primaryXAxis: CategoryAxis(),
-                      title: ChartTitle(
-                        text: 'Recent task activity'
-                      ),
-                      legend: Legend(isVisible: true),
-                      tooltipBehavior: TooltipBehavior(enable: true),
-                      series: <ChartSeries<RecentTaskActivityData, String>>[
-                        LineSeries<RecentTaskActivityData, String>(
-                            dataSource: dashboardData!.recentTaskActivityData,
-                            xValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.date,
-                            yValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.taskCount,
-                            name: 'Task Count'
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
             ),
           ),
+          Wrap(
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: calcGraphWidgetWidth(),
+                constraints: BoxConstraints(
+                    minHeight: 120
+                ),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SfCartesianChart(
+                          primaryXAxis: CategoryAxis(),
+                          title: ChartTitle(
+                              text: 'Recent task activity'
+                          ),
+                          legend: Legend(isVisible: true),
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                          series: <ChartSeries<RecentTaskActivityData, String>>[
+                            LineSeries<RecentTaskActivityData, String>(
+                                dataSource: dashboardData!.recentTaskActivityData,
+                                xValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.date,
+                                yValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.taskCount,
+                                name: 'Task Count'
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                width: calcGraphWidgetWidth(),
+                constraints: BoxConstraints(
+                    minHeight: 120
+                ),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SfCartesianChart(
+                          primaryXAxis: CategoryAxis(),
+                          title: ChartTitle(
+                              text: 'Completed Task History'
+                          ),
+                          legend: Legend(isVisible: true),
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                          series: <ChartSeries<CompletedTaskHistoryData, String>>[
+                            LineSeries<CompletedTaskHistoryData, String>(
+                                dataSource: dashboardData!.completedTaskHistoryData,
+                                xValueMapper: (CompletedTaskHistoryData completeTaskData, _) => completeTaskData.date,
+                                yValueMapper: (CompletedTaskHistoryData completeTaskData, _) => completeTaskData.taskCount,
+                                name: 'Task Count'
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
+  }
+
+  double calcGraphWidgetWidth(){
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if(screenWidth > 450){
+      return screenWidth / 2;
+    }else{
+      return double.infinity;
+    }
   }
 
   double calcTaskProgress(){
