@@ -92,6 +92,7 @@ class _userHomeState extends State<userHome> {
             width: double.infinity,
             child: DashboardItem(
               itemTitle: 'Total Task',
+              titleTextColor: Color(0xff17a2b8),
               itemData: dashboardData!.totalTask.toString(),
             ),
           ),
@@ -102,6 +103,7 @@ class _userHomeState extends State<userHome> {
                 flex: 2,
                 child: DashboardItem(
                   itemTitle: 'Active Task',
+                  titleTextColor: Color(0xff28a745),
                   itemData: dashboardData!.activeTaskCount.toString(),
                 ),
               ),
@@ -109,6 +111,7 @@ class _userHomeState extends State<userHome> {
                 flex: 2,
                 child: DashboardItem(
                   itemTitle: 'Task Assigned To You',
+                  titleTextColor: Color(0xff6c757d),
                   itemData: dashboardData!.assignedToUserTaskCount.toString(),
                 ),
               ),
@@ -121,6 +124,7 @@ class _userHomeState extends State<userHome> {
                 flex: 2,
                 child: DashboardItem(
                   itemTitle: 'High Priority Task',
+                  titleTextColor: Color(0xffdc3545),
                   itemData: dashboardData!.highPriorityTaskCount.toString(),
                 ),
               ),
@@ -128,14 +132,61 @@ class _userHomeState extends State<userHome> {
                 flex: 2,
                 child: DashboardItem(
                   itemTitle: 'Completed Task',
+                  titleTextColor: Color(0xff007bff),
                   itemData: dashboardData!.completedTaskCount.toString(),
                 ),
               ),
             ],
           ),
+          Container(
+            width: double.infinity,
+            constraints: BoxConstraints(
+                minHeight: 120
+            ),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        'Active Task / Completed Task',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 25,
+                        ),
+                      ),
+                    ),
+                    LinearProgressIndicator(
+                      value: calcTaskProgress(),
+                      valueColor: AlwaysStoppedAnimation(Color(0xff28a745)),
+                      backgroundColor: Color(0xff007bff),
+                      minHeight: 8,
+                    ),
+                    Text((calcTaskProgress() *100).toString() + '% / ' + (100 - (calcTaskProgress() *100)).toString() + '%'),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  double calcTaskProgress(){
+    int activeTaskCount = dashboardData!.activeTaskCount;
+    int totalTaskCount = dashboardData!.totalTask;
+    double taskProgress = (( activeTaskCount / totalTaskCount) * 1);
+
+    if(!taskProgress.isNaN){
+      return taskProgress;
+    }else{
+      return 1;
+    }
   }
 }
 
