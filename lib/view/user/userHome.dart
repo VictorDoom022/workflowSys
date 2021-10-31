@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workflow_sys/controller/dashboardController.dart';
+import 'package:workflow_sys/model/DashboardData.dart';
 import 'package:workflow_sys/view/initLoading.dart';
 import 'package:workflow_sys/view/misc/CustomDraggableHome.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
@@ -18,16 +20,23 @@ class userHome extends StatefulWidget {
 class _userHomeState extends State<userHome> {
 
   GlobalKey<ScaffoldState> userHomeScaffoldKey = GlobalKey();
+  DashboardData? dashboardData = DashboardData(totalTask: 0, activeTaskCount: 0, completedTaskCount: 0, highPriorityTaskCount: 0, assignedToUserTaskCount: 0, recentTaskActivityData: [], completedTaskHistoryData: []);
   String loggedInUserName = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCurrentUserName();
+    getCurrentUserName().then((value) {
+      getDashboardData().then((value) {
+        setState(() {
+          dashboardData = value!;
+        });
+      });
+    });
   }
 
-  void getCurrentUserName() async {
+  Future getCurrentUserName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? userName = sharedPreferences.getString("UserName");
     setState(() {
@@ -79,9 +88,72 @@ class _userHomeState extends State<userHome> {
           ),
         ),
         body: [
-          Container(),
+          GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            children: [
+              DashboardItem(
+                itemTitle: 'Total Task',
+                itemData: dashboardData!.totalTask.toString(),
+              ),
+              DashboardItem(
+                itemTitle: 'Active Task',
+                itemData: dashboardData!.activeTaskCount.toString(),
+              ),
+              DashboardItem(
+                itemTitle: 'High Priority Task',
+                itemData: dashboardData!.highPriorityTaskCount.toString(),
+              ),
+              DashboardItem(
+                itemTitle: 'Completed Task',
+                itemData: dashboardData!.completedTaskCount.toString(),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
+
+class DashboardItem extends StatelessWidget {
+
+  final String itemTitle;
+  final Color? titleTextColor;
+  final String itemData;
+  final Color? dataTextColor;
+
+  const DashboardItem({Key? key, required this.itemTitle, this.titleTextColor, required this.itemData, this.dataTextColor}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              itemTitle,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 25,
+                  color: titleTextColor
+              ),
+            ),
+            Text(
+              itemData,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  color: dataTextColor
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
