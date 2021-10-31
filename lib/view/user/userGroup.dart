@@ -67,6 +67,7 @@ class _userGroupState extends State<userGroup> {
             userGroupScaffoldKey.currentState!.openDrawer();
           },
         ),
+        titleBackgroundColor: Color(0xfffbb448),
         title: Text(
             'Groups',
           style: TextStyle(

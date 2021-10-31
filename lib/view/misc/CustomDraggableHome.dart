@@ -14,6 +14,8 @@ class CustomDraggableHome extends StatefulWidget {
   /// Title: A Widget to display title in AppBar
   final Widget title;
 
+  final Color? titleBackgroundColor;
+
   /// Center Title: Allows toggling of title from the center. By default title is in the center.
   final bool centerTitle;
 
@@ -83,6 +85,7 @@ class CustomDraggableHome extends StatefulWidget {
     Key? key,
     this.leading,
     required this.title,
+    this.titleBackgroundColor = Colors.blue,
     this.centerTitle = true,
     this.actions,
     this.alwaysShowLeadingAndAction = false,
@@ -188,6 +191,7 @@ class _CustomDraggableHomeState extends State<CustomDraggableHome> {
             List<bool> streams = (snapshot.data ?? [false, false]);
 
             return SliverAppBar(
+              backgroundColor: widget.titleBackgroundColor,
               leading: widget.alwaysShowLeadingAndAction
                   ? widget.leading
                   : !streams[0]

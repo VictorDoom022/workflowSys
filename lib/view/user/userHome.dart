@@ -62,6 +62,7 @@ class _userHomeState extends State<userHome> {
             userHomeScaffoldKey.currentState!.openDrawer();
           },
         ),
+        titleBackgroundColor: Colors.black,
         title: Text(
           'Home',
           style: TextStyle(
