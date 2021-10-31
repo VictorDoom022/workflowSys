@@ -8,6 +8,8 @@ import 'package:workflow_sys/model/DashboardData.dart';
 import 'package:workflow_sys/view/initLoading.dart';
 import 'package:workflow_sys/view/misc/CustomDraggableHome.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class userHome extends StatefulWidget {
   const userHome({Key? key}) : super(key: key);
@@ -167,6 +169,22 @@ class _userHomeState extends State<userHome> {
                       minHeight: 8,
                     ),
                     Text((calcTaskProgress() *100).toString() + '% / ' + (100 - (calcTaskProgress() *100)).toString() + '%'),
+                    SfCartesianChart(
+                      primaryXAxis: CategoryAxis(),
+                      title: ChartTitle(
+                        text: 'Recent task activity'
+                      ),
+                      legend: Legend(isVisible: true),
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      series: <ChartSeries<RecentTaskActivityData, String>>[
+                        LineSeries<RecentTaskActivityData, String>(
+                            dataSource: dashboardData!.recentTaskActivityData,
+                            xValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.date,
+                            yValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.taskCount,
+                            name: 'Task Count'
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),
