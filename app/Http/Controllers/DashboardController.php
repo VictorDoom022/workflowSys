@@ -38,7 +38,7 @@ class DashboardController extends Controller
                     ->count();
 
         //show curent task being assigend to user count (not completed)
-        $assigendToUserTaskCount = Task::where('task_assignedMemberID', 'like', '%'.$userID.'%')
+        $assignedToUserTaskCount = Task::where('task_assignedMemberID', 'like', '%'.$userID.'%')
                     ->where('task_status', 1)
                     ->count();
 
@@ -90,7 +90,7 @@ class DashboardController extends Controller
             'activeTaskCount' => $activeTaskCount,
             'completedTaskCount' => $completedTaskCount,
             'highPriorityTaskCount' => $highPriorityTaskCount,
-            'assigendToUserTaskCount' => $assigendToUserTaskCount,
+            'assignedToUserTaskCount' => $assignedToUserTaskCount,
             'recentTaskActivityData' => $recentTaskActivityArray,
             'completedTaskHistoryData' => $completedTaskHistoryArray,
         ];
