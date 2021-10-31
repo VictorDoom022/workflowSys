@@ -88,25 +88,48 @@ class _userHomeState extends State<userHome> {
           ),
         ),
         body: [
-          GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 2,
+          Container(
+            width: double.infinity,
+            child: DashboardItem(
+              itemTitle: 'Total Task',
+              itemData: dashboardData!.totalTask.toString(),
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              DashboardItem(
-                itemTitle: 'Total Task',
-                itemData: dashboardData!.totalTask.toString(),
+              Expanded(
+                flex: 2,
+                child: DashboardItem(
+                  itemTitle: 'Active Task',
+                  itemData: dashboardData!.activeTaskCount.toString(),
+                ),
               ),
-              DashboardItem(
-                itemTitle: 'Active Task',
-                itemData: dashboardData!.activeTaskCount.toString(),
+              Expanded(
+                flex: 2,
+                child: DashboardItem(
+                  itemTitle: 'Task Assigned To You',
+                  itemData: dashboardData!.assignedToUserTaskCount.toString(),
+                ),
               ),
-              DashboardItem(
-                itemTitle: 'High Priority Task',
-                itemData: dashboardData!.highPriorityTaskCount.toString(),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                flex: 2,
+                child: DashboardItem(
+                  itemTitle: 'High Priority Task',
+                  itemData: dashboardData!.highPriorityTaskCount.toString(),
+                ),
               ),
-              DashboardItem(
-                itemTitle: 'Completed Task',
-                itemData: dashboardData!.completedTaskCount.toString(),
+              Expanded(
+                flex: 2,
+                child: DashboardItem(
+                  itemTitle: 'Completed Task',
+                  itemData: dashboardData!.completedTaskCount.toString(),
+                ),
               ),
             ],
           ),
@@ -127,30 +150,38 @@ class DashboardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              itemTitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 25,
-                  color: titleTextColor
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 120
+      ),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  itemTitle,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: titleTextColor
+                  ),
+                ),
               ),
-            ),
-            Text(
-              itemData,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  color: dataTextColor
+              Text(
+                itemData,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: dataTextColor
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
