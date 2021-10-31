@@ -42,7 +42,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-secondary">Tasks Assigned To You</h5>
-                                <p class="card-text fs-3">{{ assigendToUserTaskCount }}</p>
+                                <p class="card-text fs-3">{{ assignedToUserTaskCount }}</p>
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@ export default {
             this.activeTaskCount = this.taskOverViewData['activeTaskCount']
             this.completedTaskCount = this.taskOverViewData['completedTaskCount']
             this.highPriorityTaskCount = this.taskOverViewData['highPriorityTaskCount']
-            this.assigendToUserTaskCount = this.taskOverViewData['assigendToUserTaskCount']
+            this.assignedToUserTaskCount = this.taskOverViewData['assignedToUserTaskCount']
             this.taskRecentActivityData = this.taskOverViewData['recentTaskActivityData']
             this.completedTaskHistoryData = this.taskOverViewData['completedTaskHistoryData']
             this.isLoading = false
