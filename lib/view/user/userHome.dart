@@ -168,7 +168,7 @@ class _userHomeState extends State<userHome> {
                       backgroundColor: Color(0xff007bff),
                       minHeight: 8,
                     ),
-                    Text((calcTaskProgress() *100).toString() + '% / ' + (100 - (calcTaskProgress() *100)).toString() + '%'),
+                    Text((calcTaskProgress() *100).toStringAsFixed(2) + '% / ' + (100 - (calcTaskProgress() *100)).toStringAsFixed(2) + '%'),
                   ],
                 ),
               ),
