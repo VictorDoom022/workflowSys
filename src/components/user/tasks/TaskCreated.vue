@@ -53,7 +53,7 @@ export default {
     components: { Loading, TaskItem, TaskItemList },
     data() {
         return {
-            isCardView: true,
+            isCardView: false,
             pageDataParsed: [],
             groupID: null,
             teamID: null,

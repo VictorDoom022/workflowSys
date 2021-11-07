@@ -13,12 +13,15 @@
         <td>{{ task.task_statusMsg }}</td>
         <td>{{ task.task_desc.slice(0,20) + '...' }}</td>
         <td class="text-truncate">
-            <ul class="list-unstyled order-list m-b-0">
-                <li class="team-member team-member-sm"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="user" data-toggle="tooltip" title="" data-original-title="Wildan Ahdian"></li>
-                <li class="team-member team-member-sm"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="user" data-toggle="tooltip" title="" data-original-title="John Deo"></li>
-                <li class="team-member team-member-sm"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="user" data-toggle="tooltip" title="" data-original-title="Sarah Smith"></li>
-                <li class="avatar avatar-sm"><span class="badge badge-primary">+4</span></li>
+            <ul v-if="usersInvolvedList.length != 0" class="list-unstyled order-list m-b-0">
+                <li v-for="(user, index) in usersInvolvedList.slice(0, 3)" :key="index" class="team-member team-member-sm">
+                    <img class="rounded-circle" :src="'http://192.168.0.181:8000/' + user.userDetail_profilePictureDir" alt="user" data-toggle="tooltip" title="" data-original-title="John Deo">
+                </li>
+                <li v-if="usersInvolvedList.length > 3" class="avatar avatar-sm"><span class="badge badge-primary">+{{  usersInvolvedList.length - 3 }}</span></li>
             </ul>
+            <p v-if="usersInvolvedList.length ==0">
+                No users are involved
+            </p>
         </td>
         <td>
             <a data-toggle="tooltip" title="" data-original-title="Edit"><i class="fas fa-pencil-alt"></i></a>
@@ -31,7 +34,25 @@
 export default {
     // taskPageData contains - groupID, teamID, taskListID
     props: ['taskPageData', 'task', 'userData', 'userDetailData'],
+    data() {
+        return {
+            usersInvolvedList: [],
+        }
+    },
+    mounted() {
+        this.generateUserInvolvedList()
+    },
     methods: {
+        generateUserInvolvedList(){
+            let assignedMemberIDList = this.task.task_assignedMemberID.split(',')
+            for(var i = 0; i < this.userDetailData.length; i++){
+                for(var j = 0; j < assignedMemberIDList.length; j++){
+                    if(this.userDetailData[i].id == assignedMemberIDList[j]){
+                        this.usersInvolvedList.push(this.userDetailData[i])
+                    }
+                }
+            }
+        },
         convertColorTypeToClassName(colorID) {
             let colorClassArray = ['default', 'bg-primary text-white', 'bg-danger text-white', 'bg-warning text-white', 'bg-success text-white', ' bg-secondary text-white', 'bg-dark text-white']
             return colorClassArray[colorID]
