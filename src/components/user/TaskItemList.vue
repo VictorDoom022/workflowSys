@@ -1,5 +1,5 @@
 <template>
-    <tr @click="navigateToEditTask(task.id)">
+    <tr @click="navigateToEditTask(task.id)" style="cursor:pointer;">
         <td class="table-img"><img :src="'http://192.168.0.181:8000/' + getUserProfilePicture(task.task_userCreateID)" alt="">
         <td>
             <h6 class="mb-0 font-13">{{ task.task_name }}</h6>
@@ -8,7 +8,7 @@
                 <span class="col-green font-weight-bold">{{ getLastAssigendUser(task.task_assignedMemberID) }}</span>
             </p>
         </td>
-        <td>{{ convertPriorityTypeToString(task.task_priority) }}</td>
+        <td v-bind:class="taskPriorityClassName[task.task_priority]">{{ convertPriorityTypeToString(task.task_priority) }}</td>
         <td>{{ convertDBDateToString(task.updated_at) }}</td>
         <td>{{ task.task_statusMsg }}</td>
         <td>{{ task.task_desc.slice(0,20) + '...' }}</td>
@@ -37,6 +37,13 @@ export default {
     data() {
         return {
             usersInvolvedList: [],
+            taskPriorityClassName : [
+                'bg-light',
+                'bg-secondary text-white',
+                'bg-primary text-white',
+                'bg-warning text-white',
+                'bg-danger text-white'
+            ],
         }
     },
     mounted() {
@@ -164,6 +171,10 @@ export default {
 			img {
 				border: 2px solid #ffffff;
 				box-shadow: 4px 3px 6px 0 rgba(0,0,0,0.2);
+                max-width: 30px;
+                max-height: 32px;
+                min-width: 30px;
+                min-height: 32px;
 			}
 			.badge {
 				background: rgba(228,222,222,0.8);

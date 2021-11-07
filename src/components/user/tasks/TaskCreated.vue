@@ -14,8 +14,8 @@
         </b-row>
 
         <b-row v-if="taskList.length && !isCardView">
-            <div class="table-responsive" id="proTeamScroll" tabindex="2" style="height: 400px; overflow: hidden; outline: none;">
-                <table class="table table-striped">
+            <div class="table-responsive" id="proTeamScroll" tabindex="2" style="overflow-x: auto; overflow-y: hidden; outline: none;">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Creator</th>
@@ -29,8 +29,14 @@
                         </tr>
                     </thead>
 
-                    <tbody v-for="task in searchTask" :key="task.id">
-                        <TaskItemList :taskPageData="taskListPageData" :task="task" :userData="userData" :userDetailData="userDetailData" />
+                    <tbody>
+                        <TaskItemList 
+                            v-for="task in searchTask" :key="task.id" 
+                            :taskPageData="taskListPageData" 
+                            :task="task" 
+                            :userData="userData" 
+                            :userDetailData="userDetailData" 
+                        />
                     </tbody>
                 </table>
             </div>
