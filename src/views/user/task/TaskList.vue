@@ -20,15 +20,27 @@
                         </div>
                     </div>
 
+                    <div class="d-flex justify-content-end">
+                        <p class="pt-2 mr-2">View Type</p>
+                        <b-button-group size="sm">
+                            <b-button @click="isCardView = true" variant="secondary" size="sm">
+                                <b-icon class="" icon="card-checklist"></b-icon>
+                            </b-button>
+                            <b-button @click="isCardView = false" variant="secondary" size="sm">
+                                <b-icon class="" icon="list-ul"></b-icon>
+                            </b-button>
+                        </b-button-group>
+                    </div>
+
                     <b-tabs content-class="mt-3" align="center" fill>
                         <b-tab title="Task Created" active>
-                            <TaskCreated :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCreated :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Assigned To You">
-                            <TaskAssigend :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskAssigend :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Completed Task">
-                            <TaskCompleted :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCompleted :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                     </b-tabs>
                 </main>
@@ -54,6 +66,7 @@ export default {
     data() {
         return {
             pageDataParsed: [],
+            isCardView: true,
             userID: null,
             groupID: null,
             teamID: null,

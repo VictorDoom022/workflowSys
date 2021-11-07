@@ -3,10 +3,6 @@
 
         <Loading v-if="isLoading" />
 
-        <b-form-checkbox v-model="isCardView" name="check-button" switch>
-            View Type <b>(Card View: {{ isCardView }})</b>
-        </b-form-checkbox>
-
         <b-row v-if="taskList.length && isCardView">
             <b-col md="6" v-for="task in searchTask" :key="task.id">
                 <TaskItem :taskPageData="taskListPageData" :task="task" :userData="userData" :userDetailData="userDetailData" />
@@ -55,11 +51,10 @@ import TaskItemList from '../TaskItemList.vue'
 
 export default {
     // taskListPageData contains - groupID, teamID, taskListID
-    props: ['taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
+    props: ['isCardView', 'taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
     components: { Loading, TaskItem, TaskItemList },
     data() {
         return {
-            isCardView: false,
             pageDataParsed: [],
             groupID: null,
             teamID: null,

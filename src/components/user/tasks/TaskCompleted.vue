@@ -3,10 +3,39 @@
 
         <Loading v-if="isLoading" />
 
-        <b-row v-if="taskList.length">
+        <b-row v-if="taskList.length && isCardView">
             <b-col md="6" v-for="task in searchTask" :key="task.id">
                 <TaskItem :taskPageData="taskListPageData" :task="task" :userData="userData" :userDetailData="userDetailData" />
             </b-col> 
+        </b-row>
+
+        <b-row v-if="taskList.length && !isCardView">
+            <div class="table-responsive" id="proTeamScroll" tabindex="2" style="overflow-x: auto; overflow-y: hidden; outline: none;">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Creator</th>
+                            <th>Title</th>
+                            <th>Priority</th>
+                            <th>Last Updated</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Users Invoved</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <TaskItemList 
+                            v-for="task in searchTask" :key="task.id" 
+                            :taskPageData="taskListPageData" 
+                            :task="task" 
+                            :userData="userData" 
+                            :userDetailData="userDetailData" 
+                        />
+                    </tbody>
+                </table>
+            </div>
         </b-row>
 
         <h2 v-if="!taskList.length">No Task Yet</h2>
@@ -18,11 +47,12 @@ import Vue from 'vue'
 import loggedInUserData from '../../../functions/loggedInUserData'
 import Loading from '../../Loading.vue'
 import TaskItem from '../TaskItem.vue'
+import TaskItemList from '../TaskItemList.vue'
 
 export default {
     // taskListPageData contains - groupID, teamID, taskListID
-    props: ['taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
-    components: { Loading, TaskItem },
+    props: ['isCardView', 'taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
+    components: { Loading, TaskItem, TaskItemList },
     data() {
         return {
             pageDataParsed: [],
