@@ -103,6 +103,7 @@ export default {
         navigateToEditTask(taskID){
             var pageDataParsed = JSON.parse(this.taskPageData)
             var jsonPageData = {
+                taskListUserID: pageDataParsed.userID,
                 groupID: pageDataParsed.groupID,
                 teamID: pageDataParsed.teamID,
                 taskListID: pageDataParsed.taskListID,

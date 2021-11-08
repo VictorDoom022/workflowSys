@@ -203,12 +203,13 @@ import CommentItem from '../../../components/user/CommentItem.vue'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default {
-    // taskPageData contains - groupID, teamID, taskListID, taskID
+    // taskPageData contains - groupID, teamID, taskListID, taskID, taskListUserID
     props: ['taskPageData'],
     components: { UserSideNav, UserTopNav, Loading, SelectMember, CommentItem },
     data() {
         return {
             pageDataParsed: [],
+            taskListUserID: null,
             groupID: null,
             teamID: null,
             taskListID: null,
@@ -243,6 +244,7 @@ export default {
     },
     mounted() {
         this.pageDataParsed = JSON.parse(this.taskPageData)
+        this.taskListUserID = this.pageDataParsed.taskListUserID
         this.groupID = this.pageDataParsed.groupID
         this.teamID = this.pageDataParsed.teamID
         this.taskListID = this.pageDataParsed.taskListID
@@ -560,6 +562,7 @@ export default {
         },
         navigateBack(){
             var jsonPageData = {
+                userID: this.taskListUserID,
                 groupID: this.groupID,
                 teamID: this.teamID,
                 taskListID: this.taskListID,

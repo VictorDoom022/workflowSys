@@ -60,7 +60,7 @@ import TaskAssigend from '../../../components/user/tasks/TaskAssigend.vue'
 import TaskCompleted from '../../../components/user/tasks/TaskCompleted.vue'
 
 export default {
-    // taskListPageData contains - groupID, teamID, taskListID
+    // taskListPageData contains - groupID, teamID, taskListID, userID
     props: ['taskListPageData'],
     components: { UserSideNav, UserTopNav, Loading, TaskCreated, TaskAssigend, TaskCompleted },
     data() {

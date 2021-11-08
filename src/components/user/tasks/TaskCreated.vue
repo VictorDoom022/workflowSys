@@ -50,12 +50,13 @@ import TaskItem from '../TaskItem.vue'
 import TaskItemList from '../TaskItemList.vue'
 
 export default {
-    // taskListPageData contains - groupID, teamID, taskListID
+    // taskListPageData contains - groupID, teamID, taskListID, userID
     props: ['isCardView', 'taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
     components: { Loading, TaskItem, TaskItemList },
     data() {
         return {
             pageDataParsed: [],
+            taskListUserID: null,
             groupID: null,
             teamID: null,
             taskListID: null,
@@ -65,6 +66,7 @@ export default {
     },
     mounted() {
         this.pageDataParsed = JSON.parse(this.taskListPageData)
+        this.taskListUserID = this.pageDataParsed.userID
         this.groupID = this.pageDataParsed.groupID
         this.teamID = this.pageDataParsed.teamID
         this.taskListID = this.pageDataParsed.taskListID
