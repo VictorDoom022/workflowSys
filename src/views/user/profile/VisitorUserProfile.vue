@@ -146,6 +146,8 @@ export default {
     border-radius: .25rem;
     max-width: 100%;
     height: auto;
+    object-fit:cover;
+    object-position:50% 50%;
 }
 
 .text-muted {

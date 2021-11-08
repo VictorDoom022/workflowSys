@@ -22,7 +22,7 @@
 
                     <div v-if="taskListList.length !=0" class="container-fluid">
                         <b-row>
-                            <b-col md="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id, taskList.taskList_userID.user.id)">
+                            <b-col lg="4" v-for="taskList in searchTaskList" :key="taskList.id" @click="navigateToTaskList(taskList.id, taskList.taskList_userID.user.id)">
                                 <div class="card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0" style="text-align:left; min-height:100px">
                                     <div class="card-body">
                                         <div class="row">
@@ -183,6 +183,11 @@ export default {
 .card:hover{
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
   transition: .3s ease;
+}
+
+.img-thumbnail{
+    object-fit:cover;
+    object-position:50% 50%;
 }
 
 .titleBreadcrumb{

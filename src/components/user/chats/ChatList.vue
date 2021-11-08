@@ -214,6 +214,8 @@ $backgroundDark: #343a40;
 					width: 22px;
 					border-radius: 50%;
 					float: left;
+					object-fit:cover;
+    				object-position:50% 50%;
 				}
 
 				p {

@@ -153,6 +153,8 @@ $backgroundGrey: #6c757d;
 				height: auto;
 				float: left;
 				cursor: pointer;
+				object-fit:cover;
+    			object-position:50% 50%;
 				-moz-transition: 0.3s border ease;
 				-o-transition: 0.3s border ease;
 				-webkit-transition: 0.3s border ease;
@@ -466,6 +468,8 @@ $backgroundGrey: #6c757d;
 						border-radius: 50%;
 						float: left;
 						margin-right: 10px;
+						object-fit:cover;
+    					object-position:50% 50%;
 					}
 
 					.meta {
