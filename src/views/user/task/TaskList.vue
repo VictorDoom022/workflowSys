@@ -16,7 +16,7 @@
                             <a @click="navigateToGroup()" class="titleBreadcrumb">Group</a>/<a @click="navigateBack()" class="titleBreadcrumb">Team</a>/<a @click="navigateToUserInfo(userID)" class="titleBreadcrumb">{{ convertUserIDToName(userID) }}</a>'s Task List
                         </h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" @click="navigateToCreateTask()" class="btn btn-sm btn-primary mx-1">Create Task</button>
+                            <button v-if="isTaskListUser" type="button" @click="navigateToCreateTask()" class="btn btn-sm btn-primary mx-1">Create Task</button>
                         </div>
                     </div>
 
@@ -75,6 +75,7 @@ export default {
             userData: [],
             userDetailData: [],
             searchTerm: '',
+            isTaskListUser: false, // check if the current navigated taskList belongs to the user
         }
     },
     watch: {
@@ -102,7 +103,13 @@ export default {
             }).then((response) => {
                 this.userData = response.data['user'];
                 this.userDetailData = response.data['userDetail'];
+                this.checkIsTaskListUser()
             })
+        },
+        checkIsTaskListUser(){
+            if(this.pageDataParsed.userID == loggedInUserData.state.userData['user'].id){
+                this.isTaskListUser = true
+            }
         },
         convertUserIDToName(userID){
             for(var i=0; i < this.userData.length; i++){
