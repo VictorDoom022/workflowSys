@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/user/tasks/taskAssignedToUser.dart';
@@ -14,11 +15,12 @@ class taskHome extends StatefulWidget {
   final int teamID;
   final int taskListID;
   final String taskListUserName;
+  final int taskListUserID;
 
-  const taskHome({Key? key, required this.userReceiver, required this.teamID, required this.taskListID, required this.taskListUserName}) : super(key: key);
+  const taskHome({Key? key, required this.userReceiver, required this.teamID, required this.taskListID, required this.taskListUserID, required this.taskListUserName}) : super(key: key);
 
   @override
-  _taskHomeState createState() => _taskHomeState(userReceiver, teamID, taskListID, taskListUserName);
+  _taskHomeState createState() => _taskHomeState(userReceiver, teamID, taskListID, taskListUserName, taskListUserID);
 }
 
 class _taskHomeState extends State<taskHome> {
@@ -27,8 +29,9 @@ class _taskHomeState extends State<taskHome> {
   final int teamID;
   final int taskListID;
   final String taskListUserName;
+  final int taskListUserID;
 
-  _taskHomeState(this.userReceiver, this.teamID, this.taskListID, this.taskListUserName);
+  _taskHomeState(this.userReceiver, this.teamID, this.taskListID, this.taskListUserName, this.taskListUserID);
 
   Widget? currentWidget;
   int _currentIndex = 0;
@@ -37,9 +40,21 @@ class _taskHomeState extends State<taskHome> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    checkCurrentUserTaskList();
     setState(() {
       currentWidget = screenList()[0];
     });
+  }
+
+  void checkCurrentUserTaskList() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int? userID = sharedPreferences.getInt("UserID");
+
+    if(taskListUserID == userID){
+      setState(() {
+        itemList.insert(2, createTaskNavigationBarItem);
+      });
+    }
   }
 
   @override
@@ -58,6 +73,11 @@ class _taskHomeState extends State<taskHome> {
     );
   }
 
+  TitledNavigationBarItem createTaskNavigationBarItem = TitledNavigationBarItem(
+    icon: Icon(Icons.playlist_add),
+    title: Text('Create Task'),
+  );
+
   List<TitledNavigationBarItem> itemList = [
       TitledNavigationBarItem(
         icon: Icon(CupertinoIcons.square_list),
@@ -66,10 +86,6 @@ class _taskHomeState extends State<taskHome> {
       TitledNavigationBarItem(
         icon: Icon(CupertinoIcons.person_crop_circle_fill_badge_exclam),
         title: Text('Assigned To You'),
-      ),
-      TitledNavigationBarItem(
-        icon: Icon(Icons.playlist_add),
-        title: Text('Create Task'),
       ),
       TitledNavigationBarItem(
         icon: Icon(CupertinoIcons.checkmark_circle),
