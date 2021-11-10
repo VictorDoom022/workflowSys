@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -62,7 +63,7 @@ class _todoArchivedState extends State<todoArchived> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: userTodoArchiveListScaffoldKey,
-      appBar: CupertinoNavigationBar(
+      appBar: Platform.isAndroid || Platform.isIOS ? CupertinoNavigationBar(
         leading: CupertinoButton(
           padding: EdgeInsets.all(0.0),
           child: Icon(Icons.list),
@@ -71,8 +72,8 @@ class _todoArchivedState extends State<todoArchived> {
           },
         ),
         middle: Text('Todo List'),
-      ),
-      drawer: userNavDrawer(),
+      ) : null,
+      drawer: Platform.isAndroid || Platform.isIOS ? userNavDrawer() : null,
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

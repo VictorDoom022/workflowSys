@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +35,11 @@ void login(BuildContext? context, String? email, String? password) async {
       if(authReceiver.user?.position == "admin"){
         Navigator.pushReplacementNamed(context!, '/adminHome');
       }else{
-        Navigator.pushReplacementNamed(context!, '/userHome');
+        if(Platform.isIOS || Platform.isAndroid){
+          Navigator.pushReplacementNamed(context!, '/userHome');
+        }else{
+          Navigator.pushReplacementNamed(context!, '/homePage');
+        }
       }
 
     }else{

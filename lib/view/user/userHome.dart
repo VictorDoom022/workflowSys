@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +48,21 @@ class _userHomeState extends State<userHome> {
 
   @override
   Widget build(BuildContext context) {
+    return Platform.isAndroid || Platform.isIOS ? mobileView() : desktopView();
+  }
+
+  Widget desktopView(){
+    return Scaffold(
+        key: userHomeScaffoldKey,
+        body: SingleChildScrollView(
+          child: Column(
+            children: bodyContent(),
+          ),
+        )
+    );
+  }
+
+  Widget mobileView(){
     return Scaffold(
       key: userHomeScaffoldKey,
       drawer: userNavDrawer(),
@@ -81,67 +97,110 @@ class _userHomeState extends State<userHome> {
                 'Welcome, ' + loggedInUserName,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 50,
-                    fontWeight: FontWeight.w200,
+                  color: Colors.white,
+                  fontSize: 50,
+                  fontWeight: FontWeight.w200,
                 ),
               ),
             ),
           ),
         ),
-        body: [
-          Container(
-            width: double.infinity,
+        body: bodyContent(),
+      ),
+    );
+  }
+
+  List<Widget> bodyContent(){
+    return [
+      Container(
+        width: double.infinity,
+        child: DashboardItem(
+          itemTitle: 'Total Task',
+          titleTextColor: Color(0xff17a2b8),
+          itemData: dashboardData!.totalTask.toString(),
+        ),
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            flex: 2,
             child: DashboardItem(
-              itemTitle: 'Total Task',
-              titleTextColor: Color(0xff17a2b8),
-              itemData: dashboardData!.totalTask.toString(),
+              itemTitle: 'Active Task',
+              titleTextColor: Color(0xff28a745),
+              itemData: dashboardData!.activeTaskCount.toString(),
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                flex: 2,
-                child: DashboardItem(
-                  itemTitle: 'Active Task',
-                  titleTextColor: Color(0xff28a745),
-                  itemData: dashboardData!.activeTaskCount.toString(),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: DashboardItem(
-                  itemTitle: 'Task Assigned To You',
-                  titleTextColor: Color(0xff6c757d),
-                  itemData: dashboardData!.assignedToUserTaskCount.toString(),
-                ),
-              ),
-            ],
+          Expanded(
+            flex: 2,
+            child: DashboardItem(
+              itemTitle: 'Task Assigned To You',
+              titleTextColor: Color(0xff6c757d),
+              itemData: dashboardData!.assignedToUserTaskCount.toString(),
+            ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                flex: 2,
-                child: DashboardItem(
-                  itemTitle: 'High Priority Task',
-                  titleTextColor: Color(0xffdc3545),
-                  itemData: dashboardData!.highPriorityTaskCount.toString(),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: DashboardItem(
-                  itemTitle: 'Completed Task',
-                  titleTextColor: Color(0xff007bff),
-                  itemData: dashboardData!.completedTaskCount.toString(),
-                ),
-              ),
-            ],
+        ],
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            flex: 2,
+            child: DashboardItem(
+              itemTitle: 'High Priority Task',
+              titleTextColor: Color(0xffdc3545),
+              itemData: dashboardData!.highPriorityTaskCount.toString(),
+            ),
           ),
+          Expanded(
+            flex: 2,
+            child: DashboardItem(
+              itemTitle: 'Completed Task',
+              titleTextColor: Color(0xff007bff),
+              itemData: dashboardData!.completedTaskCount.toString(),
+            ),
+          ),
+        ],
+      ),
+      Container(
+        width: double.infinity,
+        constraints: BoxConstraints(
+            minHeight: 120
+        ),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'Active Task / Completed Task',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+                LinearProgressIndicator(
+                  value: calcTaskProgress(),
+                  valueColor: AlwaysStoppedAnimation(Color(0xff28a745)),
+                  backgroundColor: Color(0xff007bff),
+                  minHeight: 8,
+                ),
+                Text((calcTaskProgress() *100).toStringAsFixed(2) + '% / ' + (100 - (calcTaskProgress() *100)).toStringAsFixed(2) + '%'),
+              ],
+            ),
+          ),
+        ),
+      ),
+      Wrap(
+        // mainAxisSize: MainAxisSize.min,
+        children: [
           Container(
-            width: double.infinity,
+            width: calcGraphWidgetWidth(),
             constraints: BoxConstraints(
                 minHeight: 120
             ),
@@ -152,102 +211,63 @@ class _userHomeState extends State<userHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        'Active Task / Completed Task',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 25,
-                        ),
+                    SfCartesianChart(
+                      primaryXAxis: CategoryAxis(),
+                      title: ChartTitle(
+                          text: 'Recent task activity'
                       ),
-                    ),
-                    LinearProgressIndicator(
-                      value: calcTaskProgress(),
-                      valueColor: AlwaysStoppedAnimation(Color(0xff28a745)),
-                      backgroundColor: Color(0xff007bff),
-                      minHeight: 8,
-                    ),
-                    Text((calcTaskProgress() *100).toStringAsFixed(2) + '% / ' + (100 - (calcTaskProgress() *100)).toStringAsFixed(2) + '%'),
+                      legend: Legend(isVisible: true),
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      series: <ChartSeries<RecentTaskActivityData, String>>[
+                        LineSeries<RecentTaskActivityData, String>(
+                            dataSource: dashboardData!.recentTaskActivityData,
+                            xValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.date,
+                            yValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.taskCount,
+                            name: 'Task Count'
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),
             ),
           ),
-          Wrap(
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: calcGraphWidgetWidth(),
-                constraints: BoxConstraints(
-                    minHeight: 120
-                ),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SfCartesianChart(
-                          primaryXAxis: CategoryAxis(),
-                          title: ChartTitle(
-                              text: 'Recent task activity'
-                          ),
-                          legend: Legend(isVisible: true),
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                          series: <ChartSeries<RecentTaskActivityData, String>>[
-                            LineSeries<RecentTaskActivityData, String>(
-                                dataSource: dashboardData!.recentTaskActivityData,
-                                xValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.date,
-                                yValueMapper: (RecentTaskActivityData recentTaskData, _) => recentTaskData.taskCount,
-                                name: 'Task Count'
-                            )
-                          ],
+          Container(
+            width: calcGraphWidgetWidth(),
+            constraints: BoxConstraints(
+                minHeight: 120
+            ),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SfCartesianChart(
+                      primaryXAxis: CategoryAxis(),
+                      title: ChartTitle(
+                          text: 'Completed Task History'
+                      ),
+                      legend: Legend(isVisible: true),
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      series: <ChartSeries<CompletedTaskHistoryData, String>>[
+                        LineSeries<CompletedTaskHistoryData, String>(
+                            dataSource: dashboardData!.completedTaskHistoryData,
+                            xValueMapper: (CompletedTaskHistoryData completeTaskData, _) => completeTaskData.date,
+                            yValueMapper: (CompletedTaskHistoryData completeTaskData, _) => completeTaskData.taskCount,
+                            name: 'Task Count'
                         )
                       ],
-                    ),
-                  ),
+                    )
+                  ],
                 ),
               ),
-              Container(
-                width: calcGraphWidgetWidth(),
-                constraints: BoxConstraints(
-                    minHeight: 120
-                ),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SfCartesianChart(
-                          primaryXAxis: CategoryAxis(),
-                          title: ChartTitle(
-                              text: 'Completed Task History'
-                          ),
-                          legend: Legend(isVisible: true),
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                          series: <ChartSeries<CompletedTaskHistoryData, String>>[
-                            LineSeries<CompletedTaskHistoryData, String>(
-                                dataSource: dashboardData!.completedTaskHistoryData,
-                                xValueMapper: (CompletedTaskHistoryData completeTaskData, _) => completeTaskData.date,
-                                yValueMapper: (CompletedTaskHistoryData completeTaskData, _) => completeTaskData.taskCount,
-                                name: 'Task Count'
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
+            ),
+          ),
         ],
-      ),
-    );
+      )
+    ];
   }
 
   double calcGraphWidgetWidth(){

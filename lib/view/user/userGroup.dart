@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,6 +51,10 @@ class _userGroupState extends State<userGroup> {
 
   @override
   Widget build(BuildContext context) {
+    return Platform.isAndroid || Platform.isIOS ? mobileView() : desktopView();
+  }
+
+  Widget mobileView(){
     return Scaffold(
       key: userGroupScaffoldKey,
       drawer: userNavDrawer(),
@@ -58,8 +63,8 @@ class _userGroupState extends State<userGroup> {
         curvedBodyRadius: 5.0,
         leading: IconButton(
           icon: Icon(
-              Icons.list,
-              color: Colors.white,
+            Icons.list,
+            color: Colors.white,
           ),
           onPressed: (){
             HapticFeedback.lightImpact();
@@ -68,10 +73,10 @@ class _userGroupState extends State<userGroup> {
         ),
         titleBackgroundColor: Color(0xfffbb448),
         title: Text(
-            'Groups',
+          'Groups',
           style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600
+              color: Colors.white,
+              fontWeight: FontWeight.w600
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -100,7 +105,7 @@ class _userGroupState extends State<userGroup> {
         actions: [
           IconButton(
             icon: Icon(
-                Icons.refresh,
+              Icons.refresh,
               color: Colors.white,
             ),
             onPressed: (){
@@ -115,76 +120,113 @@ class _userGroupState extends State<userGroup> {
         headerWidget: Container(
           child: Center(
             child: Text(
-                'Groups',
+              'Groups',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 50,
-                fontWeight: FontWeight.bold
+                  color: Colors.white,
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold
               ),
             ),
           ),
         ),
-        body: [
-          FutureBuilder<List<Group>>(
-              future: futureGroupList,
-              builder: (context, snapshot){
-                if(snapshot.hasError) print(snapshot.error);
-
-                if(snapshot.hasData){
-                  if(snapshot.data.toString() != "[]"){
-                    return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index){
-                          return Card(
-                            elevation: 8.0,
-                            child: Container(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                title: Text(
-                                  snapshot.data![index].groupName!,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w300
-                                  ),
-                                ),
-                                onTap: (){
-                                  HapticFeedback.lightImpact();
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder:(context){
-                                            return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
-                                          }
-                                      )
-                                  ).then((value) {
-                                    getGroupListData();
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        }
-                    );
-                  }else{
-                    return Center(child: Text('No groups joined'));
-                  }
-                }else{
-                  return Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Center(child: CupertinoActivityIndicator(radius: 12)),
-                  );
-                }
-              }
-          ),
-        ],
+        body: bodyContent(),
       ),
     );
   }
 
+  Widget desktopView(){
+    return Scaffold(
+        key: userGroupScaffoldKey,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (_){
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text('Join Group'),
+                        onTap: joinGroupDialog,
+                      ),
+                      ListTile(
+                        title: Text('Create Group'),
+                        onTap: createTeamDialog,
+                      ),
+                    ],
+                  );
+                }
+            );
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: bodyContent(),
+          ),
+        )
+    );
+  }
+
+  List<Widget> bodyContent(){
+    return [
+      FutureBuilder<List<Group>>(
+          future: futureGroupList,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
+
+            if(snapshot.hasData){
+              if(snapshot.data.toString() != "[]"){
+                return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index){
+                      return Card(
+                        elevation: 8.0,
+                        child: Container(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                            title: Text(
+                              snapshot.data![index].groupName!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w300
+                              ),
+                            ),
+                            onTap: (){
+                              HapticFeedback.lightImpact();
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder:(context){
+                                        return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
+                                      }
+                                  )
+                              ).then((value) {
+                                getGroupListData();
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    }
+                );
+              }else{
+                return Center(child: Text('No groups joined'));
+              }
+            }else{
+              return Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Center(child: CupertinoActivityIndicator(radius: 12)),
+              );
+            }
+          }
+      )
+    ];
+  }
 
   Future<dynamic> joinGroupDialog(){
     return showDialog(

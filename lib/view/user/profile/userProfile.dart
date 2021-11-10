@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:workflow_sys/controller/authController.dart';
 import 'package:workflow_sys/controller/miscController.dart';
 import 'package:workflow_sys/controller/setupDir.dart';
 import 'package:workflow_sys/controller/userController.dart';
@@ -68,8 +69,8 @@ class _userProfileState extends State<userProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: userProfileScaffoldKey,
-      drawer: userNavDrawer(),
-      appBar: CupertinoNavigationBar(
+      drawer: Platform.isAndroid || Platform.isIOS ? userNavDrawer() : null,
+      appBar: Platform.isAndroid || Platform.isIOS ? CupertinoNavigationBar(
         middle: Text('User Profile'),
         leading: CupertinoButton(
           padding: EdgeInsets.all(0.0),
@@ -78,7 +79,7 @@ class _userProfileState extends State<userProfile> {
             userProfileScaffoldKey.currentState!.openDrawer();
           },
         ),
-      ),
+      ) : null,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -175,6 +176,36 @@ class _userProfileState extends State<userProfile> {
                     Colors.orangeAccent
                 ),
               ],
+            ),
+            Platform.isAndroid || Platform.isIOS ? Container() : TextButton(
+              child: Text('Log Out'),
+              onPressed: (){
+                HapticFeedback.lightImpact();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: Text('Logout'),
+                        content: Text('Are you sure you want to logout?'),
+                        actions: [
+                          TextButton(
+                            child: Text('No'),
+                            onPressed: (){
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text('Yes'),
+                            onPressed: (){
+                              LoadingScreen.showLoadingScreen(context, userProfileScaffoldKeyForLoadingScreen);
+                              logout(context);
+                            },
+                          )
+                        ],
+                      );
+                    }
+                );
+              },
             )
           ],
         ),

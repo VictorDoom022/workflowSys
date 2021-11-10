@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -32,10 +34,17 @@ class _initLoadingState extends State<initLoading> {
               '/adminHome'
             )
           }else{
-            Navigator.pushReplacementNamed(
-                context,
-                '/userHome'
-            )
+            if(Platform.isAndroid || Platform.isIOS){
+              Navigator.pushReplacementNamed(
+                  context,
+                  '/userHome'
+              )
+            }else{
+              Navigator.pushReplacementNamed(
+                  context,
+                  '/homePage'
+              )
+            }
           }
         })
       }else{

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -36,7 +37,7 @@ class _createTodoState extends State<createTodo> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: userCreateTodoScaffoldKey,
-      appBar: CupertinoNavigationBar(
+      appBar: Platform.isAndroid || Platform.isIOS ? CupertinoNavigationBar(
         leading: CupertinoButton(
           padding: EdgeInsets.all(0.0),
           child: Icon(Icons.list),
@@ -45,8 +46,8 @@ class _createTodoState extends State<createTodo> {
           },
         ),
         middle: Text('New Todo'),
-      ),
-      drawer: userNavDrawer(),
+      ) : null,
+      drawer: Platform.isAndroid || Platform.isIOS ? userNavDrawer() : null,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(

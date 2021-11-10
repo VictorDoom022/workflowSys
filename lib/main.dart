@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:workflow_sys/view/admin/adminHome.dart';
 import 'package:workflow_sys/view/initLoading.dart';
 import 'package:workflow_sys/view/loginPage.dart';
+import 'package:workflow_sys/view/newUI/homePage.dart';
 import 'package:workflow_sys/view/user/userGroup.dart';
 import 'package:workflow_sys/view/user/userHome.dart';
 
@@ -17,6 +18,7 @@ void main() {
           '/adminHome':(context) => adminHome(),
           '/userHome':(context) => userHome(),
           '/userGroup':(context) => userGroup(),
+          '/homePage':(context) => HomePage()
         },
         theme: ThemeData(
           primaryColor: Color(0xfffbb448),
