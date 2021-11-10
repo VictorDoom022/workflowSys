@@ -1,5 +1,6 @@
 <template>
     <tr @click="navigateToEditTask(task.id)" style="cursor:pointer;">
+        <td :class="colorClassName[task.task_color]"></td>
         <td class="table-img"><img :src="'http://192.168.0.181:8000/' + getUserProfilePicture(task.task_userCreateID)" alt="">
         <td>
             <h6 class="mb-0 font-13">{{ task.task_name }}</h6>
@@ -44,6 +45,15 @@ export default {
                 'bg-warning text-white',
                 'bg-danger text-white'
             ],
+            colorClassName : [
+                'default', 
+                'bg-primary', 
+                'bg-danger', 
+                'bg-warning', 
+                'bg-success', 
+                'bg-secondary', 
+                'bg-dark'
+            ]
         }
     },
     mounted() {

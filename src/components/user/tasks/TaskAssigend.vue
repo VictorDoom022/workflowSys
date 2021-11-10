@@ -14,6 +14,7 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Creator</th>
                             <th>Title</th>
                             <th>Priority</th>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="navigateToEditTask(task.id)" class="container card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0 my-1" :class="convertColorTypeToClassName(task.task_color)">
+  <div @click="navigateToEditTask(task.id)" class="container card shadow mb-2 my-1" :class="convertColorTypeToClassName(task.task_color)">
         <div class="row row-striped">
             <div class="col-lg-2 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(task.updated_at) }}</span></p>
@@ -17,7 +17,7 @@
                         <span v-if="task.task_assignedMemberID">{{ getLastAssigendUser(task.task_assignedMemberID) }}</span>
                         <span v-if="!task.task_assignedMemberID">Not assigned</span>
                     </li>
-                    <li class="list-inline-item">
+                    <li class="list-inline-item" :class="taskPriorityClassName[task.task_priority]">
                         <b-icon class="mr-1" icon="exclamation-triangle"></b-icon>
                             {{ convertPriorityTypeToString(task.task_priority) }}
                     </li>
@@ -36,9 +36,28 @@
 export default {
     // taskPageData contains - groupID, teamID, taskListID
     props: ['taskPageData', 'task', 'userData', 'userDetailData'],
+    data() {
+        return {
+            taskPriorityClassName : [
+                '',
+                'text-secondary',
+                'text-primary',
+                'text-warning',
+                'text-danger'
+            ],
+        }
+    },
     methods: {
         convertColorTypeToClassName(colorID) {
-            let colorClassArray = ['default', 'bg-primary text-white', 'bg-danger text-white', 'bg-warning text-white', 'bg-success text-white', ' bg-secondary text-white', 'bg-dark text-white']
+            let colorClassArray = [
+                'default', 
+                'card-border-primary', 
+                'card-border-danger', 
+                'card-border-warning', 
+                'card-border-success', 
+                'card-border-secondary', 
+                'card-border-dark'
+            ]
             return colorClassArray[colorID]
         },
         convertPriorityTypeToString(priorityID){
@@ -94,6 +113,30 @@ export default {
 .card:hover{
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
   transition: .3s ease;
+}
+
+.card-border-primary {
+    border-left: 5px solid #007bff;
+}
+
+.card-border-danger {
+    border-left: 5px solid #dc3545;
+}
+
+.card-border-warning {
+    border-left: 5px solid #ffc107;
+}
+
+.card-border-success {
+    border-left: 5px solid #28a745;
+}
+
+.card-border-secondary {
+    border-left: 5px solid #6c757d;
+}
+
+.card-border-dark {
+    border-left: 5px solid #343a40;
 }
 
 /* breakpoint lg */
