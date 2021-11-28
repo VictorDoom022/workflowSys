@@ -3,25 +3,6 @@
         <Loading v-if="isLoading"/>
 
         <div v-if="!isLoading" id="sidepanel">
-            <div id="profile">
-                <div class="wrap">
-                    <img id="profile-img" :src="'http://192.168.0.181:8000/' + currentLoggedInUserData['userDetail'].userDetail_profilePictureDir" class="online" alt="" />
-                    <p>{{ currentLoggedInUserData['user'].name }}</p>
-                    <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                    <div id="status-options">
-                        <ul>
-                            <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
-                            <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
-                            <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
-                            <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div id="search">
-                <label class="mr-0"><b-icon icon="search"></b-icon> </label>
-                <input type="text" placeholder="Search contacts..." />
-            </div>
             <div id="contacts">
                 <ul v-for="chat in chatData" :key="chat.id" style="list-style: none; padding-left: 0;">
                     <li @click="selectUser(chat.chat_receiverUserID)" class="contact">
@@ -368,47 +349,6 @@ $backgroundGrey: #6c757d;
 		}
 	}
   
-	#search {
-		border-top: 1px solid $backgroundDark;
-		border-bottom: 1px solid $backgroundDark;
-		font-weight: 300;
-
-		label {
-			position: absolute;
-			margin: 5px 0 0 15px;
-		}
-
-		input {
-			font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-			padding: 5px 0 5px 46px;
-			width: calc(100% - 25px);
-			border: none;
-			background: $backgroundGrey;
-			color: #f5f5f5;
-
-			&:focus {
-				outline: none;
-				background: #435f7a;
-			}
-
-			&::-webkit-input-placeholder {
-				color: #f5f5f5;
-			}
-
-			&::-moz-placeholder {
-				color: #f5f5f5;
-			}
-
-			&:-ms-input-placeholder {
-				color: #f5f5f5;
-			}
-
-			&:-moz-placeholder {
-				color: #f5f5f5;
-			}
-		}
-	}
-
 	#contacts {
 		height: calc(100% - 177px);
 		overflow-y: scroll;
@@ -464,6 +404,8 @@ $backgroundGrey: #6c757d;
 
 					img {
 						width: 40px;
+						min-width: 40px;
+						min-height: 40px;
 						max-height: 40px;
 						border-radius: 50%;
 						float: left;

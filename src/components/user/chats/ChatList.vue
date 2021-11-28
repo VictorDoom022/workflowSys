@@ -7,7 +7,7 @@
                 <img :src="'http://192.168.0.181:8000/' + receiverUserDetailData.userDetail_profilePictureDir" alt="" />
                 <p>{{ receiverUserData.name }}</p>
             </div>
-            <div v-if="chatData" class="messages">
+            <div v-if="chatData" class="messages" style="height: 445px">
                 <ul v-for="chat in chatData" :key="chat.id">
                     <li v-if="chat.chat_receiverUserID != currentLoggedInUserID" class="replies">
                         <img :src="'http://192.168.0.181:8000/' + senderUserDetailData.userDetail_profilePictureDir" alt="" />
@@ -63,6 +63,7 @@ export default {
       immediate: true,
       receiverUserID: function(newUserID, oldUserID) {
         this.getChatData()
+		this.getReceiverUserDetails()
       }
     },
     methods: {
@@ -153,10 +154,14 @@ $backgroundDark: #343a40;
 
 		img {
 			width: 40px;
+			min-width: 40px;
+			min-height: 40px;
 			max-height: 40px;
 			border-radius: 50%;
 			float: left;
 			margin: 9px 12px 0 9px;
+			object-fit:cover;
+			object-position:50% 50%;
 		}
 
 		p {
@@ -211,7 +216,10 @@ $backgroundDark: #343a40;
 				}
 
 				img {
-					width: 22px;
+					min-width: 25px;
+					max-width: 25px;
+					max-height: 25px;
+					min-height: 25px;
 					border-radius: 50%;
 					float: left;
 					object-fit:cover;
@@ -230,6 +238,10 @@ $backgroundDark: #343a40;
 			li.sent {
 
 				img {
+					min-width: 25px;
+					max-width: 25px;
+					max-height: 25px;
+					min-height: 25px;
 					margin: 6px 8px 0 0;
 				}
 
