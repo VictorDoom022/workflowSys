@@ -21,7 +21,7 @@
             <div v-if="!isLoading" class="contaier-fluid">
                 <div class="row g-1">
                     <div class="col-lg-12 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-info">Total Tasks</h5>
                                 <p class="card-text fs-3">{{ totalTaskCount }}</p>
@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="col-lg-3 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-success">Active Tasks</h5>
                                 <p class="card-text fs-3">{{ activeTaskCount }}</p>
@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="col-lg-3 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-secondary">Tasks Assigned To You</h5>
                                 <p class="card-text fs-3">{{ assignedToUserTaskCount }}</p>
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="col-lg-3 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-danger">High Priority Tasks</h5>
                                 <p class="card-text fs-3">{{ highPriorityTaskCount }}</p>
@@ -57,7 +57,7 @@
                     </div>
 
                     <div class="col-lg-3 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-primary">Completed Task</h5>
                                 <p class="card-text fs-3">{{ completedTaskCount }}</p>
@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="col-lg-12 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold">Active Task / Completed Task</h5>
                                 <b-progress :max="totalTaskCount">
@@ -78,7 +78,7 @@
                     </div>
                     
                     <div class="col-lg-6 px-1">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold">Recent Task Activity</h5>
                                 <DrawBarChart
@@ -89,8 +89,8 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6 px-1">
-                        <div class="card">
+                    <div class="col-lg-6 px-1 mb-3">
+                        <div class="card rounded-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold">Completed Task History</h5>
                                 <DrawBarChart
@@ -239,6 +239,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.card:hover{
+    background-color: #f8f9fa;
+    transition: .5s ease;
+}
 </style>
