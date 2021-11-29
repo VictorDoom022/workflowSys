@@ -5,14 +5,14 @@
         <div v-if="!isLoading" id="sidepanel">
             <div id="contacts">
                 <ul v-for="chat in chatData" :key="chat.id" style="list-style: none; padding-left: 0;">
-                    <li @click="selectUser(chat.chat_receiverUserID)" class="contact">
+                    <li @click="selectUser(chat.chat_receiverUserID)" class="contact border-bottom">
                         <div class="wrap">
                             <span class="contact-status online"></span>
                             <img :src="'http://192.168.0.181:8000/' + convertUserIDToUserDetailData(chat.chat_receiverUserID).userDetail_profilePictureDir" alt="" />
 
                             <div class="meta">
-                                <p class="name">{{ convertUserIDToUserData(chat.chat_receiverUserID).name }}</p>
-                                <p class="preview">{{ convertUserIDToUserData(chat.chat_receiverUserID).email }}</p>
+                                <p class="name text-dark">{{ convertUserIDToUserData(chat.chat_receiverUserID).name }}</p>
+                                <p class="preview text-dark">{{ convertUserIDToUserData(chat.chat_receiverUserID).email }}</p>
                             </div>
                         </div>
                     </li>
@@ -101,6 +101,7 @@ export default {
 
 $backgroundDark: #343a40;
 $backgroundGrey: #6c757d;
+$backgroundLight: #f8f9fa;
 
 #sidepanel {
 	float: left;
@@ -108,7 +109,7 @@ $backgroundGrey: #6c757d;
 	min-height: 500px;
 	width: 100%;
 	height: 100%;
-	background: $backgroundDark;
+	background: $backgroundLight;
 	color: #f5f5f5;
 	overflow: hidden;
 	position: relative;
@@ -356,7 +357,7 @@ $backgroundGrey: #6c757d;
 
 		&::-webkit-scrollbar {
 			width: 8px;
-			background: #2c3e50;
+			// background: #2c3e50;
 		}
 
 		&::-webkit-scrollbar-thumb {
@@ -461,41 +462,6 @@ $backgroundGrey: #6c757d;
 
 	#contacts.expanded {
 		height: calc(100% - 334px);
-	}
-
-	#bottom-bar {
-		position: absolute;
-		width: 100%;
-		bottom: 0;
-
-		button {
-			float: left;
-			border: none;
-			width: 50%;
-			padding: 10px 0;
-			background: #32465a;
-			color: #f5f5f5;
-			cursor: pointer;
-			font-size: 0.85em;
-			font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-
-			&:focus {
-				outline: none;
-			}
-
-			&:nth-child(1) {
-				border-right: 1px solid #2c3e50;
-			}
-
-			&:hover {
-				background: #435f7a;
-			}
-
-			i {
-				margin-right: 3px;
-				font-size: 1em;
-			}
-		}
 	}
 }
 

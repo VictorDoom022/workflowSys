@@ -13,6 +13,55 @@
                     </div>
 
                     <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <img :src="'http://192.168.0.181:8000/' + userDetail.userDetail_profilePictureDir" class="rounded-circle img-thumbnail mb-4" style="height: 200px; width: 200px" alt="profile-image">
+                                <h2>{{ user.name }}</h2>
+                                <p class="text-muted">{{ user.email }}</p>
+                                <form @submit.prevent="uploadProfilePicture">
+                                    <label class="form-label">Change Profile Picture</label>
+                                    <div class="d-flex">
+                                        <input class="form-control form-control-sm"  type="file" accept="image/*" @change="onFileChange">
+                                        <button class="btn btn-primary btn-sm ml-1" :disabled="!fileData">Change</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-1 px-1">
+                                        <div class="card rounded-0" style="min-height: calc(100vh -25%);">
+                                            <div class="card-body text-center py-5 fs-4">
+                                                <p class="mb-0">Account Status</p>
+                                                <p class=" fs-5 fw-bold" :class="userDetail.userDetail_accEnable == 1 ? 'text-success' : 'text-danger'">
+                                                    {{ userDetail.userDetail_accEnable == 1 ? 'Enabled' : 'Banned' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 mb-1 px-1">
+                                        <div class="card rounded-0" style="min-height: calc(100vh -25%);">
+                                            <div class="card-body text-center py-5 fs-4">
+                                                <p class="mb-0">Account Created At</p>
+                                                <p class="text-primary fs-5 fw-bold">{{ convertDBDateToString(user.created_at) }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 mb-1 px-1">
+                                        <div class="card rounded-0" style="min-height: calc(100vh -25%);">
+                                            <div class="card-body text-center py-5 fs-4">
+                                                <p class="mb-0">Group(s) Joined</p>
+                                                <p class="text-info fs-5 fw-bold">{{ countJoinedGroup(userDetail.userDetail_joinedGroupID) }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid" style="display:none">
                             <div class="justify-content-center align-items-center">
                                 <div class="text-center card-box">
                                     <div class="member-card pt-2 pb-2">
@@ -156,6 +205,11 @@ export default {
 </script>
 
 <style scoped>
+.card:hover{
+    background-color: #f8f9fa;
+    transition: .5s ease;
+}
+
 .card-box {
     padding: 20px;
     border-radius: 3px;
