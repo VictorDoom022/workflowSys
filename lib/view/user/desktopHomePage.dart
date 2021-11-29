@@ -5,21 +5,21 @@ import 'package:workflow_sys/view/user/chats/UserChatList.dart';
 import 'package:workflow_sys/view/user/profile/userProfile.dart';
 import 'package:workflow_sys/view/user/todos/todoHome.dart';
 import 'package:workflow_sys/view/user/userGroup.dart';
-import 'package:workflow_sys/view/user/userHome.dart';
+import 'package:workflow_sys/view/user/userDashboard.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class desktopHomePage extends StatefulWidget {
+  const desktopHomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _DesktopHomePageState createState() => _DesktopHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DesktopHomePageState extends State<desktopHomePage> {
 
   int selectedIndex = 0;
 
   List<Widget> pageList = <Widget>[
-    userHome(),
+    userDashboard(),
     userGroup(),
     todoHome(),
     userProfile()

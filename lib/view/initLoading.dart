@@ -42,7 +42,7 @@ class _initLoadingState extends State<initLoading> {
             }else{
               Navigator.pushReplacementNamed(
                   context,
-                  '/homePage'
+                  '/desktopHomePage'
               )
             }
           }

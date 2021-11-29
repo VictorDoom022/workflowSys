@@ -12,14 +12,14 @@ import 'package:workflow_sys/view/user/userNavDrawer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
-class userHome extends StatefulWidget {
-  const userHome({Key? key}) : super(key: key);
+class userDashboard extends StatefulWidget {
+  const userDashboard({Key? key}) : super(key: key);
 
   @override
-  _userHomeState createState() => _userHomeState();
+  _userDashboardState createState() => _userDashboardState();
 }
 
-class _userHomeState extends State<userHome> {
+class _userDashboardState extends State<userDashboard> {
 
   GlobalKey<ScaffoldState> userHomeScaffoldKey = GlobalKey();
   DashboardData? dashboardData = DashboardData(totalTask: 0, activeTaskCount: 0, completedTaskCount: 0, highPriorityTaskCount: 0, assignedToUserTaskCount: 0, recentTaskActivityData: [], completedTaskHistoryData: []);
