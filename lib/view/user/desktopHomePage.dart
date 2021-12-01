@@ -67,9 +67,10 @@ class _DesktopHomePageState extends State<desktopHomePage> {
                 currentIndex: selectedIndex,
                 selectedItemColor: Colors.amber[800],
                 onTap: onNavItemTapped,
+                elevation: 2.5,
                 items: [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
+                      icon: Icon(Icons.home_outlined),
                       label: '',
                       tooltip: 'Home',
                       activeIcon: Container(
@@ -89,7 +90,7 @@ class _DesktopHomePageState extends State<desktopHomePage> {
                       )
                   ),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.people_sharp),
+                      icon: Icon(Icons.people_outline),
                       label: '',
                       tooltip: 'Groups',
                       activeIcon: Container(
@@ -129,7 +130,7 @@ class _DesktopHomePageState extends State<desktopHomePage> {
                       )
                   ),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.account_circle_rounded),
+                      icon: Icon(Icons.account_circle_outlined),
                       label: '',
                       tooltip: 'Profile',
                       activeIcon: Container(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,31 +9,41 @@ import 'package:http/http.dart' as http;
 
 import 'miscController.dart';
 
-Future<List<ToDo>> getTodoList() async {
+Future<List<ToDo>> getTodoList(BuildContext context) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String? token = sharedPreferences.getString("UserToken");
   int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/todo/getToDoByUserID';
   Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      body: {
-        'userID': userID.toString(),
-      },
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token!
-      }
-  );
+  try{
+    var response = await http.post(
+        url,
+        body: {
+          'userID': userID.toString(),
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + token!
+        }
+    );
 
-  if(response.statusCode == 200){
-    var jsonRes = jsonDecode(response.body);
-    List<ToDo> listToDo = (jsonRes as List).map((e) => ToDo.fromJson(e)).toList();
+    if(response.statusCode == 200){
+      var jsonRes = jsonDecode(response.body);
+      List<ToDo> listToDo = (jsonRes as List).map((e) => ToDo.fromJson(e)).toList();
 
-    return listToDo;
-  }else{
-    throw 'Error';
+      return listToDo;
+    }else{
+      throw 'Error';
+    }
+  }on SocketException catch (_){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            dismissDirection: DismissDirection.none,
+            content: Text('Could not connect to server')
+        )
+    );
+    throw 'Null';
   }
 }
 

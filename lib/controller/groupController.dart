@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,15 +79,16 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
 
   String stringUrl = apiURL + '/group/userID/' + userID.toString();
   Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token!
-      }
-  );
 
   try{
+    var response = await http.post(
+        url,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + token!
+        }
+    );
+
     List<Group> listGroup = [];
     if(response.body!=""){
       listGroup = (jsonDecode(response.body) as List).map((e) => Group.fromJson(e)).toList();
@@ -95,6 +97,14 @@ Future<List<Group>> getUserJoinedGroup(BuildContext context) async {
     }else{
       return listGroup;
     }
+  }on SocketException catch (_){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            dismissDirection: DismissDirection.none,
+            content: Text('Could not connect to server')
+        )
+    );
+    throw 'Null';
   }catch(e){
     Navigator.of(context).pushReplacementNamed('/login');
     throw 'Null';

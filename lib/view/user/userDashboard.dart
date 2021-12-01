@@ -30,7 +30,7 @@ class _userDashboardState extends State<userDashboard> {
     // TODO: implement initState
     super.initState();
     getCurrentUserName().then((value) {
-      getDashboardData().then((value) {
+      getDashboardData(context).then((value) {
         setState(() {
           dashboardData = value!;
         });

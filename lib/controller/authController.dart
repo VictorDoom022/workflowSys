@@ -38,7 +38,7 @@ void login(BuildContext? context, String? email, String? password) async {
         if(Platform.isIOS || Platform.isAndroid){
           Navigator.pushReplacementNamed(context!, '/userHome');
         }else{
-          Navigator.pushReplacementNamed(context!, '/homePage');
+          Navigator.pushReplacementNamed(context!, '/desktopHomePage');
         }
       }
 
@@ -81,7 +81,11 @@ void register(BuildContext context, String name, String email, String password, 
     sharedPreferences.setString("UserName", authReceiver.user!.name!);
     sharedPreferences.setString("UserPosition", authReceiver.user!.position!);
 
-    Navigator.pushReplacementNamed(context, '/userHome');
+    if(Platform.isIOS || Platform.isAndroid){
+      Navigator.pushReplacementNamed(context, '/userHome');
+    }else{
+      Navigator.pushReplacementNamed(context, '/desktopHomePage');
+    }
 
   }else if(response.statusCode == 201){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));

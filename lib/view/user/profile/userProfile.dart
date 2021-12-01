@@ -36,7 +36,7 @@ class _userProfileState extends State<userProfile> {
   }
 
   void setUserData(){
-    getCurrentLogInUserDetail().then((value) {
+    getCurrentLogInUserDetail(context).then((value) {
       setState(() {
         username = value!.user!.name!;
         profilePictureDir = serverURL + '/' + value.userDetail!.userDetailProfilePictureDir!;

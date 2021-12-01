@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,31 +34,41 @@ Future<UserReceiver?> getAllUser(BuildContext context) async{
   }
 }
 
-Future<UserReceiverForSingleUser?> getCurrentLogInUserDetail() async {
+Future<UserReceiverForSingleUser?> getCurrentLogInUserDetail(BuildContext context) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String? token = sharedPreferences.getString("UserToken");
   int? userID = sharedPreferences.getInt("UserID");
 
   String stringUrl = apiURL + '/users/' + userID.toString();
   Uri url = Uri.parse(stringUrl);
-  var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization' : 'Bearer ' + token!
-      }
-  );
 
-  if(response.statusCode == 200){
-    var jsonRes = jsonDecode(response.body);
+  try{
+    var response = await http.get(
+        url,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + token!
+        }
+    );
 
-    UserReceiverForSingleUser userReceiverForSingleUser = UserReceiverForSingleUser.fromJson(jsonRes);
+    if(response.statusCode == 200){
+      var jsonRes = jsonDecode(response.body);
 
-    return userReceiverForSingleUser;
-  }else{
-    return null;
+      UserReceiverForSingleUser userReceiverForSingleUser = UserReceiverForSingleUser.fromJson(jsonRes);
+
+      return userReceiverForSingleUser;
+    }else{
+      return null;
+    }
+  }on SocketException catch (_){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            dismissDirection: DismissDirection.none,
+            content: Text('Could not connect to server')
+        )
+    );
+    throw 'Null';
   }
-
 }
 
 Future<UserReceiverForSingleUser?> getUserDetailByID(int userID) async {
