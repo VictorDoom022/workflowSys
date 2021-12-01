@@ -83,7 +83,7 @@ export default {
 	box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
     
 	.nav-link {
-		font-weight: 500;
+		font-weight: 600;
 		color: white;
 
 		.feather {

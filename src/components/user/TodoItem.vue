@@ -1,11 +1,11 @@
 <template>
   <div @click="navigateToEditTodo(todo.id)" class="container card border-light shadow mb-2 border-end border-bottom border-top-0 border-start-0 my-1">
         <div class="row row-striped">
-            <div class="col-lg-2 ">
+            <div class="col-lg-3 ">
                 <p class="display-4 mb-0"><span class="badge badge-secondary">{{ convertDBDateToDate(todo.updated_at) }}</span></p>
                 <h4 class="mb-0 d-inline-block">{{ convertDBDateToMonthString(todo.updated_at) }}</h4>
             </div>
-            <div class="col-lg-10">
+            <div class="col-lg-9">
                 <h3 class="text-start mb-0"><strong>{{ todo.todo_name }}</strong></h3>
                 <ul class="list-inline text-start mb-1">
                     <li class="list-inline-item">
