@@ -12,6 +12,7 @@ import 'package:workflow_sys/model/TeamDetailReceiver.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
+import 'package:workflow_sys/view/user/comments/AwesomeListItem.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
 import 'package:workflow_sys/view/user/tasks/taskHome.dart';
 import 'package:workflow_sys/view/user/tasks/taskListDetail.dart';
@@ -160,43 +161,24 @@ class teamItem extends StatelessWidget {
       shrinkWrap: true,
       itemCount: teamDetailReceiver.taskList!.length,
       itemBuilder: (context, index){
-        return Card(
-          elevation: 8.0,
-          child: ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: new BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: new BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(serverURL + '/' + userReceiver.userDetail![index]!.userDetailProfilePictureDir!)
-                  ),
-                ),
-                SizedBox(width: 5),
-                Text(
-                    convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)! + "'s Task List",
-                  textAlign: TextAlign.center,
-                ),
-              ],
+        return GestureDetector(
+          onTap: (){
+            HapticFeedback.lightImpact();
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (_){
+                      return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team!.id!, taskListID: teamDetailReceiver.taskList![index]!.id!, taskListUserID: int.parse(teamDetailReceiver.taskList![index]!.taskListUserID!) ,taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)!);
+                    }
+                )
+            );
+          },
+          child: Card(
+            child: AwesomeListItem(
+              image: serverURL + '/' + userReceiver.userDetail![index]!.userDetailProfilePictureDir!,
+              title: convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)! + "'s Task List",
+              content: '',
             ),
-            onTap: (){
-              HapticFeedback.lightImpact();
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (_){
-                        return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team!.id!, taskListID: teamDetailReceiver.taskList![index]!.id!, taskListUserID: int.parse(teamDetailReceiver.taskList![index]!.taskListUserID!) ,taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)!);
-                      }
-                  )
-              );
-            },
           ),
         );
       },
