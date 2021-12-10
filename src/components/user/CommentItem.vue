@@ -1,21 +1,16 @@
 <template>
-    <div class="row mb-2">
-        <div class="col-2 px-2">
-            <img class="thumb-lg member-thumb round-circle" :src="'http://192.168.0.181:8000/' + getUserProfilePictureDir(commentData.comment_userID)">
-        </div>
-        <div class="col-10 px-1">
-            <div class="card px-2">
-                <h5 class="card-title text-start fw-bold">
-                    <a @click="navigateToUserInfo(commentData.comment_userID)" class="userLink">{{ convertUserIDToName(commentData.comment_userID) }}</a> 
-                </h5>
-                <div class="card-text text-start">
-                    {{ commentData.comment_details }}
-
-                    <p class="text-muted mb-1">
-                        {{ convertDBDateToString(commentData.created_at) }}
-                    </p>
-                </div>
+    <div class="comment">
+        <a class="comment-img" href="#non">
+            <img :src="'http://192.168.0.181:8000/' + getUserProfilePictureDir(commentData.comment_userID)" alt="" width="50" height="50">
+        </a>
+        <div class="comment-body">
+            <div class="text">
+                <p>{{ commentData.comment_details }}</p>
             </div>
+            <p class="attribution">
+                by <a @click="navigateToUserInfo(commentData.comment_userID)" class="userLink">{{ convertUserIDToName(commentData.comment_userID) }}</a> 
+                at {{ convertDBDateToString(commentData.created_at) }}
+            </p>
         </div>
     </div>
 </template>
@@ -50,23 +45,105 @@ export default {
 }
 </script>
 
-<style scoped>
-.userLink {
-    cursor:pointer;
-    color: #212529;
+<style lang="scss" scoped>
+/* Decoration */
+.comment {
+	overflow: hidden;
+	padding: 0 0 1em;
+	*zoom: 1;
+	position: relative;
+
+	.text {
+		padding: 10px;
+		border: 1px solid #e5e5e5;
+		border-radius: 5px;
+		background: #fff;
+
+		p {
+			&:last-child {
+				margin: 0;
+			}
+		}
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 65px;
+			top: 18px;
+			left: 78px;
+			width: 9px;
+			height: 9px;
+			border-width: 0 0 1px 1px;
+			border-style: solid;
+			border-color: #e5e5e5;
+			background: #fff;
+			-webkit-transform: rotate(45deg);
+			-moz-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			-o-transform: rotate(45deg);
+		}
+	}
+
+	.attribution {
+        text-align: left;
+		margin: 0.5em 0 0;
+		font-size: 14px;
+		color: #666;
+
+        .userLink {
+            cursor: pointer;
+        }
+	}
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 65px;
+		width: 9px;
+		height: 9px;
+		border: 3px solid #fff;
+		border-radius: 100px;
+		margin: 16px 0 0 -6px;
+		box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
+		background: #ccc;
+	}
+
+	&:hover {
+		&:before {
+			background: orange;
+		}
+	}
 }
 
-.thumb-lg {
-    height: 58px;
-    width: 58px;
+.comment-img {
+	float: left;
+	margin-right: 33px;
+	border-radius: 5px;
+	overflow: hidden;
+
+	img {
+		display: block;
+	}
 }
 
-.img-thumbnail {
-    padding: .25rem;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: .25rem;
-    max-width: 100%;
-    height: auto;
+.comment-body {
+	overflow: hidden;
+}
+
+.comments {
+	position: relative;
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 65px;
+		width: 3px;
+		top: -20px;
+		bottom: -20px;
+		background: rgba(0,0,0,0.1);
+	}
 }
 </style>
