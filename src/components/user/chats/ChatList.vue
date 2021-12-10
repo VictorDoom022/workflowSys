@@ -11,12 +11,15 @@
                 <ul v-for="chat in chatData" :key="chat.id">
                     <li v-if="chat.chat_receiverUserID != currentLoggedInUserID" class="replies">
                         <img :src="'http://192.168.0.181:8000/' + senderUserDetailData.userDetail_profilePictureDir" alt="" />
-                        <p>{{ chat.chat_message }}</p>
+                        <p class="mb-0">{{ chat.chat_message }}</p>
                     </li>
                     <li v-if="chat.chat_receiverUserID == currentLoggedInUserID" class="sent">
                         <img :src="'http://192.168.0.181:8000/' + receiverUserDetailData.userDetail_profilePictureDir" alt="" />
-                        <p>{{ chat.chat_message }}</p>
+                        <p class="mb-0">{{ chat.chat_message }}</p>
                     </li>
+					<span class="text-muted px-3" :style="chat.chat_receiverUserID == currentLoggedInUserID ? 'float :right; text-align: left' : 'float: left; text-align: right'" style="width: 100%; font-size: 12px">
+						{{ convertDBDateToString(chat.created_at) }}
+					</span>
                 </ul>
             </div>
 
@@ -131,6 +134,11 @@ export default {
                 this.chatMessage = ''
                 this.getChatData()
             })
+        },
+		convertDBDateToString(dbDate){
+            let dateStr = new Date(dbDate)
+            let dateToDisplay = dateStr.getFullYear() + '/' + dateStr.getMonth() + '/' + dateStr.getDate() + ' ' + dateStr.getHours() + ':' + dateStr.getMinutes()
+            return dateToDisplay
         },
     }
 }

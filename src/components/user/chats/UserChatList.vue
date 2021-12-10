@@ -7,7 +7,6 @@
                 <ul v-for="chat in chatData" :key="chat.id" style="list-style: none; padding-left: 0;">
                     <li @click="selectUser(chat.chat_receiverUserID)" class="contact border-bottom">
                         <div class="wrap">
-                            <span class="contact-status online"></span>
                             <img :src="'http://192.168.0.181:8000/' + convertUserIDToUserDetailData(chat.chat_receiverUserID).userDetail_profilePictureDir" alt="" />
 
                             <div class="meta">
@@ -208,7 +207,7 @@ $backgroundLight: #f8f9fa;
 						cursor: pointer;
 
 						&:hover {
-							background: #496886;
+							background: #adbdcc;
 						}
 
 						span.status-circle {
@@ -372,7 +371,7 @@ $backgroundLight: #f8f9fa;
 				cursor: pointer;
 
 				&:hover {
-					background: $backgroundGrey;
+					background: #adbdcc;
 				}
 
 				.wrap {
