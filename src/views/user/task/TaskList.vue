@@ -66,7 +66,7 @@ export default {
     data() {
         return {
             pageDataParsed: [],
-            isCardView: true,
+            isCardView: false,
             userID: null,
             groupID: null,
             teamID: null,
