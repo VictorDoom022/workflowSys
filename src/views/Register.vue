@@ -64,29 +64,33 @@ export default {
     },
     methods: {
         register(){
-            this.isLoading = true;
-            Vue.axios.post(
-                '/register', {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    name: this.name,
-                    email: this.email,
-                    password: this.password,
-                    password_confirmation: this.confirm_password,
-                }
-            ).then((response) => {
-                this.isLoading = false;
-                console.log(response);
-                if(response.status == 200){
-                    this.error = null;
-                    loggedInUserData.dispatch('createUserSession', response.data)
-                    this.redirect()
-                }
-            }).catch((e) => {
-                this.isLoading = false;
-                this.error = "Invalid input";
-            })
+            if(this.name != '' || this.email != '' || this.password != '' || this.confirm_password != ''){
+                this.isLoading = true;
+                Vue.axios.post(
+                    '/register', {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        name: this.name,
+                        email: this.email,
+                        password: this.password,
+                        password_confirmation: this.confirm_password,
+                    }
+                ).then((response) => {
+                    this.isLoading = false;
+                    console.log(response);
+                    if(response.status == 200){
+                        this.error = null;
+                        loggedInUserData.dispatch('createUserSession', response.data)
+                        this.redirect()
+                    }
+                }).catch((e) => {
+                    this.isLoading = false;
+                    this.error = "Invalid input";
+                })
+            }else{
+                this.error = "Please fill in all required fields.";
+            }
         },
         redirect(){
             if(loggedInUserData.state.userData != null){

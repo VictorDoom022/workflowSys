@@ -53,24 +53,28 @@ export default {
     },
     methods: {
         login(){
-            this.isLoading = true;
-            Vue.axios.post(
-                'login', {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    email: this.email,
-                    password: this.password,
-                }
-            ).then((response) => {
-                this.isLoading = false;
-                this.error = null;
-                loggedInUserData.dispatch('createUserSession', response.data)
-                this.redirect()
-            }).catch((e) =>{
-                this.isLoading = false;
-                this.error = "Incorrect email or password."
-            })
+            if(this.email != '' || this.password != ''){
+                this.isLoading = true;
+                Vue.axios.post(
+                    'login', {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        email: this.email,
+                        password: this.password,
+                    }
+                ).then((response) => {
+                    this.isLoading = false;
+                    this.error = null;
+                    loggedInUserData.dispatch('createUserSession', response.data)
+                    this.redirect()
+                }).catch((e) =>{
+                    this.isLoading = false;
+                    this.error = "Incorrect email or password."
+                })
+            }else{
+                this.error = "Email or password cannot be empty."
+            }
         },
         redirect(){
             if(loggedInUserData.state.userData != null){
