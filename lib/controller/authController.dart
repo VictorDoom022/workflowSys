@@ -11,51 +11,56 @@ import 'miscController.dart';
 
 void login(BuildContext? context, String? email, String? password) async {
 
-  String stringUrl = apiURL + '/login';
-  Uri url = Uri.parse(stringUrl);
-  var response = await http.post(
-      url,
-      body: {'email' : email, 'password' : password},
-      headers: {
-        'Accept': 'application/json',
-      }
-  );
-
-  if(response.statusCode == 200){
-    AuthReceiver? authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
-
-    if(authReceiver.userDetail!.userDetailAccEnable == 1){
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString("UserToken", authReceiver.token!);
-      sharedPreferences.setInt("UserID", authReceiver.user!.id!);
-      sharedPreferences.setString("UserEmail", authReceiver.user!.email!);
-      sharedPreferences.setString("UserName", authReceiver.user!.name!);
-      sharedPreferences.setString("UserPosition", authReceiver.user!.position!);
-
-      if(authReceiver.user?.position == "admin"){
-        Navigator.pushReplacementNamed(context!, '/adminHome');
-      }else{
-        if(Platform.isIOS || Platform.isAndroid){
-          Navigator.pushReplacementNamed(context!, '/userHome');
-        }else{
-          Navigator.pushReplacementNamed(context!, '/desktopHomePage');
+  if(email != '' || password != ''){
+    String stringUrl = apiURL + '/login';
+    Uri url = Uri.parse(stringUrl);
+    var response = await http.post(
+        url,
+        body: {'email' : email, 'password' : password},
+        headers: {
+          'Accept': 'application/json',
         }
+    );
+
+    if(response.statusCode == 200){
+      AuthReceiver? authReceiver = AuthReceiver.fromJson(jsonDecode(response.body));
+
+      if(authReceiver.userDetail!.userDetailAccEnable == 1){
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString("UserToken", authReceiver.token!);
+        sharedPreferences.setInt("UserID", authReceiver.user!.id!);
+        sharedPreferences.setString("UserEmail", authReceiver.user!.email!);
+        sharedPreferences.setString("UserName", authReceiver.user!.name!);
+        sharedPreferences.setString("UserPosition", authReceiver.user!.position!);
+
+        if(authReceiver.user?.position == "admin"){
+          Navigator.pushReplacementNamed(context!, '/adminHome');
+        }else{
+          if(Platform.isIOS || Platform.isAndroid){
+            Navigator.pushReplacementNamed(context!, '/userHome');
+          }else{
+            Navigator.pushReplacementNamed(context!, '/desktopHomePage');
+          }
+        }
+
+      }else{
+        Navigator.of(context!).pop();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Your account has been disabled.')));
       }
 
+    }else if(response.statusCode == 201){
+      ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
+      Navigator.of(context).pop();
+    }else if(response.statusCode == 422){
+      ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('Invalid input/credentials')));
+      Navigator.of(context).pop();
     }else{
-      Navigator.of(context!).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Your account has been disabled.')));
+      ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code:' + response.statusCode.toString())));
+      Navigator.of(context).pop();
     }
-
-  }else if(response.statusCode == 201){
-    ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('These credentials do not match our records.')));
-    Navigator.of(context).pop();
-  }else if(response.statusCode == 422){
-    ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('Invalid input/credentials')));
-    Navigator.of(context).pop();
   }else{
-    ScaffoldMessenger.of(context!).showSnackBar(SnackBar(content: Text('Somethings went wrong. Code:' + response.statusCode.toString())));
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Email or password must not be empty')));
   }
 }
 
