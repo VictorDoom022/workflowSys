@@ -320,7 +320,11 @@ class _userGroupState extends State<userGroup> {
                 ),
                 onPressed: (){
                   HapticFeedback.lightImpact();
-                  createGroup(context, createGroupNameController.text);
+                  if(createGroupNameController.text.isNotEmpty){
+                    createGroup(context, createGroupNameController.text);
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name cannot be empty.')));
+                  }
                   Navigator.of(
                       context,
                       rootNavigator: true
