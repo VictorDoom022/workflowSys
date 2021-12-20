@@ -230,7 +230,11 @@ class _groupDetailState extends State<groupDetail> {
                 ),
                 onPressed: (){
                   HapticFeedback.lightImpact();
-                  createTeam(context, groupID, teamNameController.text);
+                  if(teamNameController.text.isNotEmpty){
+                    createTeam(context, groupID, teamNameController.text);
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Team name cannot be empty.')));
+                  }
                   Navigator.of(
                       context,
                       rootNavigator: true
