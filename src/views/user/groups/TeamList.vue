@@ -115,22 +115,24 @@ export default {
             })
         },
         createTeam(newTeamName){
-            Vue.axios({
-                url: '/team/createTeam',
-                method: 'POST',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                data: {
-                    groupID: this.groupID,
-                    userID: loggedInUserData.state.userData['user'].id,
-                    teamName: newTeamName
-                },
-            }).then((response) => {
-                this.fetchGroupDetail()
-                this.toastMessage(response)
-            })
+            if(newTeamName != ''){
+                Vue.axios({
+                    url: '/team/createTeam',
+                    method: 'POST',
+                    headers: {
+                        Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                        'Content-Type': 'application/json',
+                    },
+                    data: {
+                        groupID: this.groupID,
+                        userID: loggedInUserData.state.userData['user'].id,
+                        teamName: newTeamName
+                    },
+                }).then((response) => {
+                    this.fetchGroupDetail()
+                    this.toastMessage(response)
+                })
+            }
         },
         toastMessage(response) {
             Vue.swal.fire({
