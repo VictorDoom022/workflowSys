@@ -264,23 +264,31 @@ class GroupController extends Controller
         $groupID = $request->groupID;
         $userList = $request->userList;
 
-        $group = Group::where('id', $groupID)->first();
-        $currentGroupAdminList = $group->group_adminList;
+        
+        if($userList != ""){
+            $group = Group::where('id', $groupID)->first();
+            $currentGroupAdminList = $group->group_adminList;
 
-        //convert adminList and userList into array
-        $currentGroupAdminListArray = explode(',' , $currentGroupAdminList);
-        $userListArray = explode(',' , $userList);
-        //merge two arrays
-        $newAdminListArray = array_merge($currentGroupAdminListArray, $userListArray);
-        //convert back to string
-        $newAdminList = implode(',', $newAdminListArray);
-        //save it
-        $group->group_adminList = $newAdminList;
-        $group->save();
+            //convert adminList and userList into array
+            $currentGroupAdminListArray = explode(',' , $currentGroupAdminList);
+            $userListArray = explode(',' , $userList);
 
-        return [
-            'message'=>'Member(s) added.'
-        ];
+            //merge two arrays
+            $newAdminListArray = array_merge($currentGroupAdminListArray, $userListArray);
+            //convert back to string
+            $newAdminList = implode(',', $newAdminListArray);
+            //save it
+            $group->group_adminList = $newAdminList;
+            $group->save();
+
+            return [
+                'message'=>'Member(s) added.'
+            ];
+        }else{
+            return [
+                'message'=>'No member added.'
+            ];
+        }
     }
 
     public function removeMemberFromGroupAdmin(Request $request){
@@ -288,21 +296,27 @@ class GroupController extends Controller
         $groupID = $request->groupID;
         $userList = $request->userList;
 
-        $group = Group::where('id', $groupID)->first();
-        $currentGroupAdminList = $group->group_adminList;
+        if($userList != ""){
+            $group = Group::where('id', $groupID)->first();
+            $currentGroupAdminList = $group->group_adminList;
 
-        $currentGroupAdminListArray = explode(',' , $currentGroupAdminList);
-        $toBeRemovedUserList = explode(',' , $userList);
+            $currentGroupAdminListArray = explode(',' , $currentGroupAdminList);
+            $toBeRemovedUserList = explode(',' , $userList);
 
-        $newAdminListArray = array_merge(array_diff($currentGroupAdminListArray, $toBeRemovedUserList));
-        $newAdminList = implode(', ', $newAdminListArray);
+            $newAdminListArray = array_merge(array_diff($currentGroupAdminListArray, $toBeRemovedUserList));
+            $newAdminList = implode(', ', $newAdminListArray);
 
-        $group->group_adminList = $newAdminList;
-        $group->save();
+            $group->group_adminList = $newAdminList;
+            $group->save();
 
-        return [
-            'message'=>'Member(s) removed.'
-        ];
+            return [
+                'message'=>'Member(s) removed.'
+            ];
+        }else{
+            return [
+                'message'=>'No member removed.'
+            ];
+        }
     }
 
     public function deleteGroup($groupID){
@@ -447,51 +461,57 @@ class GroupController extends Controller
         $groupID = $request->groupID;
         $userList = $request->userList;
 
-        // remove selected userID from group_memberList
-        $group = Group::where('id', $groupID)->first();
-        $currentGroupMemberList = $group->group_memberList;
-        $teamList = $group->group_teamListID;
+        if($userList != ""){
+            // remove selected userID from group_memberList
+            $group = Group::where('id', $groupID)->first();
+            $currentGroupMemberList = $group->group_memberList;
+            $teamList = $group->group_teamListID;
 
-        $currentGroupMemberListArray = explode(',', $currentGroupMemberList);
-        $toBeRemovedUserListArray = explode(',', $userList);
-        $currentTeamListArray = explode(',', $teamList);
+            $currentGroupMemberListArray = explode(',', $currentGroupMemberList);
+            $toBeRemovedUserListArray = explode(',', $userList);
+            $currentTeamListArray = explode(',', $teamList);
 
-        // find the difference between two arrays and merge them
-        $newMemberListArray = array_merge(array_diff($currentGroupMemberListArray, $toBeRemovedUserListArray));
-        $newMemberList = implode(',', $newMemberListArray);
+            // find the difference between two arrays and merge them
+            $newMemberListArray = array_merge(array_diff($currentGroupMemberListArray, $toBeRemovedUserListArray));
+            $newMemberList = implode(',', $newMemberListArray);
 
-        // set the newMemberList as group_memberList
-        $group->group_memberList = $newMemberList;
+            // set the newMemberList as group_memberList
+            $group->group_memberList = $newMemberList;
 
-        // loop through the toBeRemovedUserListArray array to update userDetail_joinedGroupID
-        for($i = 0; $i < count($toBeRemovedUserListArray); $i++){
-            $userDetail = UserDetail::where('id', $toBeRemovedUserListArray[$i])->first();
-            $userCurrentJoinedGroupID = $userDetail->userDetail_joinedGroupID;
+            // loop through the toBeRemovedUserListArray array to update userDetail_joinedGroupID
+            for($i = 0; $i < count($toBeRemovedUserListArray); $i++){
+                $userDetail = UserDetail::where('id', $toBeRemovedUserListArray[$i])->first();
+                $userCurrentJoinedGroupID = $userDetail->userDetail_joinedGroupID;
 
-            $userCurrentJoinedGroupIDArray = explode(',', $userCurrentJoinedGroupID);
+                $userCurrentJoinedGroupIDArray = explode(',', $userCurrentJoinedGroupID);
 
-            for($j=0; $j < count($userCurrentJoinedGroupIDArray); $j++){
-                if($userCurrentJoinedGroupIDArray[$j] == $groupID){
-                    unset($userCurrentJoinedGroupIDArray[$j]);
+                for($j=0; $j < count($userCurrentJoinedGroupIDArray); $j++){
+                    if($userCurrentJoinedGroupIDArray[$j] == $groupID){
+                        unset($userCurrentJoinedGroupIDArray[$j]);
+                    }
                 }
+
+                $newUserJoinedGroup = implode(',', $userCurrentJoinedGroupIDArray);
+                $userDetail->userDetail_joinedGroupID = $newUserJoinedGroup;
+                $userDetail->save();
+            }
+            
+            // remove member from team
+            // loop through the currentTeamListArray array to remove them from each team
+            for($i = 0; $i < count($currentTeamListArray); $i++){
+                $this->removeMemberFromTeam($currentTeamListArray[$i],$userList);
             }
 
-            $newUserJoinedGroup = implode(',', $userCurrentJoinedGroupIDArray);
-            $userDetail->userDetail_joinedGroupID = $newUserJoinedGroup;
-            $userDetail->save();
-        }
-        
-        // remove member from team
-        // loop through the currentTeamListArray array to remove them from each team
-        for($i = 0; $i < count($currentTeamListArray); $i++){
-            $this->removeMemberFromTeam($currentTeamListArray[$i],$userList);
-        }
+            $group->save();
 
-        $group->save();
-
-        return [
-            'message'=>'Member removed',
-        ];
+            return [
+                'message'=>'Member removed',
+            ];
+        }else{
+            return [
+                'message'=>'No member removed',
+            ];
+        }
     }
 
     // copied from TeamController
