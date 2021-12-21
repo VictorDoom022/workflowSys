@@ -196,11 +196,15 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
                 ),
                 onPressed: (){
                   HapticFeedback.lightImpact();
-                  LoadingScreen.showLoadingScreen(context, teamSettingsScaffoldKey);
-                  renameTeam(context, teamID, renameTeamController.text).then((value) {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  });
+                  if(renameTeamController.text.isNotEmpty){
+                    LoadingScreen.showLoadingScreen(context, teamSettingsScaffoldKey);
+                    renameTeam(context, teamID, renameTeamController.text).then((value) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    });
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Team name cannot be empty')));
+                  }
                 },
               )
             ],
