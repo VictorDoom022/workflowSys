@@ -222,9 +222,16 @@ class TeamController extends Controller
         // loop the stored taskListIDArr to delete task by id 
         for($i=0; $i<count($taskListIDArr); $i++){
             $task = Task::where('task_taskListID', $taskListIDArr[$i])->first();
-            $comment = Comment::where('comment_taskID', $task->id)->delete();
-            $task->delete();
+            if($task != null){
+                if($task->task_filePath != null){
+                    $getFilePath = public_path() . "/" . $task->task_filePath;
+                    File::deleteDirectory($getFilePath);
+                }
+                $task->delete();
+                $comment = Comment::where('comment_taskID', $id)->delete();
+            }
         }
+
         // delete the task list finally
         $taskList = TaskList::where('taskList_teamID', $teamID)->delete();
 
