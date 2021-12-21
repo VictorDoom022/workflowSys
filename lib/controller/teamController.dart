@@ -84,6 +84,8 @@ Future<void> addMemberToTeam(BuildContext context, int teamID, List<int> memberI
     if(response.statusCode == 200){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
     }
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No member added')));
   }
 }
 
@@ -137,6 +139,8 @@ Future<void> removeMemberFromTeam(BuildContext context, int teamID, List<int> me
     if(response.statusCode == 200){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
     }
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No member removed')));
   }
 }
 
