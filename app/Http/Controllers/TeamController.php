@@ -123,24 +123,30 @@ class TeamController extends Controller
         $userList = $request->userList;
         $teamID = $request->teamID;
 
-        $team = Team::where('id', $teamID)->first();
-        if(strlen($team->team_memberID) != 0){
-            $newTeamMemberList = $team->team_memberID . ',' .$userList;
+        if($userList != ""){
+            $team = Team::where('id', $teamID)->first();
+            if(strlen($team->team_memberID) != 0){
+                $newTeamMemberList = $team->team_memberID . ',' .$userList;
+            }else{
+                $newTeamMemberList = $userList;
+            }
+            $team->team_memberID = $newTeamMemberList;
+            $team->save();
+            
+            //create taskList for new member
+            $newMemberArr = explode(',' , $userList);
+            for($i=0; $i < count($newMemberArr); $i++){
+                $this->createTaskList($teamID, $newMemberArr[$i]);
+            }
+            
+            return [
+                'message'=>'Member added.'
+            ];
         }else{
-            $newTeamMemberList = $userList;
+            return [
+                'message'=>'No member added.'
+            ];
         }
-        $team->team_memberID = $newTeamMemberList;
-        $team->save();
-        
-        //create taskList for new member
-        $newMemberArr = explode(',' , $userList);
-        for($i=0; $i < count($newMemberArr); $i++){
-            $this->createTaskList($teamID, $newMemberArr[$i]);
-        }
-        
-        return [
-            'message'=>'Member added.'
-        ];
     }
 
     public function removeMemberFromTeam(Request $request){
@@ -149,46 +155,52 @@ class TeamController extends Controller
         $userList = $request->userList;
         $teamID = $request->teamID;
 
-        $team = Team::where('id', $teamID)->first();
-        $teamMemberID = $team->team_memberID;
+        if($userList != ""){
+            $team = Team::where('id', $teamID)->first();
+            $teamMemberID = $team->team_memberID;
 
-        $teamMemberArr = explode(',' , $teamMemberID);
-        $removeUserListArr = explode(',' , $userList);
+            $teamMemberArr = explode(',' , $teamMemberID);
+            $removeUserListArr = explode(',' , $userList);
 
-        // compare and merge user that remains in the team
-        $remainingUser = array_merge(array_diff($teamMemberArr, $removeUserListArr));
-        //convert array back to string
-        $remainingUserString = implode(',', $remainingUser);
-        // save the remainingUserString back to team's memberID
-        $team->team_memberID = $remainingUserString;
+            // compare and merge user that remains in the team
+            $remainingUser = array_merge(array_diff($teamMemberArr, $removeUserListArr));
+            //convert array back to string
+            $remainingUserString = implode(',', $remainingUser);
+            // save the remainingUserString back to team's memberID
+            $team->team_memberID = $remainingUserString;
 
-        for($i=0; $i<count($removeUserListArr); $i++){
-            // remove user's task list
-            $taskList = TaskList::where('taskList_userID', $removeUserListArr[$i])
-                                ->where('taskList_teamID', $teamID)->first();
+            for($i=0; $i<count($removeUserListArr); $i++){
+                // remove user's task list
+                $taskList = TaskList::where('taskList_userID', $removeUserListArr[$i])
+                                    ->where('taskList_teamID', $teamID)->first();
 
-            $teamTaskListID = $team->team_taskListID;
-            $currentTeamTaskListIDArray = explode(',', $teamTaskListID);
+                $teamTaskListID = $team->team_taskListID;
+                $currentTeamTaskListIDArray = explode(',', $teamTaskListID);
 
-            for($j=0; $j < count($currentTeamTaskListIDArray); $j++){
-                if($currentTeamTaskListIDArray[$j] == $taskList->id){
-                    unset($currentTeamTaskListIDArray[$j]);
+                for($j=0; $j < count($currentTeamTaskListIDArray); $j++){
+                    if($currentTeamTaskListIDArray[$j] == $taskList->id){
+                        unset($currentTeamTaskListIDArray[$j]);
+                    }
                 }
+
+                $newTeamTaskListID = implode(',', $currentTeamTaskListIDArray);
+                $team->team_taskListID = $newTeamTaskListID;
+
+                // remove user's task
+                $task = Task::where('task_taskListID', $taskList->id)->delete();
+                $taskList->delete();
             }
 
-            $newTeamTaskListID = implode(',', $currentTeamTaskListIDArray);
-            $team->team_taskListID = $newTeamTaskListID;
+            $team->save();
 
-            // remove user's task
-            $task = Task::where('task_taskListID', $taskList->id)->delete();
-            $taskList->delete();
+            return [
+                'message'=>'Member removed.'
+            ];
+        }else{
+            return [
+                'message'=>'No member removed.'
+            ];
         }
-
-        $team->save();
-
-        return [
-            'message'=>'Member removed.'
-        ];
     }
 
     public function deleteTeam(Request $request){
