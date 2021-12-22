@@ -215,29 +215,35 @@ class TaskController extends Controller
         $assignedUserID = $request->assignedUserID; // only can assign to one member
         $taskAssignedDate = $request->taskAssignedDate; // data received in epoch
 
-        $task = Task::where('id', $taskID)->first();
-        $taskAssignedMemberList = $task->task_assignedMemberID;
-        $taskAssignedDateList = $task->task_assignedDate;
+        if($assignedUserID != null){
+            $task = Task::where('id', $taskID)->first();
+            $taskAssignedMemberList = $task->task_assignedMemberID;
+            $taskAssignedDateList = $task->task_assignedDate;
 
-        if(strlen($taskAssignedMemberList) == 0){
-            $taskAssignedMemberListNew = $assignedUserID;
+            if(strlen($taskAssignedMemberList) == 0){
+                $taskAssignedMemberListNew = $assignedUserID;
+            }else{
+                $taskAssignedMemberListNew = $taskAssignedMemberList. ',' .$assignedUserID;
+            }
+
+            if(strlen($taskAssignedDateList) == 0){
+                $taskAssignedDateListNew = $taskAssignedDate;
+            }else{
+                $taskAssignedDateListNew = $taskAssignedDateList. ',' .$taskAssignedDate;
+            }
+
+            $task->task_assignedMemberID = $taskAssignedMemberListNew;
+            $task->task_assignedDate = $taskAssignedDateListNew;
+            $task->save();
+            
+            return [
+                'message'=>'Task assigned.'
+            ];
         }else{
-            $taskAssignedMemberListNew = $taskAssignedMemberList. ',' .$assignedUserID;
+            return [
+                'message'=>'Assigned to nobody.'
+            ];
         }
-
-        if(strlen($taskAssignedDateList) == 0){
-            $taskAssignedDateListNew = $taskAssignedDate;
-        }else{
-            $taskAssignedDateListNew = $taskAssignedDateList. ',' .$taskAssignedDate;
-        }
-
-        $task->task_assignedMemberID = $taskAssignedMemberListNew;
-        $task->task_assignedDate = $taskAssignedDateListNew;
-        $task->save();
-        
-        return [
-            'message'=>'Task assigned.'
-        ];
     }
 
     public function taskAssignedToUser(Request $request){
