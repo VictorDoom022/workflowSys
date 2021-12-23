@@ -28,7 +28,7 @@
                                         <div class="list-group-item">
                                             <div class="row align-items-center">
                                                 <div class="col">
-                                                    <strong class="mb-0">View members</strong>
+                                                    <strong class="mb-0">View all members</strong>
                                                     <p class="text-muted mb-0">View all members in the group</p>
                                                 </div>
                                                 <div class="col-auto">
@@ -66,7 +66,7 @@
                                                     <div class="custom-control custom-switch">
                                                         <input class="joinCodeInputText" id="joinCode" type="text" :value="groupDetail.group_joinCode" readonly>
                                                         <b-icon @click="copyJoinCode()" class="mr-1 copyIcon" icon="clipboard"></b-icon>
-                                                        <button @click="generateNewJoinCode()" class="btn btn-outline-primary btn-sm">Generate new code</button>
+                                                        <button @click="generateNewJoinCode()" class="btn btn-outline-primary btn-sm">Generate new join code</button>
 
                                                     </div>
                                                 </div>

@@ -118,22 +118,24 @@ export default {
             })
         },
         sendMessage(){
-            Vue.axios({
-                url: '/chat/sendMessage',
-                method: 'POST',
-                headers: {
-                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
-                    'Content-Type': 'application/json',
-                },
-                data: {
-                    senderUserID    : loggedInUserData.state.userData['user'].id,
-                    receiverUserID  : this.receiverUserID,
-                    chatMessage     : this.chatMessage,
-                },
-            }).then((response) => {
-                this.chatMessage = ''
-                this.getChatData()
-            })
+			if(this.chatMessage != ''){
+				Vue.axios({
+					url: '/chat/sendMessage',
+					method: 'POST',
+					headers: {
+						Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+						'Content-Type': 'application/json',
+					},
+					data: {
+						senderUserID    : loggedInUserData.state.userData['user'].id,
+						receiverUserID  : this.receiverUserID,
+						chatMessage     : this.chatMessage,
+					},
+				}).then((response) => {
+					this.chatMessage = ''
+					this.getChatData()
+				})
+			}
         },
 		convertDBDateToString(dbDate){
             let dateStr = new Date(dbDate)
