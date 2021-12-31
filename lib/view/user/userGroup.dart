@@ -189,6 +189,7 @@ class _userGroupState extends State<userGroup> {
   List<Widget> bodyContent(){
     return [
       Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),

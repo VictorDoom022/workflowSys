@@ -11,6 +11,7 @@ import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/model/TeamDetailReceiver.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
+import 'package:workflow_sys/model/taskList.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/comments/AwesomeListItem.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
@@ -43,7 +44,7 @@ class _teamDetailState extends State<teamDetail> {
 
   Future<TeamDetailReceiver>? futureTeamDetailReceiver;
   UserReceiver? userReceiver;
-  String? searchKeyword;
+  String searchKeyword = "";
 
   @override
   void initState() {
@@ -80,6 +81,23 @@ class _teamDetailState extends State<teamDetail> {
     });
   }
 
+  Future<TeamDetailReceiver> searchList() async {
+    TeamDetailReceiver? teamDetailReceiver = await futureTeamDetailReceiver;
+    TeamDetailReceiver searchList = TeamDetailReceiver(team: teamDetailReceiver!.team, taskList: []);
+
+    if(searchKeyword == ""){
+      searchList = teamDetailReceiver;
+    }else{
+      for(int i=0; i < teamDetailReceiver.taskList!.length; i++){
+        if(teamDetailReceiver.taskList![i]!.taskListUserID!.toLowerCase().contains(searchKeyword.toLowerCase())){
+          searchList.taskList!.add(teamDetailReceiver.taskList![i]);
+        }
+      }
+    }
+
+    return searchList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,17 +117,33 @@ class _teamDetailState extends State<teamDetail> {
         enablePullDown: true,
         header: ClassicHeader(),
         onRefresh: getTeamDetailData,
-        child: FutureBuilder<TeamDetailReceiver>(
-          future: futureTeamDetailReceiver,
-          builder: (context, snapshot){
-            if(snapshot.hasError) print(snapshot.error);
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CupertinoSearchTextField(
+                onChanged: (value){
+                  setState(() {
+                    searchKeyword = value;
+                  });
+                  searchList();
+                },
+              ),
+            ),
+            FutureBuilder<TeamDetailReceiver>(
+              future: searchKeyword=="" ? futureTeamDetailReceiver : searchList(),
+              builder: (context, snapshot){
+                if(snapshot.hasError) print(snapshot.error);
 
-            if(snapshot.hasData){
-              return teamItem(teamDetailReceiver: snapshot.data!, userReceiver: userReceiver!);
-            }else{
-              return Center(child: CupertinoActivityIndicator(radius: 12));
-            }
-          },
+                if(snapshot.hasData){
+                  return teamItem(teamDetailReceiver: snapshot.data!, userReceiver: userReceiver!);
+                }else{
+                  return Center(child: CupertinoActivityIndicator(radius: 12));
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
