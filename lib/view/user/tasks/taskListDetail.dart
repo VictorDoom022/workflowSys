@@ -48,6 +48,11 @@ class _taskListDetailState extends State<taskListDetail> {
 
   Future<void> getTaskData() async {
     List<Task> taskList = await getTaskByTaskListID(taskListID);
+    // createAt asc (default)
+    //taskList.sort((a,b) => a.createdAt!.compareTo(b.createdAt!));
+    // createAt desc
+    taskList.sort((a,b) => b.createdAt!.compareTo(a.createdAt!));
+
     setState(() {
       futureTaskList = Future.value(taskList);
     });
