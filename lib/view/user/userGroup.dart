@@ -34,6 +34,7 @@ class _userGroupState extends State<userGroup> {
   );
 
   Future<List<Group>>? futureGroupList;
+  String searchWord = "";
 
   @override
   void initState() {
@@ -47,6 +48,23 @@ class _userGroupState extends State<userGroup> {
     setState(() {
       futureGroupList = Future.value(listGroup);
     });
+  }
+
+  Future<List<Group>> searchList() async {
+    List<Group>? listGroup = await futureGroupList;
+    List<Group> searchList = [];
+
+    if(searchWord == ""){
+      searchList = listGroup!;
+    }else{
+      for(int i=0; i < listGroup!.length; i++){
+        if(listGroup[i].groupName!.toLowerCase().contains(searchWord.toLowerCase())){
+          searchList.add(listGroup[i]);
+        }
+      }
+    }
+
+    return searchList;
   }
 
   @override
@@ -170,60 +188,75 @@ class _userGroupState extends State<userGroup> {
 
   List<Widget> bodyContent(){
     return [
-      FutureBuilder<List<Group>>(
-          future: futureGroupList,
-          builder: (context, snapshot){
-            if(snapshot.hasError) print(snapshot.error);
+      Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CupertinoSearchTextField(
+              onChanged: (value){
+                setState(() {
+                  searchWord = value;
+                });
+                searchList();
+              },
+            ),
+          ),
+          FutureBuilder<List<Group>>(
+              future: searchWord=="" ? futureGroupList : searchList(),
+              builder: (context, snapshot){
+                if(snapshot.hasError) print(snapshot.error);
 
-            if(snapshot.hasData){
-              if(snapshot.data.toString() != "[]"){
-                return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index){
-                      return Card(
-                        elevation: 8.0,
-                        child: Container(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                            title: Text(
-                              snapshot.data![index].groupName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w300
+                if(snapshot.hasData){
+                  if(snapshot.data.toString() != "[]"){
+                    return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index){
+                          return Card(
+                            elevation: 8.0,
+                            child: Container(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                title: Text(
+                                  snapshot.data![index].groupName!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w300
+                                  ),
+                                ),
+                                onTap: (){
+                                  HapticFeedback.lightImpact();
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder:(context){
+                                            return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
+                                          }
+                                      )
+                                  ).then((value) {
+                                    getGroupListData();
+                                  });
+                                },
                               ),
                             ),
-                            onTap: (){
-                              HapticFeedback.lightImpact();
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder:(context){
-                                        return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
-                                      }
-                                  )
-                              ).then((value) {
-                                getGroupListData();
-                              });
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                );
-              }else{
-                return Center(child: Text('No groups joined'));
+                          );
+                        }
+                    );
+                  }else{
+                    return Center(child: Text('No groups joined'));
+                  }
+                }else{
+                  return Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Center(child: CupertinoActivityIndicator(radius: 12)),
+                  );
+                }
               }
-            }else{
-              return Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Center(child: CupertinoActivityIndicator(radius: 12)),
-              );
-            }
-          }
+          ),
+        ],
       )
     ];
   }

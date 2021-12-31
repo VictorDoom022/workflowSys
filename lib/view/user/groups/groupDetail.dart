@@ -68,7 +68,7 @@ class _groupDetailState extends State<groupDetail> {
       searchList = groupDetailReceiver;
     }else{
       for(int i=0; i< groupDetailReceiver.team!.length; i++){
-        if(groupDetailReceiver.team![i]!.teamName!.toLowerCase().contains(searchKeyWord)){
+        if(groupDetailReceiver.team![i]!.teamName!.toLowerCase().contains(searchKeyWord.toLowerCase())){
           searchList.team!.add(groupDetailReceiver.team![i]);
         }
       }
