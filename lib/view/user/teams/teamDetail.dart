@@ -208,11 +208,13 @@ class teamItem extends StatelessWidget {
         return GestureDetector(
           onTap: (){
             HapticFeedback.lightImpact();
+            // taskListUserID contains username. Therefore, convert back to userID using userName
+            int taskListUserIDTemp = convertUserNameToUserID(teamDetailReceiver.taskList![index]!.taskListUserID!)!;
             Navigator.push(
                 context,
                 CupertinoPageRoute(
                     builder: (_){
-                      return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team!.id!, taskListID: teamDetailReceiver.taskList![index]!.id!, taskListUserID: int.parse(teamDetailReceiver.taskList![index]!.taskListUserID!) ,taskListUserName: convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)!);
+                      return taskHome(userReceiver: userReceiver, teamID: teamDetailReceiver.team!.id!, taskListID: teamDetailReceiver.taskList![index]!.id!, taskListUserID: taskListUserIDTemp ,taskListUserName: teamDetailReceiver.taskList![index]!.taskListUserID!);
                     }
                 )
             );
@@ -234,6 +236,14 @@ class teamItem extends StatelessWidget {
     for(int i=0; i < userReceiver.user!.length; i++){
       if(userID == userReceiver.user![i]!.id.toString()){
         return userReceiver.user![i]!.name!;
+      }
+    }
+  }
+
+  int? convertUserNameToUserID(String userName){
+    for(int i=0; i < userReceiver.user!.length; i++){
+      if(userName == userReceiver.user![i]!.name){
+        return userReceiver.user![i]!.id!;
       }
     }
   }
