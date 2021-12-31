@@ -60,7 +60,8 @@
 
                                 <div class="submit col-md-12 d-grid">
                                     <button class="btn btn-primary" type="submit">Save</button>
-                                    <input @click="showToggleTodoStatusDialog()" type="button" class="btn btn-secondary my-2" value="Archive/Unarchive"/>
+                                    <input @click="showToggleTodoStatusDialog()" type="button" class="btn btn-secondary mt-2" value="Archive/Unarchive"/>
+                                    <input @click="showDeleteTaskDialog()" type="button" class="btn btn-danger my-2" value="Delete"/>
                                 </div>
                             </div>
                         </form>
@@ -156,6 +157,31 @@ export default {
             }).then((response) => {
                 this.toastMessage(response)
                 this.fetchTodoData()
+            })
+        },
+        showDeleteTaskDialog(){
+            Vue.swal.fire({
+                title: 'Are you sure you want to delete this to-do?',  
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+            }).then((result) => {
+                if(!result.isDismissed){
+                    this.deleteTodo();
+                }
+            })
+        },
+        deleteTodo(){
+            Vue.axios({
+                url: '/todo/deleteTodoById/' + this.todoID,
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+                this.$router.back()
             })
         },
         toastMessage(response) {
