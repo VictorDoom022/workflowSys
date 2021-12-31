@@ -40,6 +40,7 @@ class _groupDetailState extends State<groupDetail> {
   Future<GroupDetailReceiver>? futureGroupDetailReceiver;
   bool userAdmin = false;
   String groupJoinCode = "";
+  String searchKeyWord = "";
 
   @override
   void initState() {
@@ -57,6 +58,23 @@ class _groupDetailState extends State<groupDetail> {
       groupName = groupDetailReceiver.group!.groupName!;
     });
     refreshController.refreshCompleted();
+  }
+
+  Future<GroupDetailReceiver> searchList() async{
+    GroupDetailReceiver? groupDetailReceiver = await futureGroupDetailReceiver;
+    GroupDetailReceiver searchList = GroupDetailReceiver(group: groupDetailReceiver!.group, team: []);
+
+    if(searchKeyWord == ""){
+      searchList = groupDetailReceiver;
+    }else{
+      for(int i=0; i< groupDetailReceiver.team!.length; i++){
+        if(groupDetailReceiver.team![i]!.teamName!.toLowerCase().contains(searchKeyWord)){
+          searchList.team!.add(groupDetailReceiver.team![i]);
+        }
+      }
+    }
+
+    return searchList;
   }
 
   void checkUserAdmin(GroupDetailReceiver groupDetailReceiver) async {
@@ -175,17 +193,33 @@ class _groupDetailState extends State<groupDetail> {
         enablePullDown: true,
         header: ClassicHeader(),
         onRefresh: getGroupDetailData,
-        child: FutureBuilder<GroupDetailReceiver>(
-          future: futureGroupDetailReceiver,
-          builder: (context, snapshot){
-            if(snapshot.hasError) print(snapshot.error);
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CupertinoSearchTextField(
+                onChanged: (value){
+                  setState(() {
+                    searchKeyWord = value;
+                  });
+                  searchList();
+                },
+              ),
+            ),
+            FutureBuilder<GroupDetailReceiver>(
+              future: searchKeyWord=="" ? futureGroupDetailReceiver : searchList(),
+              builder: (context, snapshot){
+                if(snapshot.hasError) print(snapshot.error);
 
-            if(snapshot.hasData){
-              return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data!);
-            }else{
-              return Center(child: CupertinoActivityIndicator(radius: 12));
-            }
-          },
+                if(snapshot.hasData){
+                  return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data!);
+                }else{
+                  return Center(child: CupertinoActivityIndicator(radius: 12));
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
