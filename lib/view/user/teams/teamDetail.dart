@@ -56,6 +56,16 @@ class _teamDetailState extends State<teamDetail> {
 
   Future<void> getTeamDetailData() async {
     TeamDetailReceiver teamDetailReceiver = await getTeamDetail(teamID);
+
+    // replace task list user id with user name (since tasklistUserId is a string)
+    for(int i=0; i < teamDetailReceiver.taskList!.length; i++){
+      for(int j=0; j < userReceiver!.user!.length; j++){
+        if(teamDetailReceiver.taskList![i]!.taskListUserID == userReceiver!.user![j]!.id.toString()){
+          teamDetailReceiver.taskList![i]!.taskListUserID = userReceiver!.user![j]!.name;
+        }
+      }
+    }
+
     setState(() {
       futureTeamDetailReceiver = Future.value(teamDetailReceiver);
       teamName = teamDetailReceiver.team!.teamName!;
@@ -176,7 +186,7 @@ class teamItem extends StatelessWidget {
           child: Card(
             child: AwesomeListItem(
               image: serverURL + '/' + userReceiver.userDetail![index]!.userDetailProfilePictureDir!,
-              title: convertUserIDtoName(teamDetailReceiver.taskList![index]!.taskListUserID!)! + "'s Task List",
+              title: teamDetailReceiver.taskList![index]!.taskListUserID! + "'s Task List",
               content: '',
             ),
           ),
@@ -185,6 +195,7 @@ class teamItem extends StatelessWidget {
     );
   }
 
+  // unused code
   String? convertUserIDtoName(String userID){
     for(int i=0; i < userReceiver.user!.length; i++){
       if(userID == userReceiver.user![i]!.id.toString()){
