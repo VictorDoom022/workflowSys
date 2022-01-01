@@ -45,6 +45,8 @@ class _teamDetailState extends State<teamDetail> {
   Future<TeamDetailReceiver>? futureTeamDetailReceiver;
   UserReceiver? userReceiver;
   String searchKeyword = "";
+  String dropDownSortValue = "Default";
+  List<String> dropDownListSelections = ['Default', 'Name Desc'];
 
   @override
   void initState() {
@@ -66,6 +68,8 @@ class _teamDetailState extends State<teamDetail> {
         }
       }
     }
+
+    teamDetailReceiver.taskList!.sort((a,b) => a!.taskListUserID!.compareTo(b!.taskListUserID!));
 
     setState(() {
       futureTeamDetailReceiver = Future.value(teamDetailReceiver);
@@ -98,6 +102,20 @@ class _teamDetailState extends State<teamDetail> {
     return searchList;
   }
 
+  void sortList(String sortType) async {
+    TeamDetailReceiver? teamDetailReceiver = await futureTeamDetailReceiver;
+
+    if(sortType == dropDownListSelections[0]){
+      teamDetailReceiver!.taskList!.sort((a,b) => a!.taskListUserID!.compareTo(b!.taskListUserID!));
+    }else if(sortType == dropDownListSelections[1]){
+      teamDetailReceiver!.taskList!.sort((a,b) => b!.taskListUserID!.compareTo(a!.taskListUserID!));
+    }
+
+    setState(() {
+      futureTeamDetailReceiver = Future.value(teamDetailReceiver);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,13 +140,53 @@ class _teamDetailState extends State<teamDetail> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CupertinoSearchTextField(
-                onChanged: (value){
-                  setState(() {
-                    searchKeyword = value;
-                  });
-                  searchList();
-                },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    flex: 12,
+                    child: CupertinoSearchTextField(
+                      onChanged: (value){
+                        setState(() {
+                          searchKeyword = value;
+                        });
+                        searchList();
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Center(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            isExpanded: true,
+                            icon: Icon(Icons.filter_list),
+                            elevation: 0,
+                            value: dropDownSortValue,
+                            style: TextStyle(
+                                color: Colors.black,
+                                overflow: TextOverflow.fade
+                            ),
+                            items: dropDownListSelections.map((value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue){
+                              sortList(newValue.toString());
+                              setState(() {
+                                dropDownSortValue = newValue.toString();
+                              });
+                            },
+                          ),
+                        )
+                    ),
+                  )
+                ],
               ),
             ),
             FutureBuilder<TeamDetailReceiver>(
