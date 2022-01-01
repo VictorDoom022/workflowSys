@@ -52,7 +52,7 @@ import TaskItemList from '../TaskItemList.vue'
 
 export default {
     // taskListPageData contains - groupID, teamID, taskListID
-    props: ['isCardView', 'taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
+    props: ['selectedSortType', 'isCardView', 'taskListPageData', 'searchTerm', 'userData', 'userDetailData'],
     components: { Loading, TaskItem, TaskItemList },
     data() {
         return {
@@ -62,6 +62,7 @@ export default {
             taskListID: null,
             taskList: [],
             isLoading: true,
+            selectSortOptions: ['Default', 'Create At Desc', 'Updated Asc', 'Updated Desc', 'Name Asc', 'Name Desc', 'Priority Asc', 'Priority Desc', 'Color Asc', 'Color Desc'],
         }
     },
     mounted() {
@@ -70,6 +71,12 @@ export default {
         this.teamID = this.pageDataParsed.teamID
         this.taskListID = this.pageDataParsed.taskListID
         this.fetchTaskListAssignedData()
+    },
+    watch: {
+        immediate: true,
+        selectedSortType: function (newVal, oldVal){
+            this.sortList()
+        }
     },
     methods: {
         fetchTaskListAssignedData(){
@@ -88,6 +95,49 @@ export default {
                 this.taskList = response.data
                 this.isLoading = false
             })
+        },
+        sortList(){
+            if(this.selectSortOptions[0] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return new Date(a.created_at) - new Date(b.created_at)
+                })
+            }else if(this.selectSortOptions[1] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return new Date(b.created_at) - new Date(a.created_at)
+                })
+            }else if(this.selectSortOptions[2] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return new Date(a.updated_at) - new Date(b.updated_at)
+                })
+            }else if(this.selectSortOptions[3] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return new Date(b.updated_at) - new Date(a.updated_at)
+                })
+            }else if(this.selectSortOptions[4] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return a.task_name.localeCompare(b.task_name)
+                })
+            }else if(this.selectSortOptions[5] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return b.task_name.localeCompare(a.task_name)
+                })
+            }else if(this.selectSortOptions[6] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return a.task_priority - b.task_priority
+                })
+            }else if(this.selectSortOptions[7] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return b.task_priority - a.task_priority
+                })
+            }else if(this.selectSortOptions[8] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return a.task_color - b.task_color
+                })
+            }else if(this.selectSortOptions[9] == this.selectedSortType.target.value){
+                this.taskList.sort((a,b) => {
+                    return b.task_color - a.task_color
+                })
+            }
         },
         navigateBack(){
             this.$router.go(-1)

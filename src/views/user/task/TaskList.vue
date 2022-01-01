@@ -21,6 +21,19 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
+                        <div class="row mt-1 mr-1">
+                            <div class="col-sm-4 pr-0">
+                                <p class="text-sm-end pt-1">Sort By: </p>
+                            </div>
+                            <div class="col-sm-8 pl-1">
+                                <select class="form-select form-select-sm" @change="selectedSortType = $event">
+                                    <option v-for="sortOptions in selectSortOptions" :key="sortOptions" :value="sortOptions">
+                                        {{ sortOptions }}
+                                    </option>
+                                </select>
+                            </div> 
+                        </div>
+
                         <p class="pt-2 mr-2">View Type</p>
                         <b-button-group size="sm">
                             <b-button @click="isCardView = true" variant="secondary" size="sm">
@@ -34,13 +47,13 @@
 
                     <b-tabs content-class="mt-3" align="center" fill>
                         <b-tab title="Task Created" active>
-                            <TaskCreated :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCreated :selectedSortType="selectedSortType" :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Assigned To You">
-                            <TaskAssigend :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskAssigend :selectedSortType="selectedSortType" :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                         <b-tab title="Completed Task">
-                            <TaskCompleted :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
+                            <TaskCompleted :selectedSortType="selectedSortType" :isCardView="isCardView" :taskListPageData="taskListPageData" :searchTerm="searchTerm" :userData="userData" :userDetailData="userDetailData" />
                         </b-tab>
                     </b-tabs>
                 </main>
@@ -76,6 +89,8 @@ export default {
             userDetailData: [],
             searchTerm: '',
             isTaskListUser: false, // check if the current navigated taskList belongs to the user
+            selectSortOptions: ['Default', 'Create At Desc', 'Updated Asc', 'Updated Desc', 'Name Asc', 'Name Desc', 'Priority Asc', 'Priority Desc', 'Color Asc', 'Color Desc'],
+            selectedSortType: [],
         }
     },
     watch: {
