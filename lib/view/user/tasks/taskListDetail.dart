@@ -38,6 +38,8 @@ class _taskListDetailState extends State<taskListDetail> {
 
   Future<List<Task>>? futureTaskList;
   String searchKeyWord="";
+  String dropDownSortValue = "Default";
+  List<String> dropDownListSelections = ['Default', 'Create At Desc', 'Updated Asc', 'Updated Desc', 'Name Asc', 'Name Desc', 'Priority Asc', 'Priority Desc', 'Color Asc', 'Color Desc'];
 
   @override
   void initState() {
@@ -57,6 +59,36 @@ class _taskListDetailState extends State<taskListDetail> {
       futureTaskList = Future.value(taskList);
     });
     refreshController.refreshCompleted();
+  }
+
+  void sortList(String sortType) async {
+    List<Task>? listTask = await futureTaskList;
+
+    if(sortType == dropDownListSelections[0]){
+      listTask!.sort((a,b) => a.createdAt!.compareTo(b.createdAt!));
+    }else if(sortType == dropDownListSelections[1]){
+      listTask!.sort((a,b) => b.createdAt!.compareTo(a.createdAt!));
+    }else if(sortType == dropDownListSelections[2]){
+      listTask!.sort((a,b) => a.updatedAt!.compareTo(b.updatedAt!));
+    }else if(sortType == dropDownListSelections[3]){
+      listTask!.sort((a,b) => b.updatedAt!.compareTo(a.updatedAt!));
+    }else if(sortType == dropDownListSelections[4]){
+      listTask!.sort((a,b) => a.taskName!.compareTo(b.taskName!));
+    }else if(sortType == dropDownListSelections[5]){
+      listTask!.sort((a,b) => b.taskName!.compareTo(a.taskName!));
+    }else if(sortType == dropDownListSelections[6]){
+      listTask!.sort((a,b) => a.taskPriority!.compareTo(b.taskPriority!));
+    }else if(sortType == dropDownListSelections[7]){
+      listTask!.sort((a,b) => b.taskPriority!.compareTo(a.taskPriority!));
+    }else if(sortType == dropDownListSelections[8]){
+      listTask!.sort((a,b) => a.taskColor!.compareTo(b.taskColor!));
+    }else if(sortType == dropDownListSelections[9]){
+      listTask!.sort((a,b) => b.taskColor!.compareTo(a.taskColor!));
+    }
+
+    setState(() {
+      futureTaskList = Future.value(listTask);
+    });
   }
 
   Future<List<Task>> searchList() async {
@@ -87,13 +119,53 @@ class _taskListDetailState extends State<taskListDetail> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CupertinoSearchTextField(
-              onChanged: (value){
-                setState(() {
-                  searchKeyWord = value;
-                });
-                searchList();
-              },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 12,
+                  child: CupertinoSearchTextField(
+                    onChanged: (value){
+                      setState(() {
+                        searchKeyWord = value;
+                      });
+                      searchList();
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Center(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: Icon(Icons.filter_list),
+                          elevation: 0,
+                          value: dropDownSortValue,
+                          style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.fade
+                          ),
+                          items: dropDownListSelections.map((value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(value),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue){
+                            sortList(newValue.toString());
+                            setState(() {
+                              dropDownSortValue = newValue.toString();
+                            });
+                          },
+                        ),
+                      )
+                  ),
+                )
+              ],
             ),
           ),
           Expanded(
