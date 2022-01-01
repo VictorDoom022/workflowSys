@@ -10,17 +10,34 @@
                         <h1 class="h2">
                             Todo List
                         </h1>
+
                         <div class="btn-toolbar mb-2 mb-md-0">
-                            <button @click="navigateToCreateTodo()" type="button" class="btn btn-sm btn-primary mx-1">Create Todo</button>
+                            <div class="col-sm-7 pr-0">
+                                <div class="row">
+                                    <div class="col-sm-5 pr-1">
+                                        <p class="text-sm-end pt-1">Sort By: </p>
+                                    </div>
+                                    <div class="col-sm-7 pl-1">
+                                        <select class="form-select form-select-sm" @change="selectedSortType = $event">
+                                            <option v-for="sortOptions in selectSortOptions" :key="sortOptions" :value="sortOptions">
+                                                {{ sortOptions }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 pl-1">
+                                <button @click="navigateToCreateTodo()" type="button" class="btn btn-sm btn-primary mx-1">Create Todo</button>    
+                            </div> 
                         </div>
                     </div>
 
                     <b-tabs content-class="mt-3" align="center" fill>
                         <b-tab title="Active" active>
-                            <TodoActive :searchTerm="searchTerm" />
+                            <TodoActive :selectedSortType="selectedSortType" :searchTerm="searchTerm" />
                         </b-tab>
                         <b-tab title="Archive">
-                            <TodoArchive :searchTerm="searchTerm" />
+                            <TodoArchive :selectedSortType="selectedSortType" :searchTerm="searchTerm" />
                         </b-tab>
                     </b-tabs>
 
@@ -41,6 +58,8 @@ export default {
     data(){
         return {
             searchTerm: '',
+            selectSortOptions: ['Default', 'Name Desc', 'Updated Asc', 'Updated Desc', 'Created At Asc', 'Create At Desc'],
+            selectedSortType: [],
         }
     },
     methods: {

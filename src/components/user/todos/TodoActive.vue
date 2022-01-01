@@ -20,16 +20,23 @@ import Loading from '../../Loading.vue'
 import TodoItem from '../TodoItem.vue'
 
 export default {
-    props: ['searchTerm'],
+    props: ['selectedSortType', 'searchTerm'],
     components: { Loading, TodoItem },
     data(){
         return {
             isLoading: true,
             todoList: [],
+            selectSortOptions: ['Default', 'Name Desc', 'Updated Asc', 'Updated Desc', 'Created At Asc', 'Create At Desc'],
         }
     },
     mounted(){
         this.fetchTodoListData()
+    },
+    watch: {
+        immediate: true,
+        selectedSortType: function (newVal, oldVal){
+            this.sortList()
+        }
     },
     methods: {
         fetchTodoListData(){
@@ -47,6 +54,33 @@ export default {
                 this.isLoading = false
                 this.todoList = response.data
             })
+        },
+        sortList(){
+            if(this.selectSortOptions[0] == this.selectedSortType.target.value){
+                this.todoList.sort((a,b) => {
+                    return a.todo_name.localeCompare(b.todo_name)
+                })
+            }else if(this.selectSortOptions[1] == this.selectedSortType.target.value){
+                this.todoList.sort((a,b) => {
+                    return b.todo_name.localeCompare(a.todo_name)
+                })
+            }else if(this.selectSortOptions[2] == this.selectedSortType.target.value){
+                this.todoList.sort((a,b) => {
+                    return new Date(a.updated_at) - new Date(b.updated_at)
+                })
+            }else if(this.selectSortOptions[3] == this.selectedSortType.target.value){
+                this.todoList.sort((a,b) => {
+                    return new Date(b.updated_at) - new Date(a.updated_at)
+                })
+            }else if(this.selectSortOptions[4] == this.selectedSortType.target.value){
+                this.todoList.sort((a,b) => {
+                    return new Date(a.created_at) - new Date(b.created_at)
+                })
+            }else if(this.selectSortOptions[5] == this.selectedSortType.target.value){
+                this.todoList.sort((a,b) => {
+                    return new Date(b.created_at) - new Date(a.created_at)
+                })
+            }
         },
     },
     computed: {
