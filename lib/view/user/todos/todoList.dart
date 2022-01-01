@@ -25,6 +25,8 @@ class _todoListState extends State<todoList> {
 
   Future<List<ToDo>>? futureTodoList;
   String searchKeyWord="";
+  String dropDownSortValue = "Default";
+  List<String> dropDownListSelections = ['Default', 'Name Desc', 'Updated Asc', 'Updated Desc', 'Create At Asc', 'Create At Desc'];
 
   @override
   void initState() {
@@ -35,10 +37,34 @@ class _todoListState extends State<todoList> {
 
   Future<void> getTodoListData() async {
     List<ToDo> todoList = await getTodoList(context);
+    todoList.sort((a,b) => a.todoName!.compareTo(b.todoName!));
+
     setState(() {
       futureTodoList = Future.value(todoList);
     });
     refreshController.refreshCompleted();
+  }
+
+  void sortList(String sortType) async {
+    List<ToDo>? todoList = await futureTodoList;
+
+    if(sortType == dropDownListSelections[0]){
+      todoList!.sort((a,b) => a.todoName!.compareTo(b.todoName!));
+    }else if(sortType == dropDownListSelections[1]){
+      todoList!.sort((a,b) => b.todoName!.compareTo(a.todoName!));
+    }else if(sortType == dropDownListSelections[2]){
+      todoList!.sort((a,b) => a.updatedAt!.compareTo(b.updatedAt!));
+    }else if(sortType == dropDownListSelections[3]){
+      todoList!.sort((a,b) => b.updatedAt!.compareTo(a.updatedAt!));
+    }else if(sortType == dropDownListSelections[4]){
+      todoList!.sort((a,b) => a.createdAt!.compareTo(b.createdAt!));
+    }else if(sortType == dropDownListSelections[5]){
+      todoList!.sort((a,b) => b.createdAt!.compareTo(a.createdAt!));
+    }
+
+    setState(() {
+      futureTodoList = Future.value(todoList);
+    });
   }
 
   Future<List<ToDo>> searchList() async {
@@ -78,13 +104,53 @@ class _todoListState extends State<todoList> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CupertinoSearchTextField(
-              onChanged: (value){
-                setState(() {
-                  searchKeyWord = value;
-                });
-                searchList();
-              },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 12,
+                  child: CupertinoSearchTextField(
+                    onChanged: (value){
+                      setState(() {
+                        searchKeyWord = value;
+                      });
+                      searchList();
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Center(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: Icon(Icons.filter_list),
+                          elevation: 0,
+                          value: dropDownSortValue,
+                          style: TextStyle(
+                              color: Colors.black,
+                              overflow: TextOverflow.fade
+                          ),
+                          items: dropDownListSelections.map((value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(value),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue){
+                            sortList(newValue.toString());
+                            setState(() {
+                              dropDownSortValue = newValue.toString();
+                            });
+                          },
+                        ),
+                      )
+                  ),
+                )
+              ],
             ),
           ),
           Expanded(
