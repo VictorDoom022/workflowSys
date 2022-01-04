@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/avatar/gf_avatar.dart';
+import 'package:getwidget/components/checkbox_list_tile/gf_checkbox_list_tile.dart';
+import 'package:getwidget/types/gf_checkbox_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/controller/taskController.dart';
@@ -132,39 +135,26 @@ class _selectMemberState extends State<selectMember> {
           shrinkWrap: true,
           itemCount: userList.length,
           itemBuilder: (context, index){
-            return type != 3 ? CheckboxListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 45.0,
-                      width: 45.0,
-                      decoration: new BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: new BorderRadius.all(Radius.circular(50))),
-                      child: FutureBuilder(
-                        initialData: 'upload/userProfilePictures/userProfilePic.jpg',
-                        future: getUserProfilePictureByUserID(userList[index].id!),
-                        builder: (context, snapshot){
-                          return CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(serverURL + '/' + snapshot.data.toString())
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      userList[index].name!,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+            return type != 3 ? GFCheckboxListTile(
+              activeBgColor: Colors.green,
+              type: GFCheckboxType.circle,
+              avatar: FutureBuilder(
+                initialData: 'upload/userProfilePictures/userProfilePic.jpg',
+                future: getUserProfilePictureByUserID(userList[index].id!),
+                builder: (context, snapshot){
+                  return GFAvatar(
+                      // radius: 50,
+                      backgroundImage: NetworkImage(serverURL + '/' + snapshot.data.toString())
+                  );
+                },
+              ),
+                title: Text(
+                  userList[index].name!,
                 ),
                 value: isChecked[index],
                 onChanged: (bool){
                   setState(() {
-                    isChecked[index] = bool!;
+                    isChecked[index] = bool;
                     if(isChecked[index] == true){
                       selectedUserListID.add(userList[index].id!);
                     }else{
@@ -174,28 +164,20 @@ class _selectMemberState extends State<selectMember> {
                 }
             ) : ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              leading: FutureBuilder(
+                initialData: 'upload/userProfilePictures/userProfilePic.jpg',
+                future: getUserProfilePictureByUserID(userList[index].id!),
+                builder: (context, snapshot){
+                  return CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(serverURL + '/' + snapshot.data.toString())
+                  );
+                },
+              ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    height: 45.0,
-                    width: 45.0,
-                    decoration: new BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: new BorderRadius.all(Radius.circular(50))),
-                    child: FutureBuilder(
-                      initialData: 'upload/userProfilePictures/userProfilePic.jpg',
-                      future: getUserProfilePictureByUserID(userList[index].id!),
-                      builder: (context, snapshot){
-                        return CircleAvatar(
-                            radius: 50,
-                            backgroundImage: NetworkImage(serverURL + '/' + snapshot.data.toString())
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 5),
                   Text(
                     userList[index].name!,
                     textAlign: TextAlign.center,
