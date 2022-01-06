@@ -229,6 +229,132 @@ class _groupDetailState extends State<groupDetail> {
     );
   }
 
+  Widget test(){
+    return TestUI(
+      pageTitle: 'group ($groupName)',
+      showSearchTextField: true,
+      onchange: (value){
+        setState(() {
+          searchKeyWord = value;
+        });
+        searchList();
+      },
+      actions: [
+        HeaderActionButton(
+          buttonTitle: 'More',
+          buttonBackgroundColor: Colors.blue[50]!,
+          buttonIcon: Icons.more_vert,
+          buttonIconColor: Colors.blue,
+          buttonFunction: () {
+            showCupertinoModalPopup(
+                context: context,
+                builder: (_){
+                  return CupertinoActionSheet(
+                    title: Text('Choose an action'),
+                    actions: [
+                      CupertinoActionSheetAction(
+                        child: Text('Settings'),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (context){
+                                return groupSettingsPage(groupID: groupID, isAdmin: userAdmin);
+                              })
+                          ).then((value) {
+                            getGroupDetailData();
+                          });
+                        },
+                      ),
+                      userAdmin== true ? CupertinoActionSheetAction(
+                        child: Text('Show join code'),
+                        onPressed: (){
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context){
+                                return CupertinoAlertDialog(
+                                  title: Text('Join code'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("Here's your join code for " + groupName),
+                                      Text(
+                                        groupJoinCode,
+                                        style: TextStyle(
+                                            fontSize: 17
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: Text('Close'),
+                                      onPressed: (){
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text('Copy'),
+                                      onPressed: (){
+                                        Clipboard.setData(ClipboardData(text: groupJoinCode));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied!')));
+                                      },
+                                    ),
+                                  ],
+                                );
+                              }
+                          );
+                        },
+                      ) : Container(),
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            color: Colors.red
+                        ),
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }
+            );
+          },
+        ),
+        HeaderActionButton(
+          buttonTitle: 'Refresh',
+          buttonBackgroundColor: Colors.blue[50]!,
+          buttonIcon: Icons.refresh,
+          buttonIconColor: Colors.blue,
+          buttonFunction: () {
+            getGroupDetailData();
+          },
+        ),
+      ],
+      bodyContent: FutureBuilder<GroupDetailReceiver>(
+        future: searchKeyWord=="" ? futureGroupDetailReceiver : searchList(),
+        builder: (context, snapshot){
+          if(snapshot.hasError) print(snapshot.error);
+
+          if(snapshot.hasData){
+            return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data!);
+          }else{
+            return Center(child: CupertinoActivityIndicator(radius: 12));
+          }
+        },
+      ),
+      floatingActionButton: userAdmin==true ? FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: (){
+          createTeamDialog();
+        },
+      ) : null,
+    );
+  }
+
   Future<dynamic> createTeamDialog(){
     return showDialog(
         context: context,
