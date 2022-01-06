@@ -9,6 +9,7 @@ import 'package:workflow_sys/controller/teamController.dart';
 import 'package:workflow_sys/model/GroupDetailReceiver.dart';
 import 'package:workflow_sys/model/Team.dart';
 import 'package:workflow_sys/model/User.dart';
+import 'package:workflow_sys/view/misc/TestUI.dart';
 import 'package:workflow_sys/view/misc/loadingScreen.dart';
 import 'package:workflow_sys/view/user/groups/groupSettings.dart';
 import 'package:workflow_sys/view/user/selectors/selectMember.dart';
@@ -197,8 +198,8 @@ class _groupDetailState extends State<groupDetail> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CupertinoSearchTextField(
+              padding: const EdgeInsets.only(top: 18, left: 16, right: 16),
+              child: CupertinoCustomSearchBar(
                 onChanged: (value){
                   setState(() {
                     searchKeyWord = value;
@@ -213,7 +214,10 @@ class _groupDetailState extends State<groupDetail> {
                 if(snapshot.hasError) print(snapshot.error);
 
                 if(snapshot.hasData){
-                  return groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data!);
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    child: groupItem(isAdmin: userAdmin, groupDetailReceiver: snapshot.data!),
+                  );
                 }else{
                   return Center(child: CupertinoActivityIndicator(radius: 12));
                 }
