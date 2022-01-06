@@ -9,6 +9,7 @@ import 'package:workflow_sys/model/ChatHistory.dart';
 import 'package:workflow_sys/model/User.dart';
 import 'package:workflow_sys/model/UserDetail.dart';
 import 'package:workflow_sys/model/UserReceiver.dart';
+import 'package:workflow_sys/view/misc/TestUI.dart';
 
 import 'ChatList.dart';
 
@@ -50,27 +51,29 @@ class _userChatListState extends State<userChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        middle: Text('Chats'),
-      ),
-      body: FutureBuilder<List<ChatHistory>>(
-        future: futureChatHistory,
-        builder: (context, snapshot){
-          if(snapshot.hasError) print(snapshot.error);
+      body: TestUI(
+        pageTitle: 'Conversations',
+        showSearchTextField: false,
+        actions: [],
+        bodyContent: FutureBuilder<List<ChatHistory>>(
+          future: futureChatHistory,
+          builder: (context, snapshot){
+            if(snapshot.hasError) print(snapshot.error);
 
-          if(snapshot.hasData){
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index){
-                return chatHistoryItem(snapshot.data![index].chatReceiverUserID!);
-              },
-            );
-          }else{
-            return Center(child: CupertinoActivityIndicator(radius: 12));
-          }
-        },
+            if(snapshot.hasData){
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index){
+                  return chatHistoryItem(snapshot.data![index].chatReceiverUserID!);
+                },
+              );
+            }else{
+              return Center(child: CupertinoActivityIndicator(radius: 12));
+            }
+          },
+        ),
       ),
     );
   }
