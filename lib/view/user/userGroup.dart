@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:workflow_sys/controller/groupController.dart';
 import 'package:workflow_sys/model/Group.dart';
 import 'package:workflow_sys/view/misc/CustomDraggableHome.dart';
+import 'package:workflow_sys/view/misc/TestUI.dart';
 import 'package:workflow_sys/view/user/groups/groupDetail.dart';
 import 'package:workflow_sys/view/user/userNavDrawer.dart';
 
@@ -193,7 +194,7 @@ class _userGroupState extends State<userGroup> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CupertinoSearchTextField(
+            child: CupertinoCustomSearchBar(
               onChanged: (value){
                 setState(() {
                   searchWord = value;
@@ -209,42 +210,45 @@ class _userGroupState extends State<userGroup> {
 
                 if(snapshot.hasData){
                   if(snapshot.data.toString() != "[]"){
-                    return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index){
-                          return Card(
-                            elevation: 8.0,
-                            child: Container(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                title: Text(
-                                  snapshot.data![index].groupName!,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w300
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 18, left: 16, right: 16),
+                      child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index){
+                            return Card(
+                              elevation: 8.0,
+                              child: Container(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                  title: Text(
+                                    snapshot.data![index].groupName!,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w300
+                                    ),
                                   ),
+                                  onTap: (){
+                                    HapticFeedback.lightImpact();
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder:(context){
+                                              return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
+                                            }
+                                        )
+                                    ).then((value) {
+                                      getGroupListData();
+                                    });
+                                  },
                                 ),
-                                onTap: (){
-                                  HapticFeedback.lightImpact();
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder:(context){
-                                            return groupDetail(groupID: snapshot.data![index].id, groupName: snapshot.data![index].groupName);
-                                          }
-                                      )
-                                  ).then((value) {
-                                    getGroupListData();
-                                  });
-                                },
                               ),
-                            ),
-                          );
-                        }
+                            );
+                          }
+                      ),
                     );
                   }else{
                     return Center(child: Text('No groups joined'));
