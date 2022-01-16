@@ -28,8 +28,23 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
   
   _groupSettingsPageState(this.groupID, this.isAdmin);
 
+  late int currentLoggedInUserID;
   GlobalKey<ScaffoldState> groupSettingsScaffoldKey = GlobalKey();
   TextEditingController renameGroupController = TextEditingController();
+
+  @override
+  void initState() {
+    getCurrentLoggedInUserID();
+  }
+
+  void getCurrentLoggedInUserID() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int? userID = sharedPreferences.getInt("UserID");
+
+    setState(() {
+      currentLoggedInUserID = userID!;
+    });
+  }
 
   Future<List<User>> getGroupUser() async {
     List<User> userList = await getGroupUserByGroupID(groupID);
@@ -269,6 +284,11 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
   void removeAdmin(){
     LoadingScreen.showLoadingScreen(context, groupSettingsScaffoldKey);
     getGroupAdminUser().then((value) {
+      for(int i=0; i < value.length; i++){
+        if(value[i].id == currentLoggedInUserID){
+          value.removeAt(i);
+        }
+      }
       Navigator.of(context).pop();
       Navigator.push(
           context,
@@ -282,6 +302,11 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
   void removeMemberFromGroupSection(){
     LoadingScreen.showLoadingScreen(context, groupSettingsScaffoldKey);
     getGroupUser().then((value) {
+      for(int i=0; i < value.length; i++){
+        if(value[i].id == currentLoggedInUserID){
+          value.removeAt(i);
+        }
+      }
       Navigator.of(context).pop();
       Navigator.push(
           context,

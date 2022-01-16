@@ -28,10 +28,25 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
 
   _teamSettingsPageState(this.teamID, this.isAdmin);
 
+  late int currentLoggedInUserID;
   GlobalKey<ScaffoldState> teamSettingsScaffoldKey = GlobalKey();
   TextEditingController renameTeamController = TextEditingController();
 
   Future<TeamDetailReceiver>? futureTeamDetailReceiver;
+
+  @override
+  void initState() {
+    getCurrentLoggedInUserID();
+  }
+
+  void getCurrentLoggedInUserID() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int? userID = sharedPreferences.getInt("UserID");
+
+    setState(() {
+      currentLoggedInUserID = userID!;
+    });
+  }
 
   Future<List<User>> getUserJoinedTeamList() async {
     List<User> userList = await getUserJoinedTeam(teamID);
@@ -147,6 +162,11 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
   void removeMember(){
     LoadingScreen.showLoadingScreen(context, teamSettingsScaffoldKey);
     getUserJoinedTeamList().then((value) {
+      for(int i=0; i < value.length; i++){
+        if(value[i].id == currentLoggedInUserID){
+          value.removeAt(i);
+        }
+      }
       Navigator.of(context).pop();
       Navigator.push(
           context,
