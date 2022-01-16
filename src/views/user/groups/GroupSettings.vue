@@ -351,6 +351,12 @@ export default {
                 },
             }).then((response) => {
                 this.isLoading = false
+                // remove current logged in user from the list
+                for(var i = 0; i < response.data.length; i++){
+                    if(response.data[i].id == loggedInUserData.state.userData['user'].id){
+                        response.data.splice(i, 1);
+                    }
+                }
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 2
@@ -371,6 +377,12 @@ export default {
                 },
             }).then((response) => {
                 this.isLoading = false
+                // remove current logged in user from the list
+                for(var i = 0; i < response.data.length; i++){
+                    if(response.data[i].id == loggedInUserData.state.userData['user'].id){
+                        response.data.splice(i, 1);
+                    }
+                }
                 this.userListForModal = response.data
                 this.modalViewOnly = false
                 this.modalType = 6
