@@ -31,6 +31,12 @@ class TaskCard extends StatelessWidget {
     return colorList[colorID];
   }
 
+  Color setTaskPriorityColor(priorityID){
+    List<Color> colorList = [Colors.grey, Colors.black, Colors.blueAccent, Colors.yellowAccent, Colors.redAccent];
+
+    return colorList[priorityID];
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -140,7 +146,8 @@ class TaskCard extends StatelessWidget {
                             Text(
                               convertPriorityTypeToString(priority),
                               style: TextStyle(
-                                  fontSize: 15
+                                  fontSize: 15,
+                                  color: setTaskPriorityColor(priority),
                               ),
                             ),
                           ],
