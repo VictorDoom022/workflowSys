@@ -112,31 +112,31 @@ class _userDashboardState extends State<userDashboard> {
 
   List<Widget> bodyContent(){
     return [
-      Container(
-        width: double.infinity,
-        child: DashboardItem(
-          itemTitle: 'Total Task',
-          titleTextColor: Color(0xff17a2b8),
-          itemData: dashboardData!.totalTask.toString(),
-        ),
-      ),
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             flex: 2,
             child: DashboardItem(
+              itemTitle: 'Total Task',
+              itemData: dashboardData!.totalTask.toString(),
+              itemBackgroundColor: Color(0xff4f4fae),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: DashboardItem(
               itemTitle: 'Active Task',
-              titleTextColor: Color(0xff28a745),
               itemData: dashboardData!.activeTaskCount.toString(),
+              itemBackgroundColor: Color(0xff2ed694),
             ),
           ),
           Expanded(
             flex: 2,
             child: DashboardItem(
               itemTitle: 'Task Assigned To You',
-              titleTextColor: Color(0xff6c757d),
               itemData: dashboardData!.assignedToUserTaskCount.toString(),
+              itemBackgroundColor: Color(0xfffe6f5e),
             ),
           ),
         ],
@@ -148,16 +148,16 @@ class _userDashboardState extends State<userDashboard> {
             flex: 2,
             child: DashboardItem(
               itemTitle: 'High Priority Task',
-              titleTextColor: Color(0xffdc3545),
               itemData: dashboardData!.highPriorityTaskCount.toString(),
+              itemBackgroundColor: Color(0xffff3f78),
             ),
           ),
           Expanded(
             flex: 2,
             child: DashboardItem(
               itemTitle: 'Completed Task',
-              titleTextColor: Color(0xff007bff),
               itemData: dashboardData!.completedTaskCount.toString(),
+              itemBackgroundColor: Color(0xff475afe),
             ),
           ),
         ],
@@ -190,7 +190,7 @@ class _userDashboardState extends State<userDashboard> {
                   backgroundColor: Color(0xff007bff),
                   minHeight: 8,
                 ),
-                Text((calcTaskProgress() *100).toStringAsFixed(2) + '% / ' + (100 - (calcTaskProgress() *100)).toStringAsFixed(2) + '%'),
+                Text((calcTaskProgress() *100).toStringAsFixed(2) + '%'),
               ],
             ),
           ),
@@ -281,9 +281,9 @@ class _userDashboardState extends State<userDashboard> {
   }
 
   double calcTaskProgress(){
-    int activeTaskCount = dashboardData!.activeTaskCount;
+    int completedTaskCount = dashboardData!.completedTaskCount;
     int totalTaskCount = dashboardData!.totalTask;
-    double taskProgress = (( activeTaskCount / totalTaskCount) * 1);
+    double taskProgress = (( completedTaskCount / totalTaskCount) * 1);
 
     if(!taskProgress.isNaN){
       return taskProgress;
@@ -296,11 +296,10 @@ class _userDashboardState extends State<userDashboard> {
 class DashboardItem extends StatelessWidget {
 
   final String itemTitle;
-  final Color? titleTextColor;
   final String itemData;
-  final Color? dataTextColor;
+  final Color itemBackgroundColor;
 
-  const DashboardItem({Key? key, required this.itemTitle, this.titleTextColor, required this.itemData, this.dataTextColor}) : super(key: key);
+  const DashboardItem({Key? key, required this.itemTitle, required this.itemData, required this.itemBackgroundColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -309,6 +308,10 @@ class DashboardItem extends StatelessWidget {
         minHeight: 120
       ),
       child: Card(
+        color: itemBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0)
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -322,7 +325,7 @@ class DashboardItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 25,
-                      color: titleTextColor
+                      color: Colors.white
                   ),
                 ),
               ),
@@ -331,7 +334,7 @@ class DashboardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
-                    color: dataTextColor
+                    color: Colors.white
                 ),
               ),
             ],
