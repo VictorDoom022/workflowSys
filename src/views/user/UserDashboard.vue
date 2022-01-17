@@ -241,7 +241,7 @@ export default {
 
 <style scoped>
 .card:hover{
-    background-color: #f8f9fa;
+    background-color: rgba(175, 175, 175, 0.5);
     transition: .5s ease;
 }
 
