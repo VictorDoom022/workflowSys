@@ -3,11 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AwesomeListItem extends StatefulWidget {
+  final bool? highlightTitle;
   final String title;
   final String content;
   final String image;
 
-  AwesomeListItem({required this.title, required this.content, required this.image});
+  AwesomeListItem({this.highlightTitle = false, required this.title, required this.content, required this.image});
 
   @override
   _AwesomeListItemState createState() => new _AwesomeListItemState();
@@ -42,9 +43,10 @@ class _AwesomeListItemState extends State<AwesomeListItem> {
                 new Text(
                   widget.title,
                   style: TextStyle(
-                      color: Colors.grey.shade800,
+                      color: widget.highlightTitle! ? Color(0xfffbb448) :Colors.grey.shade800,
                       fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold
+                  ),
                 ),
                 new Padding(
                   padding: const EdgeInsets.only(top: 16.0),

@@ -47,13 +47,24 @@ class _teamDetailState extends State<teamDetail> {
   String searchKeyword = "";
   String dropDownSortValue = "Default";
   List<String> dropDownListSelections = ['Default', 'Name Desc'];
+  late int currentLoggedInUserID;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCurrentLoggedInUserID();
     getUserData().then((value) {
       getTeamDetailData();
+    });
+  }
+
+  void getCurrentLoggedInUserID() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int? userID = sharedPreferences.getInt("UserID");
+
+    setState(() {
+      currentLoggedInUserID = userID!;
     });
   }
 
@@ -195,7 +206,7 @@ class _teamDetailState extends State<teamDetail> {
                 if(snapshot.hasError) print(snapshot.error);
 
                 if(snapshot.hasData){
-                  return teamItem(teamDetailReceiver: snapshot.data!, userReceiver: userReceiver!);
+                  return teamItem(currentLoggedInUserID: currentLoggedInUserID, teamDetailReceiver: snapshot.data!, userReceiver: userReceiver!);
                 }else{
                   return Center(child: CupertinoActivityIndicator(radius: 12));
                 }
@@ -251,10 +262,11 @@ class _teamDetailState extends State<teamDetail> {
 
 class teamItem extends StatelessWidget {
 
+  final int currentLoggedInUserID;
   final TeamDetailReceiver teamDetailReceiver;
   final UserReceiver userReceiver;
 
-  const teamItem({Key? key, required this.teamDetailReceiver, required this.userReceiver}) : super(key: key);
+  const teamItem({Key? key,required this.currentLoggedInUserID ,required this.teamDetailReceiver, required this.userReceiver}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -279,6 +291,7 @@ class teamItem extends StatelessWidget {
           },
           child: Card(
             child: AwesomeListItem(
+              highlightTitle: currentLoggedInUserID ==  convertUserNameToUserID(teamDetailReceiver.taskList![index]!.taskListUserID!)!,
               image: serverURL + '/' + userReceiver.userDetail![index]!.userDetailProfilePictureDir!,
               title: teamDetailReceiver.taskList![index]!.taskListUserID! + "'s Task List",
               content: '',
