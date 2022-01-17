@@ -30,7 +30,7 @@
                                                 <img :src="'http://192.168.0.181:8000/' + taskList.taskList_userID.userDetail.userDetail_profilePictureDir" :id="'taskListID-'+taskList.id" class="rounded-circle img-thumbnail" style="height: 90px; width: 90px" alt="profile-image">
                                             </div>
                                             <div class="col-md-8 text-center align-middle">
-                                                <h3 class="card-title pt-4">{{ taskList.taskList_userID.user.name }} Task List</h3>
+                                                <h3 class="card-title pt-4" :class="currentLoggedInUserID == taskList.taskList_userID.user.id ? 'text-primary' : ''">{{ taskList.taskList_userID.user.name }}'s Task List</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -75,6 +75,7 @@ export default {
             taskListListForSearch: [],
             isLoading: true,
             searchTerm: '',
+            currentLoggedInUserID: loggedInUserData.state.userData['user'].id,
         }
     },
     mounted() {
