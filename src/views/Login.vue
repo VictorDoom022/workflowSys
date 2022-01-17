@@ -65,9 +65,13 @@ export default {
                     }
                 ).then((response) => {
                     this.isLoading = false;
-                    this.error = null;
-                    loggedInUserData.dispatch('createUserSession', response.data)
-                    this.redirect()
+                    if(response.data.userDetail.userDetail_accEnable == 0){
+                        this.error = "Your account has been disabled."
+                    }else{
+                        this.error = null;
+                        loggedInUserData.dispatch('createUserSession', response.data)        
+                        this.redirect()
+                    }
                 }).catch((e) =>{
                     this.isLoading = false;
                     this.error = "Incorrect email or password."
