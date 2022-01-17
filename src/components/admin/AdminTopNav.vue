@@ -47,7 +47,7 @@ export default {
   methods: {
     logout(){
       Vue.axios({
-        url: 'logout',
+        url: '/logout',
         method: 'POST',
         headers: {
             Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
