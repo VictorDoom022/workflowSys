@@ -1,33 +1,33 @@
 <template>
   <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
     <div class="position-sticky pt-3">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <router-link :to="{ name: 'UserHome' }" class="nav-link" aria-current="page">
+      <ul class="nav nav-pills flex-column flex-shrink mb-auto">
+        <li class="nav-item px-3">
+          <router-link :to="{ name: 'UserHome' }" class="nav-link" active-class="active" aria-current="page">
             <b-icon class="mr-1" icon="house-fill"></b-icon>
             Home
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'UserGroup' }" class="nav-link">
+        <li class="nav-item px-3">
+          <router-link :to="{ name: 'UserGroup' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="people-fill"></b-icon>
             Groups
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'TodoList' }" class="nav-link">
+        <li class="nav-item px-3">
+          <router-link :to="{ name: 'TodoList' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="list-check"></b-icon>  
             Todo
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'UserProfile' }" class="nav-link">
+        <li class="nav-item px-3">
+          <router-link :to="{ name: 'UserProfile' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="person-fill"></b-icon>  
             Profile 
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'Chat' }" class="nav-link">
+        <li class="nav-item px-3">
+          <router-link :to="{ name: 'Chat' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="chat-fill"></b-icon>  
             Chats 
           </router-link>
