@@ -26,6 +26,7 @@
           <template #button-content>
             <em>{{ username }}</em>
           </template>
+          <b-dropdown-item @click="taskPage">Production Page</b-dropdown-item>
           <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -60,6 +61,9 @@ export default {
         })
       })
     },
+    taskPage(){
+      this.$router.push('/userHome')
+    }
   },
   mounted() {
     if(loggedInUserData.state.userData != null && loggedInUserData.state.userData['user'].position == "admin"){
