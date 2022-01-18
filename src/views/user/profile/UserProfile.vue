@@ -151,6 +151,12 @@ export default {
                 this.isLoading = false
                 this.user = response.data['user']
                 this.userDetail = response.data['userDetail']
+                var temp = {
+                    'user' : this.user,
+                    'userDetail' : this.userDetail,
+                    'token' : loggedInUserData.state.userData['token']
+                }
+                loggedInUserData.dispatch('createUserSession', temp)
             })
         },
         convertDBDateToString(dbDate){

@@ -1,26 +1,31 @@
 <template>
   <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
     <div class="position-sticky pt-3">
+      <div class="d-flex text-white text-decoration-none px-4 mb-2">
+        <img :src="'http://192.168.0.181:8000/' + userProfilePicture" class="rounded-circle img-profile m-auto" style="height: 42px; width: 42px" alt="profile-image">
+        <span class="fs-4">Welcome, {{ username }}</span>
+      </div>
+
       <ul class="nav nav-pills flex-column flex-shrink mb-auto">
-        <li class="nav-item px-3">
+        <li class="nav-item px-3 py-1">
           <router-link :to="{ name: 'UserHome' }" class="nav-link" active-class="active" aria-current="page">
             <b-icon class="mr-1" icon="house-fill"></b-icon>
             Home
           </router-link>
         </li>
-        <li class="nav-item px-3">
+        <li class="nav-item px-3 py-1">
           <router-link :to="{ name: 'UserGroup' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="people-fill"></b-icon>
             Groups
           </router-link>
         </li>
-        <li class="nav-item px-3">
+        <li class="nav-item px-3 py-1">
           <router-link :to="{ name: 'TodoList' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="list-check"></b-icon>  
             Todo
           </router-link>
         </li>
-        <li class="nav-item px-3">
+        <li class="nav-item px-3 py-1">
           <router-link :to="{ name: 'UserProfile' }" class="nav-link" active-class="active">
             <b-icon class="mr-1" icon="person-fill"></b-icon>  
             Profile 
@@ -57,6 +62,7 @@ export default {
     data() {
         return {
             username: '',
+            userProfilePicture: '',
         }
     },
     methods: {
@@ -65,6 +71,7 @@ export default {
     mounted() {
       if(loggedInUserData.state.userData != null){
         this.username = loggedInUserData.state.userData['user'].name
+        this.userProfilePicture = loggedInUserData.state.userData['userDetail'].userDetail_profilePictureDir
       }else{
         this.$router.push('/')
       }
@@ -81,22 +88,26 @@ export default {
 	z-index: 100;
 	padding: 48px 0 0;
 	box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-    
-	.nav-link {
-		font-weight: 600;
-		color: white;
 
-		.feather {
-			margin-right: 4px;
-			color: #727272;
-		}
+  .nav {
+    .nav-item {
+      .nav-link {
+        text-overflow: ellipsis;
+        color: white;
 
-		&:hover {
-			.feather {
-				color: inherit;
-			}
-		}
-	}
+        .feather {
+          margin-right: 4px;
+          color: #727272;
+        }
+
+        &:hover {
+          .feather {
+            color: inherit;
+          }
+        }
+      }
+    }
+  }
 
 	.nav-link.router-link-active {
 		color: #2470dc;
@@ -124,5 +135,12 @@ export default {
 	.sidebar {
 		top: 5rem;
 	}
+}
+
+.img-profile {
+  max-width: 100%;
+  height: auto;
+  object-fit:cover;
+  object-position:50% 50%;
 }
 </style>
