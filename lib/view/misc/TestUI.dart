@@ -57,11 +57,14 @@ class _TestUIState extends State<TestUI> {
                               Navigator.of(context).pop();
                             }
                           ),
-                          Text(
-                            widget.pageTitle,
-                            style: TextStyle(
-                                fontSize: screenWidth * 0.08 > 32 ? 32 : screenWidth * 0.08,
-                                fontWeight: FontWeight.bold
+                          Flexible(
+                            child: Text(
+                              widget.pageTitle,
+                              style: TextStyle(
+                                  fontSize: screenWidth * 0.08 > 32 ? 32 : screenWidth * 0.08,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis
+                              ),
                             ),
                           ),
                         ],
