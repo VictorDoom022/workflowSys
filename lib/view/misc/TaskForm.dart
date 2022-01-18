@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class TaskFormCard extends StatelessWidget {
 
   final String? cardTitle;
-  final List<Widget?>? cardItemList;
+  final List<Widget> cardItemList;
 
-  const TaskFormCard({Key? key, this.cardTitle, this.cardItemList}) : super(key: key);
+  const TaskFormCard({Key? key, this.cardTitle = "", required this.cardItemList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +15,14 @@ class TaskFormCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Text(
+            cardTitle != "" ? Text(
               cardTitle!,
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            for(var cardItem in cardItemList!) cardItem!
+            ) : Container(),
+            for(var cardItem in cardItemList) cardItem
           ],
         ),
       ),
