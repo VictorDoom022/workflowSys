@@ -25,6 +25,8 @@
                                         <button class="btn btn-primary btn-sm ml-1" :disabled="!fileData">Change</button>
                                     </div>
                                 </form>
+                                <br>
+                                <button @click="showChangePasswordDialog" class="btn btn-primary btn-sm">Change Password</button>
                             </div>
                             <div class="col-md-8">
                                 <div class="row">
@@ -133,6 +135,8 @@ export default {
             user: null,
             userDetail: null,
             fileData: '',
+            password: '',
+            confirm_password: '',
         }
     },
     mounted() {
@@ -194,6 +198,69 @@ export default {
                 this.getUserDetails()
                 this.toastMessage(response)
             })
+        },
+        showChangePasswordDialog(){
+            Vue.swal.fire({
+                title: 'Enter new password',
+                input: 'password',
+                inputPlaceholder: 'Password',
+                confirmButtonColor: '#28a745',
+                showCancelButton: true,
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    autocorrect: 'off'
+                }
+            }).then((result) => {
+                this.password = result.value
+                // show confirm password dialog
+                if(!result.isDismissed && result.value!= ''){
+                    Vue.swal.fire({
+                        title: 'Confirm Your Password',
+                        input: 'password',
+                        inputPlaceholder: 'Confirm Password',
+                        confirmButtonColor: '#28a745',
+                        showCancelButton: true,
+                        inputAttributes: {
+                            autocapitalize: 'off',
+                            autocorrect: 'off'
+                        }
+                    }).then((result) => {
+                        this.confirm_password = result.value
+
+                        if(!result.isDismissed && result.value!= ''){
+                            this.changePassword()
+                        }    
+                    })
+                }    
+            })
+        },
+        changePassword(){
+            this.isLoading = true
+            Vue.axios({
+                url: '/users/changeUserPassword',
+                method: 'POST',
+                headers: {
+                    Authorization : 'Bearer ' + loggedInUserData.state.userData['token'],
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    userID: loggedInUserData.state.userData['user'].id,
+                    password: this.password,
+                    password_confirmation: this.confirm_password,
+                },
+            }).then((response) => {
+                this.toastMessage(response)
+            }).catch((error) => {
+                var errorMessage = {
+                    status : 422,
+                    data : {
+                        message : 'The passowrd does not match / invalid (min 8 characters)',
+                    }
+                }
+                this.toastMessage(errorMessage)
+            })
+
+            this.isLoading = false
         },
         toastMessage(response) {
             Vue.swal.fire({
