@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User; 
 use App\Models\UserDetail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -103,5 +104,23 @@ class UserController extends Controller
         $userDetail = UserDetail::where('id', $userID)->first();
 
         return response($userDetail->userDetail_profilePictureDir, 200);
+    }
+
+    public static function changeUserPassword(Request $request){
+
+        //variables that uses $request without validation
+        $userID = $request->userID;
+
+        $fields=$request->validate([
+            'password'=> ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = User::where('id', $userID)->first();
+        $user->password = Hash::make($fields['password']);
+        $user->save();
+
+        return [
+            'message' => 'Password changed successfully',
+        ];
     }
 }

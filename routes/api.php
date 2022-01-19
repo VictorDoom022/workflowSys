@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('users/toggleUserBan/{id}', [App\Http\Controllers\UserController::class, 'toggleUserBan']);
     Route::post('users/uploadProfilePicture', [App\Http\Controllers\UserController::class, 'uploadProfilePicture']);
     Route::post('users/getUserProfilePictureByUserID', [App\Http\Controllers\UserController::class, 'getUserProfilePictureByUserID']);
+    Route::post('users/changeUserPassword', [App\Http\Controllers\UserController::class, 'changeUserPassword']);
 
     //Group routes
     Route::post('createGroup', [App\Http\Controllers\GroupController::class, 'createGroup']);
