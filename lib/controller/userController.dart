@@ -184,3 +184,30 @@ Future<String> getUserProfilePictureByUserID(int userID) async {
 
   return response.body;
 }
+
+Future<void> changeUserPassword(BuildContext context, String password, String confirmPassword) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String? token = sharedPreferences.getString("UserToken");
+  int? userID = sharedPreferences.getInt("UserID");
+
+  String stringUrl = apiURL + '/users/changeUserPassword';
+  Uri url = Uri.parse(stringUrl);
+  var response = await http.post(
+      url,
+      body: {
+        'userID' : userID.toString(),
+        'password': password,
+        'password_confirmation': confirmPassword,
+      },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + token!
+      }
+  );
+
+  if(response.statusCode == 200){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(convertResponseMessage(response.body))));
+  }
+}

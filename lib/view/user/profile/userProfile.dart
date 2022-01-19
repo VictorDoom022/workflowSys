@@ -27,6 +27,8 @@ class _userProfileState extends State<userProfile> {
   int? accountEnabled;
   String accountCreateDate = '';
   String userJoinedGroupCount = '';
+  TextEditingController passwordTextController = TextEditingController();
+  TextEditingController confirmPasswordTextController = TextEditingController();
 
   @override
   void initState() {
@@ -177,6 +179,19 @@ class _userProfileState extends State<userProfile> {
                 ),
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                child: CupertinoButton(
+                    child: Text('Change password'),
+                    color: Colors.blueAccent,
+                    onPressed: (){
+                      showChangePasswordDialog();
+                    }
+                ),
+              ),
+            ),
             Platform.isAndroid || Platform.isIOS ? Container() : TextButton(
               child: Text('Log Out'),
               onPressed: (){
@@ -210,6 +225,59 @@ class _userProfileState extends State<userProfile> {
           ],
         ),
       ),
+    );
+  }
+
+  void showChangePasswordDialog(){
+    showDialog(
+        context: context,
+        builder: (_){
+          return CupertinoAlertDialog(
+            content: Column(
+              children: [
+                CupertinoTextField(
+                  placeholder: 'Password',
+                  obscureText: true,
+                  controller: passwordTextController,
+                ),
+                SizedBox(height: 5),
+                CupertinoTextField(
+                  placeholder: 'Confirm Password',
+                  obscureText: true,
+                  controller: confirmPasswordTextController,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  passwordTextController.clear();
+                  confirmPasswordTextController.clear();
+                  Navigator.of(
+                      context,
+                      rootNavigator: true
+                  ).pop();
+                },
+              ),
+              TextButton(
+                child: Text('Change'),
+                onPressed: (){
+                  HapticFeedback.lightImpact();
+                  changeUserPassword(context, passwordTextController.text, confirmPasswordTextController.text).then((value) {
+                    passwordTextController.clear();
+                    confirmPasswordTextController.clear();
+                    Navigator.of(
+                        context,
+                        rootNavigator: true
+                    ).pop();
+                  });
+                },
+              )
+            ],
+          );
+        }
     );
   }
 
