@@ -20,9 +20,6 @@ void main() {
           '/userGroup':(context) => userGroup(),
           '/desktopHomePage':(context) => desktopHomePage()
         },
-        theme: ThemeData(
-          primaryColor: Color(0xfffbb448),
-        ),
       )
   );
 }

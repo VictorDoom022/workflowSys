@@ -71,10 +71,10 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
         contentPadding: EdgeInsets.fromLTRB(0, 15, 0, 0),
         sections: [
           SettingsSection(
-            title: 'General',
+            title: Text('General'),
             tiles: [
               SettingsTile(
-                title: 'View members',
+                title: Text('View members'),
                 onPressed: (_) {
                   viewMember();
                 },
@@ -82,26 +82,26 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
             ],
           ),
           SettingsSection(
-            title: 'Admin section',
+            title: Text('Admin section'),
             tiles: [
               SettingsTile(
-                title: 'Add new member',
+                title: Text('Add new member'),
                 enabled: isAdmin,
                 onPressed: (_){
                   addNewMember();
                 },
               ),
               SettingsTile(
-                title: 'Remove member',
+                title: Text('Remove member'),
                 enabled: isAdmin,
                 onPressed: (_){
                   removeMember();
                 },
               ),
               SettingsTile(
-                title: 'Rename team',
+                title: Text('Rename team'),
                 enabled: isAdmin,
-                iosChevron: null,
+                // iosChevron: null,
                 onPressed: (_){
                   renameTeamSection();
                 },
@@ -109,19 +109,19 @@ class _teamSettingsPageState extends State<teamSettingsPage> {
             ],
           ),
           SettingsSection(
-            title: 'Danger zone',
+            title: Text('Danger zone'),
             tiles: [
               SettingsTile(
-                title: 'Delete team',
+                title: Text('Delete team'),
                 enabled: isAdmin,
-                iosChevron: null,
+                // iosChevron: null,
                 onPressed: (_){
                   deleteTeamSection();
                 },
               ),
               SettingsTile(
-                title: 'Quit team',
-                iosChevron: null,
+                title: Text('Quit team'),
+                // iosChevron: null,
                 onPressed: (_){
                   quitTeam();
                 },

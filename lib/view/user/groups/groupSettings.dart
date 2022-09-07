@@ -80,16 +80,16 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
         contentPadding: EdgeInsets.fromLTRB(0, 15, 0, 0),
         sections: [
           SettingsSection(
-            title: 'General',
+            title: Text('General'),
             tiles: [
               SettingsTile(
-                title: 'View all members',
+                title: Text('View all members'),
                 onPressed: (_){
                   viewAllMembers();
                 },
               ),
               SettingsTile(
-                title: 'View group admin',
+                title: Text('View group admin'),
                 onPressed: (_){
                   viewGroupAdmin();
                 },
@@ -97,47 +97,47 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
             ],
           ),
           SettingsSection(
-            title: 'Admin section',
+            title: Text('Admin section'),
             tiles: [
               SettingsTile(
-                title: 'Generate new join code',
+                title: Text('Generate new join code'),
                 enabled: isAdmin,
-                iosChevron: null,
+                // iosChevron: null,
                 onPressed: (_){
                   generateNewJoinCode();
                 },
               ),
               SettingsTile(
-                title: 'Rename group',
+                title: Text('Rename group'),
                 enabled: isAdmin,
-                iosChevron: null,
+                // iosChevron: null,
                 onPressed: (_){
                   renameGroupSection();
                 },
               ),
               SettingsTile(
-                title: 'View all teams',
+                title: Text('View all teams'),
                 enabled: isAdmin,
                 onPressed: (_){
                   viewAllTeams();
                 },
               ),
               SettingsTile(
-                title: 'Set member as admin',
+                title: Text('Set member as admin'),
                 enabled: isAdmin,
                 onPressed: (_){
                   setMemberAsAdmin();
                 },
               ),
               SettingsTile(
-                title: 'Remove admin',
+                title: Text('Remove admin'),
                 enabled: isAdmin,
                 onPressed: (_){
                   removeAdmin();
                 },
               ),
               SettingsTile(
-                title: 'Remove member from group',
+                title: Text('Remove member from group'),
                 enabled: isAdmin,
                 onPressed: (_){
                   removeMemberFromGroupSection();
@@ -146,19 +146,19 @@ class _groupSettingsPageState extends State<groupSettingsPage> {
             ],
           ),
           SettingsSection(
-            title: 'Danger zone',
+            title: Text('Danger zone'),
             tiles: [
               SettingsTile(
-                title: 'Leave group',
-                iosChevron: null,
+                title: Text('Leave group'),
+                // iosChevron: null,
                 onPressed: (_){
                   leaveGroup();
                 },
               ),
               SettingsTile(
-                title: 'Delete group',
+                title: Text('Delete group'),
                 enabled: isAdmin,
-                iosChevron: null,
+                // iosChevron: null,
                 onPressed: (_){
                   deleteGroupSection();
                 },
